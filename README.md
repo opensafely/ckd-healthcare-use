@@ -2,7 +2,7 @@
 
 [View on OpenSAFELY](https://jobs.opensafely.org/repo/https%253A%252F%252Fgithub.com%252Fopensafely%252Fckd-healthcare-use)
 
-Details of the purpose and any published outputs from this project can be found at the link above.
+Details of the purpose and any published outputs from this project can be found at the link above. (NB - APPLICATION CURRENTLY PENDING)
 
 The contents of this repository MUST NOT be considered an accurate or valid representation of the study or its purpose. 
 This repository may reflect an incomplete or incorrect analysis with no further ongoing work.
