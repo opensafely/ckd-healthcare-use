@@ -1,0 +1,43 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\ckd-healthcare-use\logs/2017_ckd.log
+  log type:  text
+ opened on:  29 Nov 2022, 22:36:52
+
+. clear
+
+. 
+. import delimited ./output/input_2017.csv, delimiter(comma) varnames(1) case(preserve) 
+(encoding automatically selected: ISO-8859-1)
+(14 vars, 10,000 obs)
+
+. 
+. **Exclusions
+. * Age <18 at index date
+. drop if age <18
+(2,159 observations deleted)
+
+. 
+. * Anyone not registered at one practice for 3 months before index date
+. drop if has_follow_up==0
+(400 observations deleted)
+
+. drop has_follow_up
+
+. 
+. * Deceased before index date
+. drop if deceased==1
+(749 observations deleted)
+
+. drop deceased
+
+. 
+. * Region
+. tab region
+variable region not found
+r(111);
+
+end of do-file
+
+r(111);
+

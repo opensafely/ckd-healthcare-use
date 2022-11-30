@@ -1,0 +1,66 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /workspace/logs/2017_ckd.log
+  log type:  text
+ opened on:  29 Nov 2022, 22:56:36
+
+. clear
+
+. 
+. import delimited ./output/input_2017.csv, delimiter(comma) varnames(1) case(p
+> reserve) 
+(14 vars, 10,000 obs)
+
+. 
+. **Exclusions
+. * Age <18 at index date
+. drop if age <18
+(2,140 observations deleted)
+
+. 
+. * Anyone not registered at one practice for 3 months before index date
+. drop if has_follow_up==0
+(392 observations deleted)
+
+. drop has_follow_up
+
+. 
+. * Deceased before index date
+. drop if deceased==1
+(742 observations deleted)
+
+. drop deceased
+
+. 
+. * Region
+. tab region
+
+                  region |      Freq.     Percent        Cum.
+-------------------------+-----------------------------------
+                    East |        676       10.05       10.05
+           East Midlands |        669        9.95       20.00
+                  London |      1,375       20.44       40.44
+              North East |        656        9.75       50.19
+              North West |        650        9.66       59.86
+              South East |        709       10.54       70.40
+              South West |        678       10.08       80.48
+           West Midlands |        634        9.43       89.90
+Yorkshire and The Humber |        679       10.10      100.00
+-------------------------+-----------------------------------
+                   Total |      6,726      100.00
+
+. drop if region==""
+(0 observations deleted)
+
+. drop if region==.
+type mismatch
+r(109);
+
+end of do-file
+r(109);
+
+end of do-file
+
+r(109);
+
+

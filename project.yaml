@@ -1,12 +1,28 @@
-version: '3.0'
+version: "3.0"
 
 expectations:
-  population_size: 1000
+  population_size: 10000
 
 actions:
 
-  generate_study_population:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition
+  2017:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2017
     outputs:
       highly_sensitive:
-        cohort: output/input.csv
+        cohort: output/input_2017.csv
+
+  2017_ckd:
+    run: stata-mp:latest analysis/2017_ckd.do
+    needs: [2017]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2017_ckd.csv
+      moderately_sensitive:
+        log: logs/2017_ckd.log
+  
+  2017_ckd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2017_ckd_complete
+    needs: [2017, 2017_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2017_ckd_complete.csv
