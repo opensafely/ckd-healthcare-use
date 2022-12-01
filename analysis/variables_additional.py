@@ -2,8 +2,8 @@ from cohortextractor import filter_codes_by_category, patients, combine_codelist
 from codelists import *
 from datetime import datetime, timedelta
 
-def generate_common_variables(index_date_variable):
-    common_variables = dict(    
+def generate_variables_additional(index_date_variable):
+    variables_additional = dict(    
     ethnicity=patients.with_these_clinical_events(
         ethnicity_codes,
         returning="category",
@@ -34,7 +34,7 @@ def generate_common_variables(index_date_variable):
         },
     ),
     dialysis_baseline_primary_care=patients.with_these_clinical_events(
-        dialysis_primary_care_codes,
+        dialysis_codes,
         between = ["1970-01-01", "index_date - 1 day"],
         returning="date",
         date_format="YYYY-MM-DD",
@@ -60,15 +60,15 @@ def generate_common_variables(index_date_variable):
     dialysis_baseline_date=patients.minimum_of(
         "dialysis_baseline_primary_care", "dialysis_baseline_icd_10", "dialysis_baseline_opcs_4",
     ),
-    kidney_transplant_baseline_primary_care=patients.with_these_clinical_events(
-        kidney_transplant_primary_care_codes,
+    kt_baseline_primary_care=patients.with_these_clinical_events(
+        kidney_transplant_codes,
         between = ["1970-01-01", "index_date - 1 day"],
         returning="date",
         date_format="YYYY-MM-DD",
         find_first_match_in_period=True,
         return_expectations={"incidence": 0.05, "date": {"earliest" : "1970-01-01", "latest": "index_date - 1 day"}}
     ),
-    kidney_transplant_baseline_icd_10=patients.admitted_to_hospital(
+    kt_baseline_icd_10=patients.admitted_to_hospital(
         with_these_diagnoses=kidney_transplant_icd_10_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -76,7 +76,7 @@ def generate_common_variables(index_date_variable):
         find_first_match_in_period=True,
         return_expectations={"incidence": 0.05, "date": {"earliest" : "1970-01-01", "latest": "index_date - 1 day"}}
     ),
-    kidney_transplant_baseline_opcs_4=patients.admitted_to_hospital(
+    kt_baseline_opcs_4=patients.admitted_to_hospital(
         with_these_procedures=kidney_transplant_opcs_4_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -85,7 +85,7 @@ def generate_common_variables(index_date_variable):
         return_expectations={"incidence": 0.05, "date": {"earliest" : "1970-01-01", "latest": "index_date - 1 day"}}
     ),
     kidney_transplant_baseline_date=patients.minimum_of(
-        "kidney_transplant_baseline_primary_care", "kidney_transplant_baseline_icd_10", "kidney_transplant_baseline_opcs_4",
+        "kt_baseline_primary_care", "kt_baseline_icd_10", "kt_baseline_opcs_4",
     ),
     creatinine_outcome=patients.mean_recorded_value(
         creatinine_codes,
@@ -97,7 +97,7 @@ def generate_common_variables(index_date_variable):
         }
     ),
     dialysis_outcome_primary_care=patients.with_these_clinical_events(
-        dialysis_primary_care_codes,
+        dialysis_codes,
         between = ["index_date", "index_date + 365 days"],
         returning="date",
         date_format="YYYY-MM-DD",
@@ -123,15 +123,15 @@ def generate_common_variables(index_date_variable):
     dialysis_outcome_date=patients.minimum_of(
         "dialysis_outcome_primary_care", "dialysis_outcome_icd_10", "dialysis_outcome_opcs_4",
     ),
-    kidney_transplant_outcome_primary_care=patients.with_these_clinical_events(
-        kidney_transplant_primary_care_codes,
+    kt_outcome_primary_care=patients.with_these_clinical_events(
+        kidney_transplant_codes,
         between = ["index_date", "index_date + 365 days"],
         returning="date",
         date_format="YYYY-MM-DD",
         find_first_match_in_period=True,
         return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 365 days"}}
     ),
-    kidney_transplant_outcome_icd_10=patients.admitted_to_hospital(
+    kt_outcome_icd_10=patients.admitted_to_hospital(
         with_these_diagnoses=kidney_transplant_icd_10_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -139,7 +139,7 @@ def generate_common_variables(index_date_variable):
         find_first_match_in_period=True,
         return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 365 days"}}
     ),
-    kidney_transplant_outcome_opcs_4=patients.admitted_to_hospital(
+    kt_outcome_opcs_4=patients.admitted_to_hospital(
         with_these_procedures=kidney_transplant_opcs_4_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -148,7 +148,7 @@ def generate_common_variables(index_date_variable):
         return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 365 days"}}
     ),
     kidney_transplant_outcome_date=patients.minimum_of(
-        "kidney_transplant_outcome_primary_care", "kidney_transplant_outcome_icd_10", "kidney_transplant_outcome_opcs_4",
+        "kt_outcome_primary_care", "kt_outcome_icd_10", "kt_outcome_opcs_4",
     ),
     )
-    return common_variables
+    return variables_additional

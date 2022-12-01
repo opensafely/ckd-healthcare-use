@@ -1,5 +1,6 @@
 from cohortextractor import (
     StudyDefinition,
+    Measure,
     patients,
     codelist_from_csv,
     codelist,
@@ -11,8 +12,8 @@ from codelists import *
 
 CKD = "output/2017_ckd.csv"
 
-from common_variables import generate_common_variables
-common_variables= generate_common_variables(index_date_variable="index_date")
+from variables_additional import generate_variables_additional
+variables_additional= generate_variables_additional(index_date_variable="index_date")
 
 study = StudyDefinition(
     default_expectations={
@@ -23,5 +24,5 @@ study = StudyDefinition(
     population=patients.which_exist_in_file(CKD), 
     index_date="2017-04-01",
 
-    **common_variables,
+    **variables_additional,
 ) 

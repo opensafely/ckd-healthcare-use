@@ -19,7 +19,6 @@ drop deceased
 * Region
 tab region
 drop if region==""
-drop if region==.
 
 * IMD
 tab imd

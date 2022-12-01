@@ -1,0 +1,133 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\ckd-healthcare-use\logs/2017_ckd_analysis.log
+  log type:  text
+ opened on:  30 Nov 2022, 11:33:43
+
+. clear
+
+. 
+. * Merge 2017_ckd with 2017_ckd_complete
+. capture noisily import delimited ./output/2017_ckd.csv, clear
+(encoding automatically selected: ISO-8859-1)
+(6 vars, 2,482 obs)
+
+. tempfile 2017_ckd
+
+. save `2017_ckd', replace
+(file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000001.tmp not found)
+file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000001.tmp saved as .dta format
+
+. capture noisily import delimited ./output/input_2017_ckd_complete.csv, clear
+(encoding automatically selected: ISO-8859-2)
+(21 vars, 10,000 obs)
+
+. merge 1:1 patient_id using `2017_ckd'
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                        11,934
+        from master                     9,726  (_merge==1)
+        from using                      2,208  (_merge==2)
+
+    Matched                               274  (_merge==3)
+    -----------------------------------------
+
+. keep if _merge==3
+(11,934 observations deleted)
+
+. drop _merge
+
+. tempfile 2017_ckd_complete
+
+. save `2017_ckd_complete', replace
+(file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000002.tmp not found)
+file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000002.tmp saved as .dta format
+
+. 
+. * Baseline dialysis & kidney transplant group classification
+. drop dialysis_baseline_primary_care
+
+. drop dialysis_baseline_icd_10
+
+. drop dialysis_baseline_opcs_4
+
+. drop kt_baseline_primary_care
+
+. drop kt_baseline_icd_10
+
+. drop kt_baseline_opcs_4
+
+. gen dialysis_baseline = date(dialysis_baseline_date, "YMD")
+(234 missing values generated)
+
+. format dialysis_baseline %td
+
+. drop dialysis_baseline_date
+
+. gen kidney_transplant_baseline = date(kidney_transplant_baseline_date, "YMD")
+(243 missing values generated)
+
+. format kidney_transplant_baseline %td
+
+. drop kidney_transplant_baseline_date
+
+. gen dialysis = 0
+
+. replace dialysis = 1 if dialysis_baseline!=.
+(40 real changes made)
+
+. replace dialysis = 0 if kidney_transplant_baseline > dialysis_baseline
+(38 real changes made)
+
+. gen kidney_transplant = 0
+
+. replace kidney_transplant = 1 if kidney_transplant_baseline!=.
+(31 real changes made)
+
+. replace kidney_transplant = 0 if dialysis_baseline > kidney_transplant_baseline
+(29 real changes made)
+
+. drop dialysis_baseline
+
+. drop kidney_transplant_baseline
+
+. 
+. * CKD stage classification
+. egen ckd_group = cut(baseline_egfr), at(0, 30, 60, 5000)
+(78 missing values generated)
+
+. recode ckd_group 0=3 30=2 60=1
+(196 changes made to ckd_group)
+
+. replace ckd_group = 4 if dialysis==1
+(2 real changes made)
+
+. replace ckd_group = 5 if kidney_transplant==1
+(2 real changes made)
+
+. label define ckd_group 1 "eGFR ≥60 with albuminuria" 2 "CKD 3" 3 "CKD 4/5 without kidney replacement therapy" 4 "Dialysis" 5 "Kidney transplant"
+
+. label values ckd_group ckd_group
+
+. label var ckd_group "CKD group"
+
+. tab ckd_group, m
+
+                              CKD group |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+              eGFR ≥60 with albuminuria |         82       29.93       29.93
+                                  CKD 3 |        105       38.32       68.25
+CKD 4/5 without kidney replacement ther |          6        2.19       70.44
+                               Dialysis |          2        0.73       71.17
+                      Kidney transplant |          2        0.73       71.90
+                                      . |         77       28.10      100.00
+----------------------------------------+-----------------------------------
+                                  Total |        274      100.00
+
+. 
+end of do-file
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STDadc_000000.tmp"
+
+. cap log close
