@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  C:\Users\lsh1703468\Documents\ckd-healthcare-use\logs/2017_ckd_complete.log
   log type:  text
- opened on:  30 Nov 2022, 21:55:46
+ opened on:  11 Dec 2022, 21:20:13
 
 . clear
 
@@ -10,7 +10,7 @@
 . * Merge 2017_ckd with 2017_ckd_complete
 . capture noisily import delimited ./output/2017_ckd.csv, clear
 (encoding automatically selected: ISO-8859-1)
-(6 vars, 2,414 obs)
+(8 vars, 4,226 obs)
 
 . tempfile 2017_ckd
 
@@ -26,15 +26,15 @@ file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000001.tmp saved as .dta format
 
     Result                      Number of obs
     -----------------------------------------
-    Not matched                        11,940
-        from master                     9,763  (_merge==1)
-        from using                      2,177  (_merge==2)
+    Not matched                        13,406
+        from master                     9,590  (_merge==1)
+        from using                      3,816  (_merge==2)
 
-    Matched                               237  (_merge==3)
+    Matched                               410  (_merge==3)
     -----------------------------------------
 
 . keep if _merge==3
-(11,940 observations deleted)
+(13,406 observations deleted)
 
 . drop _merge
 
@@ -59,14 +59,14 @@ file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000002.tmp saved as .dta format
 . drop kt_baseline_opcs_4
 
 . gen dialysis_baseline = date(dialysis_baseline_date, "YMD")
-(207 missing values generated)
+(351 missing values generated)
 
 . format dialysis_baseline %td
 
 . drop dialysis_baseline_date
 
 . gen kidney_transplant_baseline = date(kidney_transplant_baseline_date, "YMD")
-(205 missing values generated)
+(354 missing values generated)
 
 . format kidney_transplant_baseline %td
 
@@ -75,18 +75,18 @@ file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000002.tmp saved as .dta format
 . gen dialysis = 0
 
 . replace dialysis = 1 if dialysis_baseline!=.
-(30 real changes made)
+(59 real changes made)
 
 . replace dialysis = 0 if kidney_transplant_baseline > dialysis_baseline
-(29 real changes made)
+(52 real changes made)
 
 . gen kidney_transplant = 0
 
 . replace kidney_transplant = 1 if kidney_transplant_baseline!=.
-(32 real changes made)
+(56 real changes made)
 
 . replace kidney_transplant = 0 if dialysis_baseline > kidney_transplant_baseline
-(31 real changes made)
+(51 real changes made)
 
 . drop dialysis_baseline
 
@@ -95,20 +95,20 @@ file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000002.tmp saved as .dta format
 . 
 . * CKD stage classification
 . egen ckd_group = cut(baseline_egfr), at(0, 30, 60, 5000)
-(66 missing values generated)
+(152 missing values generated)
 
 . drop baseline_egfr
 
 . recode ckd_group 0=3 30=2 60=1
-(171 changes made to ckd_group)
+(258 changes made to ckd_group)
 
 . replace ckd_group = 4 if dialysis==1
-(1 real change made)
+(7 real changes made)
 
 . drop dialysis
 
 . replace ckd_group = 5 if kidney_transplant==1
-(1 real change made)
+(5 real changes made)
 
 . drop kidney_transplant
 
@@ -133,14 +133,14 @@ file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000002.tmp saved as .dta format
 . drop kt_outcome_opcs_4
 
 . gen dialysis_outcome = date(dialysis_outcome_date, "YMD")
-(201 missing values generated)
+(349 missing values generated)
 
 . format dialysis_outcome %td
 
 . drop dialysis_outcome_date
 
 . gen kidney_transplant_outcome = date(kidney_transplant_outcome_date, "YMD")
-(207 missing values generated)
+(363 missing values generated)
 
 . format kidney_transplant_outcome %td
 
@@ -149,18 +149,18 @@ file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000002.tmp saved as .dta format
 . gen dialysis_new = 0
 
 . replace dialysis_new = 1 if dialysis_outcome!=. & ckd_group!=4/5
-(36 real changes made)
+(61 real changes made)
 
 . replace dialysis_new = 0 if kidney_transplant_outcome > dialysis_outcome
-(34 real changes made)
+(58 real changes made)
 
 . gen kidney_transplant_new = 0
 
 . replace kidney_transplant_new = 1 if kidney_transplant_outcome!=. & ckd_group!=4/5
-(30 real changes made)
+(47 real changes made)
 
 . replace kidney_transplant_new = 0 if dialysis_outcome > kidney_transplant_outcome
-(29 real changes made)
+(41 real changes made)
 
 . drop dialysis_outcome
 
@@ -169,62 +169,62 @@ file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000002.tmp saved as .dta format
 . 
 . * eGFR outcome classification
 . gen sex = 1 if male == "Male"
-(147 missing values generated)
+(232 missing values generated)
 
 . replace sex = 0 if male == "Female"
-(147 real changes made)
+(232 real changes made)
 
 . label define sex 0"Female" 1"Male"
 
 . label values sex sex
 
 . replace creatinine_outcome = . if !inrange(creatinine_outcome, 20, 3000)
-(101 real changes made, 101 to missing)
+(192 real changes made, 192 to missing)
 
 . gen mgdl_creatinine_outcome = creatinine_outcome/88.4
-(101 missing values generated)
+(192 missing values generated)
 
 . gen min_creatinine_outcome=.
-(237 missing values generated)
+(410 missing values generated)
 
 . replace min_creatinine_outcome = mgdl_creatinine_outcome/0.7 if sex==0
-(86 real changes made)
+(129 real changes made)
 
 . replace min_creatinine_outcome = mgdl_creatinine_outcome/0.9 if sex==1
-(50 real changes made)
+(89 real changes made)
 
 . replace min_creatinine_outcome = min_creatinine_outcome^-0.329  if sex==0
-(86 real changes made)
+(129 real changes made)
 
 . replace min_creatinine_outcome = min_creatinine_outcome^-0.411  if sex==1
-(50 real changes made)
+(89 real changes made)
 
 . replace min_creatinine_outcome = 1 if min_creatinine_outcome<1
-(87 real changes made)
+(148 real changes made)
 
 . gen max_creatinine_outcome=.
-(237 missing values generated)
+(410 missing values generated)
 
 . replace max_creatinine_outcome = mgdl_creatinine_outcome/0.7 if sex==0
-(86 real changes made)
+(129 real changes made)
 
 . replace max_creatinine_outcome = mgdl_creatinine_outcome/0.9 if sex==1
-(50 real changes made)
+(89 real changes made)
 
 . replace max_creatinine_outcome = max_creatinine_outcome^-1.209
-(136 real changes made)
+(218 real changes made)
 
 . replace max_creatinine_outcome = 1 if max_creatinine_outcome>1
-(150 real changes made)
+(262 real changes made)
 
 . gen egfr_outcome = min_creatinine_outcome*max_creatinine_outcome*141
-(101 missing values generated)
+(192 missing values generated)
 
 . replace egfr_outcome = egfr_outcome*(0.993^age)
-(136 real changes made)
+(218 real changes made)
 
 . replace egfr_outcome = egfr_outcome*1.018 if sex==0
-(86 real changes made)
+(129 real changes made)
 
 . drop creatinine_outcome
 
@@ -235,12 +235,12 @@ file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000002.tmp saved as .dta format
 . drop max_creatinine_outcome
 
 . egen egfr_end = cut(egfr_outcome), at(0, 30, 60, 5000)
-(101 missing values generated)
+(192 missing values generated)
 
 . drop egfr_outcome
 
 . recode egfr_end 0=3 30=2 60=1
-(136 changes made to egfr_end)
+(218 changes made to egfr_end)
 
 . label define egfr_end 1 "≥60" 2 "30-59" 3 "<30"
 
@@ -251,19 +251,19 @@ file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000002.tmp saved as .dta format
 . gen ckd_progression = 0
 
 . replace ckd_progression = 1 if egfr_end==2 & ckd_group==1
-(8 real changes made)
+(28 real changes made)
 
 . replace ckd_progression = 2 if egfr_end==3 & ckd_group==1
-(0 real changes made)
+(1 real change made)
 
 . replace ckd_progression = 2 if egfr_end==3 & ckd_group==2
-(1 real change made)
-
-. replace ckd_progression = 3 if dialysis_new==1
 (2 real changes made)
 
+. replace ckd_progression = 3 if dialysis_new==1
+(3 real changes made)
+
 . replace ckd_progression = 4 if kidney_transplant_new==1
-(1 real change made)
+(6 real changes made)
 
 . drop dialysis_new
 
@@ -288,19 +288,19 @@ file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000002.tmp saved as .dta format
 (0 real changes made)
 
 . replace ethnicity=6 if ethnicity==2
-(7 real changes made)
+(16 real changes made)
 
 . replace ethnicity=2 if ethnicity==3
-(8 real changes made)
+(14 real changes made)
 
 . replace ethnicity=3 if ethnicity==4
-(5 real changes made)
+(15 real changes made)
 
 . replace ethnicity=4 if ethnicity==6
-(7 real changes made)
+(16 real changes made)
 
 . replace ethnicity=6 if ethnicity==.
-(52 real changes made)
+(101 real changes made)
 
 . label define ethnicity  1 "White"                                       ///
 >                                                 2 "South Asian"                         ///                                             
@@ -323,31 +323,31 @@ file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000002.tmp saved as .dta format
 . rename region region_string
 
 . gen region = 1 if region_string=="East Midlands"
-(215 missing values generated)
+(369 missing values generated)
 
 . replace region = 2 if region_string=="East"
-(22 real changes made)
+(36 real changes made)
 
 . replace region = 3 if region_string=="London"
-(56 real changes made)
+(70 real changes made)
 
 . replace region = 4 if region_string=="North East"
-(20 real changes made)
+(45 real changes made)
 
 . replace region = 5 if region_string=="North West"
-(26 real changes made)
+(38 real changes made)
 
 . replace region = 6 if region_string=="South East"
-(23 real changes made)
+(48 real changes made)
 
 . replace region = 7 if region_string=="South West"
-(19 real changes made)
+(46 real changes made)
 
 . replace region = 8 if region_string=="West Midlands"
-(24 real changes made)
+(46 real changes made)
 
 . replace region = 9 if region_string=="Yorkshire and The Humber"
-(25 real changes made)
+(40 real changes made)
 
 . label define region     1 "East Midlands"                                       ///
 >                                                 2 "East"                                                        ///
@@ -382,13 +382,13 @@ file C:\Users\LSH170~1\AppData\Local\Temp\ST_adc_000002.tmp saved as .dta format
 . * Urban (binary)
 . * Urban = 1-4 + missing, Rural = 5-8
 . generate urban=.
-(237 missing values generated)
+(410 missing values generated)
 
 . replace urban=1 if rural_urban<=4|rural_urban==.
-(100 real changes made)
+(163 real changes made)
 
 . replace urban=0 if rural_urban>4 & rural_urban!=.
-(137 real changes made)
+(247 real changes made)
 
 . label var urban "Urban/rural"
 
@@ -407,5 +407,5 @@ file ./output/2017_ckd_complete.csv saved
       name:  <unnamed>
        log:  C:\Users\lsh1703468\Documents\ckd-healthcare-use\logs/2017_ckd_complete.log
   log type:  text
- closed on:  30 Nov 2022, 21:55:51
+ closed on:  11 Dec 2022, 21:20:13
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

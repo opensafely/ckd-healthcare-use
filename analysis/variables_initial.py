@@ -107,6 +107,36 @@ def generate_variables_initial(index_date_variable):
         between = ["1970-01-01", "index_date - 1 day"],
         return_expectations={"incidence": 0.05},
     ),
+    acr=patients.with_these_clinical_events(
+        codelist=albuminuria_codes,
+        on_or_before="index_date",
+        returning="numeric_value",
+        date_format="YYYY-MM-DD",
+        include_date_of_match=True,
+        return_expectations={
+            "incidence": 0.5,
+            "float": {"distribution": "normal", "mean": 25, "stddev": 5},
+            "date": {"earliest": "index_date - 18 months", "latest": "index_date - 1 day"},
+        },
+    ),
+    acr_operator=patients.comparator_from(
+        "acr",
+        return_expectations={
+            "rate": "universal",
+            "category": {
+                "ratios": {  # ~, =, >= , > , < , <=
+                    None: 0.10,
+                    "~": 0.05,
+                    "=": 0.65,
+                    ">=": 0.05,
+                    ">": 0.05,
+                    "<": 0.05,
+                    "<=": 0.05,
+                }
+            },
+            "incidence": 0.80,
+        },
+    ),
     baseline_creatinine=patients.mean_recorded_value(
         creatinine_codes,
         on_most_recent_day_of_measurement=False,

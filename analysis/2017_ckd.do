@@ -26,6 +26,10 @@ drop if imd==0
 drop if imd==.
 
 * eGFR>60 without albuminuria
+gen albuminuria = 0
+replace albuminuria = 1 if acr >=3
+replace albuminuria = 0 if acr_operator =="<"
+replace albuminuria = 0 if acr_operator =="<="
 assert inlist(sex, "M", "F")
 gen male = (sex=="M")
 drop sex
@@ -52,20 +56,28 @@ drop baseline_creatinine
 drop mgdl_baseline_creatinine
 drop min_baseline_creatinine
 drop max_baseline_creatinine
-gen ckd = 0
+gen ckd = albuminuria
 replace ckd = 1 if baseline_egfr <60
-*replace ckd = 1 if albuminuria >3
+sum acr, de
+tab acr_operator
+tab albuminuria
+tab ckd
 foreach krt of varlist 	dialysis_primary_care 			///
 						dialysis_icd_10					///
 						dialysis_opcs_4					///
 						kidney_transplant_primary_care	///
 						kidney_transplant_icd_10		///
 						kidney_transplant_opcs_4 		{
+tab `krt'
 replace ckd = 1 if `krt'==1
 drop `krt'
 }
+tab ckd
 drop if ckd==0
 drop ckd
+drop acr
+drop acr_operator
+drop albuminuria
 
 export delimited using "./output/2017_ckd.csv", replace
 
