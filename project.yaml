@@ -12,7 +12,7 @@ actions:
         cohort: output/input_2017.csv
 
   2017_ckd:
-    run: stata-mp:latest analysis/2017_ckd.do
+    run: stata-mp:latest analysis/ckd.do 2017
     needs: [2017]
     outputs:
       highly_sensitive:
@@ -28,7 +28,7 @@ actions:
         cohort: output/input_2017_ckd_complete.csv
 
   2017_clean_ckd_complete:
-    run: stata-mp:latest analysis/2017_ckd_complete.do
+    run: stata-mp:latest analysis/ckd_complete.do 2017
     needs: [2017, 2017_ckd, 2017_ckd_complete]
     outputs:
       highly_sensitive:
@@ -37,8 +37,160 @@ actions:
         log: logs/2017_ckd_complete.log
 
   2017_outcomes:
-    run: stata-mp:latest analysis/2017_outcomes.do
+    run: stata-mp:latest analysis/outcomes.do 2017
     needs: [2017, 2017_ckd, 2017_ckd_complete, 2017_clean_ckd_complete]
     outputs:
       moderately_sensitive:
         log: logs/2017_outcomes.log
+
+  2018:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2018
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2018.csv
+
+  2018_ckd:
+    run: stata-mp:latest analysis/ckd.do 2018
+    needs: [2018]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2018_ckd.csv
+      moderately_sensitive:
+        log: logs/2018_ckd.log
+  
+  2018_ckd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2018_ckd_complete
+    needs: [2018, 2018_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2018_ckd_complete.csv
+
+  2018_clean_ckd_complete:
+    run: stata-mp:latest analysis/ckd_complete.do 2018
+    needs: [2018, 2018_ckd, 2018_ckd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2018_ckd_complete.dta
+      moderately_sensitive:
+        log: logs/2018_ckd_complete.log
+
+  2018_outcomes:
+    run: stata-mp:latest analysis/outcomes.do 2018
+    needs: [2018, 2018_ckd, 2018_ckd_complete, 2018_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/2018_outcomes.log
+
+  2019:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2019
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2019.csv
+
+  2019_ckd:
+    run: stata-mp:latest analysis/ckd.do 2019
+    needs: [2019]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2019_ckd.csv
+      moderately_sensitive:
+        log: logs/2019_ckd.log
+  
+  2019_ckd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2019_ckd_complete
+    needs: [2019, 2019_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2019_ckd_complete.csv
+
+  2019_clean_ckd_complete:
+    run: stata-mp:latest analysis/ckd_complete.do 2019
+    needs: [2019, 2019_ckd, 2019_ckd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2019_ckd_complete.dta
+      moderately_sensitive:
+        log: logs/2019_ckd_complete.log
+
+  2019_outcomes:
+    run: stata-mp:latest analysis/outcomes.do 2019
+    needs: [2019, 2019_ckd, 2019_ckd_complete, 2019_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/2019_outcomes.log
+
+  2020:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2020
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2020.csv
+
+  2020_ckd:
+    run: stata-mp:latest analysis/ckd.do 2020
+    needs: [2020]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2020_ckd.csv
+      moderately_sensitive:
+        log: logs/2020_ckd.log
+  
+  2020_ckd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2020_ckd_complete
+    needs: [2020, 2020_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2020_ckd_complete.csv
+
+  2020_clean_ckd_complete:
+    run: stata-mp:latest analysis/ckd_complete.do 2020
+    needs: [2020, 2020_ckd, 2020_ckd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2020_ckd_complete.dta
+      moderately_sensitive:
+        log: logs/2020_ckd_complete.log
+
+  2020_outcomes:
+    run: stata-mp:latest analysis/outcomes.do 2020
+    needs: [2020, 2020_ckd, 2020_ckd_complete, 2020_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/2020_outcomes.log
+
+  2021:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2021
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2021.csv
+
+  2021_ckd:
+    run: stata-mp:latest analysis/ckd.do 2021
+    needs: [2021]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2021_ckd.csv
+      moderately_sensitive:
+        log: logs/2021_ckd.log
+  
+  2021_ckd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2021_ckd_complete
+    needs: [2021, 2021_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2021_ckd_complete.csv
+
+  2021_clean_ckd_complete:
+    run: stata-mp:latest analysis/ckd_complete.do 2021
+    needs: [2021, 2021_ckd, 2021_ckd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2021_ckd_complete.dta
+      moderately_sensitive:
+        log: logs/2021_ckd_complete.log
+
+  2021_outcomes:
+    run: stata-mp:latest analysis/outcomes.do 2021
+    needs: [2021, 2021_ckd, 2021_ckd_complete, 2021_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/2021_outcomes.log

@@ -1,8 +1,14 @@
+sysdir set PLUS ./analysis/adofiles
+sysdir set PERSONAL ./analysis/adofiles
+pwd
+
+local dataset `1'
+
 cap log close
-log using ./logs/2017_ckd, replace t
+log using ./logs/`dataset'_ckd, replace t
 clear
 
-import delimited ./output/input_2017.csv, delimiter(comma) varnames(1) case(preserve) 
+import delimited ./output/input_`dataset'.csv, delimiter(comma) varnames(1) case(preserve) 
 
 **Exclusions
 * Age <18 at index date
@@ -79,6 +85,6 @@ drop acr
 drop acr_operator
 drop albuminuria
 
-export delimited using "./output/2017_ckd.csv", replace
+export delimited using "./output/`dataset'_ckd.csv", replace
 
 log close

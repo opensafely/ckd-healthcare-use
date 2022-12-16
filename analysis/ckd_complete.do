@@ -2,20 +2,22 @@ sysdir set PLUS ./analysis/adofiles
 sysdir set PERSONAL ./analysis/adofiles
 pwd
 
+local dataset `1'
+
 cap log close
-log using ./logs/2017_ckd_complete, replace t
+log using ./logs/`dataset'_ckd_complete, replace t
 clear
 
-* Merge 2017_ckd with 2017_ckd_complete
-capture noisily import delimited ./output/2017_ckd.csv, clear
-tempfile 2017_ckd
-save `2017_ckd', replace
-capture noisily import delimited ./output/input_2017_ckd_complete.csv, clear
-merge 1:1 patient_id using `2017_ckd'
+* Merge `dataset'_ckd with `dataset'_ckd_complete
+capture noisily import delimited ./output/`dataset'_ckd.csv, clear
+tempfile `dataset'_ckd
+save ``dataset'_ckd', replace
+capture noisily import delimited ./output/input_`dataset'_ckd_complete.csv, clear
+merge 1:1 patient_id using ``dataset'_ckd'
 keep if _merge==3
 drop _merge
-tempfile 2017_ckd_complete
-save `2017_ckd_complete', replace
+tempfile `dataset'_ckd_complete
+save ``dataset'_ckd_complete', replace
 
 * Baseline dialysis & kidney transplant group classification
 drop dialysis_baseline_primary_care
@@ -191,6 +193,6 @@ label define urban 0 "Rural" 1 "Urban"
 label values urban urban
 drop rural_urban
 
-save "./output/2017_ckd_complete.dta", replace
+save "./output/`dataset'_ckd_complete.dta", replace
 
 log close

@@ -2,9 +2,11 @@ sysdir set PLUS ./analysis/adofiles
 sysdir set PERSONAL ./analysis/adofiles
 pwd
 
+local dataset `1'
+
 cap log close
-log using ./logs/2017_outcomes, replace t
-use ./output/2017_ckd_complete.dta
+log using ./logs/`dataset'_outcomes, replace t
+use ./output/`dataset'_ckd_complete.dta
 
 foreach outcome of varlist	q1_hospital_days			///
 							q2_hospital_days			///
