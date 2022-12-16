@@ -1,3 +1,7 @@
+sysdir set PLUS ./analysis/adofiles
+sysdir set PERSONAL ./analysis/adofiles
+pwd
+
 cap log close
 log using ./logs/2017_ckd_complete, replace t
 clear
@@ -39,6 +43,7 @@ drop kidney_transplant_baseline
 egen ckd_group = cut(baseline_egfr), at(0, 30, 60, 5000)
 drop baseline_egfr
 recode ckd_group 0=3 30=2 60=1
+gen pre_krt = ckd_group
 replace ckd_group = 4 if dialysis==1
 drop dialysis
 replace ckd_group = 5 if kidney_transplant==1
@@ -46,6 +51,9 @@ drop kidney_transplant
 label define ckd_group 1 "eGFR ≥60 with albuminuria" 2 "CKD 3" 3 "CKD 4/5 without kidney replacement therapy" 4 "Dialysis" 5 "Kidney transplant"
 label values ckd_group ckd_group
 label var ckd_group "CKD group"
+label define pre_krt 1 "eGFR ≥60 with albuminuria" 2 "CKD 3" 3 "CKD 4/5 without kidney replacement therapy"
+label values pre_krt pre_krt
+label var pre_krt "CKD group"
 
 * Dialysis & kidney transplant outcome classification
 drop dialysis_outcome_primary_care
@@ -183,6 +191,6 @@ label define urban 0 "Rural" 1 "Urban"
 label values urban urban
 drop rural_urban
 
-export delimited using "./output/2017_ckd_complete.csv", replace
+save "./output/2017_ckd_complete.dta", replace
 
 log close

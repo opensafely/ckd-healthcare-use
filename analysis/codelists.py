@@ -78,6 +78,12 @@ albuminuria_codes = codelist_from_csv(
     system="snomed",
     column="code",
 )
+#Blood pressure measurement
+blood_pressure_codes = codelist_from_csv(
+    "codelists/nhsd-primary-care-domain-refsets-bp_cod.csv",
+    system="snomed",
+    column="code",
+)
 #Ethnicity
 ethnicity_codes = codelist_from_csv(
     "codelists/opensafely-ethnicity.csv",
