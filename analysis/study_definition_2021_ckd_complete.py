@@ -22,7 +22,7 @@ study = StudyDefinition(
         "incidence" : 0.2
     },
     population=patients.which_exist_in_file(CKD), 
-    index_date="2022-04-01",
+    index_date="2021-04-01",
 
     **variables_additional,
 ) 
