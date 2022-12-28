@@ -194,3 +194,41 @@ actions:
     outputs:
       moderately_sensitive:
         log: logs/2021_outcomes.log
+
+  2022:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2022
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2022.csv
+
+  2022_ckd:
+    run: stata-mp:latest analysis/ckd.do 2022
+    needs: [2022]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2022_ckd.csv
+      moderately_sensitive:
+        log: logs/2022_ckd.log
+  
+  2022_ckd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2022_ckd_complete
+    needs: [2022, 2022_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2022_ckd_complete.csv
+
+  2022_clean_ckd_complete:
+    run: stata-mp:latest analysis/ckd_complete.do 2022
+    needs: [2022, 2022_ckd, 2022_ckd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2022_ckd_complete.dta
+      moderately_sensitive:
+        log: logs/2022_ckd_complete.log
+
+  2022_outcomes:
+    run: stata-mp:latest analysis/outcomes.do 2022
+    needs: [2022, 2022_ckd, 2022_ckd_complete, 2022_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/2022_outcomes.log
