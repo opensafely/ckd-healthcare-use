@@ -150,308 +150,916 @@ def generate_variables_additional(index_date_variable):
     kidney_transplant_outcome_date=patients.minimum_of(
         "kt_outcome_primary_care", "kt_outcome_icd_10", "kt_outcome_opcs_4",
     ),
-    q1_hospital_days=patients.admitted_to_hospital(
+    m4_hospital_days=patients.admitted_to_hospital(
         returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 90 days"],
+        between = ["index_date", "index_date + 29 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q2_hospital_days=patients.admitted_to_hospital(
+    m5_hospital_days=patients.admitted_to_hospital(
         returning="total_bed_days_in_period",
-        between = ["index_date + 91 days", "index_date + 182 days"],
+        between = ["index_date + 30 days", "index_date + 60 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q3_hospital_days=patients.admitted_to_hospital(
+    m6_hospital_days=patients.admitted_to_hospital(
         returning="total_bed_days_in_period",
-        between = ["index_date + 183 days", "index_date + 274 days"],
+        between = ["index_date + 61 days", "index_date + 90 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q4_hospital_days=patients.admitted_to_hospital(
+    m7_hospital_days=patients.admitted_to_hospital(
         returning="total_bed_days_in_period",
-        between = ["index_date + 275 days", "index_date + 364 days"],
+        between = ["index_date + 91 days", "index_date + 121 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q1_critical_care_days=patients.admitted_to_hospital(
+    m8_hospital_days=patients.admitted_to_hospital(
+        returning="total_bed_days_in_period",
+        between = ["index_date + 122 days", "index_date + 152 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m9_hospital_days=patients.admitted_to_hospital(
+        returning="total_bed_days_in_period",
+        between = ["index_date + 153 days", "index_date + 182 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m10_hospital_days=patients.admitted_to_hospital(
+        returning="total_bed_days_in_period",
+        between = ["index_date + 183 days", "index_date + 213 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m11_hospital_days=patients.admitted_to_hospital(
+        returning="total_bed_days_in_period",
+        between = ["index_date + 214 days", "index_date + 243 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m12_hospital_days=patients.admitted_to_hospital(
+        returning="total_bed_days_in_period",
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m1_hospital_days=patients.admitted_to_hospital(
+        returning="total_bed_days_in_period",
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m2_hospital_days=patients.admitted_to_hospital(
+        returning="total_bed_days_in_period",
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m3_hospital_days=patients.admitted_to_hospital(
+        returning="total_bed_days_in_period",
+        between = ["index_date + 334 days", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m4_critical_care_days=patients.admitted_to_hospital(
         returning="total_critical_care_days_in_period",
-        between = ["index_date", "index_date + 90 days"],
+        between = ["index_date", "index_date + 29 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q2_critical_care_days=patients.admitted_to_hospital(
+    m5_critical_care_days=patients.admitted_to_hospital(
         returning="total_critical_care_days_in_period",
-        between = ["index_date + 91 days", "index_date + 182 days"],
+        between = ["index_date + 30 days", "index_date + 60 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q3_critical_care_days=patients.admitted_to_hospital(
+    m6_critical_care_days=patients.admitted_to_hospital(
         returning="total_critical_care_days_in_period",
-        between = ["index_date + 183 days", "index_date + 274 days"],
+        between = ["index_date + 61 days", "index_date + 90 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q4_critical_care_days=patients.admitted_to_hospital(
+    m7_critical_care_days=patients.admitted_to_hospital(
         returning="total_critical_care_days_in_period",
-        between = ["index_date + 275 days", "index_date + 364 days"],
+        between = ["index_date + 91 days", "index_date + 121 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q1_emergency_days=patients.attended_emergency_care(
+    m8_critical_care_days=patients.admitted_to_hospital(
+        returning="total_critical_care_days_in_period",
+        between = ["index_date + 122 days", "index_date + 152 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m9_critical_care_days=patients.admitted_to_hospital(
+        returning="total_critical_care_days_in_period",
+        between = ["index_date + 153 days", "index_date + 182 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m10_critical_care_days=patients.admitted_to_hospital(
+        returning="total_critical_care_days_in_period",
+        between = ["index_date + 183 days", "index_date + 213 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m11_critical_care_days=patients.admitted_to_hospital(
+        returning="total_critical_care_days_in_period",
+        between = ["index_date + 214 days", "index_date + 243 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m12_critical_care_days=patients.admitted_to_hospital(
+        returning="total_critical_care_days_in_period",
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m1_critical_care_days=patients.admitted_to_hospital(
+        returning="total_critical_care_days_in_period",
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m2_critical_care_days=patients.admitted_to_hospital(
+        returning="total_critical_care_days_in_period",
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m3_critical_care_days=patients.admitted_to_hospital(
+        returning="total_critical_care_days_in_period",
+        between = ["index_date + 334 days", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m4_emergency_days=patients.attended_emergency_care(
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 90 days"],
+        between = ["index_date", "index_date + 29 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q2_emergency_days=patients.attended_emergency_care(
+    m5_emergency_days=patients.attended_emergency_care(
         returning="number_of_matches_in_period",
-        between = ["index_date + 91 days", "index_date + 182 days"],
+        between = ["index_date + 30 days", "index_date + 60 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q3_emergency_days=patients.attended_emergency_care(
+    m6_emergency_days=patients.attended_emergency_care(
         returning="number_of_matches_in_period",
-        between = ["index_date + 183 days", "index_date + 274 days"],
+        between = ["index_date + 61 days", "index_date + 90 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q4_emergency_days=patients.attended_emergency_care(
+    m7_emergency_days=patients.attended_emergency_care(
         returning="number_of_matches_in_period",
-        between = ["index_date + 275 days", "index_date + 364 days"],
+        between = ["index_date + 91 days", "index_date + 121 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q1_outpatient_appointments=patients.outpatient_appointment_date(
+    m8_emergency_days=patients.attended_emergency_care(
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 90 days"],
+        between = ["index_date + 122 days", "index_date + 152 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q2_outpatient_appointments=patients.outpatient_appointment_date(
+    m9_emergency_days=patients.attended_emergency_care(
         returning="number_of_matches_in_period",
-        between = ["index_date + 91 days", "index_date + 182 days"],
+        between = ["index_date + 153 days", "index_date + 182 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q3_outpatient_appointments=patients.outpatient_appointment_date(
+    m10_emergency_days=patients.attended_emergency_care(
         returning="number_of_matches_in_period",
-        between = ["index_date + 183 days", "index_date + 274 days"],
+        between = ["index_date + 183 days", "index_date + 213 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q4_outpatient_appointments=patients.outpatient_appointment_date(
+    m11_emergency_days=patients.attended_emergency_care(
         returning="number_of_matches_in_period",
-        between = ["index_date + 275 days", "index_date + 364 days"],
+        between = ["index_date + 214 days", "index_date + 243 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q1_nephrology_appointments=patients.outpatient_appointment_date(
+    m12_emergency_days=patients.attended_emergency_care(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m1_emergency_days=patients.attended_emergency_care(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m2_emergency_days=patients.attended_emergency_care(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m3_emergency_days=patients.attended_emergency_care(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 334 days", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m4_outpatient_appointments=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        between = ["index_date", "index_date + 29 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m5_outpatient_appointments=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 30 days", "index_date + 60 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m6_outpatient_appointments=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 61 days", "index_date + 90 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m7_outpatient_appointments=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 91 days", "index_date + 121 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m8_outpatient_appointments=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 122 days", "index_date + 152 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m9_outpatient_appointments=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 153 days", "index_date + 182 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m10_outpatient_appointments=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 183 days", "index_date + 213 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m11_outpatient_appointments=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 214 days", "index_date + 243 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m12_outpatient_appointments=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m1_outpatient_appointments=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m2_outpatient_appointments=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m3_outpatient_appointments=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 334 days", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m4_nephrology_appointments=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 90 days"],
+        between = ["index_date", "index_date + 29 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q2_nephrology_appointments=patients.outpatient_appointment_date(
+    m5_nephrology_appointments=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
-        between = ["index_date + 91 days", "index_date + 182 days"],
+        between = ["index_date + 30 days", "index_date + 60 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q3_nephrology_appointments=patients.outpatient_appointment_date(
+    m6_nephrology_appointments=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
-        between = ["index_date + 183 days", "index_date + 274 days"],
+        between = ["index_date + 61 days", "index_date + 90 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q4_nephrology_appointments=patients.outpatient_appointment_date(
+    m7_nephrology_appointments=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
-        between = ["index_date + 275 days", "index_date + 364 days"],
+        between = ["index_date + 91 days", "index_date + 121 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q1_transplant_appointments=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="102",
+    m8_nephrology_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 90 days"],
+        between = ["index_date + 122 days", "index_date + 152 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q2_transplant_appointments=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="102",
+    m9_nephrology_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
-        between = ["index_date + 91 days", "index_date + 182 days"],
+        between = ["index_date + 153 days", "index_date + 182 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q3_transplant_appointments=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="102",
+    m10_nephrology_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
-        between = ["index_date + 183 days", "index_date + 274 days"],
+        between = ["index_date + 183 days", "index_date + 213 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q4_transplant_appointments=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="102",
+    m11_nephrology_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
-        between = ["index_date + 275 days", "index_date + 364 days"],
+        between = ["index_date + 214 days", "index_date + 243 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
     ),
-    q1_gp_interactions=patients.with_gp_consultations(
+    m12_nephrology_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 90 days"],
+        between = ["index_date + 244 days", "index_date + 274 days"],
         return_expectations={
-            "int": {"distribution": "normal", "mean": 5, "stddev": 3},
-            "incidence": 0.80,
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
         }
     ),
-    q2_gp_interactions=patients.with_gp_consultations(
+    m1_nephrology_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
-        between = ["index_date + 91 days", "index_date + 182 days"],
+        between = ["index_date + 275 days", "index_date + 305 days"],
         return_expectations={
-            "int": {"distribution": "normal", "mean": 5, "stddev": 3},
-            "incidence": 0.80,
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
         }
     ),
-    q3_gp_interactions=patients.with_gp_consultations(
+    m2_nephrology_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
-        between = ["index_date + 183 days", "index_date + 274 days"],
+        between = ["index_date + 306 days", "index_date + 333 days"],
         return_expectations={
-            "int": {"distribution": "normal", "mean": 5, "stddev": 3},
-            "incidence": 0.80,
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
         }
     ),
-    q4_gp_interactions=patients.with_gp_consultations(
+    m3_nephrology_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
-        between = ["index_date + 275 days", "index_date + 364 days"],
+        between = ["index_date + 334 days", "index_date + 364 days"],
         return_expectations={
-            "int": {"distribution": "normal", "mean": 5, "stddev": 3},
-            "incidence": 0.80,
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
         }
     ),
-    q1_blood_pressure=patients.with_these_clinical_events(
+    m4_transplant_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="number_of_matches_in_period",
+        between = ["index_date", "index_date + 29 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m5_transplant_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="number_of_matches_in_period",
+        between = ["index_date + 30 days", "index_date + 60 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m6_transplant_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="number_of_matches_in_period",
+        between = ["index_date + 61 days", "index_date + 90 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m7_transplant_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="number_of_matches_in_period",
+        between = ["index_date + 91 days", "index_date + 121 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m8_transplant_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="number_of_matches_in_period",
+        between = ["index_date + 122 days", "index_date + 152 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m9_transplant_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="number_of_matches_in_period",
+        between = ["index_date + 153 days", "index_date + 182 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m10_transplant_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="number_of_matches_in_period",
+        between = ["index_date + 183 days", "index_date + 213 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m11_transplant_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="number_of_matches_in_period",
+        between = ["index_date + 214 days", "index_date + 243 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m12_transplant_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="number_of_matches_in_period",
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m1_transplant_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="number_of_matches_in_period",
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m2_transplant_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="number_of_matches_in_period",
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m3_transplant_appointments=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="number_of_matches_in_period",
+        between = ["index_date + 334 days", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m4_gp_interactions=patients.with_gp_consultations(
+        returning="number_of_matches_in_period",
+        between = ["index_date", "index_date + 29 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m5_gp_interactions=patients.with_gp_consultations(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 30 days", "index_date + 60 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m6_gp_interactions=patients.with_gp_consultations(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 61 days", "index_date + 90 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m7_gp_interactions=patients.with_gp_consultations(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 91 days", "index_date + 121 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m8_gp_interactions=patients.with_gp_consultations(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 122 days", "index_date + 152 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m9_gp_interactions=patients.with_gp_consultations(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 153 days", "index_date + 182 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m10_gp_interactions=patients.with_gp_consultations(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 183 days", "index_date + 213 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m11_gp_interactions=patients.with_gp_consultations(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 214 days", "index_date + 243 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m12_gp_interactions=patients.with_gp_consultations(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m1_gp_interactions=patients.with_gp_consultations(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m2_gp_interactions=patients.with_gp_consultations(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m3_gp_interactions=patients.with_gp_consultations(
+        returning="number_of_matches_in_period",
+        between = ["index_date + 334 days", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m4_blood_pressure=patients.with_these_clinical_events(
         blood_pressure_codes,
         returning="binary_flag",
-        between = ["index_date", "index_date + 90 days"],
+        between = ["index_date", "index_date + 29 days"],
         return_expectations={"incidence": 0.30},
     ),
-    q2_blood_pressure=patients.with_these_clinical_events(
-        blood_pressure_codes,        
+    m5_blood_pressure=patients.with_these_clinical_events(
+        blood_pressure_codes,
         returning="binary_flag",
-        between = ["index_date + 91 days", "index_date + 182 days"],
+        between = ["index_date + 30 days", "index_date + 60 days"],
         return_expectations={"incidence": 0.30},
     ),
-    q3_blood_pressure=patients.with_these_clinical_events(
-        blood_pressure_codes,        
+    m6_blood_pressure=patients.with_these_clinical_events(
+        blood_pressure_codes,
         returning="binary_flag",
-        between = ["index_date + 183 days", "index_date + 274 days"],
+        between = ["index_date + 61 days", "index_date + 90 days"],
         return_expectations={"incidence": 0.30},
     ),
-    q4_blood_pressure=patients.with_these_clinical_events(
-        blood_pressure_codes,        
+    m7_blood_pressure=patients.with_these_clinical_events(
+        blood_pressure_codes,
         returning="binary_flag",
-        between = ["index_date + 275 days", "index_date + 364 days"],
+        between = ["index_date + 91 days", "index_date + 121 days"],
         return_expectations={"incidence": 0.30},
     ),
-    q1_albuminuria=patients.with_these_clinical_events(
+    m8_blood_pressure=patients.with_these_clinical_events(
+        blood_pressure_codes,
+        returning="binary_flag",
+        between = ["index_date + 122 days", "index_date + 152 days"],
+        return_expectations={"incidence": 0.30},
+    ),
+    m9_blood_pressure=patients.with_these_clinical_events(
+        blood_pressure_codes,
+        returning="binary_flag",
+        between = ["index_date + 153 days", "index_date + 182 days"],
+        return_expectations={"incidence": 0.30},
+    ),
+    m10_blood_pressure=patients.with_these_clinical_events(
+        blood_pressure_codes,
+        returning="binary_flag",
+        between = ["index_date + 183 days", "index_date + 213 days"],
+        return_expectations={"incidence": 0.30},
+    ),
+    m11_blood_pressure=patients.with_these_clinical_events(
+        blood_pressure_codes,
+        returning="binary_flag",
+        between = ["index_date + 214 days", "index_date + 243 days"],
+        return_expectations={"incidence": 0.30},
+    ),
+    m12_blood_pressure=patients.with_these_clinical_events(
+        blood_pressure_codes,
+        returning="binary_flag",
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={"incidence": 0.30},
+    ),
+    m1_blood_pressure=patients.with_these_clinical_events(
+        blood_pressure_codes,
+        returning="binary_flag",
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={"incidence": 0.30},
+    ),
+    m2_blood_pressure=patients.with_these_clinical_events(
+        blood_pressure_codes,
+        returning="binary_flag",
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={"incidence": 0.30},
+    ),
+    m3_blood_pressure=patients.with_these_clinical_events(
+        blood_pressure_codes,
+        returning="binary_flag",
+        between = ["index_date + 334 days", "index_date + 364 days"],
+        return_expectations={"incidence": 0.30},
+    ),
+    m4_albuminuria=patients.with_these_clinical_events(
         albuminuria_codes,
         returning="binary_flag",
-        between = ["index_date", "index_date + 90 days"],
+        between = ["index_date", "index_date + 29 days"],
         return_expectations={"incidence": 0.05},
     ),
-    q2_albuminuria=patients.with_these_clinical_events(
-        albuminuria_codes,        
+    m5_albuminuria=patients.with_these_clinical_events(
+        albuminuria_codes,
         returning="binary_flag",
-        between = ["index_date + 91 days", "index_date + 182 days"],
+        between = ["index_date + 30 days", "index_date + 60 days"],
         return_expectations={"incidence": 0.05},
     ),
-    q3_albuminuria=patients.with_these_clinical_events(
-        albuminuria_codes,        
+    m6_albuminuria=patients.with_these_clinical_events(
+        albuminuria_codes,
         returning="binary_flag",
-        between = ["index_date + 183 days", "index_date + 274 days"],
+        between = ["index_date + 61 days", "index_date + 90 days"],
         return_expectations={"incidence": 0.05},
     ),
-    q4_albuminuria=patients.with_these_clinical_events(
-        albuminuria_codes,        
+    m7_albuminuria=patients.with_these_clinical_events(
+        albuminuria_codes,
         returning="binary_flag",
-        between = ["index_date + 275 days", "index_date + 364 days"],
+        between = ["index_date + 91 days", "index_date + 121 days"],
         return_expectations={"incidence": 0.05},
     ),
-    q1_creatinine=patients.with_these_clinical_events(
+    m8_albuminuria=patients.with_these_clinical_events(
+        albuminuria_codes,
+        returning="binary_flag",
+        between = ["index_date + 122 days", "index_date + 152 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    m9_albuminuria=patients.with_these_clinical_events(
+        albuminuria_codes,
+        returning="binary_flag",
+        between = ["index_date + 153 days", "index_date + 182 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    m10_albuminuria=patients.with_these_clinical_events(
+        albuminuria_codes,
+        returning="binary_flag",
+        between = ["index_date + 183 days", "index_date + 213 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    m11_albuminuria=patients.with_these_clinical_events(
+        albuminuria_codes,
+        returning="binary_flag",
+        between = ["index_date + 214 days", "index_date + 243 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    m12_albuminuria=patients.with_these_clinical_events(
+        albuminuria_codes,
+        returning="binary_flag",
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    m1_albuminuria=patients.with_these_clinical_events(
+        albuminuria_codes,
+        returning="binary_flag",
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    m2_albuminuria=patients.with_these_clinical_events(
+        albuminuria_codes,
+        returning="binary_flag",
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    m3_albuminuria=patients.with_these_clinical_events(
+        albuminuria_codes,
+        returning="binary_flag",
+        between = ["index_date + 334 days", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    m4_creatinine=patients.with_these_clinical_events(
         creatinine_codes,
         returning="binary_flag",
-        between = ["index_date", "index_date + 90 days"],
+        between = ["index_date", "index_date + 29 days"],
         return_expectations={"incidence": 0.20},
     ),
-    q2_creatinine=patients.with_these_clinical_events(
-        creatinine_codes,        
+    m5_creatinine=patients.with_these_clinical_events(
+        creatinine_codes,
         returning="binary_flag",
-        between = ["index_date + 91 days", "index_date + 182 days"],
+        between = ["index_date + 30 days", "index_date + 60 days"],
         return_expectations={"incidence": 0.20},
     ),
-    q3_creatinine=patients.with_these_clinical_events(
-        creatinine_codes,        
+    m6_creatinine=patients.with_these_clinical_events(
+        creatinine_codes,
         returning="binary_flag",
-        between = ["index_date + 183 days", "index_date + 274 days"],
+        between = ["index_date + 61 days", "index_date + 90 days"],
         return_expectations={"incidence": 0.20},
     ),
-    q4_creatinine=patients.with_these_clinical_events(
-        creatinine_codes,        
+    m7_creatinine=patients.with_these_clinical_events(
+        creatinine_codes,
         returning="binary_flag",
-        between = ["index_date + 275 days", "index_date + 364 days"],
+        between = ["index_date + 91 days", "index_date + 121 days"],
+        return_expectations={"incidence": 0.20},
+    ),
+    m8_creatinine=patients.with_these_clinical_events(
+        creatinine_codes,
+        returning="binary_flag",
+        between = ["index_date + 122 days", "index_date + 152 days"],
+        return_expectations={"incidence": 0.20},
+    ),
+    m9_creatinine=patients.with_these_clinical_events(
+        creatinine_codes,
+        returning="binary_flag",
+        between = ["index_date + 153 days", "index_date + 182 days"],
+        return_expectations={"incidence": 0.20},
+    ),
+    m10_creatinine=patients.with_these_clinical_events(
+        creatinine_codes,
+        returning="binary_flag",
+        between = ["index_date + 183 days", "index_date + 213 days"],
+        return_expectations={"incidence": 0.20},
+    ),
+    m11_creatinine=patients.with_these_clinical_events(
+        creatinine_codes,
+        returning="binary_flag",
+        between = ["index_date + 214 days", "index_date + 243 days"],
+        return_expectations={"incidence": 0.20},
+    ),
+    m12_creatinine=patients.with_these_clinical_events(
+        creatinine_codes,
+        returning="binary_flag",
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={"incidence": 0.20},
+    ),
+    m1_creatinine=patients.with_these_clinical_events(
+        creatinine_codes,
+        returning="binary_flag",
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={"incidence": 0.20},
+    ),
+    m2_creatinine=patients.with_these_clinical_events(
+        creatinine_codes,
+        returning="binary_flag",
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={"incidence": 0.20},
+    ),
+    m3_creatinine=patients.with_these_clinical_events(
+        creatinine_codes,
+        returning="binary_flag",
+        between = ["index_date + 334 days", "index_date + 364 days"],
         return_expectations={"incidence": 0.20},
     ),
     )
