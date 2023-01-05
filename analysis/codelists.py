@@ -56,6 +56,17 @@ dialysis_codes = codelist_from_csv(
     system="ctv3",
     column="CTV3ID"
 )
+#Dialysis access procedures
+avf_formation_codes = codelist_from_csv(
+    "codelists/user-viyaasan-haemodialysis-arteriovenous-fistula-formation-opcs-4.csv",
+    system="opcs4",
+    column="code",
+)
+pd_insertion_codes = codelist_from_csv(
+    "codelists/user-viyaasan-peritoneal-dialysis-catheter-insertion-opcs-4.csv",
+    system="opcs4",
+    column="code",
+)
 #Kidney transplant
 kidney_transplant_icd_10_codes = codelist_from_csv(
     "codelists/user-viyaasan-kidney-transplant.csv",

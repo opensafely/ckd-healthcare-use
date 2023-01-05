@@ -246,6 +246,246 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
+    m4_admitted_patients=patients.admitted_to_hospital(
+        returning="binary_flag",
+        between = ["index_date", "index_date + 29 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m5_admitted_patients=patients.admitted_to_hospital(
+        returning="binary_flag",
+        between = ["index_date + 30 days", "index_date + 60 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m6_admitted_patients=patients.admitted_to_hospital(
+        returning="binary_flag",
+        between = ["index_date + 61 days", "index_date + 90 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m7_admitted_patients=patients.admitted_to_hospital(
+        returning="binary_flag",
+        between = ["index_date + 91 days", "index_date + 121 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m8_admitted_patients=patients.admitted_to_hospital(
+        returning="binary_flag",
+        between = ["index_date + 122 days", "index_date + 152 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m9_admitted_patients=patients.admitted_to_hospital(
+        returning="binary_flag",
+        between = ["index_date + 153 days", "index_date + 182 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m10_admitted_patients=patients.admitted_to_hospital(
+        returning="binary_flag",
+        between = ["index_date + 183 days", "index_date + 213 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m11_admitted_patients=patients.admitted_to_hospital(
+        returning="binary_flag",
+        between = ["index_date + 214 days", "index_date + 243 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m12_admitted_patients=patients.admitted_to_hospital(
+        returning="binary_flag",
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m1_admitted_patients=patients.admitted_to_hospital(
+        returning="binary_flag",
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m2_admitted_patients=patients.admitted_to_hospital(
+        returning="binary_flag",
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m3_admitted_patients=patients.admitted_to_hospital(
+        returning="binary_flag",
+        between = ["index_date + 334 days", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    m4_fistula_formation=patients.admitted_to_hospital(
+        with_these_procedures=avf_formation_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 29 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m5_fistula_formation=patients.admitted_to_hospital(
+        with_these_procedures=avf_formation_codes,
+        returning="binary_flag",
+        between = ["index_date + 30 days", "index_date + 60 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m6_fistula_formation=patients.admitted_to_hospital(
+        with_these_procedures=avf_formation_codes,
+        returning="binary_flag",
+        between = ["index_date + 61 days", "index_date + 90 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m7_fistula_formation=patients.admitted_to_hospital(
+        with_these_procedures=avf_formation_codes,
+        returning="binary_flag",
+        between = ["index_date + 91 days", "index_date + 121 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m8_fistula_formation=patients.admitted_to_hospital(
+        with_these_procedures=avf_formation_codes,
+        returning="binary_flag",
+        between = ["index_date + 122 days", "index_date + 152 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m9_fistula_formation=patients.admitted_to_hospital(
+        with_these_procedures=avf_formation_codes,
+        returning="binary_flag",
+        between = ["index_date + 153 days", "index_date + 182 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m10_fistula_formation=patients.admitted_to_hospital(
+        with_these_procedures=avf_formation_codes,
+        returning="binary_flag",
+        between = ["index_date + 183 days", "index_date + 213 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m11_fistula_formation=patients.admitted_to_hospital(
+        with_these_procedures=avf_formation_codes,
+        returning="binary_flag",
+        between = ["index_date + 214 days", "index_date + 243 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m12_fistula_formation=patients.admitted_to_hospital(
+        with_these_procedures=avf_formation_codes,
+        returning="binary_flag",
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m1_fistula_formation=patients.admitted_to_hospital(
+        with_these_procedures=avf_formation_codes,
+        returning="binary_flag",
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m2_fistula_formation=patients.admitted_to_hospital(
+        with_these_procedures=avf_formation_codes,
+        returning="binary_flag",
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m3_fistula_formation=patients.admitted_to_hospital(
+        with_these_procedures=avf_formation_codes,
+        returning="binary_flag",
+        between = ["index_date + 334 days", "index_date + 364 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m4_pd_insertion=patients.admitted_to_hospital(
+        with_these_procedures=pd_insertion_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 29 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m5_pd_insertion=patients.admitted_to_hospital(
+        with_these_procedures=pd_insertion_codes,
+        returning="binary_flag",
+        between = ["index_date + 30 days", "index_date + 60 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m6_pd_insertion=patients.admitted_to_hospital(
+        with_these_procedures=pd_insertion_codes,
+        returning="binary_flag",
+        between = ["index_date + 61 days", "index_date + 90 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m7_pd_insertion=patients.admitted_to_hospital(
+        with_these_procedures=pd_insertion_codes,
+        returning="binary_flag",
+        between = ["index_date + 91 days", "index_date + 121 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m8_pd_insertion=patients.admitted_to_hospital(
+        with_these_procedures=pd_insertion_codes,
+        returning="binary_flag",
+        between = ["index_date + 122 days", "index_date + 152 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m9_pd_insertion=patients.admitted_to_hospital(
+        with_these_procedures=pd_insertion_codes,
+        returning="binary_flag",
+        between = ["index_date + 153 days", "index_date + 182 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m10_pd_insertion=patients.admitted_to_hospital(
+        with_these_procedures=pd_insertion_codes,
+        returning="binary_flag",
+        between = ["index_date + 183 days", "index_date + 213 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m11_pd_insertion=patients.admitted_to_hospital(
+        with_these_procedures=pd_insertion_codes,
+        returning="binary_flag",
+        between = ["index_date + 214 days", "index_date + 243 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m12_pd_insertion=patients.admitted_to_hospital(
+        with_these_procedures=pd_insertion_codes,
+        returning="binary_flag",
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m1_pd_insertion=patients.admitted_to_hospital(
+        with_these_procedures=pd_insertion_codes,
+        returning="binary_flag",
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m2_pd_insertion=patients.admitted_to_hospital(
+        with_these_procedures=pd_insertion_codes,
+        returning="binary_flag",
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    m3_pd_insertion=patients.admitted_to_hospital(
+        with_these_procedures=pd_insertion_codes,
+        returning="binary_flag",
+        between = ["index_date + 334 days", "index_date + 364 days"],
+        return_expectations={"incidence": 0.02},
+    ),
     m4_critical_care_days=patients.admitted_to_hospital(
         returning="total_critical_care_days_in_period",
         between = ["index_date", "index_date + 29 days"],
@@ -342,6 +582,66 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
+    m4_critical_care_patients=patients.admitted_to_hospital(
+        with_at_least_one_day_in_critical_care=True,
+        between = ["index_date", "index_date + 29 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m5_critical_care_patients=patients.admitted_to_hospital(
+        with_at_least_one_day_in_critical_care=True,
+        between = ["index_date + 30 days", "index_date + 60 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m6_critical_care_patients=patients.admitted_to_hospital(
+        with_at_least_one_day_in_critical_care=True,
+        between = ["index_date + 61 days", "index_date + 90 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m7_critical_care_patients=patients.admitted_to_hospital(
+        with_at_least_one_day_in_critical_care=True,
+        between = ["index_date + 91 days", "index_date + 121 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m8_critical_care_patients=patients.admitted_to_hospital(
+        with_at_least_one_day_in_critical_care=True,
+        between = ["index_date + 122 days", "index_date + 152 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m9_critical_care_patients=patients.admitted_to_hospital(
+        with_at_least_one_day_in_critical_care=True,
+        between = ["index_date + 153 days", "index_date + 182 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m10_critical_care_patients=patients.admitted_to_hospital(
+        with_at_least_one_day_in_critical_care=True,
+        between = ["index_date + 183 days", "index_date + 213 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m11_critical_care_patients=patients.admitted_to_hospital(
+        with_at_least_one_day_in_critical_care=True,
+        between = ["index_date + 214 days", "index_date + 243 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m12_critical_care_patients=patients.admitted_to_hospital(
+        with_at_least_one_day_in_critical_care=True,
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m1_critical_care_patients=patients.admitted_to_hospital(
+        with_at_least_one_day_in_critical_care=True,
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m2_critical_care_patients=patients.admitted_to_hospital(
+        with_at_least_one_day_in_critical_care=True,
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m3_critical_care_patients=patients.admitted_to_hospital(
+        with_at_least_one_day_in_critical_care=True,
+        between = ["index_date + 334 days", "index_date + 364 days"],
+        return_expectations={"incidence": 0.10},
+    ),
     m4_emergency_days=patients.attended_emergency_care(
         returning="number_of_matches_in_period",
         between = ["index_date", "index_date + 29 days"],
@@ -437,6 +737,66 @@ def generate_variables_additional(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
+    ),
+    m4_emergency_patients=patients.attended_emergency_care(
+        returning="binary_flag",
+        between = ["index_date", "index_date + 29 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m5_emergency_patients=patients.attended_emergency_care(
+        returning="binary_flag",
+        between = ["index_date + 30 days", "index_date + 60 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m6_emergency_patients=patients.attended_emergency_care(
+        returning="binary_flag",
+        between = ["index_date + 61 days", "index_date + 90 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m7_emergency_patients=patients.attended_emergency_care(
+        returning="binary_flag",
+        between = ["index_date + 91 days", "index_date + 121 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m8_emergency_patients=patients.attended_emergency_care(
+        returning="binary_flag",
+        between = ["index_date + 122 days", "index_date + 152 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m9_emergency_patients=patients.attended_emergency_care(
+        returning="binary_flag",
+        between = ["index_date + 153 days", "index_date + 182 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m10_emergency_patients=patients.attended_emergency_care(
+        returning="binary_flag",
+        between = ["index_date + 183 days", "index_date + 213 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m11_emergency_patients=patients.attended_emergency_care(
+        returning="binary_flag",
+        between = ["index_date + 214 days", "index_date + 243 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m12_emergency_patients=patients.attended_emergency_care(
+        returning="binary_flag",
+        between = ["index_date + 244 days", "index_date + 274 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m1_emergency_patients=patients.attended_emergency_care(
+        returning="binary_flag",
+        between = ["index_date + 275 days", "index_date + 305 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m2_emergency_patients=patients.attended_emergency_care(
+        returning="binary_flag",
+        between = ["index_date + 306 days", "index_date + 333 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    m3_emergency_patients=patients.attended_emergency_care(
+        returning="binary_flag",
+        between = ["index_date + 334 days", "index_date + 364 days"],
+        return_expectations={"incidence": 0.10},
     ),
     m4_outpatient_appointments=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",

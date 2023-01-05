@@ -22,6 +22,42 @@ foreach outcome of varlist	m4_hospital_days			///
 							m1_hospital_days			///
 							m2_hospital_days			///																											
 							m3_hospital_days			///
+							m4_admitted_patients		///
+							m5_admitted_patients		///
+							m6_admitted_patients		///							
+							m7_admitted_patients		///
+							m8_admitted_patients		///
+							m9_admitted_patients		///
+							m10_admitted_patients		///
+							m11_admitted_patients		///
+							m12_admitted_patients		///
+							m1_admitted_patients		///
+							m2_admitted_patients		///																											
+							m3_admitted_patients		///
+							m4_fistula_formation		///
+							m5_fistula_formation		///
+							m6_fistula_formation		///							
+							m7_fistula_formation		///
+							m8_fistula_formation		///
+							m9_fistula_formation		///
+							m10_fistula_formation		///
+							m11_fistula_formation		///
+							m12_fistula_formation		///
+							m1_fistula_formation		///
+							m2_fistula_formation		///																											
+							m3_fistula_formation		///
+							m4_pd_insertion				///
+							m5_pd_insertion				///
+							m6_pd_insertion				///							
+							m7_pd_insertion				///
+							m8_pd_insertion				///
+							m9_pd_insertion				///
+							m10_pd_insertion			///
+							m11_pd_insertion			///
+							m12_pd_insertion			///
+							m1_pd_insertion				///
+							m2_pd_insertion				///																											
+							m3_pd_insertion				///
 							m4_critical_care_days		///
 							m5_critical_care_days		///
 							m6_critical_care_days		///							
@@ -34,6 +70,18 @@ foreach outcome of varlist	m4_hospital_days			///
 							m1_critical_care_days		///
 							m2_critical_care_days		///																											
 							m3_critical_care_days		///
+							m4_critical_care_patients	///
+							m5_critical_care_patients	///
+							m6_critical_care_patients	///							
+							m7_critical_care_patients	///
+							m8_critical_care_patients	///
+							m9_critical_care_patients	///
+							m10_critical_care_patients	///
+							m11_critical_care_patients	///
+							m12_critical_care_patients	///
+							m1_critical_care_patients	///
+							m2_critical_care_patients	///																											
+							m3_critical_care_patients	///
 							m4_emergency_days			///
 							m5_emergency_days			///
 							m6_emergency_days			///							
@@ -46,6 +94,18 @@ foreach outcome of varlist	m4_hospital_days			///
 							m1_emergency_days			///
 							m2_emergency_days			///																											
 							m3_emergency_days			///
+							m4_emergency_patients		///
+							m5_emergency_patients		///
+							m6_emergency_patients		///							
+							m7_emergency_patients		///
+							m8_emergency_patients		///
+							m9_emergency_patients		///
+							m10_emergency_patients		///
+							m11_emergency_patients		///
+							m12_emergency_patients		///
+							m1_emergency_patients		///
+							m2_emergency_patients		///																											
+							m3_emergency_patients		///
 							m4_outpatient_appointments	///
 							m5_outpatient_appointments	///
 							m6_outpatient_appointments	///							
