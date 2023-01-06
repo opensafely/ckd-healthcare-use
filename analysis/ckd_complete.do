@@ -61,9 +61,6 @@ label var pre_krt "CKD group"
 drop dialysis_outcome_primary_care
 drop dialysis_outcome_icd_10
 drop dialysis_outcome_opcs_4
-drop kt_outcome_primary_care
-drop kt_outcome_icd_10
-drop kt_outcome_opcs_4
 gen dialysis_outcome = date(dialysis_outcome_date, "YMD")
 format dialysis_outcome %td
 drop dialysis_outcome_date
