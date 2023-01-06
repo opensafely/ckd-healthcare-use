@@ -90,7 +90,7 @@ def generate_variables_additional(index_date_variable):
     creatinine_outcome=patients.mean_recorded_value(
         creatinine_codes,
         on_most_recent_day_of_measurement=False,
-        between=["index_date - 6 months","index_date + 365 days"],
+        between=["index_date - 6 months","index_date + 364 days"],
         return_expectations={
             "float": {"distribution": "normal", "mean": 80, "stddev": 40},
             "incidence": 0.60,
@@ -98,57 +98,44 @@ def generate_variables_additional(index_date_variable):
     ),
     dialysis_outcome_primary_care=patients.with_these_clinical_events(
         dialysis_codes,
-        between = ["index_date", "index_date + 365 days"],
+        between = ["index_date", "index_date + 364 days"],
         returning="date",
         date_format="YYYY-MM-DD",
         find_first_match_in_period=True,
-        return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 365 days"}}
+        return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 364 days"}}
     ),
     dialysis_outcome_icd_10=patients.admitted_to_hospital(
         with_these_diagnoses=dialysis_icd_10_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
-        between = ["index_date", "index_date + 365 days"],
+        between = ["index_date", "index_date + 364 days"],
         find_first_match_in_period=True,
-        return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 365 days"}}
+        return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 364 days"}}
     ),
     dialysis_outcome_opcs_4=patients.admitted_to_hospital(
         with_these_procedures=dialysis_opcs_4_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
-        between = ["index_date", "index_date + 365 days"],
+        between = ["index_date", "index_date + 364 days"],
         find_first_match_in_period=True,
-        return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 365 days"}}
+        return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 364 days"}}
     ),
     dialysis_outcome_date=patients.minimum_of(
         "dialysis_outcome_primary_care", "dialysis_outcome_icd_10", "dialysis_outcome_opcs_4",
     ),
-    kt_outcome_primary_care=patients.with_these_clinical_events(
-        kidney_transplant_codes,
-        between = ["index_date", "index_date + 365 days"],
-        returning="date",
-        date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
-        return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 365 days"}}
-    ),
-    kt_outcome_icd_10=patients.admitted_to_hospital(
-        with_these_diagnoses=kidney_transplant_icd_10_codes,
-        returning="date_admitted",
-        date_format="YYYY-MM-DD",
-        between = ["index_date", "index_date + 365 days"],
-        find_first_match_in_period=True,
-        return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 365 days"}}
-    ),
-    kt_outcome_opcs_4=patients.admitted_to_hospital(
+    kidney_transplant_outcome_date=patients.admitted_to_hospital(
         with_these_procedures=kidney_transplant_opcs_4_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
-        between = ["index_date", "index_date + 365 days"],
+        between = ["index_date", "index_date + 364 days"],
         find_first_match_in_period=True,
-        return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 365 days"}}
+        return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 364 days"}}
     ),
-    kidney_transplant_outcome_date=patients.minimum_of(
-        "kt_outcome_primary_care", "kt_outcome_icd_10", "kt_outcome_opcs_4",
+    death_date=patients.with_death_recorded_in_primary_care(
+        between = ["index_date", "index_date + 364 days"],
+        returning="date_of_death",
+        date_format= "YYYY-MM-DD",
+        return_expectations={"incidence": 0.10, "date": {"earliest" : "index_date", "latest": "index_date + 364 days"}},
     ),
     m4_hospital_days=patients.admitted_to_hospital(
         returning="total_bed_days_in_period",
