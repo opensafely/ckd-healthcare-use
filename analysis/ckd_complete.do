@@ -40,12 +40,12 @@ replace kidney_transplant = 1 if kidney_transplant_baseline!=.
 replace kidney_transplant = 0 if dialysis_baseline > kidney_transplant_baseline
 drop dialysis_baseline
 drop kidney_transplant_baseline
+tab dialysis kidney_transplant, m
 
-* CKD stage classification
+* CKD stage classification based on baseline eGFR
 egen ckd_group = cut(baseline_egfr), at(0, 30, 60, 5000)
 drop baseline_egfr
 recode ckd_group 0=3 30=2 60=1
-gen pre_krt = ckd_group
 replace ckd_group = 4 if dialysis==1
 drop dialysis
 replace ckd_group = 5 if kidney_transplant==1
@@ -53,30 +53,30 @@ drop kidney_transplant
 label define ckd_group 1 "eGFR ≥60 with albuminuria" 2 "CKD 3" 3 "CKD 4/5 without kidney replacement therapy" 4 "Dialysis" 5 "Kidney transplant"
 label values ckd_group ckd_group
 label var ckd_group "CKD group"
-label define pre_krt 1 "eGFR ≥60 with albuminuria" 2 "CKD 3" 3 "CKD 4/5 without kidney replacement therapy"
-label values pre_krt pre_krt
-label var pre_krt "CKD group"
 
 * Dialysis & kidney transplant outcome classification
 drop dialysis_outcome_primary_care
 drop dialysis_outcome_icd_10
 drop dialysis_outcome_opcs_4
-gen dialysis_outcome = date(dialysis_outcome_date, "YMD")
-format dialysis_outcome %td
-drop dialysis_outcome_date
-gen kidney_transplant_outcome = date(kidney_transplant_outcome_date, "YMD")
-format kidney_transplant_outcome %td
-drop kidney_transplant_outcome_date
-gen dialysis_new = 0
-replace dialysis_new = 1 if dialysis_outcome!=. & ckd_group!=4/5
-replace dialysis_new = 0 if kidney_transplant_outcome > dialysis_outcome
-gen kidney_transplant_new = 0
-replace kidney_transplant_new = 1 if kidney_transplant_outcome!=. & ckd_group!=4/5
-replace kidney_transplant_new = 0 if dialysis_outcome > kidney_transplant_outcome
+gen dialysis_outcome_date = date(dialysis_outcome, "YMD")
+format dialysis_outcome_date %td
 drop dialysis_outcome
+gen kidney_transplant_outcome_date = date(kidney_transplant_outcome, "YMD")
+format kidney_transplant_outcome_date %td
 drop kidney_transplant_outcome
+gen dialysis_new = 0
+replace dialysis_new = 1 if dialysis_outcome_date!=.
+replace dialysis_new = 0 if kidney_transplant_outcome_date > dialysis_outcome_date
+replace dialysis_new = 0 if ckd_group==4/5
+gen kidney_transplant_new = 0
+replace kidney_transplant_new = 1 if kidney_transplant_outcome_date!=.
+replace kidney_transplant_new = 0 if dialysis_outcome_date > kidney_transplant_outcome_date
+replace dialysis_new = 0 if ckd_group==4/5
+tab dialysis_new kidney_transplant_new, m
+drop dialysis_outcome_date
+drop kidney_transplant_outcome_date
 
-* eGFR outcome classification
+* eGFR outcome classification based on updated mean eGFR over previous 18 months by the end of year
 gen sex = 1 if male == "Male"
 replace sex = 0 if male == "Female"
 label define sex 0"Female" 1"Male"
@@ -113,9 +113,10 @@ replace ckd_progression = 2 if egfr_end==3 & ckd_group==1
 replace ckd_progression = 2 if egfr_end==3 & ckd_group==2
 replace ckd_progression = 3 if dialysis_new==1
 replace ckd_progression = 4 if kidney_transplant_new==1
+replace ckd_progression = 5 if died==1
 drop dialysis_new
 drop kidney_transplant_new
-label define ckd_progression 0 "No progression" 1 "CKD 3" 2 "CKD 4/5 without kidney replacement therapy" 3 "Dialysis" 4 "Kidney transplant"
+label define ckd_progression 0 "No progression" 1 "CKD 3" 2 "CKD 4/5 without kidney replacement therapy" 3 "Dialysis" 4 "Kidney transplant" 5 "Died"
 label values ckd_progression ckd_progression
 label var ckd_progression "CKD progression"
 

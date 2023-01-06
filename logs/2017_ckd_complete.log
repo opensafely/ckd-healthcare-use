@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/logs/2017_ckd_complete.log
   log type:  text
- opened on:   6 Jan 2023, 15:02:44
+ opened on:   6 Jan 2023, 19:45:29
 
 . clear
 
@@ -25,15 +25,15 @@ file /tmp/St00011.000001 saved
 
     Result                           # of obs.
     -----------------------------------------
-    not matched                        66,896
-        from master                    47,925  (_merge==1)
-        from using                     18,971  (_merge==2)
+    not matched                        66,756
+        from master                    47,855  (_merge==1)
+        from using                     18,901  (_merge==2)
 
-    matched                             2,075  (_merge==3)
+    matched                             2,145  (_merge==3)
     -----------------------------------------
 
 . keep if _merge==3
-(66,896 observations deleted)
+(66,756 observations deleted)
 
 . drop _merge
 
@@ -58,14 +58,14 @@ file /tmp/St00011.000002 saved
 . drop kt_baseline_opcs_4
 
 . gen dialysis_baseline = date(dialysis_baseline_date, "YMD")
-(1,798 missing values generated)
+(1,833 missing values generated)
 
 . format dialysis_baseline %td
 
 . drop dialysis_baseline_date
 
 . gen kidney_transplant_baseline = date(kidney_transplant_baseline_date, "YMD")
-(1,771 missing values generated)
+(1,830 missing values generated)
 
 . format kidney_transplant_baseline %td
 
@@ -74,44 +74,51 @@ file /tmp/St00011.000002 saved
 . gen dialysis = 0
 
 . replace dialysis = 1 if dialysis_baseline!=.
-(277 real changes made)
+(312 real changes made)
 
 . replace dialysis = 0 if kidney_transplant_baseline > dialysis_baseline
-(262 real changes made)
+(285 real changes made)
 
 . gen kidney_transplant = 0
 
 . replace kidney_transplant = 1 if kidney_transplant_baseline!=.
-(304 real changes made)
+(315 real changes made)
 
 . replace kidney_transplant = 0 if dialysis_baseline > kidney_transplant_baseli
 > ne
-(284 real changes made)
+(296 real changes made)
 
 . drop dialysis_baseline
 
 . drop kidney_transplant_baseline
 
+. tab dialysis kidney_transplant, m
+
+           |   kidney_transplant
+  dialysis |         0          1 |     Total
+-----------+----------------------+----------
+         0 |     2,099         19 |     2,118 
+         1 |        27          0 |        27 
+-----------+----------------------+----------
+     Total |     2,126         19 |     2,145 
+
 . 
-. * CKD stage classification
+. * CKD stage classification based on baseline eGFR
 . egen ckd_group = cut(baseline_egfr), at(0, 30, 60, 5000)
-(804 missing values generated)
+(813 missing values generated)
 
 . drop baseline_egfr
 
 . recode ckd_group 0=3 30=2 60=1
-(ckd_group: 1271 changes made)
-
-. gen pre_krt = ckd_group
-(804 missing values generated)
+(ckd_group: 1332 changes made)
 
 . replace ckd_group = 4 if dialysis==1
-(15 real changes made)
+(27 real changes made)
 
 . drop dialysis
 
 . replace ckd_group = 5 if kidney_transplant==1
-(20 real changes made)
+(19 real changes made)
 
 . drop kidney_transplant
 
@@ -122,13 +129,6 @@ file /tmp/St00011.000002 saved
 
 . label var ckd_group "CKD group"
 
-. label define pre_krt 1 "eGFR ≥60 with albuminuria" 2 "CKD 3" 3 "CKD 4/5 witho
-> ut kidney replacement therapy"
-
-. label values pre_krt pre_krt
-
-. label var pre_krt "CKD group"
-
 . 
 . * Dialysis & kidney transplant outcome classification
 . drop dialysis_outcome_primary_care
@@ -137,101 +137,118 @@ file /tmp/St00011.000002 saved
 
 . drop dialysis_outcome_opcs_4
 
-. gen dialysis_outcome = date(dialysis_outcome_date, "YMD")
-(1,761 missing values generated)
+. gen dialysis_outcome_date = date(dialysis_outcome, "YMD")
+(1,848 missing values generated)
 
-. format dialysis_outcome %td
-
-. drop dialysis_outcome_date
-
-. gen kidney_transplant_outcome = date(kidney_transplant_outcome_date, "YMD")
-(1,977 missing values generated)
-
-. format kidney_transplant_outcome %td
-
-. drop kidney_transplant_outcome_date
-
-. gen dialysis_new = 0
-
-. replace dialysis_new = 1 if dialysis_outcome!=. & ckd_group!=4/5
-(314 real changes made)
-
-. replace dialysis_new = 0 if kidney_transplant_outcome > dialysis_outcome
-(307 real changes made)
-
-. gen kidney_transplant_new = 0
-
-. replace kidney_transplant_new = 1 if kidney_transplant_outcome!=. & ckd_group
-> !=4/5
-(98 real changes made)
-
-. replace kidney_transplant_new = 0 if dialysis_outcome > kidney_transplant_out
-> come
-(93 real changes made)
+. format dialysis_outcome_date %td
 
 . drop dialysis_outcome
 
+. gen kidney_transplant_outcome_date = date(kidney_transplant_outcome, "YMD")
+(2,026 missing values generated)
+
+. format kidney_transplant_outcome_date %td
+
 . drop kidney_transplant_outcome
 
+. gen dialysis_new = 0
+
+. replace dialysis_new = 1 if dialysis_outcome_date!=.
+(297 real changes made)
+
+. replace dialysis_new = 0 if kidney_transplant_outcome_date > dialysis_outcome
+> _date
+(291 real changes made)
+
+. replace dialysis_new = 0 if ckd_group==4/5
+(0 real changes made)
+
+. gen kidney_transplant_new = 0
+
+. replace kidney_transplant_new = 1 if kidney_transplant_outcome_date!=.
+(119 real changes made)
+
+. replace kidney_transplant_new = 0 if dialysis_outcome_date > kidney_transplan
+> t_outcome_date
+(110 real changes made)
+
+. replace dialysis_new = 0 if ckd_group==4/5
+(0 real changes made)
+
+. tab dialysis_new kidney_transplant_new, m
+
+dialysis_n | kidney_transplant_new
+        ew |         0          1 |     Total
+-----------+----------------------+----------
+         0 |     2,130          9 |     2,139 
+         1 |         6          0 |         6 
+-----------+----------------------+----------
+     Total |     2,136          9 |     2,145 
+
+. drop dialysis_outcome_date
+
+. drop kidney_transplant_outcome_date
+
 . 
-. * eGFR outcome classification
+. * eGFR outcome classification based on updated mean eGFR over previous 18 mon
+> ths by the end of year
 . gen sex = 1 if male == "Male"
-(1,068 missing values generated)
+(1,089 missing values generated)
 
 . replace sex = 0 if male == "Female"
-(1,068 real changes made)
+(1,089 real changes made)
 
 . label define sex 0"Female" 1"Male"
 
 . label values sex sex
 
 . replace creatinine_outcome = . if !inrange(creatinine_outcome, 20, 3000)
-(942 real changes made, 942 to missing)
+(928 real changes made, 928 to missing)
 
 . gen mgdl_creatinine_outcome = creatinine_outcome/88.4
-(942 missing values generated)
+(928 missing values generated)
 
 . gen min_creatinine_outcome=.
-(2,075 missing values generated)
+(2,145 missing values generated)
 
 . replace min_creatinine_outcome = mgdl_creatinine_outcome/0.7 if sex==0
-(561 real changes made)
+(608 real changes made)
 
 . replace min_creatinine_outcome = mgdl_creatinine_outcome/0.9 if sex==1
-(572 real changes made)
+(609 real changes made)
 
 . replace min_creatinine_outcome = min_creatinine_outcome^-0.329  if sex==0
-(561 real changes made)
+(608 real changes made)
 
 . replace min_creatinine_outcome = min_creatinine_outcome^-0.411  if sex==1
-(572 real changes made)
+(609 real changes made)
 
 . replace min_creatinine_outcome = 1 if min_creatinine_outcome<1
-(711 real changes made)
+(762 real changes made)
 
 . gen max_creatinine_outcome=.
-(2,075 missing values generated)
+(2,145 missing values generated)
 
 . replace max_creatinine_outcome = mgdl_creatinine_outcome/0.7 if sex==0
-(561 real changes made)
+(608 real changes made)
 
 . replace max_creatinine_outcome = mgdl_creatinine_outcome/0.9 if sex==1
-(572 real changes made)
+(609 real changes made)
 
 . replace max_creatinine_outcome = max_creatinine_outcome^-1.209
-(1,133 real changes made)
+(1,217 real changes made)
 
 . replace max_creatinine_outcome = 1 if max_creatinine_outcome>1
-(1,364 real changes made)
+(1,383 real changes made)
 
 . gen egfr_outcome = min_creatinine_outcome*max_creatinine_outcome*141
-(942 missing values generated)
+(928 missing values generated)
 
 . replace egfr_outcome = egfr_outcome*(0.993^age)
-(1,133 real changes made)
+(1,217 real changes made)
 
 . replace egfr_outcome = egfr_outcome*1.018 if sex==0
-(561 real changes made)
+(608 real changes made)
 
 . drop creatinine_outcome
 
@@ -242,12 +259,12 @@ file /tmp/St00011.000002 saved
 . drop max_creatinine_outcome
 
 . egen egfr_end = cut(egfr_outcome), at(0, 30, 60, 5000)
-(942 missing values generated)
+(928 missing values generated)
 
 . drop egfr_outcome
 
 . recode egfr_end 0=3 30=2 60=1
-(egfr_end: 1133 changes made)
+(egfr_end: 1217 changes made)
 
 . label define egfr_end 1 "≥60" 2 "30-59" 3 "<30"
 
@@ -258,26 +275,29 @@ file /tmp/St00011.000002 saved
 . gen ckd_progression = 0
 
 . replace ckd_progression = 1 if egfr_end==2 & ckd_group==1
-(104 real changes made)
+(119 real changes made)
 
 . replace ckd_progression = 2 if egfr_end==3 & ckd_group==1
 (6 real changes made)
 
 . replace ckd_progression = 2 if egfr_end==3 & ckd_group==2
-(2 real changes made)
+(3 real changes made)
 
 . replace ckd_progression = 3 if dialysis_new==1
-(7 real changes made)
+(6 real changes made)
 
 . replace ckd_progression = 4 if kidney_transplant_new==1
-(5 real changes made)
+(9 real changes made)
+
+. replace ckd_progression = 5 if died==1
+(221 real changes made)
 
 . drop dialysis_new
 
 . drop kidney_transplant_new
 
 . label define ckd_progression 0 "No progression" 1 "CKD 3" 2 "CKD 4/5 without 
-> kidney replacement therapy" 3 "Dialysis" 4 "Kidney transplant"
+> kidney replacement therapy" 3 "Dialysis" 4 "Kidney transplant" 5 "Died"
 
 . label values ckd_progression ckd_progression
 
@@ -298,19 +318,19 @@ file /tmp/St00011.000002 saved
 (0 real changes made)
 
 . replace ethnicity=6 if ethnicity==2
-(82 real changes made)
+(83 real changes made)
 
 . replace ethnicity=2 if ethnicity==3
-(69 real changes made)
+(88 real changes made)
 
 . replace ethnicity=3 if ethnicity==4
-(63 real changes made)
+(76 real changes made)
 
 . replace ethnicity=4 if ethnicity==6
-(82 real changes made)
+(83 real changes made)
 
 . replace ethnicity=6 if ethnicity==.
-(506 real changes made)
+(511 real changes made)
 
 . label define ethnicity  1 "White"                                       ///
 >                                                 2 "South Asian"              
@@ -337,31 +357,31 @@ file /tmp/St00011.000002 saved
 . rename region region_string
 
 . gen region = 1 if region_string=="East Midlands"
-(1,870 missing values generated)
+(1,935 missing values generated)
 
 . replace region = 2 if region_string=="East"
-(226 real changes made)
+(225 real changes made)
 
 . replace region = 3 if region_string=="London"
-(408 real changes made)
+(400 real changes made)
 
 . replace region = 4 if region_string=="North East"
-(190 real changes made)
+(218 real changes made)
 
 . replace region = 5 if region_string=="North West"
 (198 real changes made)
 
 . replace region = 6 if region_string=="South East"
-(235 real changes made)
+(228 real changes made)
 
 . replace region = 7 if region_string=="South West"
-(198 real changes made)
+(231 real changes made)
 
 . replace region = 8 if region_string=="West Midlands"
 (214 real changes made)
 
 . replace region = 9 if region_string=="Yorkshire and The Humber"
-(201 real changes made)
+(221 real changes made)
 
 . label define region     1 "East Midlands"                                    
 >    ///
@@ -413,13 +433,13 @@ file /tmp/St00011.000002 saved
 . * Urban (binary)
 . * Urban = 1-4 + missing, Rural = 5-8
 . generate urban=.
-(2,075 missing values generated)
+(2,145 missing values generated)
 
 . replace urban=1 if rural_urban<=4|rural_urban==.
-(835 real changes made)
+(875 real changes made)
 
 . replace urban=0 if rural_urban>4 & rural_urban!=.
-(1,240 real changes made)
+(1,270 real changes made)
 
 . label var urban "Urban/rural"
 
@@ -439,5 +459,5 @@ file ./output/2017_ckd_complete.dta saved
       name:  <unnamed>
        log:  /workspace/logs/2017_ckd_complete.log
   log type:  text
- closed on:   6 Jan 2023, 15:02:51
+ closed on:   6 Jan 2023, 19:45:33
 -------------------------------------------------------------------------------
