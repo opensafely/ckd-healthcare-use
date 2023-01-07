@@ -19,6 +19,19 @@ drop _merge
 tempfile `dataset'_ckd_complete
 save ``dataset'_ckd_complete', replace
 
+/* Generate dummy data
+cd ckd-healthcare-use
+capture noisily import delimited ./output/2017_ckd.csv, clear
+tempfile 2017_ckd
+save 2017_ckd, replace
+capture noisily import delimited ./output/input_2017_ckd_complete.csv, clear
+merge 1:1 patient_id using 2017_ckd
+keep if _merge==3
+drop _merge
+tempfile 2017_ckd_complete
+save 2017_ckd_complete, replace
+*/
+
 * Baseline dialysis & kidney transplant group classification
 drop dialysis_baseline_primary_care
 drop dialysis_baseline_icd_10
@@ -32,6 +45,14 @@ drop dialysis_baseline_date
 gen kidney_transplant_baseline = date(kidney_transplant_baseline_date, "YMD")
 format kidney_transplant_baseline %td
 drop kidney_transplant_baseline_date
+sum dialysis_baseline, detail
+sum kidney_transplant_baseline, detail
+gen dialysis_baseline2 = dialysis_baseline - kidney_transplant_baseline
+gen dialysis_baseline3 = 0
+replace dialysis_baseline3 = 1 if dialysis_baseline2 > 0
+gen kidney_transplant_baseline2 = kidney_transplant_baseline - dialysis_baseline
+gen kidney_transplant_baseline3 = 0
+replace kidney_transplant_baseline3 = 1 if kidney_transplant_baseline2 > 0
 gen dialysis = 0
 replace dialysis = 1 if dialysis_baseline!=.
 replace dialysis = 0 if kidney_transplant_baseline > dialysis_baseline
@@ -40,6 +61,8 @@ replace kidney_transplant = 1 if kidney_transplant_baseline!=.
 replace kidney_transplant = 0 if dialysis_baseline > kidney_transplant_baseline
 drop dialysis_baseline
 drop kidney_transplant_baseline
+tab dialysis dialysis_baseline3, m
+tab kidney_transplant kidney_transplant_baseline3, m
 tab dialysis kidney_transplant, m
 
 * CKD stage classification based on baseline eGFR
@@ -64,15 +87,32 @@ drop dialysis_outcome
 gen kidney_transplant_outcome_date = date(kidney_transplant_outcome, "YMD")
 format kidney_transplant_outcome_date %td
 drop kidney_transplant_outcome
+sum dialysis_outcome_date, detail
+sum kidney_transplant_outcome_date, detail
+gen index_date = mdy(04, 01, 2017)
+gen dialysis_outcome = dialysis_outcome_date - index_date
+gen kidney_transplant_outcome = kidney_transplant_outcome_date - index_date
+sum dialysis_outcome, detail
+sum kidney_transplant_outcome, detail
+gen dialysis_outcome2 = dialysis_outcome_date - kidney_transplant_outcome_date
+gen dialysis_outcome3 = 0
+replace dialysis_outcome3 = 1 if dialysis_outcome2 > 0
+gen kidney_transplant_outcome2 = kidney_transplant_outcome_date - dialysis_outcome_date
+gen kidney_transplant_outcome3 = 0
+replace kidney_transplant_outcome3 = 1 if kidney_transplant_outcome2 > 0
 gen dialysis_new = 0
 replace dialysis_new = 1 if dialysis_outcome_date!=.
 replace dialysis_new = 0 if kidney_transplant_outcome_date > dialysis_outcome_date
-replace dialysis_new = 0 if ckd_group==4/5
+replace dialysis_new = 0 if ckd_group==4
+replace dialysis_new = 0 if ckd_group==5
 gen kidney_transplant_new = 0
 replace kidney_transplant_new = 1 if kidney_transplant_outcome_date!=.
 replace kidney_transplant_new = 0 if dialysis_outcome_date > kidney_transplant_outcome_date
-replace dialysis_new = 0 if ckd_group==4/5
+replace kidney_transplant_new = 0 if ckd_group==4
+replace kidney_transplant_new = 0 if ckd_group==5
 tab dialysis_new kidney_transplant_new, m
+tab dialysis_new dialysis_outcome3, m
+tab kidney_transplant_new kidney_transplant_outcome3, m
 drop dialysis_outcome_date
 drop kidney_transplant_outcome_date
 
