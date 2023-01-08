@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/logs/2017_ckd_complete.log
   log type:  text
- opened on:   7 Jan 2023, 18:03:49
+ opened on:   8 Jan 2023, 20:37:34
 
 . clear
 
@@ -131,6 +131,40 @@ file /tmp/St00011.000002 saved
 (2,101 missing values generated)
 
 . gen kidney_transplant_baseline3 = 0
+
+. sum dialysis_baseline2, detail
+
+                     dialysis_baseline2
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%       -13527         -13527
+ 5%       -12978         -12978
+10%       -10799         -10799       Obs                  28
+25%      -4227.5          -6161       Sum of Wgt.          28
+
+50%       -330.5                      Mean             206.25
+                        Largest       Std. Dev.      7441.827
+75%         3368          11468
+90%        11706          11706       Variance       5.54e+07
+95%        14833          14833       Skewness       .2851308
+99%        14854          14854       Kurtosis       2.726965
+
+. sum kidney_transplant_baseline2, detail
+
+                 kidney_transplant_baseline2
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%       -14854         -14854
+ 5%       -14833         -14833
+10%       -11706         -11706       Obs                  28
+25%        -3368         -11468       Sum of Wgt.          28
+
+50%        330.5                      Mean            -206.25
+                        Largest       Std. Dev.      7441.827
+75%       4227.5           6161
+90%        10799          10799       Variance       5.54e+07
+95%        12978          12978       Skewness      -.2851308
+99%        13527          13527       Kurtosis       2.726965
 
 . replace kidney_transplant_baseline3 = 1 if kidney_transplant_baseline2 > 0
 (2,116 real changes made)
@@ -329,6 +363,40 @@ kidney_tra |        eline3
 
 . replace kidney_transplant_outcome3 = 1 if kidney_transplant_outcome2 > 0
 (2,122 real changes made)
+
+. sum dialysis_outcome2, detail
+
+                      dialysis_outcome2
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%         -191           -191
+ 5%         -191           -185
+10%         -185           -130       Obs                  15
+25%         -122           -122       Sum of Wgt.          15
+
+50%          -14                      Mean          -2.133333
+                        Largest       Std. Dev.      136.1789
+75%           84             84
+90%          212            168       Variance        18544.7
+95%          261            212       Skewness       .4846098
+99%          261            261       Kurtosis       2.375572
+
+. sum kidney_transplant_outcome2, detail
+
+                 kidney_transplant_outcome2
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%         -261           -261
+ 5%         -261           -212
+10%         -212           -168       Obs                  15
+25%          -84            -84       Sum of Wgt.          15
+
+50%           14                      Mean           2.133333
+                        Largest       Std. Dev.      136.1789
+75%          122            122
+90%          185            130       Variance        18544.7
+95%          191            185       Skewness      -.4846098
+99%          191            191       Kurtosis       2.375572
 
 . gen dialysis_new = 0
 
@@ -665,5 +733,5 @@ file ./output/2017_ckd_complete.dta saved
       name:  <unnamed>
        log:  /workspace/logs/2017_ckd_complete.log
   log type:  text
- closed on:   7 Jan 2023, 18:03:54
+ closed on:   8 Jan 2023, 20:37:41
 -------------------------------------------------------------------------------

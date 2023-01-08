@@ -52,6 +52,8 @@ gen dialysis_baseline3 = 0
 replace dialysis_baseline3 = 1 if dialysis_baseline2 > 0
 gen kidney_transplant_baseline2 = kidney_transplant_baseline - dialysis_baseline
 gen kidney_transplant_baseline3 = 0
+sum dialysis_baseline2, detail
+sum kidney_transplant_baseline2, detail
 replace kidney_transplant_baseline3 = 1 if kidney_transplant_baseline2 > 0
 gen dialysis = 0
 replace dialysis = 1 if dialysis_baseline!=.
@@ -100,6 +102,8 @@ replace dialysis_outcome3 = 1 if dialysis_outcome2 > 0
 gen kidney_transplant_outcome2 = kidney_transplant_outcome_date - dialysis_outcome_date
 gen kidney_transplant_outcome3 = 0
 replace kidney_transplant_outcome3 = 1 if kidney_transplant_outcome2 > 0
+sum dialysis_outcome2, detail
+sum kidney_transplant_outcome2, detail
 gen dialysis_new = 0
 replace dialysis_new = 1 if dialysis_outcome_date!=.
 replace dialysis_new = 0 if kidney_transplant_outcome_date > dialysis_outcome_date
