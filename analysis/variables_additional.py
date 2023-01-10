@@ -36,12 +36,70 @@ def generate_variables_additional(index_date_variable):
     dialysis_baseline_primary_care=patients.with_these_clinical_events(
         dialysis_codes,
         between = ["1970-01-01", "index_date - 1 day"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.05},
+    ),
+    dialysis_baseline_icd_10=patients.admitted_to_hospital(
+        with_these_diagnoses=dialysis_icd_10_codes,
+        between = ["1970-01-01", "index_date - 1 day"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.05},
+    ),
+    dialysis_baseline_opcs_4=patients.admitted_to_hospital(
+        with_these_procedures=dialysis_opcs_4_codes,
+        between = ["1970-01-01", "index_date - 1 day"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.05},
+    ),
+    kt_baseline_primary_care=patients.with_these_clinical_events(
+        kidney_transplant_codes,
+        between = ["1970-01-01", "index_date - 1 day"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.05},
+    ),
+    kt_baseline_icd_10=patients.admitted_to_hospital(
+        with_these_diagnoses=kidney_transplant_icd_10_codes,
+        between = ["1970-01-01", "index_date - 1 day"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.05},
+    ),
+    kt_baseline_opcs_4=patients.admitted_to_hospital(
+        with_these_procedures=kidney_transplant_opcs_4_codes,
+        between = ["1970-01-01", "index_date - 1 day"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.05},
+    ),
+    krt_baseline=patients.categorised_as(
+        {
+            "KRT":      """
+                        dialysis_baseline_primary_care="1"
+                        OR dialysis_baseline_icd_10="1"
+                        OR dialysis_baseline_opcs_4="1"
+                        OR kt_baseline_primary_care="1"
+                        OR kt_baseline_icd_10="1"
+                        OR kt_baseline_opcs_4="1"
+                        """,
+            "Pre-KRT":  "DEFAULT",
+        },
+        return_expectations={
+            "rate": "universal",
+            "category": {
+                "ratios": {
+                    "KRT": 0.20,
+                    "Pre-KRT": 0.80,
+                }
+            },
+        },
+    ),    
+    dialysis_baseline_primary_care_date=patients.with_these_clinical_events(
+        dialysis_codes,
+        between = ["1970-01-01", "index_date - 1 day"],
         returning="date",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
         return_expectations={"incidence": 0.05, "date": {"earliest" : "1970-01-01", "latest": "index_date - 1 day"}}
     ),
-    dialysis_baseline_icd_10=patients.admitted_to_hospital(
+    dialysis_baseline_icd_10_date=patients.admitted_to_hospital(
         with_these_diagnoses=dialysis_icd_10_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -49,7 +107,7 @@ def generate_variables_additional(index_date_variable):
         find_last_match_in_period=True,
         return_expectations={"incidence": 0.05, "date": {"earliest" : "1970-01-01", "latest": "index_date - 1 day"}}
     ),
-    dialysis_baseline_opcs_4=patients.admitted_to_hospital(
+    dialysis_baseline_opcs_4_date=patients.admitted_to_hospital(
         with_these_procedures=dialysis_opcs_4_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -58,9 +116,9 @@ def generate_variables_additional(index_date_variable):
         return_expectations={"incidence": 0.05, "date": {"earliest" : "1970-01-01", "latest": "index_date - 1 day"}}
     ),
     dialysis_baseline_date=patients.maximum_of(
-        "dialysis_baseline_primary_care", "dialysis_baseline_icd_10", "dialysis_baseline_opcs_4",
+        "dialysis_baseline_primary_care_date", "dialysis_baseline_icd_10_date", "dialysis_baseline_opcs_4_date",
     ),
-    kt_baseline_primary_care=patients.with_these_clinical_events(
+    kt_baseline_primary_care_date=patients.with_these_clinical_events(
         kidney_transplant_codes,
         between = ["1970-01-01", "index_date - 1 day"],
         returning="date",
@@ -68,7 +126,7 @@ def generate_variables_additional(index_date_variable):
         find_last_match_in_period=True,
         return_expectations={"incidence": 0.05, "date": {"earliest" : "1970-01-01", "latest": "index_date - 1 day"}}
     ),
-    kt_baseline_icd_10=patients.admitted_to_hospital(
+    kt_baseline_icd_10_date=patients.admitted_to_hospital(
         with_these_diagnoses=kidney_transplant_icd_10_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -76,7 +134,7 @@ def generate_variables_additional(index_date_variable):
         find_last_match_in_period=True,
         return_expectations={"incidence": 0.05, "date": {"earliest" : "1970-01-01", "latest": "index_date - 1 day"}}
     ),
-    kt_baseline_opcs_4=patients.admitted_to_hospital(
+    kt_baseline_opcs_4_date=patients.admitted_to_hospital(
         with_these_procedures=kidney_transplant_opcs_4_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -85,7 +143,7 @@ def generate_variables_additional(index_date_variable):
         return_expectations={"incidence": 0.05, "date": {"earliest" : "1970-01-01", "latest": "index_date - 1 day"}}
     ),
     kidney_transplant_baseline_date=patients.maximum_of(
-        "kt_baseline_primary_care", "kt_baseline_icd_10", "kt_baseline_opcs_4",
+        "kt_baseline_primary_care_date", "kt_baseline_icd_10_date", "kt_baseline_opcs_4_date",
     ),
     modality_baseline_date=patients.maximum_of(
         "dialysis_baseline_date", "kidney_transplant_baseline_date",
@@ -101,10 +159,11 @@ def generate_variables_additional(index_date_variable):
                                     AND modality_baseline_date!=dialysis_baseline_date
                                     """,
             "Modality unclear":     """
-                                    modality_baseline_date=dialysis_baseline_date
+                                    krt_baseline="KRT"
+                                    AND modality_baseline_date=dialysis_baseline_date
                                     AND modality_baseline_date=kidney_transplant_baseline_date
                                     """,
-            "Pre-KRT":              "DEFAULT",
+            "Pre KRT":              "DEFAULT",
         },
         return_expectations={
             "rate": "universal",
@@ -113,7 +172,7 @@ def generate_variables_additional(index_date_variable):
                     "Dialysis": 0.09,
                     "Kidney transplant": 0.09,
                     "Modality unclear": 0.02,
-                    "Pre-KRT": 0.80,
+                    "Pre KRT": 0.80,
                 }
             },
         },
@@ -130,12 +189,71 @@ def generate_variables_additional(index_date_variable):
     dialysis_outcome_primary_care=patients.with_these_clinical_events(
         dialysis_codes,
         between = ["index_date", "index_date + 364 days"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.05},
+    ),
+    dialysis_outcome_icd_10=patients.admitted_to_hospital(
+        with_these_diagnoses=dialysis_icd_10_codes,
+        between = ["index_date", "index_date + 364 days"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.05},
+    ),
+    dialysis_outcome_opcs_4=patients.admitted_to_hospital(
+        with_these_procedures=dialysis_opcs_4_codes,
+        between = ["index_date", "index_date + 364 days"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.05},
+    ),
+    kt_outcome_primary_care=patients.with_these_clinical_events(
+        kidney_transplant_codes,
+        between = ["index_date", "index_date + 364 days"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.05},
+    ),
+    kt_outcome_icd_10=patients.admitted_to_hospital(
+        with_these_diagnoses=kidney_transplant_icd_10_codes,
+        between = ["index_date", "index_date + 364 days"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.05},
+    ),
+    kt_outcome_opcs_4=patients.admitted_to_hospital(
+        with_these_procedures=kidney_transplant_opcs_4_codes,
+        between = ["index_date", "index_date + 364 days"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.05},
+    ),
+    krt_outcome=patients.categorised_as(
+        {
+            "New KRT":      """
+                            krt_baseline="Pre KRT"
+                            AND dialysis_outcome_primary_care="1"
+                            OR dialysis_outcome_icd_10="1"
+                            OR dialysis_outcome_opcs_4="1"
+                            OR kt_outcome_primary_care="1"
+                            OR kt_outcome_icd_10="1"
+                            OR kt_outcome_opcs_4="1"
+                            """,
+            "Unchanged":    "DEFAULT",
+        },
+        return_expectations={
+            "rate": "universal",
+            "category": {
+                "ratios": {
+                    "New KRT": 0.10,
+                    "Unchanged": 0.90,
+                }
+            },
+        },
+    ),    
+    dialysis_outcome_primary_care_date=patients.with_these_clinical_events(
+        dialysis_codes,
+        between = ["index_date", "index_date + 364 days"],
         returning="date",
         date_format="YYYY-MM-DD",
         find_last_match_in_period=True,
         return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 364 days"}}
     ),
-    dialysis_outcome_icd_10=patients.admitted_to_hospital(
+    dialysis_outcome_icd_10_date=patients.admitted_to_hospital(
         with_these_diagnoses=dialysis_icd_10_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -143,7 +261,7 @@ def generate_variables_additional(index_date_variable):
         find_last_match_in_period=True,
         return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 364 days"}}
     ),
-    dialysis_outcome_opcs_4=patients.admitted_to_hospital(
+    dialysis_outcome_opcs_4_date=patients.admitted_to_hospital(
         with_these_procedures=dialysis_opcs_4_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -152,9 +270,9 @@ def generate_variables_additional(index_date_variable):
         return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 364 days"}}
     ),
     dialysis_outcome_date=patients.maximum_of(
-        "dialysis_outcome_primary_care", "dialysis_outcome_icd_10", "dialysis_outcome_opcs_4",
+        "dialysis_outcome_primary_care_date", "dialysis_outcome_icd_10_date", "dialysis_outcome_opcs_4_date",
     ),
-    kt_outcome_primary_care=patients.with_these_clinical_events(
+    kt_outcome_primary_care_date=patients.with_these_clinical_events(
         kidney_transplant_codes,
         between = ["index_date", "index_date + 364 days"],
         returning="date",
@@ -162,7 +280,7 @@ def generate_variables_additional(index_date_variable):
         find_last_match_in_period=True,
         return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 364 days"}}
     ),
-    kt_outcome_icd_10=patients.admitted_to_hospital(
+    kt_outcome_icd_10_date=patients.admitted_to_hospital(
         with_these_diagnoses=kidney_transplant_icd_10_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -170,7 +288,7 @@ def generate_variables_additional(index_date_variable):
         find_last_match_in_period=True,
         return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 364 days"}}
     ),
-    kt_outcome_opcs_4=patients.admitted_to_hospital(
+    kt_outcome_opcs_4_date=patients.admitted_to_hospital(
         with_these_procedures=kidney_transplant_opcs_4_codes,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -179,7 +297,7 @@ def generate_variables_additional(index_date_variable):
         return_expectations={"incidence": 0.05, "date": {"earliest" : "index_date", "latest": "index_date + 364 days"}}
     ),
     kidney_transplant_outcome_date=patients.maximum_of(
-        "kt_outcome_primary_care", "kt_outcome_icd_10", "kt_outcome_opcs_4",
+        "kt_outcome_primary_care_date", "kt_outcome_icd_10_date", "kt_outcome_opcs_4_date",
     ),
     modality_outcome_date=patients.maximum_of(
         "dialysis_outcome_date", "kidney_transplant_outcome_date",
@@ -207,9 +325,9 @@ def generate_variables_additional(index_date_variable):
                                     AND NOT died="1"
                                     """,
             "Modality unclear":     """
-                                    modality_outcome_date=dialysis_outcome_date
+                                    krt_outcome="New KRT"
+                                    AND modality_outcome_date=dialysis_outcome_date
                                     AND modality_outcome_date=kidney_transplant_outcome_date
-                                    AND NOT modality_baseline="Modality unclear"
                                     AND NOT died = "1"
                                     """,
             "Unchanged":            "DEFAULT",
