@@ -310,7 +310,7 @@ def generate_variables_additional(index_date_variable):
     modality_outcome=patients.categorised_as(
         {
             "Deceased":             """
-                                    died = "1"
+                                    died="1"
                                     """,
             "Dialysis":             """
                                     modality_outcome_date=dialysis_outcome_date
@@ -325,10 +325,10 @@ def generate_variables_additional(index_date_variable):
                                     AND NOT died="1"
                                     """,
             "Modality unclear":     """
-                                    krt_outcome="New KRT"
+                                    krt_baseline="Pre KRT"
                                     AND modality_outcome_date=dialysis_outcome_date
                                     AND modality_outcome_date=kidney_transplant_outcome_date
-                                    AND NOT died = "1"
+                                    AND NOT died="1"
                                     """,
             "Unchanged":            "DEFAULT",
 
