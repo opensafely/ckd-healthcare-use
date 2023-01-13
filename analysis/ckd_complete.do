@@ -50,7 +50,7 @@ recode ckd_group 0=3 30=2 60=1
 replace ckd_group = 4 if modality_baseline=="Dialysis"
 replace ckd_group = 5 if modality_baseline=="Kidney transplant"
 replace ckd_group = 6 if modality_baseline=="Modality unclear"
-label define ckd_group 1 "eGFR ≥60 with albuminuria" 2 "CKD 3" 3 "CKD 4/5 pre-KRT" 4 "Dialysis" 5 "Kidney transplant" 6 "KRT unclear modality"
+label define ckd_group 1 "Albuminuria" 2 "CKD stage 3" 3 "CKD stage 4/5" 4 "Dialysis" 5 "Transplant" 6 "KRT unclear"
 label values ckd_group ckd_group
 label var ckd_group "CKD group"
 tab ckd_group modality_baseline

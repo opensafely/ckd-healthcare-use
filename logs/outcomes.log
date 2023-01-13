@@ -1,0 +1,143 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\ckd-healthcare-use\logs/outcomes.log
+  log type:  text
+ opened on:  12 Jan 2023, 15:59:35
+
+. 
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2.         use ./output/`x'_ckd_complete.dta
+  3. 
+. tab ckd_group ckd_progression
+  4. }
+
+                      |                               CKD progression
+            CKD group | No progre      CKD 3  CKD 4/5 p   Dialysis  Kidney tr  KRT uncle   Deceased |     Total
+----------------------+-----------------------------------------------------------------------------+----------
+eGFR ≥60 with albumin |       451         57          1         35         23          7         40 |       614 
+                CKD 3 |       319          0          1         26         14          2         59 |       421 
+      CKD 4/5 pre-KRT |        15          0          0          1          0          0          2 |        18 
+             Dialysis |       151          0          0          5          5          2         16 |       179 
+    Kidney transplant |       160          0          0          6          8          1         16 |       191 
+ KRT unclear modality |        28          0          0          3          0          2          7 |        40 
+----------------------+-----------------------------------------------------------------------------+----------
+                Total |     1,124         57          2         76         50         14        140 |     1,463 
+
+                      |                    CKD progression
+            CKD group | No progre      CKD 3  CKD 4/5 w   Dialysis  Kidney tr |     Total
+----------------------+-------------------------------------------------------+----------
+eGFR ≥60 with albumin |       599        113          2          5          9 |       728 
+                CKD 3 |       465          0          6          8          7 |       486 
+CKD 4/5 without kidne |        21          0          0          0          0 |        21 
+             Dialysis |        18          0          0          0          1 |        19 
+    Kidney transplant |        30          0          0          0          1 |        31 
+----------------------+-------------------------------------------------------+----------
+                Total |     1,133        113          8         13         18 |     1,285 
+
+                      |                    CKD progression
+            CKD group | No progre      CKD 3  CKD 4/5 w   Dialysis  Kidney tr |     Total
+----------------------+-------------------------------------------------------+----------
+eGFR ≥60 with albumin |       674         98          4         12          4 |       792 
+                CKD 3 |       439          0          2          3          2 |       446 
+CKD 4/5 without kidne |        17          0          0          0          0 |        17 
+             Dialysis |        17          0          0          0          0 |        17 
+    Kidney transplant |        21          0          0          0          0 |        21 
+----------------------+-------------------------------------------------------+----------
+                Total |     1,168         98          6         15          6 |     1,293 
+
+                      |                    CKD progression
+            CKD group | No progre      CKD 3  CKD 4/5 w   Dialysis  Kidney tr |     Total
+----------------------+-------------------------------------------------------+----------
+eGFR ≥60 with albumin |       646         95          3          6         11 |       761 
+                CKD 3 |       469          0          6          4          8 |       487 
+CKD 4/5 without kidne |        22          0          0          0          1 |        23 
+             Dialysis |        28          0          0          0          0 |        28 
+    Kidney transplant |        12          0          0          0          1 |        13 
+----------------------+-------------------------------------------------------+----------
+                Total |     1,177         95          9         10         21 |     1,312 
+
+                      |                    CKD progression
+            CKD group | No progre      CKD 3  CKD 4/5 w   Dialysis  Kidney tr |     Total
+----------------------+-------------------------------------------------------+----------
+eGFR ≥60 with albumin |       614         86          7          6         11 |       724 
+                CKD 3 |       453          0          2          8          3 |       466 
+CKD 4/5 without kidne |        22          0          0          1          0 |        23 
+             Dialysis |        21          0          0          0          0 |        21 
+    Kidney transplant |        13          0          0          0          0 |        13 
+----------------------+-------------------------------------------------------+----------
+                Total |     1,123         86          9         15         14 |     1,247 
+
+                      |                    CKD progression
+            CKD group | No progre      CKD 3  CKD 4/5 w   Dialysis  Kidney tr |     Total
+----------------------+-------------------------------------------------------+----------
+eGFR ≥60 with albumin |       601        106          9         10          8 |       734 
+                CKD 3 |       434          0          6          4          3 |       447 
+CKD 4/5 without kidne |        15          0          0          2          0 |        17 
+             Dialysis |        13          0          0          1          0 |        14 
+    Kidney transplant |        15          0          0          0          0 |        15 
+----------------------+-------------------------------------------------------+----------
+                Total |     1,078        106         15         17         11 |     1,227 
+
+. 
+. 
+end of do-file
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD2a04_000000.tmp"
+
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2.         use ./output/`x'_ckd_complete.dta
+  3. forvalues baseline=1/6{
+  4.         qui safecount if ckd_group==`baseline'
+  5.         local denominator = r(N)
+  6.         forvalues progression=0/6{
+  7.                 qui safecount if ckd_group==`baseline' & ckd_progression==`progression'
+  8.                 local new = r(N)
+  9.                 local percent = (`new'/`denominator')*100
+ 10.         }
+ 11. }
+ 12. }
+
+. 
+. 
+end of do-file
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD2a04_000000.tmp"
+
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2.         use ./output/`x'_ckd_complete.dta
+  3. forvalues baseline=1/6{
+  4.         qui safecount if ckd_group==`baseline'
+  5.         local denominator = r(N)
+  6.         forvalues progression=0/6{
+  7.                 qui safecount if ckd_group==`baseline' & ckd_progression==`progression'
+  8.                 local new = r(N)
+  9.                 local percent = (`new'/`denominator')*100+-
+ 10.         file write tablecontent (`denominator') _tab (`new') _n
+ 11.         file write tablecontent _tab (`percent')
+ 12.         }
+ 13. }
+ 14. }
+invalid syntax
+r(198);
+
+end of do-file
+
+r(198);
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD2a04_000000.tmp"
+
+. sysdir set PLUS ./analysis/adofiles
+
+. sysdir set PERSONAL ./analysis/adofiles
+
+. pwd
+C:\Users\lsh1703468\Documents\ckd-healthcare-use
+
+. cap log close
