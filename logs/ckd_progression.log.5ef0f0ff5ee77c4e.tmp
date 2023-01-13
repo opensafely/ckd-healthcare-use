@@ -1,0 +1,499 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /workspace/logs/ckd_progression.log
+  log type:  text
+ opened on:  13 Jan 2023, 13:37:34
+
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./output/ckd_progression.csv, write text replace
+(note: file ./output/ckd_progression.csv not found)
+
+. 
+. file write tablecontent _tab _tab _tab ("April 2017") _tab ("March 2018") _ta
+> b ("April 2018") _tab ("March 2019") _tab ("April 2019") _tab ("March 2020") 
+> _tab ("April 2020") _tab ("March 2021") _tab ("April 2021") _tab ("March 2022
+> ") _tab ("April 2022") _tab ("March 2023") _n(2)
+
+. 
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2. use ./output/`x'_ckd_complete.dta, clear
+  3. 
+. *eGFR >60 with baseline_ckd2
+. qui count if ckd_group==1
+  4. local baseline_ckd2_`x' = r(N)
+  5. local r_baseline_ckd2_`x' = round(`baseline_ckd2_`x'',5)
+  6. qui count if ckd_group==1 & ckd_progression==0
+  7. local none_`x' = r(N)
+  8. local r_none_`x' = round(`none_`x'',5)
+  9. local percent_none_`x' = (`r_none_`x''/`r_baseline_ckd2_`x'')*100
+ 10. qui count if ckd_group==1 & ckd_progression==1
+ 11. local ckd3_`x' = r(N)
+ 12. local r_ckd3_`x' = round(`ckd3_`x'',5)
+ 13. local percent_ckd3_`x' = (`r_ckd3_`x''/`r_baseline_ckd2_`x'')*100
+ 14. qui count if ckd_group==1 & ckd_progression==2
+ 15. local ckd4_`x' = r(N)
+ 16. local r_ckd4_`x' = round(`ckd4_`x'',5)
+ 17. local percent_ckd4_`x' = (`r_ckd4_`x''/`r_baseline_ckd2_`x'')*100
+ 18. qui count if ckd_group==1 & ckd_progression==3
+ 19. local dialysis_`x' = r(N)
+ 20. local r_dialysis_`x' = round(`dialysis_`x'',5)
+ 21. local percent_dialysis_`x' = (`r_dialysis_`x''/`r_baseline_ckd2_`x'')*100
+ 22. qui count if ckd_group==1 & ckd_progression==4
+ 23. local transplant_`x' = r(N)
+ 24. local r_transplant_`x' = round(`transplant_`x'',5)
+ 25. local percent_transplant_`x' = (`r_transplant_`x''/`r_baseline_ckd2_`x'')*
+> 100
+ 26. qui count if ckd_group==1 & ckd_progression==5
+ 27. local unclear_`x' = r(N)
+ 28. local r_unclear_`x' = round(`unclear_`x'',5)
+ 29. local percent_unclear_`x' = (`r_unclear_`x''/`r_baseline_ckd2_`x'')*100
+ 30. qui count if ckd_group==1 & ckd_progression==6
+ 31. local deceased_`x' = r(N)
+ 32. local r_deceased_`x' = round(`deceased_`x'',5)
+ 33. local percent_deceased_`x' = (`r_deceased_`x''/`r_baseline_ckd2_`x'')*100
+ 34. 
+. *CKD stage 3
+. qui count if ckd_group==2
+ 35. local baseline_ckd3_`x' = r(N)
+ 36. local r_baseline_ckd3_`x' = round(`baseline_ckd3_`x'',5)
+ 37. qui count if ckd_group==2 & ckd_progression==0
+ 38. local none_`x' = r(N)
+ 39. local r_none_`x' = round(`none_`x'',5)
+ 40. local percent_none_`x' = (`r_none_`x''/`r_baseline_ckd3_`x'')*100
+ 41. qui count if ckd_group==2 & ckd_progression==2
+ 42. local ckd4_`x' = r(N)
+ 43. local r_ckd4_`x' = round(`ckd4_`x'',5)
+ 44. local percent_ckd4_`x' = (`r_ckd4_`x''/`r_baseline_ckd3_`x'')*100
+ 45. qui count if ckd_group==2 & ckd_progression==3
+ 46. local dialysis_`x' = r(N)
+ 47. local r_dialysis_`x' = round(`dialysis_`x'',5)
+ 48. local percent_dialysis_`x' = (`r_dialysis_`x''/`r_baseline_ckd3_`x'')*100
+ 49. qui count if ckd_group==2 & ckd_progression==4
+ 50. local transplant_`x' = r(N)
+ 51. local r_transplant_`x' = round(`transplant_`x'',5)
+ 52. local percent_transplant_`x' = (`r_transplant_`x''/`r_baseline_ckd3_`x'')*
+> 100
+ 53. qui count if ckd_group==2 & ckd_progression==5
+ 54. local unclear_`x' = r(N)
+ 55. local r_unclear_`x' = round(`unclear_`x'',5)
+ 56. local percent_unclear_`x' = (`r_unclear_`x''/`r_baseline_ckd3_`x'')*100
+ 57. qui count if ckd_group==2 & ckd_progression==6
+ 58. local deceased_`x' = r(N)
+ 59. local r_deceased_`x' = round(`deceased_`x'',5)
+ 60. local percent_deceased_`x' = (`r_deceased_`x''/`r_baseline_ckd3_`x'')*100
+ 61. 
+. *CKD stage 4/5 without KRT
+. qui count if ckd_group==3
+ 62. local baseline_ckd4_`x' = r(N)
+ 63. local r_baseline_ckd4_`x' = round(`baseline_ckd4_`x'',5)
+ 64. qui count if ckd_group==3 & ckd_progression==0
+ 65. local none_`x' = r(N)
+ 66. local r_none_`x' = round(`none_`x'',5)
+ 67. local percent_none_`x' = (`r_none_`x''/`r_baseline_ckd4_`x'')*100
+ 68. qui count if ckd_group==3 & ckd_progression==3
+ 69. local dialysis_`x' = r(N)
+ 70. local r_dialysis_`x' = round(`dialysis_`x'',5)
+ 71. local percent_dialysis_`x' = (`r_dialysis_`x''/`r_baseline_ckd4_`x'')*100
+ 72. qui count if ckd_group==3 & ckd_progression==4
+ 73. local transplant_`x' = r(N)
+ 74. local r_transplant_`x' = round(`transplant_`x'',5)
+ 75. local percent_transplant_`x' = (`r_transplant_`x''/`r_baseline_ckd4_`x'')*
+> 100
+ 76. qui count if ckd_group==3 & ckd_progression==5
+ 77. local unclear_`x' = r(N)
+ 78. local r_unclear_`x' = round(`unclear_`x'',5)
+ 79. local percent_unclear_`x' = (`r_unclear_`x''/`r_baseline_ckd4_`x'')*100
+ 80. qui count if ckd_group==3 & ckd_progression==6
+ 81. local deceased_`x' = r(N)
+ 82. local r_deceased_`x' = round(`deceased_`x'',5)
+ 83. local percent_deceased_`x' = (`r_deceased_`x''/`r_baseline_ckd4_`x'')*100
+ 84. 
+. *Dialysis
+. qui count if ckd_group==4
+ 85. local baseline_dialysis_`x' = r(N)
+ 86. local r_baseline_dialysis_`x' = round(`baseline_dialysis_`x'',5)
+ 87. qui count if ckd_group==4 & ckd_progression==0
+ 88. local none_`x' = r(N)
+ 89. local r_none_`x' = round(`none_`x'',5)
+ 90. local percent_none_`x' = (`r_none_`x''/`r_baseline_dialysis_`x'')*100
+ 91. qui count if ckd_group==4 & ckd_progression==4
+ 92. local transplant_`x' = r(N)
+ 93. local r_transplant_`x' = round(`transplant_`x'',5)
+ 94. local percent_transplant_`x' = (`r_transplant_`x''/`r_baseline_dialysis_`x
+> '')*100
+ 95. qui count if ckd_group==4 & ckd_progression==6
+ 96. local deceased_`x' = r(N)
+ 97. local r_deceased_`x' = round(`deceased_`x'',5)
+ 98. local percent_deceased_`x' = (`r_deceased_`x''/`r_baseline_dialysis_`x'')*
+> 100
+ 99. 
+. *Kidney transplant
+. qui count if ckd_group==5
+100. local baseline_transplant_`x' = r(N)
+101. local r_baseline_transplant_`x' = round(`baseline_transplant_`x'',5)
+102. qui count if ckd_group==5 & ckd_progression==0
+103. local none_`x' = r(N)
+104. local r_none_`x' = round(`none_`x'',5)
+105. local percent_none_`x' = (`r_none_`x''/`r_baseline_transplant_`x'')*100
+106. qui count if ckd_group==5 & ckd_progression==3
+107. local dialysis_`x' = r(N)
+108. local r_dialysis_`x' = round(`dialysis_`x'',5)
+109. local percent_dialysis_`x' = (`r_dialysis_`x''/`r_baseline_transplant_`x''
+> )*100
+110. qui count if ckd_group==5 & ckd_progression==6
+111. local deceased_`x' = r(N)
+112. local r_deceased_`x' = round(`deceased_`x'',5)
+113. local percent_deceased_`x' = (`r_deceased_`x''/`r_baseline_transplant_`x''
+> )*100
+114. 
+. *KRT unclear modality
+. qui count if ckd_group==6
+115. local baseline_unclear_`x' = r(N)
+116. local r_baseline_unclear_`x' = round(`baseline_unclear_`x'',5)
+117. qui count if ckd_group==6 & ckd_progression==0
+118. local none_`x' = r(N)
+119. local r_none_`x' = round(`none_`x'',5)
+120. local percent_none_`x' = (`r_none_`x''/`r_baseline_unclear_`x'')*100
+121. qui count if ckd_group==6 & ckd_progression==3
+122. local dialysis_`x' = r(N)
+123. local r_dialysis_`x' = round(`dialysis_`x'',5)
+124. local percent_dialysis_`x' = (`r_dialysis_`x''/`r_baseline_unclear_`x'')*1
+> 00
+125. qui count if ckd_group==6 & ckd_progression==4
+126. local transplant_`x' = r(N)
+127. local r_transplant_`x' = round(`transplant_`x'',5)
+128. local percent_transplant_`x' = (`r_transplant_`x''/`r_baseline_unclear_`x'
+> ')*100
+129. qui count if ckd_group==6 & ckd_progression==5
+130. local unclear_`x' = r(N)
+131. local r_unclear_`x' = round(`unclear_`x'',5)
+132. local percent_unclear_`x' = (`r_unclear_`x''/`r_baseline_unclear_`x'')*100
+133. qui count if ckd_group==6 & ckd_progression==6
+134. local deceased_`x' = r(N)
+135. local r_deceased_`x' = round(`deceased_`x'',5)
+136. local percent_deceased_`x' = (`r_deceased_`x''/`r_baseline_unclear_`x'')*1
+> 00
+137. 
+. }
+
+. 
+. *eGFR >60 with albuminuria
+. file write tablecontent ("Albuminuria") _tab _tab _tab (`r_baseline_ckd2_2017
+> ') _tab _tab (`r_baseline_ckd2_2018') _tab _tab (`r_baseline_ckd2_2019') _tab
+>  _tab (`r_baseline_ckd2_2020') _tab _tab (`r_baseline_ckd2_2021') _tab _tab (
+> `r_baseline_ckd2_2022') _n(2)
+
+. file write tablecontent _tab ("No progression") _tab _tab _tab (`r_none_2017'
+> ) _tab _tab (`r_none_2018') _tab _tab (`r_none_2019') _tab _tab (`r_none_2020
+> ') _tab _tab (`r_none_2021') _tab _tab (`r_none_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_none_2017')
+>  _tab _tab %3.1f (`percent_none_2018') _tab _tab %3.1f (`percent_none_2019') 
+> _tab _tab %3.1f (`percent_none_2020') _tab _tab %3.1f (`percent_none_2021') _
+> tab _tab %3.1f (`percent_none_2022') _n(2)
+
+. file write tablecontent _tab ("CKD stage 3") _tab _tab (`r_ckd3_2017') _tab _
+> tab (`r_ckd3_2018') _tab _tab (`r_ckd3_2019') _tab _tab (`r_ckd3_2020') _tab 
+> _tab (`r_ckd3_2021') _tab _tab (`r_ckd3_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_ckd3_2017')
+>  _tab _tab %3.1f (`percent_ckd3_2018') _tab _tab %3.1f (`percent_ckd3_2019') 
+> _tab _tab %3.1f (`percent_ckd3_2020') _tab _tab %3.1f (`percent_ckd3_2021') _
+> tab _tab %3.1f (`percent_ckd3_2022') _n(2)
+
+. file write tablecontent _tab ("CKD stage 4/5") _tab _tab (`r_ckd4_2017') _tab
+>  _tab (`r_ckd4_2018') _tab _tab (`r_ckd4_2019') _tab _tab (`r_ckd4_2020') _ta
+> b _tab (`r_ckd4_2021') _tab _tab (`r_ckd4_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_ckd4_2017')
+>  _tab _tab %3.1f (`percent_ckd4_2018') _tab _tab %3.1f (`percent_ckd4_2019') 
+> _tab _tab %3.1f (`percent_ckd4_2020') _tab _tab %3.1f (`percent_ckd4_2021') _
+> tab _tab %3.1f (`percent_ckd4_2022') _n(2)
+
+. file write tablecontent _tab ("Dialysis") _tab _tab (`r_dialysis_2017') _tab 
+> _tab (`r_dialysis_2018') _tab _tab (`r_dialysis_2019') _tab _tab (`r_dialysis
+> _2020') _tab _tab (`r_dialysis_2021') _tab _tab (`r_dialysis_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_dialysis_20
+> 17') _tab _tab %3.1f (`percent_dialysis_2018') _tab _tab %3.1f (`percent_dial
+> ysis_2019') _tab _tab %3.1f (`percent_dialysis_2020') _tab _tab %3.1f (`perce
+> nt_dialysis_2021') _tab _tab %3.1f (`percent_dialysis_2022') _n(2)
+
+. file write tablecontent _tab ("Transplant") _tab _tab (`r_transplant_2017') _
+> tab _tab (`r_transplant_2018') _tab _tab (`r_transplant_2019') _tab _tab (`r_
+> transplant_2020') _tab _tab (`r_transplant_2021') _tab _tab (`r_transplant_20
+> 22') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_transplant_
+> 2017') _tab _tab %3.1f (`percent_transplant_2018') _tab _tab %3.1f (`percent_
+> transplant_2019') _tab _tab %3.1f (`percent_transplant_2020') _tab _tab %3.1f
+>  (`percent_transplant_2021') _tab _tab %3.1f (`percent_transplant_2022') _n(2
+> )
+
+. file write tablecontent _tab ("KRT unclear") _tab _tab (`r_unclear_2017') _ta
+> b _tab (`r_unclear_2018') _tab _tab (`r_unclear_2019') _tab _tab (`r_unclear_
+> 2020') _tab _tab (`r_unclear_2021') _tab _tab (`r_unclear_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_unclear_201
+> 7') _tab _tab %3.1f (`percent_unclear_2018') _tab _tab %3.1f (`percent_unclea
+> r_2019') _tab _tab %3.1f (`percent_unclear_2020') _tab _tab %3.1f (`percent_u
+> nclear_2021') _tab _tab %3.1f (`percent_unclear_2022') _n(2)
+
+. file write tablecontent _tab ("Deceased") _tab _tab (`r_deceased_2017') _tab 
+> _tab (`r_deceased_2018') _tab _tab (`r_deceased_2019') _tab _tab (`r_deceased
+> _2020') _tab _tab (`r_deceased_2021') _tab _tab (`r_deceased_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_deceased_20
+> 17') _tab _tab %3.1f (`percent_deceased_2018') _tab _tab %3.1f (`percent_dece
+> ased_2019') _tab _tab %3.1f (`percent_deceased_2020') _tab _tab %3.1f (`perce
+> nt_deceased_2021') _tab _tab %3.1f (`percent_deceased_2022') _n(2)
+
+. 
+. *CKD stage 3
+. file write tablecontent ("CKD stage 3") _tab _tab _tab (`baseline_ckd3_2017')
+>  _tab _tab (`baseline_ckd3_2018') _tab _tab (`baseline_ckd3_2019') _tab _tab 
+> (`baseline_ckd3_2020') _tab _tab (`baseline_ckd3_2021') _tab _tab (`baseline_
+> ckd3_2022') _n(2)
+
+. file write tablecontent _tab ("No progression") _tab _tab (`none_2017') _tab 
+> _tab (`none_2018') _tab _tab (`none_2019') _tab _tab (`none_2020') _tab _tab 
+> (`none_2021') _tab _tab (`none_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_none_2017')
+>  _tab _tab %3.1f (`percent_none_2018') _tab _tab %3.1f (`percent_none_2019') 
+> _tab _tab %3.1f (`percent_none_2020') _tab _tab %3.1f (`percent_none_2021') _
+> tab _tab %3.1f (`percent_none_2022') _n(2)
+
+. file write tablecontent _tab ("CKD stage 4/5") _tab _tab (`ckd4_2017') _tab _
+> tab (`ckd4_2018') _tab _tab (`ckd4_2019') _tab _tab (`ckd4_2020') _tab _tab (
+> `ckd4_2021') _tab _tab (`ckd4_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_ckd4_2017')
+>  _tab _tab %3.1f (`percent_ckd4_2018') _tab _tab %3.1f (`percent_ckd4_2019') 
+> _tab _tab %3.1f (`percent_ckd4_2020') _tab _tab %3.1f (`percent_ckd4_2021') _
+> tab _tab %3.1f (`percent_ckd4_2022') _n(2)
+
+. file write tablecontent _tab ("Dialysis") _tab _tab (`dialysis_2017') _tab _t
+> ab (`dialysis_2018') _tab _tab (`dialysis_2019') _tab _tab (`dialysis_2020') 
+> _tab _tab (`dialysis_2021') _tab _tab (`dialysis_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_dialysis_20
+> 17') _tab _tab %3.1f (`percent_dialysis_2018') _tab _tab %3.1f (`percent_dial
+> ysis_2019') _tab _tab %3.1f (`percent_dialysis_2020') _tab _tab %3.1f (`perce
+> nt_dialysis_2021') _tab _tab %3.1f (`percent_dialysis_2022') _n(2)
+
+. file write tablecontent _tab ("Transplant") _tab _tab (`transplant_2017') _ta
+> b _tab (`transplant_2018') _tab _tab (`transplant_2019') _tab _tab (`transpla
+> nt_2020') _tab _tab (`transplant_2021') _tab _tab (`transplant_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_transplant_
+> 2017') _tab _tab %3.1f (`percent_transplant_2018') _tab _tab %3.1f (`percent_
+> transplant_2019') _tab _tab %3.1f (`percent_transplant_2020') _tab _tab %3.1f
+>  (`percent_transplant_2021') _tab _tab %3.1f (`percent_transplant_2022') _n(2
+> )
+
+. file write tablecontent _tab ("KRT unclear") _tab _tab (`unclear_2017') _tab 
+> _tab (`unclear_2018') _tab _tab (`unclear_2019') _tab _tab (`unclear_2020') _
+> tab _tab (`unclear_2021') _tab _tab (`unclear_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_unclear_201
+> 7') _tab _tab %3.1f (`percent_unclear_2018') _tab _tab %3.1f (`percent_unclea
+> r_2019') _tab _tab %3.1f (`percent_unclear_2020') _tab _tab %3.1f (`percent_u
+> nclear_2021') _tab _tab %3.1f (`percent_unclear_2022') _n(2)
+
+. file write tablecontent _tab ("Deceased") _tab _tab (`deceased_2017') _tab _t
+> ab (`deceased_2018') _tab _tab (`deceased_2019') _tab _tab (`deceased_2020') 
+> _tab _tab (`deceased_2021') _tab _tab (`deceased_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_deceased_20
+> 17') _tab _tab %3.1f (`percent_deceased_2018') _tab _tab %3.1f (`percent_dece
+> ased_2019') _tab _tab %3.1f (`percent_deceased_2020') _tab _tab %3.1f (`perce
+> nt_deceased_2021') _tab _tab %3.1f (`percent_deceased_2022') _n(2)
+
+. 
+. *CKD stage 4/5 without KRT
+. file write tablecontent ("CKD stage 4/5") _tab _tab _tab (`baseline_ckd4_2017
+> ') _tab _tab (`baseline_ckd4_2018') _tab _tab (`baseline_ckd4_2019') _tab _ta
+> b (`baseline_ckd4_2020') _tab _tab (`baseline_ckd4_2021') _tab _tab (`baselin
+> e_ckd4_2022') _n(2)
+
+. file write tablecontent _tab ("No progression") _tab _tab (`none_2017') _tab 
+> _tab (`none_2018') _tab _tab (`none_2019') _tab _tab (`none_2020') _tab _tab 
+> (`none_2021') _tab _tab (`none_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_none_2017')
+>  _tab _tab %3.1f (`percent_none_2018') _tab _tab %3.1f (`percent_none_2019') 
+> _tab _tab %3.1f (`percent_none_2020') _tab _tab %3.1f (`percent_none_2021') _
+> tab _tab %3.1f (`percent_none_2022') _n(2)
+
+. file write tablecontent _tab ("Dialysis") _tab _tab (`dialysis_2017') _tab _t
+> ab (`dialysis_2018') _tab _tab (`dialysis_2019') _tab _tab (`dialysis_2020') 
+> _tab _tab (`dialysis_2021') _tab _tab (`dialysis_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_dialysis_20
+> 17') _tab _tab %3.1f (`percent_dialysis_2018') _tab _tab %3.1f (`percent_dial
+> ysis_2019') _tab _tab %3.1f (`percent_dialysis_2020') _tab _tab %3.1f (`perce
+> nt_dialysis_2021') _tab _tab %3.1f (`percent_dialysis_2022') _n(2)
+
+. file write tablecontent _tab ("Transplant") _tab _tab (`transplant_2017') _ta
+> b _tab (`transplant_2018') _tab _tab (`transplant_2019') _tab _tab (`transpla
+> nt_2020') _tab _tab (`transplant_2021') _tab _tab (`transplant_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_transplant_
+> 2017') _tab _tab %3.1f (`percent_transplant_2018') _tab _tab %3.1f (`percent_
+> transplant_2019') _tab _tab %3.1f (`percent_transplant_2020') _tab _tab %3.1f
+>  (`percent_transplant_2021') _tab _tab %3.1f (`percent_transplant_2022') _n(2
+> )
+
+. file write tablecontent _tab ("KRT unclear") _tab _tab (`unclear_2017') _tab 
+> _tab (`unclear_2018') _tab _tab (`unclear_2019') _tab _tab (`unclear_2020') _
+> tab _tab (`unclear_2021') _tab _tab (`unclear_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_unclear_201
+> 7') _tab _tab %3.1f (`percent_unclear_2018') _tab _tab %3.1f (`percent_unclea
+> r_2019') _tab _tab %3.1f (`percent_unclear_2020') _tab _tab %3.1f (`percent_u
+> nclear_2021') _tab _tab %3.1f (`percent_unclear_2022') _n(2)
+
+. file write tablecontent _tab ("Deceased") _tab _tab (`deceased_2017') _tab _t
+> ab (`deceased_2018') _tab _tab (`deceased_2019') _tab _tab (`deceased_2020') 
+> _tab _tab (`deceased_2021') _tab _tab (`deceased_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_deceased_20
+> 17') _tab _tab %3.1f (`percent_deceased_2018') _tab _tab %3.1f (`percent_dece
+> ased_2019') _tab _tab %3.1f (`percent_deceased_2020') _tab _tab %3.1f (`perce
+> nt_deceased_2021') _tab _tab %3.1f (`percent_deceased_2022') _n(2)
+
+. 
+. *Dialysis
+. file write tablecontent ("Dialysis") _tab _tab _tab (`baseline_dialysis_2017'
+> ) _tab _tab (`baseline_dialysis_2018') _tab _tab (`baseline_dialysis_2019') _
+> tab _tab (`baseline_dialysis_2020') _tab _tab (`baseline_dialysis_2021') _tab
+>  _tab (`baseline_dialysis_2022') _n(2)
+
+. file write tablecontent _tab ("No progression") _tab _tab (`none_2017') _tab 
+> _tab (`none_2018') _tab _tab (`none_2019') _tab _tab (`none_2020') _tab _tab 
+> (`none_2021') _tab _tab (`none_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_none_2017')
+>  _tab _tab %3.1f (`percent_none_2018') _tab _tab %3.1f (`percent_none_2019') 
+> _tab _tab %3.1f (`percent_none_2020') _tab _tab %3.1f (`percent_none_2021') _
+> tab _tab %3.1f (`percent_none_2022') _n(2)
+
+. file write tablecontent _tab ("Transplant") _tab _tab (`transplant_2017') _ta
+> b _tab (`transplant_2018') _tab _tab (`transplant_2019') _tab _tab (`transpla
+> nt_2020') _tab _tab (`transplant_2021') _tab _tab (`transplant_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_transplant_
+> 2017') _tab _tab %3.1f (`percent_transplant_2018') _tab _tab %3.1f (`percent_
+> transplant_2019') _tab _tab %3.1f (`percent_transplant_2020') _tab _tab %3.1f
+>  (`percent_transplant_2021') _tab _tab %3.1f (`percent_transplant_2022') _n(2
+> )
+
+. file write tablecontent _tab ("Deceased") _tab _tab (`deceased_2017') _tab _t
+> ab (`deceased_2018') _tab _tab (`deceased_2019') _tab _tab (`deceased_2020') 
+> _tab _tab (`deceased_2021') _tab _tab (`deceased_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_deceased_20
+> 17') _tab _tab %3.1f (`percent_deceased_2018') _tab _tab %3.1f (`percent_dece
+> ased_2019') _tab _tab %3.1f (`percent_deceased_2020') _tab _tab %3.1f (`perce
+> nt_deceased_2021') _tab _tab %3.1f (`percent_deceased_2022') _n(2)
+
+. 
+. *Kidney transplant
+. file write tablecontent ("Transplant") _tab _tab _tab (`baseline_transplant_2
+> 017') _tab _tab (`baseline_transplant_2018') _tab _tab (`baseline_transplant_
+> 2019') _tab _tab (`baseline_transplant_2020') _tab _tab (`baseline_transplant
+> _2021') _tab _tab (`baseline_transplant_2022') _n(2)
+
+. file write tablecontent _tab ("No progression") _tab _tab (`none_2017') _tab 
+> _tab (`none_2018') _tab _tab (`none_2019') _tab _tab (`none_2020') _tab _tab 
+> (`none_2021') _tab _tab (`none_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_none_2017')
+>  _tab _tab %3.1f (`percent_none_2018') _tab _tab %3.1f (`percent_none_2019') 
+> _tab _tab %3.1f (`percent_none_2020') _tab _tab %3.1f (`percent_none_2021') _
+> tab _tab %3.1f (`percent_none_2022') _n(2)
+
+. file write tablecontent _tab ("Dialysis") _tab _tab (`dialysis_2017') _tab _t
+> ab (`dialysis_2018') _tab _tab (`dialysis_2019') _tab _tab (`dialysis_2020') 
+> _tab _tab (`dialysis_2021') _tab _tab (`dialysis_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_dialysis_20
+> 17') _tab _tab %3.1f (`percent_dialysis_2018') _tab _tab %3.1f (`percent_dial
+> ysis_2019') _tab _tab %3.1f (`percent_dialysis_2020') _tab _tab %3.1f (`perce
+> nt_dialysis_2021') _tab _tab %3.1f (`percent_dialysis_2022') _n(2)
+
+. file write tablecontent _tab ("Deceased") _tab _tab (`deceased_2017') _tab _t
+> ab (`deceased_2018') _tab _tab (`deceased_2019') _tab _tab (`deceased_2020') 
+> _tab _tab (`deceased_2021') _tab _tab (`deceased_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_deceased_20
+> 17') _tab _tab %3.1f (`percent_deceased_2018') _tab _tab %3.1f (`percent_dece
+> ased_2019') _tab _tab %3.1f (`percent_deceased_2020') _tab _tab %3.1f (`perce
+> nt_deceased_2021') _tab _tab %3.1f (`percent_deceased_2022') _n(2)
+
+. 
+. *KRT unclear modality
+. file write tablecontent ("KRT unclear") _tab _tab _tab (`baseline_unclear_201
+> 7') _tab _tab (`baseline_unclear_2018') _tab _tab (`baseline_unclear_2019') _
+> tab _tab (`baseline_unclear_2020') _tab _tab (`baseline_unclear_2021') _tab _
+> tab (`baseline_unclear_2022') _n(2)
+
+. file write tablecontent _tab ("No progression") _tab _tab (`none_2017') _tab 
+> _tab (`none_2018') _tab _tab (`none_2019') _tab _tab (`none_2020') _tab _tab 
+> (`none_2021') _tab _tab (`none_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_none_2017')
+>  _tab _tab %3.1f (`percent_none_2018') _tab _tab %3.1f (`percent_none_2019') 
+> _tab _tab %3.1f (`percent_none_2020') _tab _tab %3.1f (`percent_none_2021') _
+> tab _tab %3.1f (`percent_none_2022') _n(2)
+
+. file write tablecontent _tab ("Dialysis") _tab _tab (`dialysis_2017') _tab _t
+> ab (`dialysis_2018') _tab _tab (`dialysis_2019') _tab _tab (`dialysis_2020') 
+> _tab _tab (`dialysis_2021') _tab _tab (`dialysis_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_dialysis_20
+> 17') _tab _tab %3.1f (`percent_dialysis_2018') _tab _tab %3.1f (`percent_dial
+> ysis_2019') _tab _tab %3.1f (`percent_dialysis_2020') _tab _tab %3.1f (`perce
+> nt_dialysis_2021') _tab _tab %3.1f (`percent_dialysis_2022') _n(2)
+
+. file write tablecontent _tab ("Transplant") _tab _tab (`transplant_2017') _ta
+> b _tab (`transplant_2018') _tab _tab (`transplant_2019') _tab _tab (`transpla
+> nt_2020') _tab _tab (`transplant_2021') _tab _tab (`transplant_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_transplant_
+> 2017') _tab _tab %3.1f (`percent_transplant_2018') _tab _tab %3.1f (`percent_
+> transplant_2019') _tab _tab %3.1f (`percent_transplant_2020') _tab _tab %3.1f
+>  (`percent_transplant_2021') _tab _tab %3.1f (`percent_transplant_2022') _n(2
+> )
+
+. file write tablecontent _tab ("Deceased") _tab _tab (`deceased_2017') _tab _t
+> ab (`deceased_2018') _tab _tab (`deceased_2019') _tab _tab (`deceased_2020') 
+> _tab _tab (`deceased_2021') _tab _tab (`deceased_2022') _n
+
+. file write tablecontent _tab ("%") _tab _tab _tab %3.1f (`percent_deceased_20
+> 17') _tab _tab %3.1f (`percent_deceased_2018') _tab _tab %3.1f (`percent_dece
+> ased_2019') _tab _tab %3.1f (`percent_deceased_2020') _tab _tab %3.1f (`perce
+> nt_deceased_2021') _tab _tab %3.1f (`percent_deceased_2022') _n(2)
+
+. 
+. file close tablecontent
+
+. 
+end of do-file
+
+. . file open output using "/tmp/tmp.LfD5b4sQ7f", write text replace
+
+. . file write output "success" 
+
+. . file close output
+
+. 
+end of do-file
+
+
