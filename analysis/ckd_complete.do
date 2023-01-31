@@ -5,7 +5,7 @@ pwd
 local dataset `1'
 
 cap log close
-log using ./logs/`dataset'_ckd_complete, replace t
+log using ./output/log_`dataset'_ckd_complete, replace t
 clear
 
 * Merge `dataset'_ckd with `dataset'_ckd_complete

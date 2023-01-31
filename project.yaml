@@ -18,7 +18,7 @@ actions:
       highly_sensitive:
         analysis_dataset: output/2017_ckd.csv
       moderately_sensitive:
-        log: logs/2017_ckd.log
+        log: output/log_2017_ckd.log
   
   2017_ckd_complete:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2017_ckd_complete
@@ -34,14 +34,14 @@ actions:
       highly_sensitive:
         analysis_dataset: output/2017_ckd_complete.dta
       moderately_sensitive:
-        log: logs/2017_ckd_complete.log
+        log: output/log_2017_ckd_complete.log
 
   2017_outcomes:
     run: stata-mp:latest analysis/outcomes.do 2017
     needs: [2017, 2017_ckd, 2017_ckd_complete, 2017_clean_ckd_complete]
     outputs:
       moderately_sensitive:
-        log: logs/2017_outcomes.log
+        log: output/log_2017_outcomes.log
 
   2018:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2018
@@ -56,7 +56,7 @@ actions:
       highly_sensitive:
         analysis_dataset: output/2018_ckd.csv
       moderately_sensitive:
-        log: logs/2018_ckd.log
+        log: output/log_2018_ckd.log
   
   2018_ckd_complete:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2018_ckd_complete
@@ -72,14 +72,14 @@ actions:
       highly_sensitive:
         analysis_dataset: output/2018_ckd_complete.dta
       moderately_sensitive:
-        log: logs/2018_ckd_complete.log
+        log: output/log_2018_ckd_complete.log
 
   2018_outcomes:
     run: stata-mp:latest analysis/outcomes.do 2018
     needs: [2018, 2018_ckd, 2018_ckd_complete, 2018_clean_ckd_complete]
     outputs:
       moderately_sensitive:
-        log: logs/2018_outcomes.log
+        log: output/log_2018_outcomes.log
 
   2019:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2019
@@ -94,7 +94,7 @@ actions:
       highly_sensitive:
         analysis_dataset: output/2019_ckd.csv
       moderately_sensitive:
-        log: logs/2019_ckd.log
+        log: output/log_2019_ckd.log
   
   2019_ckd_complete:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2019_ckd_complete
@@ -110,14 +110,14 @@ actions:
       highly_sensitive:
         analysis_dataset: output/2019_ckd_complete.dta
       moderately_sensitive:
-        log: logs/2019_ckd_complete.log
+        log: output/log_2019_ckd_complete.log
 
   2019_outcomes:
     run: stata-mp:latest analysis/outcomes.do 2019
     needs: [2019, 2019_ckd, 2019_ckd_complete, 2019_clean_ckd_complete]
     outputs:
       moderately_sensitive:
-        log: logs/2019_outcomes.log
+        log: output/log_2019_outcomes.log
 
   2020:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2020
@@ -132,7 +132,7 @@ actions:
       highly_sensitive:
         analysis_dataset: output/2020_ckd.csv
       moderately_sensitive:
-        log: logs/2020_ckd.log
+        log: output/log_2020_ckd.log
   
   2020_ckd_complete:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2020_ckd_complete
@@ -148,14 +148,14 @@ actions:
       highly_sensitive:
         analysis_dataset: output/2020_ckd_complete.dta
       moderately_sensitive:
-        log: logs/2020_ckd_complete.log
+        log: output/log_2020_ckd_complete.log
 
   2020_outcomes:
     run: stata-mp:latest analysis/outcomes.do 2020
     needs: [2020, 2020_ckd, 2020_ckd_complete, 2020_clean_ckd_complete]
     outputs:
       moderately_sensitive:
-        log: logs/2020_outcomes.log
+        log: output/log_2020_outcomes.log
 
   2021:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2021
@@ -170,7 +170,7 @@ actions:
       highly_sensitive:
         analysis_dataset: output/2021_ckd.csv
       moderately_sensitive:
-        log: logs/2021_ckd.log
+        log: output/log_2021_ckd.log
   
   2021_ckd_complete:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2021_ckd_complete
@@ -186,14 +186,14 @@ actions:
       highly_sensitive:
         analysis_dataset: output/2021_ckd_complete.dta
       moderately_sensitive:
-        log: logs/2021_ckd_complete.log
+        log: output/log_2021_ckd_complete.log
 
   2021_outcomes:
     run: stata-mp:latest analysis/outcomes.do 2021
     needs: [2021, 2021_ckd, 2021_ckd_complete, 2021_clean_ckd_complete]
     outputs:
       moderately_sensitive:
-        log: logs/2021_outcomes.log
+        log: output/log_2021_outcomes.log
 
   2022:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2022
@@ -208,7 +208,7 @@ actions:
       highly_sensitive:
         analysis_dataset: output/2022_ckd.csv
       moderately_sensitive:
-        log: logs/2022_ckd.log
+        log: output/log_2022_ckd.log
   
   2022_ckd_complete:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2022_ckd_complete
@@ -224,19 +224,31 @@ actions:
       highly_sensitive:
         analysis_dataset: output/2022_ckd_complete.dta
       moderately_sensitive:
-        log: logs/2022_ckd_complete.log
+        log: output/log_2022_ckd_complete.log
 
   2022_outcomes:
     run: stata-mp:latest analysis/outcomes.do 2022
     needs: [2022, 2022_ckd, 2022_ckd_complete, 2022_clean_ckd_complete]
     outputs:
       moderately_sensitive:
-        log: logs/2022_outcomes.log
+        log: output/log_2022_outcomes.log
 
   ckd_progression:
     run: stata-mp:latest analysis/ckd_progression.do
-    needs: [2017_outcomes, 2018_outcomes, 2019_outcomes, 2020_outcomes, 2021_outcomes, 2022_outcomes]
+    needs: 
+      - 2017_outcomes
+      - 2017_clean_ckd_complete
+      - 2018_outcomes
+      - 2018_clean_ckd_complete
+      - 2019_outcomes
+      - 2019_clean_ckd_complete
+      - 2020_outcomes
+      - 2020_clean_ckd_complete
+      - 2021_outcomes
+      - 2021_clean_ckd_complete
+      - 2022_outcomes
+      - 2022_clean_ckd_complete
     outputs:
       moderately_sensitive:
-        log: logs/ckd_progression.log
+        log: output/log_ckd_progression.log
         output: output/ckd_progression.csv

@@ -5,7 +5,7 @@ pwd
 local dataset `1'
 
 cap log close
-log using ./logs/`dataset'_ckd, replace t
+log using ./output/log_`dataset'_ckd, replace t
 clear
 
 import delimited ./output/input_`dataset'.csv, delimiter(comma) varnames(1) case(preserve) 

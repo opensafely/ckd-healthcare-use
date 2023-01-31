@@ -3,7 +3,7 @@ sysdir set PERSONAL ./analysis/adofiles
 pwd
 cap log close
 macro drop hr
-log using ./logs/ckd_progression.log, replace t
+log using ./output/log_ckd_progression.log, replace t
 
 cap file close tablecontent
 file open tablecontent using ./output/ckd_progression.csv, write text replace
