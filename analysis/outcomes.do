@@ -5,7 +5,7 @@ pwd
 local dataset `1'
 
 cap log close
-log using ./logs/`dataset'_outcomes, replace t
+log using ./output/log_`dataset'_outcomes, replace t
 use ./output/`dataset'_ckd_complete.dta
 
 tab ckd_group ckd_progression
