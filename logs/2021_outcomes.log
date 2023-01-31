@@ -1,0 +1,3137 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /workspace/logs/2021_outcomes.log
+  log type:  text
+ opened on:  31 Jan 2023, 11:51:13
+
+. use ./output/`dataset'_ckd_complete.dta
+
+. 
+. tab ckd_group ckd_progression
+
+              |               CKD progression
+    CKD group | No progre      CKD 3  CKD 4/5 p   Dialysis |     Total
+--------------+--------------------------------------------+----------
+  Albuminuria |       407         69          1         36 |       597 
+  CKD stage 3 |       308          0          1         27 |       389 
+CKD stage 4/5 |        10          0          0          1 |        11 
+     Dialysis |       144          0          0          3 |       178 
+   Transplant |       152          0          0          8 |       187 
+  KRT unclear |        33          0          0          2 |        42 
+--------------+--------------------------------------------+----------
+        Total |     1,054         69          2         77 |     1,404 
+
+
+              |         CKD progression
+    CKD group | Kidney tr  KRT uncle   Deceased |     Total
+--------------+---------------------------------+----------
+  Albuminuria |        23          6         55 |       597 
+  CKD stage 3 |        15          5         33 |       389 
+CKD stage 4/5 |         0          0          0 |        11 
+     Dialysis |         9          4         18 |       178 
+   Transplant |         9          1         17 |       187 
+  KRT unclear |         1          1          5 |        42 
+--------------+---------------------------------+----------
+        Total |        57         17        128 |     1,404 
+
+. 
+. foreach outcome of varlist      m4_hospital_days                        ///
+>                                                         m5_hospital_days     
+>                    ///
+>                                                         m6_hospital_days     
+>                    ///                                                     
+>                                                         m7_hospital_days     
+>                    ///
+>                                                         m8_hospital_days     
+>                    ///
+>                                                         m9_hospital_days     
+>                    ///
+>                                                         m10_hospital_days    
+>                    ///
+>                                                         m11_hospital_days    
+>                    ///
+>                                                         m12_hospital_days    
+>                    ///
+>                                                         m1_hospital_days     
+>                    ///
+>                                                         m2_hospital_days     
+>                    ///                                                       
+>                                                                              
+>                                                                              
+>     
+>                                                         m3_hospital_days     
+>                    ///
+>                                                         m4_admitted_patients 
+>            ///
+>                                                         m5_admitted_patients 
+>            ///
+>                                                         m6_admitted_patients 
+>            ///                                                     
+>                                                         m7_admitted_patients 
+>            ///
+>                                                         m8_admitted_patients 
+>            ///
+>                                                         m9_admitted_patients 
+>            ///
+>                                                         m10_admitted_patients
+>            ///
+>                                                         m11_admitted_patients
+>            ///
+>                                                         m12_admitted_patients
+>            ///
+>                                                         m1_admitted_patients 
+>            ///
+>                                                         m2_admitted_patients 
+>            ///                                                               
+>                                                                              
+>                                                                          
+>                                                         m3_admitted_patients 
+>            ///
+>                                                         m4_fistula_formation 
+>            ///
+>                                                         m5_fistula_formation 
+>            ///
+>                                                         m6_fistula_formation 
+>            ///                                                     
+>                                                         m7_fistula_formation 
+>            ///
+>                                                         m8_fistula_formation 
+>            ///
+>                                                         m9_fistula_formation 
+>            ///
+>                                                         m10_fistula_formation
+>            ///
+>                                                         m11_fistula_formation
+>            ///
+>                                                         m12_fistula_formation
+>            ///
+>                                                         m1_fistula_formation 
+>            ///
+>                                                         m2_fistula_formation 
+>            ///                                                               
+>                                                                              
+>                                                                          
+>                                                         m3_fistula_formation 
+>            ///
+>                                                         m4_pd_insertion      
+>                    ///
+>                                                         m5_pd_insertion      
+>                    ///
+>                                                         m6_pd_insertion      
+>                    ///                                                     
+>                                                         m7_pd_insertion      
+>                    ///
+>                                                         m8_pd_insertion      
+>                    ///
+>                                                         m9_pd_insertion      
+>                    ///
+>                                                         m10_pd_insertion     
+>                    ///
+>                                                         m11_pd_insertion     
+>                    ///
+>                                                         m12_pd_insertion     
+>                    ///
+>                                                         m1_pd_insertion      
+>                    ///
+>                                                         m2_pd_insertion      
+>                    ///                                                       
+>                                                                              
+>                                                                              
+>     
+>                                                         m3_pd_insertion      
+>                    ///
+>                                                         m4_critical_care_days
+>            ///
+>                                                         m5_critical_care_days
+>            ///
+>                                                         m6_critical_care_days
+>            ///                                                     
+>                                                         m7_critical_care_days
+>            ///
+>                                                         m8_critical_care_days
+>            ///
+>                                                         m9_critical_care_days
+>            ///
+>                                                         m10_critical_care_day
+> s          ///
+>                                                         m11_critical_care_day
+> s          ///
+>                                                         m12_critical_care_day
+> s          ///
+>                                                         m1_critical_care_days
+>            ///
+>                                                         m2_critical_care_days
+>            ///                                                               
+>                                                                              
+>                                                                          
+>                                                         m3_critical_care_days
+>            ///
+>                                                         m4_critical_care_pati
+> ents       ///
+>                                                         m5_critical_care_pati
+> ents       ///
+>                                                         m6_critical_care_pati
+> ents       ///                                                     
+>                                                         m7_critical_care_pati
+> ents       ///
+>                                                         m8_critical_care_pati
+> ents       ///
+>                                                         m9_critical_care_pati
+> ents       ///
+>                                                         m10_critical_care_pat
+> ients      ///
+>                                                         m11_critical_care_pat
+> ients      ///
+>                                                         m12_critical_care_pat
+> ients      ///
+>                                                         m1_critical_care_pati
+> ents       ///
+>                                                         m2_critical_care_pati
+> ents       ///                                                               
+>                                                                              
+>                                                                          
+>                                                         m3_critical_care_pati
+> ents       ///
+>                                                         m4_emergency_days    
+>                    ///
+>                                                         m5_emergency_days    
+>                    ///
+>                                                         m6_emergency_days    
+>                    ///                                                     
+>                                                         m7_emergency_days    
+>                    ///
+>                                                         m8_emergency_days    
+>                    ///
+>                                                         m9_emergency_days    
+>                    ///
+>                                                         m10_emergency_days   
+>                    ///
+>                                                         m11_emergency_days   
+>                    ///
+>                                                         m12_emergency_days   
+>                    ///
+>                                                         m1_emergency_days    
+>                    ///
+>                                                         m2_emergency_days    
+>                    ///                                                       
+>                                                                              
+>                                                                              
+>     
+>                                                         m3_emergency_days    
+>                    ///
+>                                                         m4_emergency_patients
+>            ///
+>                                                         m5_emergency_patients
+>            ///
+>                                                         m6_emergency_patients
+>            ///                                                     
+>                                                         m7_emergency_patients
+>            ///
+>                                                         m8_emergency_patients
+>            ///
+>                                                         m9_emergency_patients
+>            ///
+>                                                         m10_emergency_patient
+> s          ///
+>                                                         m11_emergency_patient
+> s          ///
+>                                                         m12_emergency_patient
+> s          ///
+>                                                         m1_emergency_patients
+>            ///
+>                                                         m2_emergency_patients
+>            ///                                                               
+>                                                                              
+>                                                                          
+>                                                         m3_emergency_patients
+>            ///
+>                                                         m4_outpatient_appoint
+> ments      ///
+>                                                         m5_outpatient_appoint
+> ments      ///
+>                                                         m6_outpatient_appoint
+> ments      ///                                                     
+>                                                         m7_outpatient_appoint
+> ments      ///
+>                                                         m8_outpatient_appoint
+> ments      ///
+>                                                         m9_outpatient_appoint
+> ments      ///
+>                                                         m10_outpatient_appoin
+> tments     ///
+>                                                         m11_outpatient_appoin
+> tments     ///
+>                                                         m12_outpatient_appoin
+> tments     ///
+>                                                         m1_outpatient_appoint
+> ments      ///
+>                                                         m2_outpatient_appoint
+> ments      ///                                                               
+>                                                                              
+>                                                                          
+>                                                         m3_outpatient_appoint
+> ments      ///
+>                                                         m4_nephrology_appoint
+> ments      ///
+>                                                         m5_nephrology_appoint
+> ments      ///
+>                                                         m6_nephrology_appoint
+> ments      ///                                                     
+>                                                         m7_nephrology_appoint
+> ments      ///
+>                                                         m8_nephrology_appoint
+> ments      ///
+>                                                         m9_nephrology_appoint
+> ments      ///
+>                                                         m10_nephrology_appoin
+> tments     ///
+>                                                         m11_nephrology_appoin
+> tments     ///
+>                                                         m12_nephrology_appoin
+> tments     ///
+>                                                         m1_nephrology_appoint
+> ments      ///
+>                                                         m2_nephrology_appoint
+> ments      ///                                                               
+>                                                                              
+>                                                                          
+>                                                         m3_nephrology_appoint
+> ments      ///
+>                                                         m4_transplant_appoint
+> ments      ///
+>                                                         m5_transplant_appoint
+> ments      ///
+>                                                         m6_transplant_appoint
+> ments      ///                                                     
+>                                                         m7_transplant_appoint
+> ments      ///
+>                                                         m8_transplant_appoint
+> ments      ///
+>                                                         m9_transplant_appoint
+> ments      ///
+>                                                         m10_transplant_appoin
+> tments     ///
+>                                                         m11_transplant_appoin
+> tments     ///
+>                                                         m12_transplant_appoin
+> tments     ///
+>                                                         m1_transplant_appoint
+> ments      ///
+>                                                         m2_transplant_appoint
+> ments      ///                                                               
+>                                                                              
+>                                                                          
+>                                                         m3_transplant_appoint
+> ments      ///
+>                                                         m4_gp_interactions   
+>                    ///
+>                                                         m5_gp_interactions   
+>                    ///
+>                                                         m6_gp_interactions   
+>                    ///                                                     
+>                                                         m7_gp_interactions   
+>                    ///
+>                                                         m8_gp_interactions   
+>                    ///
+>                                                         m9_gp_interactions   
+>                    ///
+>                                                         m10_gp_interactions  
+>                    ///
+>                                                         m11_gp_interactions  
+>                    ///
+>                                                         m12_gp_interactions  
+>                    ///
+>                                                         m1_gp_interactions   
+>                    ///
+>                                                         m2_gp_interactions   
+>                    ///                                                       
+>                                                                              
+>                                                                              
+>     
+>                                                         m3_gp_interactions   
+>                    ///
+>                                                         m4_blood_pressure    
+>                    ///
+>                                                         m5_blood_pressure    
+>                    ///
+>                                                         m6_blood_pressure    
+>                    ///                                                     
+>                                                         m7_blood_pressure    
+>                    ///
+>                                                         m8_blood_pressure    
+>                    ///
+>                                                         m9_blood_pressure    
+>                    ///
+>                                                         m10_blood_pressure   
+>                    ///
+>                                                         m11_blood_pressure   
+>                    ///
+>                                                         m12_blood_pressure   
+>                    ///
+>                                                         m1_blood_pressure    
+>                    ///
+>                                                         m2_blood_pressure    
+>                    ///                                                       
+>                                                                              
+>                                                                              
+>     
+>                                                         m3_blood_pressure    
+>                    ///
+>                                                         m4_albuminuria       
+>                    ///
+>                                                         m5_albuminuria       
+>                    ///
+>                                                         m6_albuminuria       
+>                    ///                                                     
+>                                                         m7_albuminuria       
+>                    ///
+>                                                         m8_albuminuria       
+>                    ///
+>                                                         m9_albuminuria       
+>                    ///
+>                                                         m10_albuminuria      
+>                    ///
+>                                                         m11_albuminuria      
+>                    ///
+>                                                         m12_albuminuria      
+>                    ///
+>                                                         m1_albuminuria       
+>                    ///
+>                                                         m2_albuminuria       
+>                    ///                                                       
+>                                                                              
+>                                                                              
+>     
+>                                                         m3_albuminuria       
+>                    ///
+>                                                         m4_creatinine        
+>                    ///
+>                                                         m5_creatinine        
+>                    ///
+>                                                         m6_creatinine        
+>                    ///                                                     
+>                                                         m7_creatinine        
+>                    ///
+>                                                         m8_creatinine        
+>                    ///
+>                                                         m9_creatinine        
+>                    ///
+>                                                         m10_creatinine       
+>                    ///
+>                                                         m11_creatinine       
+>                    ///
+>                                                         m12_creatinine       
+>                    ///
+>                                                         m1_creatinine        
+>                    ///
+>                                                         m2_creatinine        
+>                    ///                                                       
+>                                                                              
+>                                                                              
+>     
+>                                                         m3_creatinine {
+  2. total `outcome', over(ckd_group)
+  3. }
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+c.m4_hospital_days@ckd_group |
+                Albuminuria  |        151    23.5741      104.7557    197.2443
+                CKD stage 3  |        123   20.71742      82.35955    163.6404
+              CKD stage 4/5  |          3          3     -2.884969    8.884969
+                   Dialysis  |         39   12.54348        14.394      63.606
+                 Transplant  |         39    11.3824      16.67163    61.32837
+                KRT unclear  |         18   7.318536      3.643547    32.35645
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+c.m5_hospital_days@ckd_group |
+                Albuminuria  |        174   25.62003      123.7423    224.2577
+                CKD stage 3  |         92   18.84555      55.03151    128.9685
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |         52   13.55883      25.40224    78.59776
+                 Transplant  |         48   12.74945      22.98997    73.01003
+                KRT unclear  |          4          4     -3.846625    11.84663
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+c.m6_hospital_days@ckd_group |
+                Albuminuria  |        114   20.12236      74.52685    153.4732
+                CKD stage 3  |        125   21.21296      83.38746    166.6125
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |         21   8.998744      3.347557    38.65244
+                 Transplant  |         39    11.3824      16.67163    61.32837
+                KRT unclear  |          3   2.214145     -1.343392    7.343392
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+c.m7_hospital_days@ckd_group |
+                Albuminuria  |        161    24.2604      113.4094    208.5906
+                CKD stage 3  |         75   16.89003      41.86756    108.1324
+              CKD stage 4/5  |          2          2     -1.923313    5.923313
+                   Dialysis  |         43   12.78793      17.91448    68.08552
+                 Transplant  |         68   16.45358      35.72372    100.2763
+                KRT unclear  |          7   3.764403     -.3844652    14.38447
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+c.m8_hospital_days@ckd_group |
+                Albuminuria  |        138   21.69998      95.43209    180.5679
+                CKD stage 3  |        120   20.64164       79.5082    160.4918
+              CKD stage 4/5  |          2          2     -1.923313    5.923313
+                   Dialysis  |         38   11.60362      15.23768    60.76232
+                 Transplant  |         45   11.87117      21.71284    68.28716
+                KRT unclear  |          7   4.941117     -2.692773    16.69277
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+c.m9_hospital_days@ckd_group |
+                Albuminuria  |        142   22.65136      97.56583    186.4342
+                CKD stage 3  |         80   17.27178       46.1187    113.8813
+              CKD stage 4/5  |          1          1     -.9616563    2.961656
+                   Dialysis  |         42   11.86935      18.71642    65.28358
+                 Transplant  |         45   13.30858      18.89314    71.10686
+                KRT unclear  |          7   4.027346     -.9002677    14.90027
+------------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m10_hospital_days@|
+           ckd_group |
+        Albuminuria  |        147   22.26284       103.328     190.672
+        CKD stage 3  |         94   18.00329      58.68373    129.3163
+      CKD stage 4/5  |          2          2     -1.923313    5.923313
+           Dialysis  |         55   13.22833      29.05056    80.94944
+         Transplant  |         38   10.90477      16.60859    59.39141
+        KRT unclear  |         12   6.907048     -1.549255    25.54925
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m11_hospital_days@|
+           ckd_group |
+        Albuminuria  |        134   23.21262      88.46483    179.5352
+        CKD stage 3  |         58   13.10701      32.28854    83.71146
+      CKD stage 4/5  |          2          2     -1.923313    5.923313
+           Dialysis  |         67   14.31545        38.918      95.082
+         Transplant  |         78   17.35152      43.96228    112.0377
+        KRT unclear  |         10   6.529483     -2.808601     22.8086
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m12_hospital_days@|
+           ckd_group |
+        Albuminuria  |        142   23.21912      96.45207    187.5479
+        CKD stage 3  |        100   18.95301      62.82071    137.1793
+      CKD stage 4/5  |          0  (omitted)
+           Dialysis  |         48    14.9099       18.7519     77.2481
+         Transplant  |         42   11.88792      18.67999    65.32001
+        KRT unclear  |         14   7.251577     -.2251011     28.2251
+----------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+c.m1_hospital_days@ckd_group |
+                Albuminuria  |        116   21.91495       73.0104    158.9896
+                CKD stage 3  |        131   23.28687      85.31916    176.6808
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |         42   11.17099      20.08636    63.91364
+                 Transplant  |         61   13.78834      33.95202    88.04798
+                KRT unclear  |          5   3.564732      -1.99278    11.99278
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+c.m2_hospital_days@ckd_group |
+                Albuminuria  |        149   24.30642      101.3192    196.6808
+                CKD stage 3  |        110   20.63952      69.51236    150.4876
+              CKD stage 4/5  |          1          1     -.9616563    2.961656
+                   Dialysis  |         66   15.58501      35.42756    96.57244
+                 Transplant  |         31   9.182147      12.98778    49.01222
+                KRT unclear  |          8   4.350498     -.5341809    16.53418
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+c.m3_hospital_days@ckd_group |
+                Albuminuria  |        120     21.741      77.35163    162.6484
+                CKD stage 3  |        140   23.77114       93.3692    186.6308
+              CKD stage 4/5  |          6   4.289522     -2.414568    14.41457
+                   Dialysis  |         27   10.46517      6.470934    47.52907
+                 Transplant  |         39   11.90057      15.65516    62.34484
+                KRT unclear  |          9   8.038019     -6.767831    24.76783
+------------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m4_admitted_patients@|
+              ckd_group |
+           Albuminuria  |         59   7.297835      44.68416    73.31584
+           CKD stage 3  |         34   5.577477      23.05891    44.94109
+         CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+              Dialysis  |         15    3.71666      7.709191    22.29081
+            Transplant  |         17   3.941781      9.267581    24.73242
+           KRT unclear  |          4   1.925439      .2229496     7.77705
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m5_admitted_patients@|
+              ckd_group |
+           Albuminuria  |         62   7.460185      47.36568    76.63432
+           CKD stage 3  |         41   6.064091      29.10434    52.89566
+         CKD stage 4/5  |          1          1     -.9616563    2.961656
+              Dialysis  |         29   4.940894      19.30767    38.69233
+            Transplant  |         14   3.608532        6.9213     21.0787
+           KRT unclear  |          4   1.925439      .2229496     7.77705
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m6_admitted_patients@|
+              ckd_group |
+           Albuminuria  |         64   7.565375      49.15933    78.84067
+           CKD stage 3  |         37   5.793704      25.63474    48.36526
+         CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+              Dialysis  |         19   4.131319      10.89577    27.10423
+            Transplant  |         19   4.142619      10.87361    27.12639
+           KRT unclear  |         10   2.793721      4.519679    15.48032
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m7_admitted_patients@|
+              ckd_group |
+           Albuminuria  |         65   7.617095      50.05788    79.94212
+           CKD stage 3  |         34   5.577477      23.05891    44.94109
+         CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+              Dialysis  |         17   3.932337      9.286106    24.71389
+            Transplant  |         20   4.237569      11.68735    28.31265
+           KRT unclear  |          4   1.925439      .2229496     7.77705
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m8_admitted_patients@|
+              ckd_group |
+           Albuminuria  |         57   7.186397      42.90276    71.09724
+           CKD stage 3  |         42   6.128773      29.97745    54.02255
+         CKD stage 4/5  |          0  (omitted)
+              Dialysis  |         16   3.826757      8.493218    23.50678
+            Transplant  |         10   3.084822      3.948639    16.05136
+           KRT unclear  |          8   2.575684      2.947394    13.05261
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m9_admitted_patients@|
+              ckd_group |
+           Albuminuria  |         56   7.129671      42.01404    69.98596
+           CKD stage 3  |         38    5.86313      26.49856    49.50144
+         CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+              Dialysis  |         20   4.225294      11.71143    28.28857
+            Transplant  |         27   4.819316      17.54616    36.45384
+           KRT unclear  |          2   1.396861     -.7401603     4.74016
+-------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m10_admitted_patients@|
+               ckd_group |
+            Albuminuria  |         63   7.513076      48.26193    77.73807
+            CKD stage 3  |         33   5.502577      22.20584    43.79416
+          CKD stage 4/5  |          1          1     -.9616563    2.961656
+               Dialysis  |         17   3.932337      9.286106    24.71389
+             Transplant  |         25   4.666283      15.84636    34.15364
+            KRT unclear  |          4   1.925439      .2229496     7.77705
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m11_admitted_patients@|
+               ckd_group |
+            Albuminuria  |         54   7.014128      40.24069    67.75931
+            CKD stage 3  |         48   6.495042      35.25896    60.74104
+          CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+               Dialysis  |         12   3.354734      5.419166    18.58083
+             Transplant  |         21   4.329196      12.50761    29.49239
+            KRT unclear  |          4   1.925439      .2229496     7.77705
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m12_admitted_patients@|
+               ckd_group |
+            Albuminuria  |         61    7.40669      46.47062    75.52938
+            CKD stage 3  |         43   6.192363      30.85271    55.14729
+          CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+               Dialysis  |         18   4.033756      10.08716    25.91284
+             Transplant  |         22   4.417706      13.33398    30.66602
+            KRT unclear  |          2   1.396861     -.7401603     4.74016
+--------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m1_admitted_patients@|
+              ckd_group |
+           Albuminuria  |         55   7.072254      41.12667    68.87333
+           CKD stage 3  |         48   6.495042      35.25896    60.74104
+         CKD stage 4/5  |          1          1     -.9616563    2.961656
+              Dialysis  |         28   4.871223      18.44433    37.55567
+            Transplant  |         17   3.941781      9.267581    24.73242
+           KRT unclear  |          3   1.689278     -.3137818    6.313782
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m2_admitted_patients@|
+              ckd_group |
+           Albuminuria  |         67   7.718843      51.85828    82.14172
+           CKD stage 3  |         44   6.254895      31.73005    56.26995
+         CKD stage 4/5  |          1          1     -.9616563    2.961656
+              Dialysis  |         17   3.932337      9.286106    24.71389
+            Transplant  |         22   4.417706      13.33398    30.66602
+           KRT unclear  |          2   1.396861     -.7401603     4.74016
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m3_admitted_patients@|
+              ckd_group |
+           Albuminuria  |         62   7.460185      47.36568    76.63432
+           CKD stage 3  |         45     6.3164      32.60939    57.39061
+         CKD stage 4/5  |          1          1     -.9616563    2.961656
+              Dialysis  |         12   3.354734      5.419166    18.58083
+            Transplant  |         22   4.417706      13.33398    30.66602
+           KRT unclear  |          5   2.124193      .8330638    9.166936
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m4_fistula_formation@|
+              ckd_group |
+           Albuminuria  |         13   3.569069      5.998713    20.00129
+           CKD stage 3  |          4   1.992253      .0918843    7.908116
+         CKD stage 4/5  |          0  (omitted)
+              Dialysis  |          4   1.982978       .110078    7.889922
+            Transplant  |          3   1.722714     -.3793718    6.379372
+           KRT unclear  |          3   1.689278     -.3137818    6.313782
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m5_fistula_formation@|
+              ckd_group |
+           Albuminuria  |          8   2.811768      2.484277    13.51572
+           CKD stage 3  |          8   2.802797      2.501876    13.49812
+         CKD stage 4/5  |          0  (omitted)
+              Dialysis  |          1          1     -.9616563    2.961656
+            Transplant  |          5   2.211894      .6610251    9.338975
+           KRT unclear  |          0  (omitted)
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m6_fistula_formation@|
+              ckd_group |
+           Albuminuria  |         13   3.569069      5.998713    20.00129
+           CKD stage 3  |          8   2.802797      2.501876    13.49812
+         CKD stage 4/5  |          1          1     -.9616563    2.961656
+              Dialysis  |          4   1.982978       .110078    7.889922
+            Transplant  |          2   1.410407     -.7667333    4.766733
+           KRT unclear  |          0  (omitted)
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m7_fistula_formation@|
+              ckd_group |
+           Albuminuria  |          7     2.6324      1.836136    12.16386
+           CKD stage 3  |          6   2.433656      1.226004      10.774
+         CKD stage 4/5  |          0  (omitted)
+              Dialysis  |          3   1.722237     -.3784378    6.378438
+            Transplant  |          5   2.211894      .6610251    9.338975
+           KRT unclear  |          0  (omitted)
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m8_fistula_formation@|
+              ckd_group |
+           Albuminuria  |         12   3.431985      5.267624    18.73238
+           CKD stage 3  |          7   2.625215      1.850231    12.14977
+         CKD stage 4/5  |          0  (omitted)
+              Dialysis  |          3   1.722237     -.3784378    6.378438
+            Transplant  |          3   1.722714     -.3793718    6.379372
+           KRT unclear  |          0  (omitted)
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m9_fistula_formation@|
+              ckd_group |
+           Albuminuria  |         13   3.569069      5.998713    20.00129
+           CKD stage 3  |          6   2.433656      1.226004      10.774
+         CKD stage 4/5  |          0  (omitted)
+              Dialysis  |          6   2.414645      1.263297     10.7367
+            Transplant  |          2   1.410407     -.7667333    4.766733
+           KRT unclear  |          3   1.689278     -.3137818    6.313782
+-------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m10_fistula_formation@|
+               ckd_group |
+            Albuminuria  |          7     2.6324      1.836136    12.16386
+            CKD stage 3  |         11   3.273606      4.578311    17.42169
+          CKD stage 4/5  |          0  (omitted)
+               Dialysis  |          5   2.210657      .6634503     9.33655
+             Transplant  |          4   1.983805      .1084557    7.891544
+            KRT unclear  |          1          1     -.9616563    2.961656
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m11_fistula_formation@|
+               ckd_group |
+            Albuminuria  |         19   4.292572      10.57945    27.42055
+            CKD stage 3  |          8   2.802797      2.501876    13.49812
+          CKD stage 4/5  |          0  (omitted)
+               Dialysis  |          1          1     -.9616563    2.961656
+             Transplant  |          3   1.722714     -.3793718    6.379372
+            KRT unclear  |          2   1.396861     -.7401603     4.74016
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m12_fistula_formation@|
+               ckd_group |
+            Albuminuria  |         11   3.288683      4.548734    17.45127
+            CKD stage 3  |          8   2.802797      2.501876    13.49812
+          CKD stage 4/5  |          0  (omitted)
+               Dialysis  |          4   1.982978       .110078    7.889922
+             Transplant  |          4   1.983805      .1084557    7.891544
+            KRT unclear  |          2   1.396861     -.7401603     4.74016
+--------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m1_fistula_formation@|
+              ckd_group |
+           Albuminuria  |         12   3.431985      5.267624    18.73238
+           CKD stage 3  |         11   3.273606      4.578311    17.42169
+         CKD stage 4/5  |          0  (omitted)
+              Dialysis  |          4   1.982978       .110078    7.889922
+            Transplant  |          5   2.211894      .6610251    9.338975
+           KRT unclear  |          0  (omitted)
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m2_fistula_formation@|
+              ckd_group |
+           Albuminuria  |         12   3.431985      5.267624    18.73238
+           CKD stage 3  |          6   2.433656      1.226004      10.774
+         CKD stage 4/5  |          0  (omitted)
+              Dialysis  |          2   1.410213     -.7663531    4.766353
+            Transplant  |          5   2.211894      .6610251    9.338975
+           KRT unclear  |          1          1     -.9616563    2.961656
+-------------------------------------------------------------------------
+
+Total estimation                             Number of obs   =      1,404
+
+-------------------------------------------------------------------------
+                        |      Total   Std. Err.     [95% Conf. Interval]
+------------------------+------------------------------------------------
+ c.m3_fistula_formation@|
+              ckd_group |
+           Albuminuria  |          8   2.811768      2.484277    13.51572
+           CKD stage 3  |          9   2.968911      3.176017    14.82398
+         CKD stage 4/5  |          0  (omitted)
+              Dialysis  |          5   2.210657      .6634503     9.33655
+            Transplant  |          5   2.211894      .6610251    9.338975
+           KRT unclear  |          1          1     -.9616563    2.961656
+-------------------------------------------------------------------------
+
+Total estimation                                 Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+c.m4_pd_insertion@ckd_group |
+               Albuminuria  |         18   4.181695      9.796951    26.20305
+               CKD stage 3  |          8   2.802797      2.501876    13.49812
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |          4   1.982978       .110078    7.889922
+                Transplant  |          6   2.416342      1.259967    10.74003
+               KRT unclear  |          1          1     -.9616563    2.961656
+-----------------------------------------------------------------------------
+
+Total estimation                                 Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+c.m5_pd_insertion@ckd_group |
+               Albuminuria  |         11   3.288683      4.548734    17.45127
+               CKD stage 3  |          7   2.625215      1.850231    12.14977
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |          5   2.210657      .6634503     9.33655
+                Transplant  |          0  (omitted)
+               KRT unclear  |          1          1     -.9616563    2.961656
+-----------------------------------------------------------------------------
+
+Total estimation                                 Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+c.m6_pd_insertion@ckd_group |
+               Albuminuria  |         22   4.607042      12.96257    31.03743
+               CKD stage 3  |          8   2.802797      2.501876    13.49812
+             CKD stage 4/5  |          1          1     -.9616563    2.961656
+                  Dialysis  |          3   1.722237     -.3784378    6.378438
+                Transplant  |          4   1.983805      .1084557    7.891544
+               KRT unclear  |          3   1.689278     -.3137818    6.313782
+-----------------------------------------------------------------------------
+
+Total estimation                                 Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+c.m7_pd_insertion@ckd_group |
+               Albuminuria  |         13   3.569069      5.998713    20.00129
+               CKD stage 3  |          5   2.224512      .6362721    9.363728
+             CKD stage 4/5  |          1          1     -.9616563    2.961656
+                  Dialysis  |          6   2.414645      1.263297     10.7367
+                Transplant  |          4   1.983805      .1084557    7.891544
+               KRT unclear  |          3   1.689278     -.3137818    6.313782
+-----------------------------------------------------------------------------
+
+Total estimation                                 Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+c.m8_pd_insertion@ckd_group |
+               Albuminuria  |          9   2.979798      3.154661    14.84534
+               CKD stage 3  |          9   2.968911      3.176017    14.82398
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |          4   1.982978       .110078    7.889922
+                Transplant  |          5   2.211894      .6610251    9.338975
+               KRT unclear  |          2   1.396861     -.7401603     4.74016
+-----------------------------------------------------------------------------
+
+Total estimation                                 Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+c.m9_pd_insertion@ckd_group |
+               Albuminuria  |         14   3.700626      6.740644    21.25936
+               CKD stage 3  |          5   2.224512      .6362721    9.363728
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |          8   2.771934      2.562419    13.43758
+                Transplant  |          5   2.211894      .6610251    9.338975
+               KRT unclear  |          0  (omitted)
+-----------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+c.m10_pd_insertion@ckd_group |
+                Albuminuria  |         12   3.431985      5.267624    18.73238
+                CKD stage 3  |          6   2.433656      1.226004      10.774
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |          4   1.982978       .110078    7.889922
+                 Transplant  |          1          1     -.9616563    2.961656
+                KRT unclear  |          0  (omitted)
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+c.m11_pd_insertion@ckd_group |
+                Albuminuria  |         10   3.138311      3.843713    16.15629
+                CKD stage 3  |          4   1.992253      .0918843    7.908116
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |          7   2.600521      1.898671    12.10133
+                 Transplant  |          2   1.410407     -.7667333    4.766733
+                KRT unclear  |          0  (omitted)
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+c.m12_pd_insertion@ckd_group |
+                Albuminuria  |         16   3.949344      8.252745    23.74725
+                CKD stage 3  |         14   3.678441      6.784163    21.21584
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |          5   2.210657      .6634503     9.33655
+                 Transplant  |          2   1.410407     -.7667333    4.766733
+                KRT unclear  |          1          1     -.9616563    2.961656
+------------------------------------------------------------------------------
+
+Total estimation                                 Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+c.m1_pd_insertion@ckd_group |
+               Albuminuria  |         14   3.700626      6.740644    21.25936
+               CKD stage 3  |         12   3.414644      5.301642    18.69836
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |          4   1.982978       .110078    7.889922
+                Transplant  |          9   2.934775      3.242981    14.75702
+               KRT unclear  |          2   1.396861     -.7401603     4.74016
+-----------------------------------------------------------------------------
+
+Total estimation                                 Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+c.m2_pd_insertion@ckd_group |
+               Albuminuria  |          9   2.979798      3.154661    14.84534
+               CKD stage 3  |          5   2.224512      .6362721    9.363728
+             CKD stage 4/5  |          1          1     -.9616563    2.961656
+                  Dialysis  |          2   1.410213     -.7663531    4.766353
+                Transplant  |          4   1.983805      .1084557    7.891544
+               KRT unclear  |          0  (omitted)
+-----------------------------------------------------------------------------
+
+Total estimation                                 Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+c.m3_pd_insertion@ckd_group |
+               Albuminuria  |         11   3.288683      4.548734    17.45127
+               CKD stage 3  |          8   2.802797      2.501876    13.49812
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |          3   1.722237     -.3784378    6.378438
+                Transplant  |          3   1.722714     -.3793718    6.379372
+               KRT unclear  |          0  (omitted)
+-----------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m4_critical_care_days@|
+               ckd_group |
+            Albuminuria  |        165   25.10882      115.7451    214.2549
+            CKD stage 3  |         93   17.53729      58.59786    127.4021
+          CKD stage 4/5  |          3          3     -2.884969    8.884969
+               Dialysis  |         48   12.48728      23.50425    72.49575
+             Transplant  |         32   9.952576      12.47647    51.52353
+            KRT unclear  |          6          6     -5.769938    17.76994
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m5_critical_care_days@|
+               ckd_group |
+            Albuminuria  |        173   26.87149      120.2874    225.7126
+            CKD stage 3  |        101   18.64591      64.42313    137.5769
+          CKD stage 4/5  |          1          1     -.9616563    2.961656
+               Dialysis  |         34   11.49994      11.44107    56.55893
+             Transplant  |         66   15.03044      36.51545    95.48455
+            KRT unclear  |         12    5.95102      .3261451    23.67385
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m6_critical_care_days@|
+               ckd_group |
+            Albuminuria  |        171   26.17571      119.6523    222.3477
+            CKD stage 3  |        109   19.27206      71.19484    146.8052
+          CKD stage 4/5  |          0  (omitted)
+               Dialysis  |         56   14.19557      28.15318    83.84682
+             Transplant  |         50   13.02066      24.45794    75.54206
+            KRT unclear  |         10   6.370664     -2.497054    22.49705
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m7_critical_care_days@|
+               ckd_group |
+            Albuminuria  |        104   18.88067      66.96261    141.0374
+            CKD stage 3  |         95   19.04552      57.63923    132.3608
+          CKD stage 4/5  |          6          6     -5.769938    17.76994
+               Dialysis  |         42   13.23153      16.04428    67.95572
+             Transplant  |         81   19.64634      42.46064    119.5394
+            KRT unclear  |          3          3     -2.884969    8.884969
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m8_critical_care_days@|
+               ckd_group |
+            Albuminuria  |        137   21.17338       95.4651    178.5349
+            CKD stage 3  |         87   19.19609      49.34388    124.6561
+          CKD stage 4/5  |          0  (omitted)
+               Dialysis  |         29    9.31465      10.72786    47.27214
+             Transplant  |         32   10.73032       10.9508     53.0492
+            KRT unclear  |          6          6     -5.769938    17.76994
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m9_critical_care_days@|
+               ckd_group |
+            Albuminuria  |        152   23.88001      105.1556    198.8444
+            CKD stage 3  |         85   18.31089      49.08033    120.9197
+          CKD stage 4/5  |          0  (omitted)
+               Dialysis  |         56   14.61444      27.33149    84.66851
+             Transplant  |         58   14.18048      30.18277    85.81723
+            KRT unclear  |          2          2     -1.923313    5.923313
+--------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+ c.m10_critical_care_days@|
+                ckd_group |
+             Albuminuria  |        137   23.71715       90.4751    183.5249
+             CKD stage 3  |        100   19.67965      61.39529    138.6047
+           CKD stage 4/5  |          0  (omitted)
+                Dialysis  |         43   13.02171      17.45588    68.54412
+              Transplant  |         25   9.279994      6.795842    43.20416
+             KRT unclear  |         14   6.347652      1.548089    26.45191
+---------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+ c.m11_critical_care_days@|
+                ckd_group |
+             Albuminuria  |        176   27.33799      122.3723    229.6277
+             CKD stage 3  |         96   18.47121      59.76584    132.2342
+           CKD stage 4/5  |          4          4     -3.846625    11.84663
+                Dialysis  |         51   12.70015      26.08667    75.91333
+              Transplant  |         49   13.23241      23.04255    74.95745
+             KRT unclear  |          9   6.642436     -4.030176    22.03018
+---------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+ c.m12_critical_care_days@|
+                ckd_group |
+             Albuminuria  |        131   22.34034      87.17594    174.8241
+             CKD stage 3  |         89   16.89293      55.86187    122.1381
+           CKD stage 4/5  |          0  (omitted)
+                Dialysis  |         63   14.76234      34.04137    91.95863
+              Transplant  |         50   14.27307      22.00115    77.99885
+             KRT unclear  |          2   1.396861     -.7401603     4.74016
+---------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m1_critical_care_days@|
+               ckd_group |
+            Albuminuria  |        184   26.39046       132.231     235.769
+            CKD stage 3  |        104   20.71953       63.3554    144.6446
+          CKD stage 4/5  |          2          2     -1.923313    5.923313
+               Dialysis  |         59   15.58229      28.43289    89.56711
+             Transplant  |         54   14.54433      25.46902    82.53098
+            KRT unclear  |          2          2     -1.923313    5.923313
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m2_critical_care_days@|
+               ckd_group |
+            Albuminuria  |        184   27.32289      130.4019    237.5981
+            CKD stage 3  |        103   19.30507       65.1301    140.8699
+          CKD stage 4/5  |          5          5     -4.808281    14.80828
+               Dialysis  |         54   13.73601      27.05467    80.94533
+             Transplant  |         57   14.79174      27.98368    86.01632
+            KRT unclear  |          3   2.214145     -1.343392    7.343392
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m3_critical_care_days@|
+               ckd_group |
+            Albuminuria  |        163   25.48694      113.0034    212.9966
+            CKD stage 3  |        118   19.67742      79.39966    156.6003
+          CKD stage 4/5  |         11   7.266361     -3.254102     25.2541
+               Dialysis  |         58   14.29156      29.96488    86.03512
+             Transplant  |         39   11.47039      16.49903    61.50097
+            KRT unclear  |         11   5.367018      .4717562    21.52824
+--------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+ c.m4_critical_care_patients@|
+                   ckd_group |
+                Albuminuria  |         57   7.186397      42.90276    71.09724
+                CKD stage 3  |         42   6.128773      29.97745    54.02255
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |         12   3.354734      5.419166    18.58083
+                 Transplant  |         19   4.142619      10.87361    27.12639
+                KRT unclear  |          2   1.396861     -.7401603     4.74016
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+ c.m5_critical_care_patients@|
+                   ckd_group |
+                Albuminuria  |         50   6.774161      36.71142    63.28858
+                CKD stage 3  |         37   5.793704      25.63474    48.36526
+              CKD stage 4/5  |          1          1     -.9616563    2.961656
+                   Dialysis  |         20   4.225294      11.71143    28.28857
+                 Transplant  |         19   4.142619      10.87361    27.12639
+                KRT unclear  |          3   1.689278     -.3137818    6.313782
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+ c.m6_critical_care_patients@|
+                   ckd_group |
+                Albuminuria  |         57   7.186397      42.90276    71.09724
+                CKD stage 3  |         41   6.064091      29.10434    52.89566
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |         17   3.932337      9.286106    24.71389
+                 Transplant  |         27   4.819316      17.54616    36.45384
+                KRT unclear  |          1          1     -.9616563    2.961656
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+ c.m7_critical_care_patients@|
+                   ckd_group |
+                Albuminuria  |         72   7.963844      56.37767    87.62233
+                CKD stage 3  |         38    5.86313      26.49856    49.50144
+              CKD stage 4/5  |          1          1     -.9616563    2.961656
+                   Dialysis  |         22   4.403389      13.36207    30.63793
+                 Transplant  |         13   3.487304      6.159108    19.84089
+                KRT unclear  |          3   1.689278     -.3137818    6.313782
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+ c.m8_critical_care_patients@|
+                   ckd_group |
+                Albuminuria  |         58   7.242446      43.79281    72.20719
+                CKD stage 3  |         38    5.86313      26.49856    49.50144
+              CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+                   Dialysis  |         14   3.601632      6.934836    21.06516
+                 Transplant  |         18   4.044112      10.06684    25.93316
+                KRT unclear  |          2   1.396861     -.7401603     4.74016
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+ c.m9_critical_care_patients@|
+                   ckd_group |
+                Albuminuria  |         70   7.867399      54.56687    85.43313
+                CKD stage 3  |         44   6.254895      31.73005    56.26995
+              CKD stage 4/5  |          1          1     -.9616563    2.961656
+                   Dialysis  |         15    3.71666      7.709191    22.29081
+                 Transplant  |         18   4.044112      10.06684    25.93316
+                KRT unclear  |          2   1.396861     -.7401603     4.74016
+------------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m10_critical_care_patients@|
+                  ckd_group |
+               Albuminuria  |         69   7.818409      53.66297    84.33703
+               CKD stage 3  |         36   5.722987      24.77347    47.22653
+             CKD stage 4/5  |          1          1     -.9616563    2.961656
+                  Dialysis  |         21   4.315915      12.53366    29.46634
+                Transplant  |         17   3.941781      9.267581    24.73242
+               KRT unclear  |          7   2.444506      2.204719    11.79528
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m11_critical_care_patients@|
+                  ckd_group |
+               Albuminuria  |         61    7.40669      46.47062    75.52938
+               CKD stage 3  |         31   5.348186       20.5087     41.4913
+             CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+                  Dialysis  |         11   3.221573      4.680382    17.31962
+                Transplant  |         25   4.666283      15.84636    34.15364
+               KRT unclear  |          3   1.689278     -.3137818    6.313782
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m12_critical_care_patients@|
+                  ckd_group |
+               Albuminuria  |         75   8.104808      59.10115    90.89885
+               CKD stage 3  |         39   5.931308      27.36481    50.63519
+             CKD stage 4/5  |          1          1     -.9616563    2.961656
+                  Dialysis  |         18   4.033756      10.08716    25.91284
+                Transplant  |         13   3.487304      6.159108    19.84089
+               KRT unclear  |          8   2.575684      2.947394    13.05261
+-----------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+ c.m1_critical_care_patients@|
+                   ckd_group |
+                Albuminuria  |         50   6.774161      36.71142    63.28858
+                CKD stage 3  |         38    5.86313      26.49856    49.50144
+              CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+                   Dialysis  |         28   4.871223      18.44433    37.55567
+                 Transplant  |         19   4.142619      10.87361    27.12639
+                KRT unclear  |          6   2.295276      1.497457    10.50254
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+ c.m2_critical_care_patients@|
+                   ckd_group |
+                Albuminuria  |         52   6.895675      38.47306    65.52694
+                CKD stage 3  |         41   6.064091      29.10434    52.89566
+              CKD stage 4/5  |          1          1     -.9616563    2.961656
+                   Dialysis  |         23     4.4879      14.19628    31.80372
+                 Transplant  |         22   4.417706      13.33398    30.66602
+                KRT unclear  |          3   1.689278     -.3137818    6.313782
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+ c.m3_critical_care_patients@|
+                   ckd_group |
+                Albuminuria  |         65   7.617095      50.05788    79.94212
+                CKD stage 3  |         39   5.931308      27.36481    50.63519
+              CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+                   Dialysis  |         17   3.932337      9.286106    24.71389
+                 Transplant  |         20   4.237569      11.68735    28.31265
+                KRT unclear  |          1          1     -.9616563    2.961656
+------------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m4_emergency_days@|
+           ckd_group |
+        Albuminuria  |        181   25.40088      131.1722    230.8278
+        CKD stage 3  |         93   18.53779      56.63524    129.3648
+      CKD stage 4/5  |          7   4.753946     -2.325607    16.32561
+           Dialysis  |         46   13.23239      20.04261    71.95739
+         Transplant  |         30   10.18538      10.01979    49.98021
+        KRT unclear  |         14   8.784687     -3.232537    31.23254
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m5_emergency_days@|
+           ckd_group |
+        Albuminuria  |        124   21.33089      82.15613    165.8439
+        CKD stage 3  |        108   19.57039      69.60963    146.3904
+      CKD stage 4/5  |          1          1     -.9616563    2.961656
+           Dialysis  |         31   10.40236      10.59415    51.40585
+         Transplant  |         58   15.72683      27.14936    88.85064
+        KRT unclear  |         18   8.240294      1.835376    34.16462
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m6_emergency_days@|
+           ckd_group |
+        Albuminuria  |        158   23.68806      111.5322    204.4678
+        CKD stage 3  |        100   20.33115      60.11727    139.8827
+      CKD stage 4/5  |          6   4.289522     -2.414568    14.41457
+           Dialysis  |         31   11.14897      9.129562    52.87044
+         Transplant  |         70   16.40843       37.8123    102.1877
+        KRT unclear  |         16   7.833636      .6330987     31.3669
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m7_emergency_days@|
+           ckd_group |
+        Albuminuria  |        135   23.52444      88.85313    181.1469
+        CKD stage 3  |        106   20.79007      65.21704     146.783
+      CKD stage 4/5  |          4          4     -3.846625    11.84663
+           Dialysis  |         38   13.14758      12.20897    63.79103
+         Transplant  |         46   11.63652      23.17315    68.82685
+        KRT unclear  |         10   4.918854      .3508997     19.6491
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m8_emergency_days@|
+           ckd_group |
+        Albuminuria  |        155   23.27369       109.345     200.655
+        CKD stage 3  |        133   22.10845      89.63082    176.3692
+      CKD stage 4/5  |          0  (omitted)
+           Dialysis  |         54    15.1959      24.19088    83.80912
+         Transplant  |         52   14.78884      22.98939    81.01061
+        KRT unclear  |          9    5.26609     -1.330259    19.33026
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m9_emergency_days@|
+           ckd_group |
+        Albuminuria  |        138   21.60747      95.61358    180.3864
+        CKD stage 3  |        108   19.82488       69.1104    146.8896
+      CKD stage 4/5  |          4          4     -3.846625    11.84663
+           Dialysis  |         60   14.17406      32.19537    87.80463
+         Transplant  |         45   12.53039      20.41968    69.58032
+        KRT unclear  |         12   6.603768     -.9543236    24.95432
+----------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m10_emergency_days@|
+            ckd_group |
+         Albuminuria  |        173   24.89791      124.1589    221.8411
+         CKD stage 3  |        147   23.97765      99.96409    194.0359
+       CKD stage 4/5  |          6          6     -5.769938    17.76994
+            Dialysis  |         58   15.37626      27.83706    88.16294
+          Transplant  |         25     8.1247      9.062131    40.93787
+         KRT unclear  |          9    5.26609     -1.330259    19.33026
+-----------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m11_emergency_days@|
+            ckd_group |
+         Albuminuria  |        104   17.84422      68.99578    139.0042
+         CKD stage 3  |        123   21.89384      80.05181    165.9482
+       CKD stage 4/5  |          5   3.435113     -1.738511    11.73851
+            Dialysis  |         47   12.62877      22.22669    71.77331
+          Transplant  |         36   10.56724       15.2707     56.7293
+         KRT unclear  |         15   7.946467     -.5882373    30.58824
+-----------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m12_emergency_days@|
+            ckd_group |
+         Albuminuria  |        154   24.80535      105.3404    202.6596
+         CKD stage 3  |        107   18.93382      69.85835    144.1417
+       CKD stage 4/5  |          0  (omitted)
+            Dialysis  |         62   16.05781      30.50011    93.49989
+          Transplant  |         23   9.199112      4.954505     41.0455
+         KRT unclear  |         18   8.840042      .6588763    35.34112
+-----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m1_emergency_days@|
+           ckd_group |
+        Albuminuria  |        142   23.26222      96.36752    187.6325
+        CKD stage 3  |        113   20.37749      73.02636    152.9736
+      CKD stage 4/5  |          5   3.435113     -1.738511    11.73851
+           Dialysis  |         44   12.88629      18.72153    69.27847
+         Transplant  |         47   12.57109      22.33985    71.66015
+        KRT unclear  |         14   9.566201     -4.765598     32.7656
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m2_emergency_days@|
+           ckd_group |
+        Albuminuria  |        175   26.20787      123.5892    226.4108
+        CKD stage 3  |         92   18.63153      55.45134    128.5487
+      CKD stage 4/5  |          6          5     -3.808281    15.80828
+           Dialysis  |         41   12.98086      15.53601    66.46399
+         Transplant  |         31   9.714195      11.94409    50.05591
+        KRT unclear  |          3          3     -2.884969    8.884969
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m3_emergency_days@|
+           ckd_group |
+        Albuminuria  |        173    25.2574      123.4537    222.5463
+        CKD stage 3  |         96   18.30765      60.08668    131.9133
+      CKD stage 4/5  |          5   4.024922     -2.895514    12.89551
+           Dialysis  |         26   9.524278      7.316641    44.68336
+         Transplant  |         41   13.74851      14.03015    67.96985
+        KRT unclear  |          5   3.564732      -1.99278    11.99278
+----------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m4_emergency_patients@|
+               ckd_group |
+            Albuminuria  |         49   6.712205      35.83296    62.16704
+            CKD stage 3  |         48   6.495042      35.25896    60.74104
+          CKD stage 4/5  |          1          1     -.9616563    2.961656
+               Dialysis  |         18   4.033756      10.08716    25.91284
+             Transplant  |         15   3.724375      7.694057    22.30594
+            KRT unclear  |          3   1.689278     -.3137818    6.313782
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m5_emergency_patients@|
+               ckd_group |
+            Albuminuria  |         60   7.352578      45.57677    74.42323
+            CKD stage 3  |         39   5.931308      27.36481    50.63519
+          CKD stage 4/5  |          1          1     -.9616563    2.961656
+               Dialysis  |         14   3.601632      6.934836    21.06516
+             Transplant  |         23   4.503284       14.1661     31.8339
+            KRT unclear  |          4   1.925439      .2229496     7.77705
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m6_emergency_patients@|
+               ckd_group |
+            Albuminuria  |         74   8.058303      58.19238    89.80762
+            CKD stage 3  |         36   5.722987      24.77347    47.22653
+          CKD stage 4/5  |          1          1     -.9616563    2.961656
+               Dialysis  |         15    3.71666      7.709191    22.29081
+             Transplant  |         21   4.329196      12.50761    29.49239
+            KRT unclear  |          4   1.925439      .2229496     7.77705
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m7_emergency_patients@|
+               ckd_group |
+            Albuminuria  |         54   7.014128      40.24069    67.75931
+            CKD stage 3  |         41   6.064091      29.10434    52.89566
+          CKD stage 4/5  |          0  (omitted)
+               Dialysis  |         24   4.569612      15.03599    32.96401
+             Transplant  |         14   3.608532        6.9213     21.0787
+            KRT unclear  |          3   1.689278     -.3137818    6.313782
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m8_emergency_patients@|
+               ckd_group |
+            Albuminuria  |         57   7.186397      42.90276    71.09724
+            CKD stage 3  |         42   6.128773      29.97745    54.02255
+          CKD stage 4/5  |          0  (omitted)
+               Dialysis  |         10   3.080832      3.956467    16.04353
+             Transplant  |         18   4.044112      10.06684    25.93316
+            KRT unclear  |          4   1.925439      .2229496     7.77705
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m9_emergency_patients@|
+               ckd_group |
+            Albuminuria  |         74   8.058303      58.19238    89.80762
+            CKD stage 3  |         44   6.254895      31.73005    56.26995
+          CKD stage 4/5  |          1          1     -.9616563    2.961656
+               Dialysis  |         15    3.71666      7.709191    22.29081
+             Transplant  |         15   3.724375      7.694057    22.30594
+            KRT unclear  |          6   2.295276      1.497457    10.50254
+--------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+ c.m10_emergency_patients@|
+                ckd_group |
+             Albuminuria  |         50   6.774161      36.71142    63.28858
+             CKD stage 3  |         33   5.502577      22.20584    43.79416
+           CKD stage 4/5  |          0  (omitted)
+                Dialysis  |         15    3.71666      7.709191    22.29081
+              Transplant  |         18   4.044112      10.06684    25.93316
+             KRT unclear  |          2   1.396861     -.7401603     4.74016
+---------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+ c.m11_emergency_patients@|
+                ckd_group |
+             Albuminuria  |         55   7.072254      41.12667    68.87333
+             CKD stage 3  |         41   6.064091      29.10434    52.89566
+           CKD stage 4/5  |          3   1.549193     -.0389848    6.038985
+                Dialysis  |         17   3.932337      9.286106    24.71389
+              Transplant  |         22   4.417706      13.33398    30.66602
+             KRT unclear  |          3   1.689278     -.3137818    6.313782
+---------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+ c.m12_emergency_patients@|
+                ckd_group |
+             Albuminuria  |         63   7.513076      48.26193    77.73807
+             CKD stage 3  |         38    5.86313      26.49856    49.50144
+           CKD stage 4/5  |          1          1     -.9616563    2.961656
+                Dialysis  |         19   4.131319      10.89577    27.10423
+              Transplant  |         19   4.142619      10.87361    27.12639
+             KRT unclear  |          6   2.295276      1.497457    10.50254
+---------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m1_emergency_patients@|
+               ckd_group |
+            Albuminuria  |         69   7.818409      53.66297    84.33703
+            CKD stage 3  |         33   5.502577      22.20584    43.79416
+          CKD stage 4/5  |          0  (omitted)
+               Dialysis  |         24   4.569612      15.03599    32.96401
+             Transplant  |         18   4.044112      10.06684    25.93316
+            KRT unclear  |          4   1.925439      .2229496     7.77705
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m2_emergency_patients@|
+               ckd_group |
+            Albuminuria  |         65   7.617095      50.05788    79.94212
+            CKD stage 3  |         34   5.577477      23.05891    44.94109
+          CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+               Dialysis  |         14   3.601632      6.934836    21.06516
+             Transplant  |         20   4.237569      11.68735    28.31265
+            KRT unclear  |          5   2.124193      .8330638    9.166936
+--------------------------------------------------------------------------
+
+Total estimation                              Number of obs   =      1,404
+
+--------------------------------------------------------------------------
+                         |      Total   Std. Err.     [95% Conf. Interval]
+-------------------------+------------------------------------------------
+ c.m3_emergency_patients@|
+               ckd_group |
+            Albuminuria  |         64   7.565375      49.15933    78.84067
+            CKD stage 3  |         45     6.3164      32.60939    57.39061
+          CKD stage 4/5  |          0  (omitted)
+               Dialysis  |         24   4.569612      15.03599    32.96401
+             Transplant  |         23   4.503284       14.1661     31.8339
+            KRT unclear  |          3   1.689278     -.3137818    6.313782
+--------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m4_outpatient_appointments@|
+                  ckd_group |
+               Albuminuria  |        124   20.90398      82.99357    165.0064
+               CKD stage 3  |        143   24.03992      95.84195    190.1581
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         31   11.41636      8.605021    53.39498
+                Transplant  |         53   14.17934        25.185      80.815
+               KRT unclear  |          9   6.326483     -3.410386    21.41039
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m5_outpatient_appointments@|
+                  ckd_group |
+               Albuminuria  |        161    25.1125      111.7379    210.2621
+               CKD stage 3  |        137   22.71734       92.4364    181.5636
+             CKD stage 4/5  |         13   8.752143     -4.168695     30.1687
+                  Dialysis  |         42   11.52546      19.39102    64.60898
+                Transplant  |         28   9.814407      8.747507    47.25249
+               KRT unclear  |         18   8.363685      1.593326    34.40667
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m6_outpatient_appointments@|
+                  ckd_group |
+               Albuminuria  |        147   22.35265      103.1518    190.8482
+               CKD stage 3  |        103   19.51169      64.72476    141.2752
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         33   9.768218      13.83811    52.16189
+                Transplant  |         29   9.107482      11.13425    46.86575
+               KRT unclear  |         13    7.08313     -.8946666    26.89467
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m7_outpatient_appointments@|
+                  ckd_group |
+               Albuminuria  |        149   24.30642      101.3192    196.6808
+               CKD stage 3  |         93   17.93301       57.8216    128.1784
+             CKD stage 4/5  |          6   4.289522     -2.414568    14.41457
+                  Dialysis  |         58   15.37626      27.83706    88.16294
+                Transplant  |         31   10.01987      11.34445    50.65555
+               KRT unclear  |         17   7.847634      1.605639    32.39436
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m8_outpatient_appointments@|
+                  ckd_group |
+               Albuminuria  |        157   22.32817      113.1998    200.8002
+               CKD stage 3  |        102   18.71242      65.29267    138.7073
+             CKD stage 4/5  |          1          1     -.9616563    2.961656
+                  Dialysis  |         43   14.69098      14.18135    71.81865
+                Transplant  |         48   11.85032      24.75374    71.24626
+               KRT unclear  |          7   6.058656     -4.885001      18.885
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m9_outpatient_appointments@|
+                  ckd_group |
+               Albuminuria  |        176   25.90827      125.1769    226.8231
+               CKD stage 3  |         74    15.5739      43.44936    104.5506
+             CKD stage 4/5  |         11   6.465292     -1.682681    23.68268
+                  Dialysis  |         78   15.97668      46.65925    109.3408
+                Transplant  |         55   13.70503      28.11543    81.88457
+               KRT unclear  |         20   9.079594      2.188958    37.81104
+-----------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+                          c. |
+ m10_outpatient_appointments@|
+                   ckd_group |
+                Albuminuria  |        142   21.88668      99.06585    184.9341
+                CKD stage 3  |        133   25.16256       83.6397    182.3603
+              CKD stage 4/5  |          5          5     -4.808281    14.80828
+                   Dialysis  |         36   10.45626      15.48842    56.51158
+                 Transplant  |         43   11.65499      20.13692    65.86308
+                KRT unclear  |         11   5.367018      .4717562    21.52824
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+                          c. |
+ m11_outpatient_appointments@|
+                   ckd_group |
+                Albuminuria  |        141   21.78287       98.2695    183.7305
+                CKD stage 3  |         99   20.36839      59.04423    138.9558
+              CKD stage 4/5  |          5          5     -4.808281    14.80828
+                   Dialysis  |         38    12.7594      12.97045    63.02955
+                 Transplant  |         66   16.67914      33.28127    98.71873
+                KRT unclear  |         12   7.197561      -2.11914    26.11914
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+                          c. |
+ m12_outpatient_appointments@|
+                   ckd_group |
+                Albuminuria  |        179   24.41985      131.0967    226.9033
+                CKD stage 3  |        127    22.5576      82.74974    171.2503
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |         41    11.9313      17.59489    64.40511
+                 Transplant  |         47   12.57109      22.33985    71.66015
+                KRT unclear  |         11   6.410738     -1.575664    23.57566
+------------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m1_outpatient_appointments@|
+                  ckd_group |
+               Albuminuria  |        157   24.22178      109.4852    204.5148
+               CKD stage 3  |        102   18.16874      66.35918    137.6408
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         65   16.02205      33.57024    96.42976
+                Transplant  |         47   14.08003      19.37982    74.62018
+               KRT unclear  |         17   8.475215      .3745414    33.62546
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m2_outpatient_appointments@|
+                  ckd_group |
+               Albuminuria  |        123   21.96512      79.91199     166.088
+               CKD stage 3  |        120   22.00515      76.83345    163.1665
+             CKD stage 4/5  |          4          4     -3.846625    11.84663
+                  Dialysis  |         53    13.1984      27.10928    78.89072
+                Transplant  |         50   13.17418      24.15678    75.84322
+               KRT unclear  |          5   4.099375     -3.041565    13.04157
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m3_outpatient_appointments@|
+                  ckd_group |
+               Albuminuria  |        144   23.19844      98.49263    189.5074
+               CKD stage 3  |        102   19.24074      64.25628    139.7437
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         55   15.14245      25.29572    84.70428
+                Transplant  |         37   11.32985      14.77472    59.22528
+               KRT unclear  |         11   5.911956     -.5972249    22.59722
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m4_nephrology_appointments@|
+                  ckd_group |
+               Albuminuria  |        162   25.55649      111.8669    212.1331
+               CKD stage 3  |         97   18.86072      60.00175    133.9983
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         62   15.35346      31.88178    92.11822
+                Transplant  |         40   11.40788      17.62166    62.37834
+               KRT unclear  |          9    5.26609     -1.330259    19.33026
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m5_nephrology_appointments@|
+                  ckd_group |
+               Albuminuria  |        163   25.87697      112.2383    213.7617
+               CKD stage 3  |        119   19.48261      80.78181    157.2182
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         28   10.40209      7.594683    48.40532
+                Transplant  |         41   12.36236       16.7493     65.2507
+               KRT unclear  |          5   3.564732      -1.99278    11.99278
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m6_nephrology_appointments@|
+                  ckd_group |
+               Albuminuria  |        140   21.67848      97.47428    182.5257
+               CKD stage 3  |         91   16.62596      58.38557    123.6144
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         26   8.980833      8.382692    43.61731
+                Transplant  |         45   13.82728      17.87564    72.12436
+               KRT unclear  |          9   6.326483     -3.410386    21.41039
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m7_nephrology_appointments@|
+                  ckd_group |
+               Albuminuria  |        168   25.09539      118.7715    217.2285
+               CKD stage 3  |        103   21.79331      60.24901     145.751
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         70   15.74371      39.11625    100.8837
+                Transplant  |         25   9.060727      7.225968    42.77403
+               KRT unclear  |          5   2.934239     -.7559675    10.75597
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m8_nephrology_appointments@|
+                  ckd_group |
+               Albuminuria  |        161   24.87202      112.2096    209.7904
+               CKD stage 3  |         91   18.23642      55.22641    126.7736
+             CKD stage 4/5  |          5   4.024922     -2.895514    12.89551
+                  Dialysis  |         59   14.37374      30.80365    87.19635
+                Transplant  |         53   11.86302      29.72884    76.27116
+               KRT unclear  |         11   5.911956     -.5972249    22.59722
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m9_nephrology_appointments@|
+                  ckd_group |
+               Albuminuria  |        134   21.83395      91.16929    176.8307
+               CKD stage 3  |        107   19.55892      68.63211    145.3679
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         29   9.096159      11.15646    46.84354
+                Transplant  |         45   12.28733      20.89648    69.10352
+               KRT unclear  |         13   9.863705     -6.349199     32.3492
+-----------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+                          c. |
+ m10_nephrology_appointments@|
+                   ckd_group |
+                Albuminuria  |        142   20.99912      100.8069    183.1931
+                CKD stage 3  |        131   21.72781       88.3775    173.6225
+              CKD stage 4/5  |         10   5.639149     -1.062072    21.06207
+                   Dialysis  |         30    9.35067       11.6572     48.3428
+                 Transplant  |         33   11.48398      10.47239    55.52761
+                KRT unclear  |          7   4.274142     -1.384398     15.3844
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+                          c. |
+ m11_nephrology_appointments@|
+                   ckd_group |
+                Albuminuria  |        182   25.17096      132.6232    231.3768
+                CKD stage 3  |        107    19.7121      68.33163    145.6684
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |         35   11.35085      12.73353    57.26647
+                 Transplant  |         60   14.13567      32.27067    87.72933
+                KRT unclear  |          4   3.139054     -2.157745    10.15774
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+                          c. |
+ m12_nephrology_appointments@|
+                   ckd_group |
+                Albuminuria  |        129   20.63587      88.51953    169.4805
+                CKD stage 3  |         62    13.5125      35.49312    88.50688
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |         74   15.83174      42.94356    105.0564
+                 Transplant  |         40   11.49567      17.44944    62.55056
+                KRT unclear  |          7   4.507446     -1.842061    15.84206
+------------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m1_nephrology_appointments@|
+                  ckd_group |
+               Albuminuria  |        180   25.51115      129.9559    230.0441
+               CKD stage 3  |        102   18.65876      65.39792    138.6021
+             CKD stage 4/5  |          2          2     -1.923313    5.923313
+                  Dialysis  |         31   9.907196      11.56549    50.43451
+                Transplant  |         26   8.989839      8.365026    43.63497
+               KRT unclear  |         17   8.353472        .61336    33.38664
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m2_nephrology_appointments@|
+                  ckd_group |
+               Albuminuria  |        182    25.5266      131.9256    232.0744
+               CKD stage 3  |        142   23.69828      95.51213    188.4879
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         27    10.1728      7.044462    46.95554
+                Transplant  |         30   8.809208      12.71936    47.28064
+               KRT unclear  |         26   9.047301      8.252305     43.7477
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m3_nephrology_appointments@|
+                  ckd_group |
+               Albuminuria  |        166   23.46839      119.9631    212.0369
+               CKD stage 3  |        107   20.41174      66.95918    147.0408
+             CKD stage 4/5  |          3          3     -2.884969    8.884969
+                  Dialysis  |         29   9.941353      9.498482    48.50152
+                Transplant  |         42   11.36917      19.69759    64.30241
+               KRT unclear  |         17   7.582071      2.126582    31.87342
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m4_transplant_appointments@|
+                  ckd_group |
+               Albuminuria  |        195   27.39642      141.2576    248.7424
+               CKD stage 3  |        130    22.0864      86.67407    173.3259
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         60    15.1348      30.31073    89.68927
+                Transplant  |         82   18.48975      45.72946    118.2705
+               KRT unclear  |          7   4.027346     -.9002677    14.90027
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m5_transplant_appointments@|
+                  ckd_group |
+               Albuminuria  |        166   24.10011      118.7239    213.2761
+               CKD stage 3  |        127   20.84837      86.10266    167.8973
+             CKD stage 4/5  |          4   2.683282     -1.263676    9.263676
+                  Dialysis  |         49   14.72171      20.12106    77.87894
+                Transplant  |         41   11.69367      18.06104    63.93896
+               KRT unclear  |          4          4     -3.846625    11.84663
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m6_transplant_appointments@|
+                  ckd_group |
+               Albuminuria  |        181   24.10596      133.7124    228.2876
+               CKD stage 3  |        108   20.12602      68.51967    147.4803
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         54   13.88166      26.76895    81.23105
+                Transplant  |         51   13.86067      23.81012    78.18988
+               KRT unclear  |         14   8.054691     -1.800535    29.80054
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m7_transplant_appointments@|
+                  ckd_group |
+               Albuminuria  |        129   21.86152      86.11521    171.8848
+               CKD stage 3  |         82   17.47856      47.71308    116.2869
+             CKD stage 4/5  |         11   7.416198     -3.548032    25.54803
+                  Dialysis  |         48    14.9099       18.7519     77.2481
+                Transplant  |         60    14.8975      30.77623    89.22377
+               KRT unclear  |          7   5.339681     -3.474619    17.47462
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m8_transplant_appointments@|
+                  ckd_group |
+               Albuminuria  |        120   19.45542      81.83515    158.1648
+               CKD stage 3  |         90    18.0559      54.58053    125.4195
+             CKD stage 4/5  |          5   2.720294      -.336282    10.33628
+                  Dialysis  |         66   16.58534      33.46527    98.53473
+                Transplant  |         38   11.08763      16.24989    59.75011
+               KRT unclear  |         11   6.082763     -.9322893    22.93229
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m9_transplant_appointments@|
+                  ckd_group |
+               Albuminuria  |        120    21.5094      77.80595    162.1941
+               CKD stage 3  |         76   16.30445      44.01628    107.9837
+             CKD stage 4/5  |          4          4     -3.846625    11.84663
+                  Dialysis  |         54   13.43997       27.6354     80.3646
+                Transplant  |         75   16.98418      41.68288    108.3171
+               KRT unclear  |         15   7.412909      .4584206    29.54158
+-----------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+                          c. |
+ m10_transplant_appointments@|
+                   ckd_group |
+                Albuminuria  |        138   22.33688      94.18272    181.8173
+                CKD stage 3  |         96   19.05892      58.61296     133.387
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |         56   14.40653      27.73935    84.26065
+                 Transplant  |         45   13.15662      19.19122    70.80878
+                KRT unclear  |          8    4.10829     -.0590534    16.05905
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+                          c. |
+ m11_transplant_appointments@|
+                   ckd_group |
+                Albuminuria  |        194   26.04024       142.918     245.082
+                CKD stage 3  |        107   19.40454      68.93497     145.065
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |         42   11.52546      19.39102    64.60898
+                 Transplant  |         52   13.20883      26.08882    77.91118
+                KRT unclear  |          7    6.38787     -5.530804     19.5308
+------------------------------------------------------------------------------
+
+Total estimation                                  Number of obs   =      1,404
+
+------------------------------------------------------------------------------
+                             |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+                          c. |
+ m12_transplant_appointments@|
+                   ckd_group |
+                Albuminuria  |        150    23.9431      103.0319    196.9681
+                CKD stage 3  |        113   19.62562      74.50128    151.4987
+              CKD stage 4/5  |          0  (omitted)
+                   Dialysis  |         44   12.32791      19.81688    68.18312
+                 Transplant  |         60   15.23119      30.12163    89.87837
+                KRT unclear  |          3          3     -2.884969    8.884969
+------------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m1_transplant_appointments@|
+                  ckd_group |
+               Albuminuria  |        123   20.88993      82.02113    163.9789
+               CKD stage 3  |         83   17.83559       48.0127    117.9873
+             CKD stage 4/5  |          4          4     -3.846625    11.84663
+                  Dialysis  |         33   12.07065      9.321536    56.67846
+                Transplant  |         66   16.06506      34.48588    97.51412
+               KRT unclear  |         12   5.596166      1.022246    22.97775
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m2_transplant_appointments@|
+                  ckd_group |
+               Albuminuria  |        160   24.45651      112.0247    207.9753
+               CKD stage 3  |         73   16.61356      40.40991    105.5901
+             CKD stage 4/5  |          2          2     -1.923313    5.923313
+                  Dialysis  |         28   11.50387      5.433365    50.56664
+                Transplant  |         48    14.2395      20.06699    75.93301
+               KRT unclear  |         24   10.53218      3.339482    44.66052
+-----------------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+                         c. |
+ m3_transplant_appointments@|
+                  ckd_group |
+               Albuminuria  |        141   23.42258      95.05294    186.9471
+               CKD stage 3  |         60   14.53577      31.48581    88.51419
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         43   11.19448      21.04028    64.95972
+                Transplant  |         60   14.06437      32.41054    87.58946
+               KRT unclear  |         27   9.794224      7.787098     46.2129
+-----------------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m4_gp_interactions@|
+            ckd_group |
+         Albuminuria  |        173   24.36929      125.1958    220.8042
+         CKD stage 3  |         70   15.42775      39.73606    100.2639
+       CKD stage 4/5  |          0  (omitted)
+            Dialysis  |         42   12.84589      16.80077    67.19923
+          Transplant  |         55   13.92337      27.68714    82.31286
+         KRT unclear  |         20   8.851071       2.63724    37.36276
+-----------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m5_gp_interactions@|
+            ckd_group |
+         Albuminuria  |        169   24.86352      120.2263    217.7737
+         CKD stage 3  |         74   16.45049       41.7298    106.2702
+       CKD stage 4/5  |          0  (omitted)
+            Dialysis  |         63   15.16556      33.25037    92.74963
+          Transplant  |         51   11.65406      28.13873    73.86127
+         KRT unclear  |         28    9.45851      9.445654    46.55435
+-----------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m6_gp_interactions@|
+            ckd_group |
+         Albuminuria  |        155   23.27369       109.345     200.655
+         CKD stage 3  |         89   17.12868      55.39941    122.6006
+       CKD stage 4/5  |          5          5     -4.808281    14.80828
+            Dialysis  |         42   12.20355      18.06084    65.93916
+          Transplant  |         44   12.18363       20.0999     67.9001
+         KRT unclear  |          4   3.139054     -2.157745    10.15774
+-----------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m7_gp_interactions@|
+            ckd_group |
+         Albuminuria  |        162   23.85358      115.2075    208.7925
+         CKD stage 3  |        100   19.05851      62.61375    137.3862
+       CKD stage 4/5  |          1          1     -.9616563    2.961656
+            Dialysis  |         48   14.36018      19.83027    76.16973
+          Transplant  |         38   12.29171       13.8879     62.1121
+         KRT unclear  |         16   7.430983      1.422965    30.57703
+-----------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m8_gp_interactions@|
+            ckd_group |
+         Albuminuria  |        134   22.46705      89.92737    178.0726
+         CKD stage 3  |        110   20.14791      70.47673    149.5233
+       CKD stage 4/5  |          0  (omitted)
+            Dialysis  |         52    13.0293      26.44099    77.55901
+          Transplant  |         60   16.37629      27.87535    92.12465
+         KRT unclear  |          5   2.934239     -.7559675    10.75597
+-----------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m9_gp_interactions@|
+            ckd_group |
+         Albuminuria  |        121   21.00511      79.79519    162.2048
+         CKD stage 3  |         88   18.13665      52.42212    123.5779
+       CKD stage 4/5  |          0  (omitted)
+            Dialysis  |         42   12.76737      16.95482    67.04518
+          Transplant  |         31   11.33792      8.758902     53.2411
+         KRT unclear  |         11   7.977101     -4.648331    26.64833
+-----------------------------------------------------------------------
+
+Total estimation                            Number of obs   =      1,404
+
+------------------------------------------------------------------------
+                       |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------+------------------------------------------------
+ c.m10_gp_interactions@|
+             ckd_group |
+          Albuminuria  |        158   23.81458       111.284     204.716
+          CKD stage 3  |        149    24.9706      100.0163    197.9837
+        CKD stage 4/5  |         10   6.708204      -3.15919    23.15919
+             Dialysis  |         28   9.597551      9.172903     46.8271
+           Transplant  |         64   15.40667       33.7774     94.2226
+          KRT unclear  |         11   6.082763     -.9322893    22.93229
+------------------------------------------------------------------------
+
+Total estimation                            Number of obs   =      1,404
+
+------------------------------------------------------------------------
+                       |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------+------------------------------------------------
+ c.m11_gp_interactions@|
+             ckd_group |
+          Albuminuria  |        106   18.37784        69.949     142.051
+          CKD stage 3  |        133   21.92631      89.98812    176.0119
+        CKD stage 4/5  |          0  (omitted)
+             Dialysis  |         60   15.52836       29.5387     90.4613
+           Transplant  |         69   15.58328      38.43096    99.56904
+          KRT unclear  |          6   3.669253     -1.197812    13.19781
+------------------------------------------------------------------------
+
+Total estimation                            Number of obs   =      1,404
+
+------------------------------------------------------------------------
+                       |      Total   Std. Err.     [95% Conf. Interval]
+-----------------------+------------------------------------------------
+ c.m12_gp_interactions@|
+             ckd_group |
+          Albuminuria  |        195   27.28651      141.4732    248.5268
+          CKD stage 3  |         91   17.79117      56.09984    125.9002
+        CKD stage 4/5  |          6   3.435113     -.7385106    12.73851
+             Dialysis  |         38   10.88824      16.64102    59.35898
+           Transplant  |         59   15.15298      29.27506    88.72494
+          KRT unclear  |         16   7.291826      1.695943    30.30406
+------------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m1_gp_interactions@|
+            ckd_group |
+         Albuminuria  |        169   25.92846      118.1373    219.8627
+         CKD stage 3  |         94    18.0589      58.57465    129.4253
+       CKD stage 4/5  |          2          2     -1.923313    5.923313
+            Dialysis  |         50   12.60347      25.27632    74.72368
+          Transplant  |         20   7.757757      4.781947    35.21805
+         KRT unclear  |         14   6.507032       1.23544    26.76456
+-----------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m2_gp_interactions@|
+            ckd_group |
+         Albuminuria  |        120   21.97016       76.9021    163.0979
+         CKD stage 3  |         94   17.94752      58.79314    129.2069
+       CKD stage 4/5  |          0  (omitted)
+            Dialysis  |         51    13.6909      24.14316    77.85684
+          Transplant  |         51   12.48698      26.50483    75.49517
+         KRT unclear  |         18   9.722993     -1.073169    37.07317
+-----------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m3_gp_interactions@|
+            ckd_group |
+         Albuminuria  |        199   27.63958      144.7806    253.2194
+         CKD stage 3  |         78   15.84314       46.9212    109.0788
+       CKD stage 4/5  |          0  (omitted)
+            Dialysis  |         50   13.15015      24.20392    75.79608
+          Transplant  |         61   14.49917      32.55762    89.44238
+         KRT unclear  |          7    5.14426     -3.091271    17.09127
+-----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m4_blood_pressure@|
+           ckd_group |
+        Albuminuria  |        195   11.46852      172.5027    217.4973
+        CKD stage 3  |        123    9.18285      104.9864    141.0136
+      CKD stage 4/5  |          4    1.67332      .7175212    7.282479
+           Dialysis  |         59   6.298148       46.6452     71.3548
+         Transplant  |         59   6.371982      46.50036    71.49964
+        KRT unclear  |         12   2.963189      6.187242    17.81276
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m5_blood_pressure@|
+           ckd_group |
+        Albuminuria  |        182   11.25736      159.9169    204.0831
+        CKD stage 3  |        130    9.31549      111.7262    148.2738
+      CKD stage 4/5  |          5   1.732051      1.602312    8.397688
+           Dialysis  |         54   6.150651      41.93454    66.06546
+         Transplant  |         52   6.143447      39.94867    64.05133
+        KRT unclear  |         14   3.092083      7.934397     20.0656
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m6_blood_pressure@|
+           ckd_group |
+        Albuminuria  |        197   11.49847       174.444     219.556
+        CKD stage 3  |        116   9.034299      98.27781    133.7222
+      CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+           Dialysis  |         50   6.013168      38.20423    61.79577
+         Transplant  |         73   6.688941       59.8786     86.1214
+        KRT unclear  |         14   3.092083      7.934397     20.0656
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m7_blood_pressure@|
+           ckd_group |
+        Albuminuria  |        184   11.29174      161.8495    206.1505
+        CKD stage 3  |        120   9.121177      102.1074    137.8926
+      CKD stage 4/5  |          3   1.549193     -.0389848    6.038985
+           Dialysis  |         57   6.242283      44.75479    69.24521
+         Transplant  |         56   6.280196      43.68041    68.31959
+        KRT unclear  |         12   2.963189      6.187242    17.81276
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m8_blood_pressure@|
+           ckd_group |
+        Albuminuria  |        181   11.23991      158.9512    203.0488
+        CKD stage 3  |        123    9.18285      104.9864    141.0136
+      CKD stage 4/5  |          4    1.67332      .7175212    7.282479
+           Dialysis  |         47   5.897907      35.43033    58.56967
+         Transplant  |         59   6.371982      46.50036    71.49964
+        KRT unclear  |         12   2.963189      6.187242    17.81276
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m9_blood_pressure@|
+           ckd_group |
+        Albuminuria  |        195   11.46852      172.5027    217.4973
+        CKD stage 3  |        123    9.18285      104.9864    141.0136
+      CKD stage 4/5  |          6   1.732051      2.602312    9.397688
+           Dialysis  |         58   6.270728      45.69899    70.30101
+         Transplant  |         51    6.10658      39.02099    62.97901
+        KRT unclear  |         10   2.793721      4.519679    15.48032
+----------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m10_blood_pressure@|
+            ckd_group |
+         Albuminuria  |        176   11.14998      154.1276    197.8724
+         CKD stage 3  |        112   8.941966      94.45894    129.5411
+       CKD stage 4/5  |          1          1     -.9616563    2.961656
+            Dialysis  |         45   5.814943      33.59308    56.40692
+          Transplant  |         61   6.428264      48.38996    73.61004
+         KRT unclear  |         10   2.793721      4.519679    15.48032
+-----------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m11_blood_pressure@|
+            ckd_group |
+         Albuminuria  |        183   11.27464       160.883     205.117
+         CKD stage 3  |        105   8.766737      87.80268    122.1973
+       CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+            Dialysis  |         49    5.97594      37.27726    60.72274
+          Transplant  |         62   6.454972      49.33756    74.66244
+         KRT unclear  |         12   2.963189      6.187242    17.81276
+-----------------------------------------------------------------------
+
+Total estimation                           Number of obs   =      1,404
+
+-----------------------------------------------------------------------
+                      |      Total   Std. Err.     [95% Conf. Interval]
+----------------------+------------------------------------------------
+ c.m12_blood_pressure@|
+            ckd_group |
+         Albuminuria  |        186   11.32542      163.7834    208.2166
+         CKD stage 3  |        122    9.16262      104.0261    139.9739
+       CKD stage 4/5  |          3   1.549193     -.0389848    6.038985
+            Dialysis  |         59   6.298148       46.6452     71.3548
+          Transplant  |         60   6.400605      47.44421    72.55579
+         KRT unclear  |         14   3.092083      7.934397     20.0656
+-----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m1_blood_pressure@|
+           ckd_group |
+        Albuminuria  |        185   11.30867      162.8163    207.1837
+        CKD stage 3  |        116   9.034299      98.27781    133.7222
+      CKD stage 4/5  |          1          1     -.9616563    2.961656
+           Dialysis  |         48   5.937528      36.35261    59.64739
+         Transplant  |         59   6.371982      46.50036    71.49964
+        KRT unclear  |         13   3.032346       7.05158    18.94842
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m2_blood_pressure@|
+           ckd_group |
+        Albuminuria  |        188   11.35841      165.7187    210.2813
+        CKD stage 3  |        109   8.869036        91.602     126.398
+      CKD stage 4/5  |          3   1.549193     -.0389848    6.038985
+           Dialysis  |         62   6.374384      49.49565    74.50435
+         Transplant  |         67   6.574634      54.10283    79.89717
+        KRT unclear  |         13   3.032346       7.05158    18.94842
+----------------------------------------------------------------------
+
+Total estimation                                   Number of obs   =      1,404
+
+----------------------------------------------------------------------
+                     |      Total   Std. Err.     [95% Conf. Interval]
+---------------------+------------------------------------------------
+ c.m3_blood_pressure@|
+           ckd_group |
+        Albuminuria  |        189   11.37465      166.6869    211.3131
+        CKD stage 3  |        117   9.056524      99.23421    134.7658
+      CKD stage 4/5  |          1          1     -.9616563    2.961656
+           Dialysis  |         57   6.242283      44.75479    69.24521
+         Transplant  |         50   6.068604      38.09548    61.90452
+        KRT unclear  |         18   3.246011      11.63244    24.36756
+----------------------------------------------------------------------
+
+Total estimation                                Number of obs   =      1,404
+
+----------------------------------------------------------------------------
+                           |      Total   Std. Err.     [95% Conf. Interval]
+---------------------------+------------------------------------------------
+c.m4_albuminuria@ckd_group |
+              Albuminuria  |         28   5.170256      17.85774    38.14226
+              CKD stage 3  |         19    4.25659      10.65003    27.34997
+            CKD stage 4/5  |          0  (omitted)
+                 Dialysis  |          2   1.410213     -.7663531    4.766353
+               Transplant  |          9   2.934775      3.242981    14.75702
+              KRT unclear  |          1          1     -.9616563    2.961656
+----------------------------------------------------------------------------
+
+Total estimation                                Number of obs   =      1,404
+
+----------------------------------------------------------------------------
+                           |      Total   Std. Err.     [95% Conf. Interval]
+---------------------------+------------------------------------------------
+c.m5_albuminuria@ckd_group |
+              Albuminuria  |         30   5.342309      19.52023    40.47977
+              CKD stage 3  |         18   4.148655      9.861764    26.13824
+            CKD stage 4/5  |          1          1     -.9616563    2.961656
+                 Dialysis  |          7   2.600521      1.898671    12.10133
+               Transplant  |         10   3.084822      3.948639    16.05136
+              KRT unclear  |          0  (omitted)
+----------------------------------------------------------------------------
+
+Total estimation                                Number of obs   =      1,404
+
+----------------------------------------------------------------------------
+                           |      Total   Std. Err.     [95% Conf. Interval]
+---------------------------+------------------------------------------------
+c.m6_albuminuria@ckd_group |
+              Albuminuria  |         34   5.667226      22.88285    45.11715
+              CKD stage 3  |         20   4.361263       11.4447     28.5553
+            CKD stage 4/5  |          1          1     -.9616563    2.961656
+                 Dialysis  |          7   2.600521      1.898671    12.10133
+               Transplant  |          7   2.602728      1.894342    12.10566
+              KRT unclear  |          4   1.925439      .2229496     7.77705
+----------------------------------------------------------------------------
+
+Total estimation                                Number of obs   =      1,404
+
+----------------------------------------------------------------------------
+                           |      Total   Std. Err.     [95% Conf. Interval]
+---------------------------+------------------------------------------------
+c.m7_albuminuria@ckd_group |
+              Albuminuria  |         32   5.507774      21.19564    42.80436
+              CKD stage 3  |         19    4.25659      10.65003    27.34997
+            CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+                 Dialysis  |          7   2.600521      1.898671    12.10133
+               Transplant  |          4   1.983805      .1084557    7.891544
+              KRT unclear  |          2   1.396861     -.7401603     4.74016
+----------------------------------------------------------------------------
+
+Total estimation                                Number of obs   =      1,404
+
+----------------------------------------------------------------------------
+                           |      Total   Std. Err.     [95% Conf. Interval]
+---------------------------+------------------------------------------------
+c.m8_albuminuria@ckd_group |
+              Albuminuria  |         29   5.257146      18.68729    39.31271
+              CKD stage 3  |         19    4.25659      10.65003    27.34997
+            CKD stage 4/5  |          0  (omitted)
+                 Dialysis  |          7   2.600521      1.898671    12.10133
+               Transplant  |         11   3.226237      4.671233    17.32877
+              KRT unclear  |          1          1     -.9616563    2.961656
+----------------------------------------------------------------------------
+
+Total estimation                                Number of obs   =      1,404
+
+----------------------------------------------------------------------------
+                           |      Total   Std. Err.     [95% Conf. Interval]
+---------------------------+------------------------------------------------
+c.m9_albuminuria@ckd_group |
+              Albuminuria  |         27    5.08155      17.03175    36.96825
+              CKD stage 3  |         22   4.561719      13.05148    30.94852
+            CKD stage 4/5  |          0  (omitted)
+                 Dialysis  |          8   2.771934      2.562419    13.43758
+               Transplant  |         12   3.360108      5.408624    18.59138
+              KRT unclear  |          0  (omitted)
+----------------------------------------------------------------------------
+
+Total estimation                                 Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+c.m10_albuminuria@ckd_group |
+               Albuminuria  |         37   5.896194      25.43369    48.56631
+               CKD stage 3  |         24    4.75156      14.67907    33.32093
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |          8   2.771934      2.562419    13.43758
+                Transplant  |         10   3.084822      3.948639    16.05136
+               KRT unclear  |          1          1     -.9616563    2.961656
+-----------------------------------------------------------------------------
+
+Total estimation                                 Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+c.m11_albuminuria@ckd_group |
+               Albuminuria  |         39   6.042634      27.14643    50.85357
+               CKD stage 3  |         25   4.842893      15.49991    34.50009
+             CKD stage 4/5  |          1          1     -.9616563    2.961656
+                  Dialysis  |          8   2.771934      2.562419    13.43758
+                Transplant  |          9   2.934775      3.242981    14.75702
+               KRT unclear  |          4   1.925439      .2229496     7.77705
+-----------------------------------------------------------------------------
+
+Total estimation                                 Number of obs   =      1,404
+
+-----------------------------------------------------------------------------
+                            |      Total   Std. Err.     [95% Conf. Interval]
+----------------------------+------------------------------------------------
+c.m12_albuminuria@ckd_group |
+               Albuminuria  |         27    5.08155      17.03175    36.96825
+               CKD stage 3  |         14   3.678441      6.784163    21.21584
+             CKD stage 4/5  |          0  (omitted)
+                  Dialysis  |         12   3.354734      5.419166    18.58083
+                Transplant  |          7   2.602728      1.894342    12.10566
+               KRT unclear  |          2   1.396861     -.7401603     4.74016
+-----------------------------------------------------------------------------
+
+Total estimation                                Number of obs   =      1,404
+
+----------------------------------------------------------------------------
+                           |      Total   Std. Err.     [95% Conf. Interval]
+---------------------------+------------------------------------------------
+c.m1_albuminuria@ckd_group |
+              Albuminuria  |         29   5.257146      18.68729    39.31271
+              CKD stage 3  |         21   4.462906      12.24531    29.75469
+            CKD stage 4/5  |          0  (omitted)
+                 Dialysis  |          6   2.414645      1.263297     10.7367
+               Transplant  |          9   2.934775      3.242981    14.75702
+              KRT unclear  |          2   1.396861     -.7401603     4.74016
+----------------------------------------------------------------------------
+
+Total estimation                                Number of obs   =      1,404
+
+----------------------------------------------------------------------------
+                           |      Total   Std. Err.     [95% Conf. Interval]
+---------------------------+------------------------------------------------
+c.m2_albuminuria@ckd_group |
+              Albuminuria  |         39   6.042634      27.14643    50.85357
+              CKD stage 3  |         11   3.273606      4.578311    17.42169
+            CKD stage 4/5  |          0  (omitted)
+                 Dialysis  |         11   3.221573      4.680382    17.31962
+               Transplant  |          6   2.416342      1.259967    10.74003
+              KRT unclear  |          0  (omitted)
+----------------------------------------------------------------------------
+
+Total estimation                                Number of obs   =      1,404
+
+----------------------------------------------------------------------------
+                           |      Total   Std. Err.     [95% Conf. Interval]
+---------------------------+------------------------------------------------
+c.m3_albuminuria@ckd_group |
+              Albuminuria  |         32   5.507774      21.19564    42.80436
+              CKD stage 3  |         21   4.462906      12.24531    29.75469
+            CKD stage 4/5  |          0  (omitted)
+                 Dialysis  |         11   3.221573      4.680382    17.31962
+               Transplant  |          6   2.416342      1.259967    10.74003
+              KRT unclear  |          1          1     -.9616563    2.961656
+----------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+c.m4_creatinine@ckd_group |
+             Albuminuria  |        121   9.830442      101.7161    140.2839
+             CKD stage 3  |         77   7.868769      61.56418    92.43582
+           CKD stage 4/5  |          1          1     -.9616563    2.961656
+                Dialysis  |         35   5.317597       24.5687     45.4313
+              Transplant  |         37   5.462482      26.28449    47.71551
+             KRT unclear  |         11   2.883934      5.342714    16.65729
+---------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+c.m5_creatinine@ckd_group |
+             Albuminuria  |        138   10.30915       117.777     158.223
+             CKD stage 3  |         90   8.328005      73.66332    106.3367
+           CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+                Dialysis  |         37   5.429049      26.35007    47.64993
+              Transplant  |         34   5.288454      23.62587    44.37413
+             KRT unclear  |          9    2.69145        3.7203     14.2797
+---------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+c.m6_creatinine@ckd_group |
+             Albuminuria  |        104   9.275066      85.80551    122.1945
+             CKD stage 3  |         70   7.586274      55.11834    84.88166
+           CKD stage 4/5  |          5   1.732051      1.602312    8.397688
+                Dialysis  |         39   5.534177      28.14385    49.85615
+              Transplant  |         38   5.517324      27.17691    48.82309
+             KRT unclear  |          7   2.444506      2.204719    11.79528
+---------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+c.m7_creatinine@ckd_group |
+             Albuminuria  |        134   10.20281      113.9856    154.0144
+             CKD stage 3  |         87   8.229003      70.85752    103.1425
+           CKD stage 4/5  |          3   1.549193     -.0389848    6.038985
+                Dialysis  |         36   5.374138      25.45779    46.54221
+              Transplant  |         33   5.227101      22.74623    43.25377
+             KRT unclear  |         11   2.883934      5.342714    16.65729
+---------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+c.m8_creatinine@ckd_group |
+             Albuminuria  |        123   9.890508      103.5982    142.4018
+             CKD stage 3  |         82   8.054902      66.19905    97.80095
+           CKD stage 4/5  |          0  (omitted)
+                Dialysis  |         37   5.429049      26.35007    47.64993
+              Transplant  |         43   5.769777      31.68168    54.31832
+             KRT unclear  |          4   1.925439      .2229496     7.77705
+---------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+c.m9_creatinine@ckd_group |
+             Albuminuria  |        122   9.860606      102.6569    141.3431
+             CKD stage 3  |         83   8.090659      67.12891    98.87109
+           CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+                Dialysis  |         41   5.633335      29.94933    52.05067
+              Transplant  |         37   5.462482      26.28449    47.71551
+             KRT unclear  |          8   2.575684      2.947394    13.05261
+---------------------------------------------------------------------------
+
+Total estimation                                Number of obs   =      1,404
+
+----------------------------------------------------------------------------
+                           |      Total   Std. Err.     [95% Conf. Interval]
+---------------------------+------------------------------------------------
+c.m10_creatinine@ckd_group |
+              Albuminuria  |        130   10.09269      110.2016    149.7984
+              CKD stage 3  |         78   7.906998      62.48919    93.51081
+            CKD stage 4/5  |          1          1     -.9616563    2.961656
+                 Dialysis  |         36   5.374138      25.45779    46.54221
+               Transplant  |         41   5.672988      29.87155    52.12845
+              KRT unclear  |          6   2.295276      1.497457    10.50254
+----------------------------------------------------------------------------
+
+Total estimation                                Number of obs   =      1,404
+
+----------------------------------------------------------------------------
+                           |      Total   Std. Err.     [95% Conf. Interval]
+---------------------------+------------------------------------------------
+c.m11_creatinine@ckd_group |
+              Albuminuria  |        124   9.920151      104.5401    143.4599
+              CKD stage 3  |         81   8.018664      65.27014    96.72986
+            CKD stage 4/5  |          1          1     -.9616563    2.961656
+                 Dialysis  |         30   5.008467      20.17511    39.82489
+               Transplant  |         39    5.57066      28.07228    49.92772
+              KRT unclear  |          7   2.444506      2.204719    11.79528
+----------------------------------------------------------------------------
+
+Total estimation                                Number of obs   =      1,404
+
+----------------------------------------------------------------------------
+                           |      Total   Std. Err.     [95% Conf. Interval]
+---------------------------+------------------------------------------------
+c.m12_creatinine@ckd_group |
+              Albuminuria  |        133   10.17564      113.0389    152.9611
+              CKD stage 3  |         68   7.500515      53.28657    82.71343
+            CKD stage 4/5  |          2   1.341641     -.6318381    4.631838
+                 Dialysis  |         36   5.374138      25.45779    46.54221
+               Transplant  |         32   5.163978      21.87005    42.12995
+              KRT unclear  |          5   2.124193      .8330638    9.166936
+----------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+c.m1_creatinine@ckd_group |
+             Albuminuria  |        127   10.00755      107.3686    146.6314
+             CKD stage 3  |         85   8.160756       68.9914    101.0086
+           CKD stage 4/5  |          3   1.549193     -.0389848    6.038985
+                Dialysis  |         40   5.584482      29.04517    50.95483
+              Transplant  |         39    5.57066      28.07228    49.92772
+             KRT unclear  |          7   2.444506      2.204719    11.79528
+---------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+c.m2_creatinine@ckd_group |
+             Albuminuria  |        119   9.769319      99.83595     138.164
+             CKD stage 3  |         93   8.423091      76.47679    109.5232
+           CKD stage 4/5  |          5   1.732051      1.602312    8.397688
+                Dialysis  |         36   5.374138      25.45779    46.54221
+              Transplant  |         33   5.227101      22.74623    43.25377
+             KRT unclear  |          7   2.444506      2.204719    11.79528
+---------------------------------------------------------------------------
+
+Total estimation                               Number of obs   =      1,404
+
+---------------------------------------------------------------------------
+                          |      Total   Std. Err.     [95% Conf. Interval]
+--------------------------+------------------------------------------------
+c.m3_creatinine@ckd_group |
+             Albuminuria  |         93   8.868162      75.60371    110.3963
+             CKD stage 3  |         85   8.160756       68.9914    101.0086
+           CKD stage 4/5  |          3   1.549193     -.0389848    6.038985
+                Dialysis  |         35   5.317597       24.5687     45.4313
+              Transplant  |         38   5.517324      27.17691    48.82309
+             KRT unclear  |          7   2.444506      2.204719    11.79528
+---------------------------------------------------------------------------
+
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  /workspace/logs/2021_outcomes.log
+  log type:  text
+ closed on:  31 Jan 2023, 11:52:18
+-------------------------------------------------------------------------------
