@@ -36,6 +36,8 @@ gen albuminuria = 0
 replace albuminuria = 1 if acr >=3
 replace albuminuria = 0 if acr_operator =="<"
 replace albuminuria = 0 if acr_operator =="<="
+label define albuminuria 0 "No albuminuria" 1 "Albuminuria"
+label values albuminuria albuminuria
 assert inlist(sex, "M", "F")
 gen male = (sex=="M")
 drop sex
@@ -68,6 +70,9 @@ sum acr, de
 tab acr_operator
 tab albuminuria
 tab ckd
+egen egfr_status = cut(baseline_egfr), at(0, 60, 5000)
+recode egfr_status 0=2 60=1
+replace egfr_status = 0 if baseline_egfr==.
 foreach krt of varlist 	dialysis_primary_care 			///
 						dialysis_icd_10					///
 						dialysis_opcs_4					///
@@ -75,15 +80,21 @@ foreach krt of varlist 	dialysis_primary_care 			///
 						kidney_transplant_icd_10		///
 						kidney_transplant_opcs_4 		{
 tab `krt'
+replace egfr_status=3 if `krt'==1
 replace ckd = 1 if `krt'==1
 drop `krt'
 }
+label define egfr_status 0 "No eGFR" 1 "eGFR >=60" 2 "eGFR <60" 3 "KRT"
+label values egfr_status egfr_status
+tab egfr_status albuminuria
 tab ckd, m
 drop if ckd==0
 drop ckd
 drop acr
 drop acr_operator
+tab egfr_status albuminuria
 drop albuminuria
+drop egfr_status
 
 export delimited using "./output/`dataset'_ckd.csv", replace
 
