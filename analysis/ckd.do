@@ -78,7 +78,7 @@ tab `krt'
 replace ckd = 1 if `krt'==1
 drop `krt'
 }
-tab ckd
+tab ckd, m
 drop if ckd==0
 drop ckd
 drop acr
