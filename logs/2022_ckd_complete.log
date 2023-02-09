@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/logs/2022_ckd_complete.log
   log type:  text
- opened on:  31 Jan 2023, 11:52:40
+ opened on:   8 Feb 2023, 20:13:10
 
 . clear
 
@@ -25,15 +25,15 @@ file /tmp/St00015.000001 saved
 
     Result                           # of obs.
     -----------------------------------------
-    not matched                        66,582
-        from master                    47,842  (_merge==1)
-        from using                     18,740  (_merge==2)
+    not matched                        66,712
+        from master                    47,907  (_merge==1)
+        from using                     18,805  (_merge==2)
 
-    matched                             2,158  (_merge==3)
+    matched                             2,093  (_merge==3)
     -----------------------------------------
 
 . keep if _merge==3
-(66,582 observations deleted)
+(66,712 observations deleted)
 
 . drop _merge
 
@@ -80,29 +80,29 @@ file /tmp/St00015.000002 saved
 
 modality_baseline |      Freq.     Percent        Cum.
 ------------------+-----------------------------------
-         Dialysis |        193        8.94        8.94
-Kidney transplant |        195        9.04       17.98
- Modality unclear |         44        2.04       20.02
-          Pre KRT |      1,726       79.98      100.00
+         Dialysis |        180        8.60        8.60
+Kidney transplant |        198        9.46       18.06
+ Modality unclear |         52        2.48       20.54
+          Pre KRT |      1,663       79.46      100.00
 ------------------+-----------------------------------
-            Total |      2,158      100.00
+            Total |      2,093      100.00
 
 . egen ckd_group = cut(baseline_egfr), at(0, 30, 60, 5000)
-(895 missing values generated)
+(820 missing values generated)
 
 . drop baseline_egfr
 
 . recode ckd_group 0=3 30=2 60=1
-(ckd_group: 1263 changes made)
+(ckd_group: 1273 changes made)
 
 . replace ckd_group = 4 if modality_baseline=="Dialysis"
-(193 real changes made)
+(180 real changes made)
 
 . replace ckd_group = 5 if modality_baseline=="Kidney transplant"
-(195 real changes made)
+(198 real changes made)
 
 . replace ckd_group = 6 if modality_baseline=="Modality unclear"
-(44 real changes made)
+(52 real changes made)
 
 . label define ckd_group 1 "Albuminuria" 2 "CKD stage 3" 3 "CKD stage 4/5" 4 "D
 > ialysis" 5 "Transplant" 6 "KRT unclear"
@@ -116,14 +116,14 @@ Kidney transplant |        195        9.04       17.98
               |              modality_baseline
     CKD group |  Dialysis  Kidney ..  Modalit..    Pre KRT |     Total
 --------------+--------------------------------------------+----------
-  Albuminuria |         0          0          0        639 |       639 
-  CKD stage 3 |         0          0          0        361 |       361 
-CKD stage 4/5 |         0          0          0         18 |        18 
-     Dialysis |       193          0          0          0 |       193 
-   Transplant |         0        195          0          0 |       195 
-  KRT unclear |         0          0         44          0 |        44 
+  Albuminuria |         0          0          0        619 |       619 
+  CKD stage 3 |         0          0          0        391 |       391 
+CKD stage 4/5 |         0          0          0         13 |        13 
+     Dialysis |       180          0          0          0 |       180 
+   Transplant |         0        198          0          0 |       198 
+  KRT unclear |         0          0         52          0 |        52 
 --------------+--------------------------------------------+----------
-        Total |       193        195         44      1,018 |     1,450 
+        Total |       180        198         52      1,023 |     1,453 
 
 . 
 . * Dialysis & kidney transplant outcome classification
@@ -152,91 +152,91 @@ CKD stage 4/5 |         0          0          0         18 |        18
               |              modality_outcome
     CKD group |  Deceased   Dialysis  Kidney ..  Modalit.. |     Total
 --------------+--------------------------------------------+----------
-  Albuminuria |        65         32         25          8 |       639 
-  CKD stage 3 |        28         16         17          4 |       361 
-CKD stage 4/5 |         1          0          0          0 |        18 
-     Dialysis |        23         12          4          3 |       193 
-   Transplant |        19         11         11          3 |       195 
-  KRT unclear |         7          1          1          0 |        44 
-            . |        65         28         33          6 |       708 
+  Albuminuria |        60         35         31          3 |       619 
+  CKD stage 3 |        34         13         11          6 |       391 
+CKD stage 4/5 |         1          3          0          0 |        13 
+     Dialysis |        16          7          5          1 |       180 
+   Transplant |        22          8          6          2 |       198 
+  KRT unclear |         5          0          3          0 |        52 
+            . |        72         29         37          9 |       640 
 --------------+--------------------------------------------+----------
-        Total |       208        100         91         24 |     2,158 
+        Total |       210         95         93         21 |     2,093 
 
 
               | modality_o
               |   utcome
     CKD group | Unchanged |     Total
 --------------+-----------+----------
-  Albuminuria |       509 |       639 
-  CKD stage 3 |       296 |       361 
-CKD stage 4/5 |        17 |        18 
-     Dialysis |       151 |       193 
-   Transplant |       151 |       195 
-  KRT unclear |        35 |        44 
-            . |       576 |       708 
+  Albuminuria |       490 |       619 
+  CKD stage 3 |       327 |       391 
+CKD stage 4/5 |         9 |        13 
+     Dialysis |       151 |       180 
+   Transplant |       160 |       198 
+  KRT unclear |        44 |        52 
+            . |       493 |       640 
 --------------+-----------+----------
-        Total |     1,735 |     2,158 
+        Total |     1,674 |     2,093 
 
 . 
 . * eGFR outcome classification based on updated mean eGFR over previous 18 mon
 > ths by the end of year
 . gen sex = 1 if male == "Male"
-(1,152 missing values generated)
+(1,131 missing values generated)
 
 . replace sex = 0 if male == "Female"
-(1,152 real changes made)
+(1,131 real changes made)
 
 . label define sex 0"Female" 1"Male"
 
 . label values sex sex
 
 . replace creatinine_outcome = . if !inrange(creatinine_outcome, 20, 3000)
-(943 real changes made, 943 to missing)
+(899 real changes made, 899 to missing)
 
 . gen mgdl_creatinine_outcome = creatinine_outcome/88.4
-(943 missing values generated)
+(899 missing values generated)
 
 . gen min_creatinine_outcome=.
-(2,158 missing values generated)
+(2,093 missing values generated)
 
 . replace min_creatinine_outcome = mgdl_creatinine_outcome/0.7 if sex==0
-(650 real changes made)
+(657 real changes made)
 
 . replace min_creatinine_outcome = mgdl_creatinine_outcome/0.9 if sex==1
-(565 real changes made)
+(537 real changes made)
 
 . replace min_creatinine_outcome = min_creatinine_outcome^-0.329  if sex==0
-(650 real changes made)
+(657 real changes made)
 
 . replace min_creatinine_outcome = min_creatinine_outcome^-0.411  if sex==1
-(565 real changes made)
+(537 real changes made)
 
 . replace min_creatinine_outcome = 1 if min_creatinine_outcome<1
-(770 real changes made)
+(774 real changes made)
 
 . gen max_creatinine_outcome=.
-(2,158 missing values generated)
+(2,093 missing values generated)
 
 . replace max_creatinine_outcome = mgdl_creatinine_outcome/0.7 if sex==0
-(650 real changes made)
+(657 real changes made)
 
 . replace max_creatinine_outcome = mgdl_creatinine_outcome/0.9 if sex==1
-(565 real changes made)
+(537 real changes made)
 
 . replace max_creatinine_outcome = max_creatinine_outcome^-1.209
-(1,215 real changes made)
+(1,194 real changes made)
 
 . replace max_creatinine_outcome = 1 if max_creatinine_outcome>1
-(1,388 real changes made)
+(1,319 real changes made)
 
 . gen egfr_outcome = min_creatinine_outcome*max_creatinine_outcome*141
-(943 missing values generated)
+(899 missing values generated)
 
 . replace egfr_outcome = egfr_outcome*(0.993^age)
-(1,215 real changes made)
+(1,194 real changes made)
 
 . replace egfr_outcome = egfr_outcome*1.018 if sex==0
-(650 real changes made)
+(657 real changes made)
 
 . drop creatinine_outcome
 
@@ -247,12 +247,12 @@ CKD stage 4/5 |        17 |        18
 . drop max_creatinine_outcome
 
 . egen egfr_end = cut(egfr_outcome), at(0, 30, 60, 5000)
-(943 missing values generated)
+(899 missing values generated)
 
 . drop egfr_outcome
 
 . recode egfr_end 0=3 30=2 60=1
-(egfr_end: 1215 changes made)
+(egfr_end: 1194 changes made)
 
 . label define egfr_end 1 "≥60" 2 "30-59" 3 "<30"
 
@@ -263,25 +263,25 @@ CKD stage 4/5 |        17 |        18
 . gen ckd_progression = 0
 
 . replace ckd_progression = 1 if egfr_end==2 & ckd_group==1
-(98 real changes made)
+(90 real changes made)
 
 . replace ckd_progression = 2 if egfr_end==3 & ckd_group==1
-(2 real changes made)
+(3 real changes made)
 
 . replace ckd_progression = 2 if egfr_end==3 & ckd_group==2
 (5 real changes made)
 
 . replace ckd_progression = 3 if modality_outcome=="Dialysis"
-(100 real changes made)
+(95 real changes made)
 
 . replace ckd_progression = 4 if modality_outcome=="Kidney transplant"
-(91 real changes made)
+(93 real changes made)
 
 . replace ckd_progression = 5 if modality_outcome=="Modality unclear"
-(24 real changes made)
+(21 real changes made)
 
 . replace ckd_progression = 6 if modality_outcome=="Deceased"
-(208 real changes made)
+(210 real changes made)
 
 . label define ckd_progression 0 "No progression" 1 "CKD 3" 2 "CKD 4/5 pre-KRT"
 >  3 "Dialysis" 4 "Kidney transplant" 5 "KRT unclear modality" 6 "Deceased"
@@ -294,15 +294,15 @@ CKD stage 4/5 |        17 |        18
 
      CKD progression |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      No progression |      1,656       76.74       76.74
-               CKD 3 |         75        3.48       80.21
-     CKD 4/5 pre-KRT |          4        0.19       80.40
-            Dialysis |        100        4.63       85.03
-   Kidney transplant |         91        4.22       89.25
-KRT unclear modality |         24        1.11       90.36
-            Deceased |        208        9.64      100.00
+      No progression |      1,594       76.16       76.16
+               CKD 3 |         72        3.44       79.60
+     CKD 4/5 pre-KRT |          8        0.38       79.98
+            Dialysis |         95        4.54       84.52
+   Kidney transplant |         93        4.44       88.96
+KRT unclear modality |         21        1.00       89.97
+            Deceased |        210       10.03      100.00
 ---------------------+-----------------------------------
-               Total |      2,158      100.00
+               Total |      2,093      100.00
 
 . 
 . **Potential effect modifiers
@@ -319,19 +319,19 @@ KRT unclear modality |         24        1.11       90.36
 (0 real changes made)
 
 . replace ethnicity=6 if ethnicity==2
-(93 real changes made)
+(75 real changes made)
 
 . replace ethnicity=2 if ethnicity==3
-(87 real changes made)
+(81 real changes made)
 
 . replace ethnicity=3 if ethnicity==4
-(74 real changes made)
+(78 real changes made)
 
 . replace ethnicity=4 if ethnicity==6
-(93 real changes made)
+(75 real changes made)
 
 . replace ethnicity=6 if ethnicity==.
-(555 real changes made)
+(504 real changes made)
 
 . label define ethnicity  1 "White"                                       ///
 >                                                 2 "South Asian"              
@@ -358,31 +358,31 @@ KRT unclear modality |         24        1.11       90.36
 . rename region region_string
 
 . gen region = 1 if region_string=="East Midlands"
-(1,949 missing values generated)
+(1,899 missing values generated)
 
 . replace region = 2 if region_string=="East"
-(220 real changes made)
+(193 real changes made)
 
 . replace region = 3 if region_string=="London"
-(394 real changes made)
+(413 real changes made)
 
 . replace region = 4 if region_string=="North East"
-(237 real changes made)
+(216 real changes made)
 
 . replace region = 5 if region_string=="North West"
-(199 real changes made)
+(232 real changes made)
 
 . replace region = 6 if region_string=="South East"
-(239 real changes made)
+(197 real changes made)
 
 . replace region = 7 if region_string=="South West"
-(227 real changes made)
+(216 real changes made)
 
 . replace region = 8 if region_string=="West Midlands"
-(219 real changes made)
+(215 real changes made)
 
 . replace region = 9 if region_string=="Yorkshire and The Humber"
-(214 real changes made)
+(217 real changes made)
 
 . label define region     1 "East Midlands"                                    
 >    ///
@@ -434,13 +434,13 @@ KRT unclear modality |         24        1.11       90.36
 . * Urban (binary)
 . * Urban = 1-4 + missing, Rural = 5-8
 . generate urban=.
-(2,158 missing values generated)
+(2,093 missing values generated)
 
 . replace urban=1 if rural_urban<=4|rural_urban==.
-(860 real changes made)
+(835 real changes made)
 
 . replace urban=0 if rural_urban>4 & rural_urban!=.
-(1,298 real changes made)
+(1,258 real changes made)
 
 . label var urban "Urban/rural"
 
@@ -460,5 +460,5 @@ file ./output/2022_ckd_complete.dta saved
       name:  <unnamed>
        log:  /workspace/logs/2022_ckd_complete.log
   log type:  text
- closed on:  31 Jan 2023, 11:52:50
+ closed on:   8 Feb 2023, 20:13:15
 -------------------------------------------------------------------------------

@@ -8,7 +8,7 @@ cap log close
 log using ./logs/`dataset'_ckd_complete, replace t
 clear
 
-* Merge `dataset'_ckd with `dataset'_ckd_complete
+*Merge `dataset'_ckd with `dataset'_ckd_complete
 capture noisily import delimited ./output/`dataset'_ckd.csv, clear
 tempfile `dataset'_ckd
 save ``dataset'_ckd', replace
@@ -19,7 +19,7 @@ drop _merge
 tempfile `dataset'_ckd_complete
 save ``dataset'_ckd_complete', replace
 
-/* Generate dummy data
+/*Generate dummy data
 cd ckd-healthcare-use
 capture noisily import delimited ./output/2017_ckd.csv, clear
 tempfile 2017_ckd
@@ -32,7 +32,7 @@ tempfile 2017_ckd_complete
 save 2017_ckd_complete, replace
 */
 
-* CKD stage classification
+*CKD stage classification
 foreach var of varlist 	dialysis_baseline_primary_care	///
 						dialysis_baseline_icd_10		///
 						dialysis_baseline_opcs_4		///
@@ -55,7 +55,7 @@ label values ckd_group ckd_group
 label var ckd_group "CKD group"
 tab ckd_group modality_baseline
 
-* Dialysis & kidney transplant outcome classification
+*Dialysis & kidney transplant outcome classification
 foreach var of varlist 	dialysis_outcome_primary_care	///
 						dialysis_outcome_icd_10			///
 						dialysis_outcome_opcs_4			///
@@ -69,7 +69,7 @@ foreach var of varlist 	dialysis_outcome_primary_care	///
 	}
 tab ckd_group modality_outcome, m
 
-* eGFR outcome classification based on updated mean eGFR over previous 18 months by the end of year
+*eGFR outcome classification based on updated mean eGFR over previous 18 months by the end of year
 gen sex = 1 if male == "Male"
 replace sex = 0 if male == "Female"
 label define sex 0"Female" 1"Male"
@@ -112,6 +112,11 @@ label define ckd_progression 0 "No progression" 1 "CKD 3" 2 "CKD 4/5 pre-KRT" 3 
 label values ckd_progression ckd_progression
 label var ckd_progression "CKD progression"
 tab ckd_progression, m
+
+*Totals for non-binary healthcare resource outcomes
+foreach aggregate of varlist m4_hospital_days m5_hospital_days m6_hospital_days m7_hospital_days m8_hospital_days m9_hospital_days m10_hospital_days m11_hospital_days m12_hospital_days m1_hospital_days m2_hospital_days m3_hospital_days m4_critical_care_days m5_critical_care_days m6_critical_care_days m7_critical_care_days m8_critical_care_days m9_critical_care_days m10_critical_care_days m11_critical_care_days m12_critical_care_days m1_critical_care_days m2_critical_care_days m3_critical_care_days m4_emergency_days m5_emergency_days m6_emergency_days m7_emergency_days m8_emergency_days m9_emergency_days m10_emergency_days m11_emergency_days m12_emergency_days m1_emergency_days m2_emergency_days m3_emergency_days m4_op_appts m5_op_appts m6_op_appts m7_op_appts m8_op_appts m9_op_appts m10_op_appts m11_op_appts m12_op_appts m1_op_appts m2_op_appts m3_op_appts m4_neph_appts m5_neph_appts m6_neph_appts m7_neph_appts m8_neph_appts m9_neph_appts m10_neph_appts m11_neph_appts m12_neph_appts m1_neph_appts m2_neph_appts m3_neph_appts m4_tx_appts m5_tx_appts m6_tx_appts m7_tx_appts m8_tx_appts m9_tx_appts m10_tx_appts m11_tx_appts m12_tx_appts m1_tx_appts m2_tx_appts m3_tx_appts m4_gp_interactions m5_gp_interactions m6_gp_interactions m7_gp_interactions m8_gp_interactions m9_gp_interactions m10_gp_interactions m11_gp_interactions m12_gp_interactions m1_gp_interactions m2_gp_interactions m3_gp_interactions {
+bysort ckd_group: egen total_`aggregate' = total(`aggregate')
+}
 
 **Potential effect modifiers
 * Ethnicity
@@ -184,6 +189,13 @@ label define urban 0 "Rural" 1 "Urban"
 label values urban urban
 drop rural_urban
 
-save "./output/`dataset'_ckd_complete.dta", replace
 
+
+save "./output/`dataset'_ckd_complete.dta", replace
 log close
+
+/*
+save "./output/2017_ckd_complete.dta", replace
+*/
+
+

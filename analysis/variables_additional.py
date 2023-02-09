@@ -994,7 +994,7 @@ def generate_variables_additional(index_date_variable):
         between = ["index_date + 334 days", "index_date + 364 days"],
         return_expectations={"incidence": 0.10},
     ),
-    m4_outpatient_appointments=patients.outpatient_appointment_date(
+    m4_op_appts=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         between = ["index_date", "index_date + 29 days"],
         return_expectations={
@@ -1002,7 +1002,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m5_outpatient_appointments=patients.outpatient_appointment_date(
+    m5_op_appts=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         between = ["index_date + 30 days", "index_date + 60 days"],
         return_expectations={
@@ -1010,7 +1010,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m6_outpatient_appointments=patients.outpatient_appointment_date(
+    m6_op_appts=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         between = ["index_date + 61 days", "index_date + 90 days"],
         return_expectations={
@@ -1018,7 +1018,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m7_outpatient_appointments=patients.outpatient_appointment_date(
+    m7_op_appts=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         between = ["index_date + 91 days", "index_date + 121 days"],
         return_expectations={
@@ -1026,7 +1026,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m8_outpatient_appointments=patients.outpatient_appointment_date(
+    m8_op_appts=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         between = ["index_date + 122 days", "index_date + 152 days"],
         return_expectations={
@@ -1034,7 +1034,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m9_outpatient_appointments=patients.outpatient_appointment_date(
+    m9_op_appts=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         between = ["index_date + 153 days", "index_date + 182 days"],
         return_expectations={
@@ -1042,7 +1042,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m10_outpatient_appointments=patients.outpatient_appointment_date(
+    m10_op_appts=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         between = ["index_date + 183 days", "index_date + 213 days"],
         return_expectations={
@@ -1050,7 +1050,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m11_outpatient_appointments=patients.outpatient_appointment_date(
+    m11_op_appts=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         between = ["index_date + 214 days", "index_date + 243 days"],
         return_expectations={
@@ -1058,7 +1058,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m12_outpatient_appointments=patients.outpatient_appointment_date(
+    m12_op_appts=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         between = ["index_date + 244 days", "index_date + 274 days"],
         return_expectations={
@@ -1066,7 +1066,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m1_outpatient_appointments=patients.outpatient_appointment_date(
+    m1_op_appts=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         between = ["index_date + 275 days", "index_date + 305 days"],
         return_expectations={
@@ -1074,7 +1074,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m2_outpatient_appointments=patients.outpatient_appointment_date(
+    m2_op_appts=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         between = ["index_date + 306 days", "index_date + 333 days"],
         return_expectations={
@@ -1082,7 +1082,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m3_outpatient_appointments=patients.outpatient_appointment_date(
+    m3_op_appts=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         between = ["index_date + 334 days", "index_date + 364 days"],
         return_expectations={
@@ -1090,7 +1090,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m4_nephrology_appointments=patients.outpatient_appointment_date(
+    m4_neph_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date", "index_date + 29 days"],
@@ -1099,7 +1099,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m5_nephrology_appointments=patients.outpatient_appointment_date(
+    m5_neph_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 30 days", "index_date + 60 days"],
@@ -1108,7 +1108,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m6_nephrology_appointments=patients.outpatient_appointment_date(
+    m6_neph_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 61 days", "index_date + 90 days"],
@@ -1117,7 +1117,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m7_nephrology_appointments=patients.outpatient_appointment_date(
+    m7_neph_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 91 days", "index_date + 121 days"],
@@ -1126,7 +1126,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m8_nephrology_appointments=patients.outpatient_appointment_date(
+    m8_neph_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 122 days", "index_date + 152 days"],
@@ -1135,7 +1135,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m9_nephrology_appointments=patients.outpatient_appointment_date(
+    m9_neph_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 153 days", "index_date + 182 days"],
@@ -1144,7 +1144,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m10_nephrology_appointments=patients.outpatient_appointment_date(
+    m10_neph_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 183 days", "index_date + 213 days"],
@@ -1153,7 +1153,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m11_nephrology_appointments=patients.outpatient_appointment_date(
+    m11_neph_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 214 days", "index_date + 243 days"],
@@ -1162,7 +1162,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m12_nephrology_appointments=patients.outpatient_appointment_date(
+    m12_neph_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 244 days", "index_date + 274 days"],
@@ -1171,7 +1171,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m1_nephrology_appointments=patients.outpatient_appointment_date(
+    m1_neph_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 275 days", "index_date + 305 days"],
@@ -1180,7 +1180,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m2_nephrology_appointments=patients.outpatient_appointment_date(
+    m2_neph_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 306 days", "index_date + 333 days"],
@@ -1189,7 +1189,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m3_nephrology_appointments=patients.outpatient_appointment_date(
+    m3_neph_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 334 days", "index_date + 364 days"],
@@ -1198,7 +1198,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m4_transplant_appointments=patients.outpatient_appointment_date(
+    m4_tx_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date", "index_date + 29 days"],
@@ -1207,7 +1207,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m5_transplant_appointments=patients.outpatient_appointment_date(
+    m5_tx_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 30 days", "index_date + 60 days"],
@@ -1216,7 +1216,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m6_transplant_appointments=patients.outpatient_appointment_date(
+    m6_tx_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 61 days", "index_date + 90 days"],
@@ -1225,7 +1225,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m7_transplant_appointments=patients.outpatient_appointment_date(
+    m7_tx_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 91 days", "index_date + 121 days"],
@@ -1234,7 +1234,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m8_transplant_appointments=patients.outpatient_appointment_date(
+    m8_tx_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 122 days", "index_date + 152 days"],
@@ -1243,7 +1243,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m9_transplant_appointments=patients.outpatient_appointment_date(
+    m9_tx_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 153 days", "index_date + 182 days"],
@@ -1252,7 +1252,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m10_transplant_appointments=patients.outpatient_appointment_date(
+    m10_tx_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 183 days", "index_date + 213 days"],
@@ -1261,7 +1261,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m11_transplant_appointments=patients.outpatient_appointment_date(
+    m11_tx_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 214 days", "index_date + 243 days"],
@@ -1270,7 +1270,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m12_transplant_appointments=patients.outpatient_appointment_date(
+    m12_tx_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 244 days", "index_date + 274 days"],
@@ -1279,7 +1279,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m1_transplant_appointments=patients.outpatient_appointment_date(
+    m1_tx_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 275 days", "index_date + 305 days"],
@@ -1288,7 +1288,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m2_transplant_appointments=patients.outpatient_appointment_date(
+    m2_tx_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 306 days", "index_date + 333 days"],
@@ -1297,7 +1297,7 @@ def generate_variables_additional(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    m3_transplant_appointments=patients.outpatient_appointment_date(
+    m3_tx_appts=patients.outpatient_appointment_date(
         with_these_treatment_function_codes="361",
         returning="number_of_matches_in_period",
         between = ["index_date + 334 days", "index_date + 364 days"],
