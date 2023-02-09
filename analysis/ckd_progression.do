@@ -24,6 +24,31 @@ use ./output/`x'_ckd_complete.dta, clear
 *safecount provides a count with any counts <=5 returned at "<=5"
 *round(r(N),5) rounds counts to the nearest 5 with any counts <=5 returned as "."
 
+**Overall
+qui safecount
+local baseline_ckd_`x' = round(r(N),5)
+*Total number of people in group who do not progress by the end of the year
+qui safecount if ckd_progression==0
+local none_ckd_`x' = round(r(N),5)
+*Total number of people in group who progress to CKD stage 3 by the end of the year
+qui safecount if ckd_progression==1
+local ckd3_ckd_`x' = round(r(N),5)
+*Total number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+qui safecount if ckd_progression==2
+local ckd4_ckd_`x' = round(r(N),5)
+*Total number of people in group who progress to dialysis by the end of the year
+qui safecount if ckd_progression==3
+local dialysis_ckd_`x' = round(r(N),5)
+*Total number of people in group who progress to kidney kt by the end of the year
+qui safecount if ckd_progression==4
+local kt_ckd_`x' = round(r(N),5)
+*Total number of people in group who progress to KRT (unclear modality) by the end of the year
+qui safecount if ckd_progression==5
+local unclear_ckd_`x' = round(r(N),5)
+*Total number of people in group who die by the end of the year
+qui safecount if ckd_progression==6
+local deceased_ckd_`x' = round(r(N),5)
+
 **eGFR >60 with albuminuria
 *Number of people in group (baseline_ckd2_`x') at the beginning of each year ckd2_`x'
 qui safecount if ckd_group==1
@@ -140,6 +165,16 @@ local deceased_unclear_`x' = round(r(N),5)
 }
 
 **Populate table with redacted counts
+*Overall
+file write tablecontent ("All CKD groups") _tab _tab (`baseline_ckd_2017') _tab _tab (`baseline_ckd_2018') _tab _tab (`baseline_ckd_2019') _tab _tab (`baseline_ckd_2020') _tab _tab (`baseline_ckd_2021') _tab _tab (`baseline_ckd_2022') _n(2)
+file write tablecontent _tab ("No progression") _tab _tab (`none_ckd_2017') _tab _tab (`none_ckd_2018') _tab _tab (`none_ckd_2019') _tab _tab (`none_ckd_2020') _tab _tab (`none_ckd_2021') _tab _tab (`none_ckd_2022') _n
+file write tablecontent _tab ("CKD stage 3") _tab _tab (`ckd3_ckd_2017') _tab _tab (`ckd3_ckd_2018') _tab _tab (`ckd3_ckd_2019') _tab _tab (`ckd3_ckd_2020') _tab _tab (`ckd3_ckd_2021') _tab _tab (`ckd3_ckd_2022') _n
+file write tablecontent _tab ("CKD stage 4/5") _tab _tab (`ckd4_ckd_2017') _tab _tab (`ckd4_ckd_2018') _tab _tab (`ckd4_ckd_2019') _tab _tab (`ckd4_ckd_2020') _tab _tab (`ckd4_ckd_2021') _tab _tab (`ckd4_ckd_2022') _n
+file write tablecontent _tab ("Dialysis") _tab _tab (`dialysis_ckd_2017') _tab _tab (`dialysis_ckd_2018') _tab _tab (`dialysis_ckd_2019') _tab _tab (`dialysis_ckd_2020') _tab _tab (`dialysis_ckd_2021') _tab _tab (`dialysis_ckd_2022') _n
+file write tablecontent _tab ("Transplant") _tab _tab (`kt_ckd_2017') _tab _tab (`kt_ckd_2018') _tab _tab (`kt_ckd_2019') _tab _tab (`kt_ckd_2020') _tab _tab (`kt_ckd_2021') _tab _tab (`kt_ckd_2022') _n
+file write tablecontent _tab ("KRT unclear") _tab _tab (`unclear_ckd_2017') _tab _tab (`unclear_ckd_2018') _tab _tab (`unclear_ckd_2019') _tab _tab (`unclear_ckd_2020') _tab _tab (`unclear_ckd_2021') _tab _tab (`unclear_ckd_2022') _n
+file write tablecontent _tab ("Deceased") _tab _tab (`deceased_ckd_2017') _tab _tab (`deceased_ckd_2018') _tab _tab (`deceased_ckd_2019') _tab _tab (`deceased_ckd_2020') _tab _tab (`deceased_ckd_2021') _tab _tab (`deceased_ckd_2022') _n(2)
+
 *eGFR >60 with albuminuria
 file write tablecontent ("Albuminuria") _tab _tab (`baseline_ckd2_2017') _tab _tab (`baseline_ckd2_2018') _tab _tab (`baseline_ckd2_2019') _tab _tab (`baseline_ckd2_2020') _tab _tab (`baseline_ckd2_2021') _tab _tab (`baseline_ckd2_2022') _n(2)
 file write tablecontent _tab ("No progression") _tab _tab (`none_ckd2_2017') _tab _tab (`none_ckd2_2018') _tab _tab (`none_ckd2_2019') _tab _tab (`none_ckd2_2020') _tab _tab (`none_ckd2_2021') _tab _tab (`none_ckd2_2022') _n
@@ -193,7 +228,7 @@ clear
 import delimited ./output/ckd_progression.csv
 local columns " "n_2017" "april_2018" "n_2018" "april_2019" "n_2019" "april_2020" "n_2020" "april_2021" "n_2021" "april_2022" "n_2022" "april_2023" "
 foreach col in `columns' {
-replace `col'=. if `col'==0
+replace `col'=. if `col'<=5
 }
 	
 export delimited "./output/ckd_progression.csv", replace

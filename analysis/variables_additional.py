@@ -1199,7 +1199,7 @@ def generate_variables_additional(index_date_variable):
         }
     ),
     m4_tx_appts=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="361",
+        with_these_treatment_function_codes="102",
         returning="number_of_matches_in_period",
         between = ["index_date", "index_date + 29 days"],
         return_expectations={
@@ -1208,7 +1208,7 @@ def generate_variables_additional(index_date_variable):
         }
     ),
     m5_tx_appts=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="361",
+        with_these_treatment_function_codes="102",
         returning="number_of_matches_in_period",
         between = ["index_date + 30 days", "index_date + 60 days"],
         return_expectations={
@@ -1217,7 +1217,7 @@ def generate_variables_additional(index_date_variable):
         }
     ),
     m6_tx_appts=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="361",
+        with_these_treatment_function_codes="102",
         returning="number_of_matches_in_period",
         between = ["index_date + 61 days", "index_date + 90 days"],
         return_expectations={
@@ -1226,7 +1226,7 @@ def generate_variables_additional(index_date_variable):
         }
     ),
     m7_tx_appts=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="361",
+        with_these_treatment_function_codes="102",
         returning="number_of_matches_in_period",
         between = ["index_date + 91 days", "index_date + 121 days"],
         return_expectations={
@@ -1235,7 +1235,7 @@ def generate_variables_additional(index_date_variable):
         }
     ),
     m8_tx_appts=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="361",
+        with_these_treatment_function_codes="102",
         returning="number_of_matches_in_period",
         between = ["index_date + 122 days", "index_date + 152 days"],
         return_expectations={
@@ -1244,7 +1244,7 @@ def generate_variables_additional(index_date_variable):
         }
     ),
     m9_tx_appts=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="361",
+        with_these_treatment_function_codes="102",
         returning="number_of_matches_in_period",
         between = ["index_date + 153 days", "index_date + 182 days"],
         return_expectations={
@@ -1253,7 +1253,7 @@ def generate_variables_additional(index_date_variable):
         }
     ),
     m10_tx_appts=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="361",
+        with_these_treatment_function_codes="102",
         returning="number_of_matches_in_period",
         between = ["index_date + 183 days", "index_date + 213 days"],
         return_expectations={
@@ -1262,7 +1262,7 @@ def generate_variables_additional(index_date_variable):
         }
     ),
     m11_tx_appts=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="361",
+        with_these_treatment_function_codes="102",
         returning="number_of_matches_in_period",
         between = ["index_date + 214 days", "index_date + 243 days"],
         return_expectations={
@@ -1271,7 +1271,7 @@ def generate_variables_additional(index_date_variable):
         }
     ),
     m12_tx_appts=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="361",
+        with_these_treatment_function_codes="102",
         returning="number_of_matches_in_period",
         between = ["index_date + 244 days", "index_date + 274 days"],
         return_expectations={
@@ -1280,7 +1280,7 @@ def generate_variables_additional(index_date_variable):
         }
     ),
     m1_tx_appts=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="361",
+        with_these_treatment_function_codes="102",
         returning="number_of_matches_in_period",
         between = ["index_date + 275 days", "index_date + 305 days"],
         return_expectations={
@@ -1289,7 +1289,7 @@ def generate_variables_additional(index_date_variable):
         }
     ),
     m2_tx_appts=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="361",
+        with_these_treatment_function_codes="102",
         returning="number_of_matches_in_period",
         between = ["index_date + 306 days", "index_date + 333 days"],
         return_expectations={
@@ -1298,7 +1298,7 @@ def generate_variables_additional(index_date_variable):
         }
     ),
     m3_tx_appts=patients.outpatient_appointment_date(
-        with_these_treatment_function_codes="361",
+        with_these_treatment_function_codes="102",
         returning="number_of_matches_in_period",
         between = ["index_date + 334 days", "index_date + 364 days"],
         return_expectations={
