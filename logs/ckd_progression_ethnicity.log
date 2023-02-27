@@ -1,0 +1,354 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/ckd_progression_ethnicity.log
+  log type:  text
+ opened on:  27 Feb 2023, 12:42:30
+
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./output/ckd_progression_ethnicity.csv, write text replace
+(file ./output/ckd_progression_ethnicity.csv not found)
+
+. 
+. **Column headings
+. *There are three column headings for each year 2017-2022:
+. *Column 1 = the number of people in each CKD group as of the beginning of each year (i.e. in April)
+. *Column 2 = the number of people who remain within the same CKD group, progress to a more advanced CKD group, or die by the end of the year (i.e. by the subsequent April)
+. *Column 3 = Column 2 as a percentage of Column 1
+. file write tablecontent _tab _tab ("N_2017") _tab ("April_2018") _tab ("N_2018") _tab ("April_2019") _tab ("N_2019") _tab ("April_2020") _tab ("N_2020") _tab ("April_2021") _tab ("N_2021") _tab ("April_2022"
+> ) _tab ("N_2022") _tab ("April_2023") _n(2)
+
+. 
+. **Loops through datasets for each year `x' 2017-2022
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2. use ./output/`x'_ckd_complete.dta, clear
+  3. 
+. **Disclosure minimisation
+. *safecount provides a count with any counts <=5 returned at "<=5"
+. *round(r(N),5) rounds counts to the nearest 5 with any counts <=5 returned as "."
+. 
+. forvalues ethnicity = 1/6 {
+  4. use ./output/`x'_ckd_complete.dta, clear
+  5. drop if ethnicity !=`ethnicity'
+  6. **Overall
+. qui safecount
+  7. local baseline_ckd_`x'`ethnicity' = round(r(N),5)
+  8. *Total number of people in group who do not progress by the end of the year
+. qui safecount if ckd_progression==0
+  9. local none_ckd_`x'`ethnicity' = round(r(N),5)
+ 10. *Total number of people in group who progress to CKD stage 3 by the end of the year
+. qui safecount if ckd_progression==1
+ 11. local ckd3_ckd_`x'`ethnicity' = round(r(N),5)
+ 12. *Total number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_progression==2
+ 13. local ckd4_ckd_`x'`ethnicity' = round(r(N),5)
+ 14. *Total number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_progression==3
+ 15. local dialysis_ckd_`x'`ethnicity' = round(r(N),5)
+ 16. *Total number of people in group who progress to kidney kt by the end of the year
+. qui safecount if ckd_progression==4
+ 17. local kt_ckd_`x'`ethnicity' = round(r(N),5)
+ 18. *Total number of people in group who progress to KRT (unclear modality) by the end of the year
+. qui safecount if ckd_progression==5
+ 19. local unclear_ckd_`x'`ethnicity' = round(r(N),5)
+ 20. *Total number of people in group who die by the end of the year
+. qui safecount if ckd_progression==6
+ 21. local deceased_ckd_`x'`ethnicity' = round(r(N),5)
+ 22. 
+. **eGFR >60 with albuminuria
+. *Number of people in group (baseline_ckd2_`x'`ethnicity') at the beginning of each year ckd2_`x'`ethnicity'
+. qui safecount if ckd_group==1
+ 23. local baseline_ckd2_`x'`ethnicity' = round(r(N),5)
+ 24. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==1 & ckd_progression==0
+ 25. local none_ckd2_`x'`ethnicity' = round(r(N),5)
+ 26. *Number of people in group who progress to CKD stage 3 by the end of the year
+. qui safecount if ckd_group==1 & ckd_progression==1
+ 27. local ckd3_ckd2_`x'`ethnicity' = round(r(N),5)
+ 28. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_group==1 & ckd_progression==2
+ 29. local ckd4_ckd2_`x'`ethnicity' = round(r(N),5)
+ 30. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==1 & ckd_progression==3
+ 31. local dialysis_ckd2_`x'`ethnicity' = round(r(N),5)
+ 32. *Number of people in group who progress to kidney kt by the end of the year
+. qui safecount if ckd_group==1 & ckd_progression==4
+ 33. local kt_ckd2_`x'`ethnicity' = round(r(N),5)
+ 34. *Number of people in group who progress to KRT (unclear modality) by the end of the year
+. qui safecount if ckd_group==1 & ckd_progression==5
+ 35. local unclear_ckd2_`x'`ethnicity' = round(r(N),5)
+ 36. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==1 & ckd_progression==6
+ 37. local deceased_ckd2_`x'`ethnicity' = round(r(N),5)
+ 38. 
+. **CKD stage 3
+. *Number of people in group (baseline_ckd3_`x'`ethnicity') at the beginning of each year ckd3_`x'`ethnicity'
+. qui safecount if ckd_group==2
+ 39. local baseline_ckd3_`x'`ethnicity' = round(r(N),5)
+ 40. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==0
+ 41. local none_ckd3_`x'`ethnicity' = round(r(N),5)
+ 42. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==2
+ 43. local ckd4_ckd3_`x'`ethnicity' = round(r(N),5)
+ 44. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==3
+ 45. local dialysis_ckd3_`x'`ethnicity' = round(r(N),5)
+ 46. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==4
+ 47. local kt_ckd3_`x'`ethnicity' = round(r(N),5)
+ 48. *Number of people in group who progress to KRT (unclear modality) by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==5
+ 49. local unclear_ckd3_`x'`ethnicity' = round(r(N),5)
+ 50. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==6
+ 51. local deceased_ckd3_`x'`ethnicity' = round(r(N),5)
+ 52. 
+. **CKD stage 4/5 without KRT
+. *Number of people in group (baseline_ckd4_`x'`ethnicity') at the beginning of each year ckd4_`x'`ethnicity'
+. qui safecount if ckd_group==3
+ 53. local baseline_ckd4_`x'`ethnicity' = round(r(N),5)
+ 54. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==0
+ 55. local none_ckd4_`x'`ethnicity' = round(r(N),5)
+ 56. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==3
+ 57. local dialysis_ckd4_`x'`ethnicity' = round(r(N),5)
+ 58. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==4
+ 59. local kt_ckd4_`x'`ethnicity' = round(r(N),5)
+ 60. *Number of people in group who progress to KRT (unclear modality) by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==5
+ 61. local unclear_ckd4_`x'`ethnicity' = round(r(N),5)
+ 62. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==6
+ 63. local deceased_ckd4_`x'`ethnicity' = round(r(N),5)
+ 64. 
+. **Dialysis
+. *Number of people in group (baseline_dialysis_`x'`ethnicity') at the beginning of each year dialysis_`x'`ethnicity'
+. qui safecount if ckd_group==4
+ 65. local baseline_dialysis_`x'`ethnicity' = round(r(N),5)
+ 66. *Number of people in group remaining on dialysis by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==0
+ 67. local none_dialysis_`x'`ethnicity' = round(r(N),5)
+ 68. *Number of people in group with kidney transplant by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==4
+ 69. local kt_dialysis_`x'`ethnicity' = round(r(N),5)
+ 70. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==6
+ 71. local deceased_dialysis_`x'`ethnicity' = round(r(N),5)
+ 72. 
+. **Kidney transplant
+. *Number of people in group (baseline_kt_`x'`ethnicity') at the beginning of each year kt_`x'`ethnicity'
+. qui safecount if ckd_group==5
+ 73. local baseline_kt_`x'`ethnicity' = round(r(N),5)
+ 74. *Number of people in group remaining with kidney transplant by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==0
+ 75. local none_kt_`x'`ethnicity' = round(r(N),5)
+ 76. *Number of people in group on dialysis by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==3
+ 77. local dialysis_kt_`x'`ethnicity' = round(r(N),5)
+ 78. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==6
+ 79. local deceased_kt_`x'`ethnicity' = round(r(N),5)
+ 80. 
+. **KRT unclear modality
+. *Number of people in group (baseline_unclear_`x'`ethnicity') at the beginning of each year unclear_`x'`ethnicity'
+. qui safecount if ckd_group==6
+ 81. local baseline_unclear_`x'`ethnicity' = round(r(N),5)
+ 82. *Number of people in group remaining in group by the end of the year
+. qui safecount if ckd_group==6 & ckd_progression==0
+ 83. local none_unclear_`x'`ethnicity' = round(r(N),5)
+ 84. *Number of people in group on dialysis by the end of the year
+. qui safecount if ckd_group==6 & ckd_progression==3
+ 85. local dialysis_unclear_`x'`ethnicity' = round(r(N),5)
+ 86. *Number of people in group with kidney transplant by the end of the year
+. qui safecount if ckd_group==6 & ckd_progression==4
+ 87. local kt_unclear_`x'`ethnicity' = round(r(N),5)
+ 88. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==6 & ckd_progression==6
+ 89. local deceased_unclear_`x'`ethnicity' = round(r(N),5)
+ 90. }
+ 91. }
+(840 observations deleted)
+(2,001 observations deleted)
+(1,995 observations deleted)
+(1,996 observations deleted)
+(2,000 observations deleted)
+(1,553 observations deleted)
+(868 observations deleted)
+(2,018 observations deleted)
+(2,033 observations deleted)
+(2,014 observations deleted)
+(2,023 observations deleted)
+(1,564 observations deleted)
+(870 observations deleted)
+(2,063 observations deleted)
+(2,066 observations deleted)
+(2,059 observations deleted)
+(2,058 observations deleted)
+(1,619 observations deleted)
+(850 observations deleted)
+(2,013 observations deleted)
+(2,021 observations deleted)
+(2,009 observations deleted)
+(1,997 observations deleted)
+(1,595 observations deleted)
+(833 observations deleted)
+(2,070 observations deleted)
+(2,084 observations deleted)
+(2,089 observations deleted)
+(2,073 observations deleted)
+(1,621 observations deleted)
+(806 observations deleted)
+(1,993 observations deleted)
+(1,998 observations deleted)
+(2,002 observations deleted)
+(1,995 observations deleted)
+(1,591 observations deleted)
+
+. **Populate table with redacted counts
+. forvalues ethnicity = 1/6 {
+  2. local lab0: label ethnicity `ethnicity'
+  3. file write tablecontent ("`lab0'") _n(2)
+  4. 
+. *Overall
+. file write tablecontent ("All CKD groups") _tab _tab (`baseline_ckd_2017`ethnicity'') _tab _tab (`baseline_ckd_2018`ethnicity'') _tab _tab (`baseline_ckd_2019`ethnicity'') _tab _tab (`baseline_ckd_2020`ethni
+> city'') _tab _tab (`baseline_ckd_2021`ethnicity'') _tab _tab (`baseline_ckd_2022`ethnicity'') _n(2)
+  5. file write tablecontent _tab ("No progression") _tab _tab (`none_ckd_2017`ethnicity'') _tab _tab (`none_ckd_2018`ethnicity'') _tab _tab (`none_ckd_2019`ethnicity'') _tab _tab (`none_ckd_2020`ethnicity'') 
+> _tab _tab (`none_ckd_2021`ethnicity'') _tab _tab (`none_ckd_2022`ethnicity'') _n
+  6. file write tablecontent _tab ("CKD stage 3") _tab _tab (`ckd3_ckd_2017`ethnicity'') _tab _tab (`ckd3_ckd_2018`ethnicity'') _tab _tab (`ckd3_ckd_2019`ethnicity'') _tab _tab (`ckd3_ckd_2020`ethnicity'') _ta
+> b _tab (`ckd3_ckd_2021`ethnicity'') _tab _tab (`ckd3_ckd_2022`ethnicity'') _n
+  7. file write tablecontent _tab ("CKD stage 4/5") _tab _tab (`ckd4_ckd_2017`ethnicity'') _tab _tab (`ckd4_ckd_2018`ethnicity'') _tab _tab (`ckd4_ckd_2019`ethnicity'') _tab _tab (`ckd4_ckd_2020`ethnicity'') _
+> tab _tab (`ckd4_ckd_2021`ethnicity'') _tab _tab (`ckd4_ckd_2022`ethnicity'') _n
+  8. file write tablecontent _tab ("Dialysis") _tab _tab (`dialysis_ckd_2017`ethnicity'') _tab _tab (`dialysis_ckd_2018`ethnicity'') _tab _tab (`dialysis_ckd_2019`ethnicity'') _tab _tab (`dialysis_ckd_2020`eth
+> nicity'') _tab _tab (`dialysis_ckd_2021`ethnicity'') _tab _tab (`dialysis_ckd_2022`ethnicity'') _n
+  9. file write tablecontent _tab ("Transplant") _tab _tab (`kt_ckd_2017`ethnicity'') _tab _tab (`kt_ckd_2018`ethnicity'') _tab _tab (`kt_ckd_2019`ethnicity'') _tab _tab (`kt_ckd_2020`ethnicity'') _tab _tab (`
+> kt_ckd_2021`ethnicity'') _tab _tab (`kt_ckd_2022`ethnicity'') _n
+ 10. file write tablecontent _tab ("KRT unclear") _tab _tab (`unclear_ckd_2017`ethnicity'') _tab _tab (`unclear_ckd_2018`ethnicity'') _tab _tab (`unclear_ckd_2019`ethnicity'') _tab _tab (`unclear_ckd_2020`ethn
+> icity'') _tab _tab (`unclear_ckd_2021`ethnicity'') _tab _tab (`unclear_ckd_2022`ethnicity'') _n
+ 11. file write tablecontent _tab ("Deceased") _tab _tab (`deceased_ckd_2017`ethnicity'') _tab _tab (`deceased_ckd_2018`ethnicity'') _tab _tab (`deceased_ckd_2019`ethnicity'') _tab _tab (`deceased_ckd_2020`eth
+> nicity'') _tab _tab (`deceased_ckd_2021`ethnicity'') _tab _tab (`deceased_ckd_2022`ethnicity'') _n(2)
+ 12. 
+. *eGFR >60 with albuminuria
+. file write tablecontent ("Albuminuria") _tab _tab (`baseline_ckd2_2017`ethnicity'') _tab _tab (`baseline_ckd2_2018`ethnicity'') _tab _tab (`baseline_ckd2_2019`ethnicity'') _tab _tab (`baseline_ckd2_2020`ethn
+> icity'') _tab _tab (`baseline_ckd2_2021`ethnicity'') _tab _tab (`baseline_ckd2_2022`ethnicity'') _n(2)
+ 13. file write tablecontent _tab ("No progression") _tab _tab (`none_ckd2_2017`ethnicity'') _tab _tab (`none_ckd2_2018`ethnicity'') _tab _tab (`none_ckd2_2019`ethnicity'') _tab _tab (`none_ckd2_2020`ethnicity
+> '') _tab _tab (`none_ckd2_2021`ethnicity'') _tab _tab (`none_ckd2_2022`ethnicity'') _n
+ 14. file write tablecontent _tab ("CKD stage 3") _tab _tab (`ckd3_ckd2_2017`ethnicity'') _tab _tab (`ckd3_ckd2_2018`ethnicity'') _tab _tab (`ckd3_ckd2_2019`ethnicity'') _tab _tab (`ckd3_ckd2_2020`ethnicity'')
+>  _tab _tab (`ckd3_ckd2_2021`ethnicity'') _tab _tab (`ckd3_ckd2_2022`ethnicity'') _n
+ 15. file write tablecontent _tab ("CKD stage 4/5") _tab _tab (`ckd4_ckd2_2017`ethnicity'') _tab _tab (`ckd4_ckd2_2018`ethnicity'') _tab _tab (`ckd4_ckd2_2019`ethnicity'') _tab _tab (`ckd4_ckd2_2020`ethnicity'
+> ') _tab _tab (`ckd4_ckd2_2021`ethnicity'') _tab _tab (`ckd4_ckd2_2022`ethnicity'') _n
+ 16. file write tablecontent _tab ("Dialysis") _tab _tab (`dialysis_ckd2_2017`ethnicity'') _tab _tab (`dialysis_ckd2_2018`ethnicity'') _tab _tab (`dialysis_ckd2_2019`ethnicity'') _tab _tab (`dialysis_ckd2_2020
+> `ethnicity'') _tab _tab (`dialysis_ckd2_2021`ethnicity'') _tab _tab (`dialysis_ckd2_2022`ethnicity'') _n
+ 17. file write tablecontent _tab ("Transplant") _tab _tab (`kt_ckd2_2017`ethnicity'') _tab _tab (`kt_ckd2_2018`ethnicity'') _tab _tab (`kt_ckd2_2019`ethnicity'') _tab _tab (`kt_ckd2_2020`ethnicity'') _tab _ta
+> b (`kt_ckd2_2021`ethnicity'') _tab _tab (`kt_ckd2_2022`ethnicity'') _n
+ 18. file write tablecontent _tab ("KRT unclear") _tab _tab (`unclear_ckd2_2017`ethnicity'') _tab _tab (`unclear_ckd2_2018`ethnicity'') _tab _tab (`unclear_ckd2_2019`ethnicity'') _tab _tab (`unclear_ckd2_2020`
+> ethnicity'') _tab _tab (`unclear_ckd2_2021`ethnicity'') _tab _tab (`unclear_ckd2_2022`ethnicity'') _n
+ 19. file write tablecontent _tab ("Deceased") _tab _tab (`deceased_ckd2_2017`ethnicity'') _tab _tab (`deceased_ckd2_2018`ethnicity'') _tab _tab (`deceased_ckd2_2019`ethnicity'') _tab _tab (`deceased_ckd2_2020
+> `ethnicity'') _tab _tab (`deceased_ckd2_2021`ethnicity'') _tab _tab (`deceased_ckd2_2022`ethnicity'') _n(2)
+ 20. 
+. *CKD stage 3
+. file write tablecontent ("CKD stage 3") _tab _tab (`baseline_ckd3_2017`ethnicity'') _tab _tab (`baseline_ckd3_2018`ethnicity'') _tab _tab (`baseline_ckd3_2019`ethnicity'') _tab _tab (`baseline_ckd3_2020`ethn
+> icity'') _tab _tab (`baseline_ckd3_2021`ethnicity'') _tab _tab (`baseline_ckd3_2022`ethnicity'') _n(2)
+ 21. file write tablecontent _tab ("No progression") _tab _tab (`none_ckd3_2017`ethnicity'') _tab _tab (`none_ckd3_2018`ethnicity'') _tab _tab (`none_ckd3_2019`ethnicity'') _tab _tab (`none_ckd3_2020`ethnicity
+> '') _tab _tab (`none_ckd3_2021`ethnicity'') _tab _tab (`none_ckd3_2022`ethnicity'') _n
+ 22. file write tablecontent _tab ("CKD stage 4/5") _tab _tab (`ckd4_ckd3_2017`ethnicity'') _tab _tab (`ckd4_ckd3_2018`ethnicity'') _tab _tab (`ckd4_ckd3_2019`ethnicity'') _tab _tab (`ckd4_ckd3_2020`ethnicity'
+> ') _tab _tab (`ckd4_ckd3_2021`ethnicity'') _tab _tab (`ckd4_ckd3_2022`ethnicity'') _n
+ 23. file write tablecontent _tab ("Dialysis") _tab _tab (`dialysis_ckd3_2017`ethnicity'') _tab _tab (`dialysis_ckd3_2018`ethnicity'') _tab _tab (`dialysis_ckd3_2019`ethnicity'') _tab _tab (`dialysis_ckd3_2020
+> `ethnicity'') _tab _tab (`dialysis_ckd3_2021`ethnicity'') _tab _tab (`dialysis_ckd3_2022`ethnicity'') _n
+ 24. file write tablecontent _tab ("Transplant") _tab _tab (`kt_ckd3_2017`ethnicity'') _tab _tab (`kt_ckd3_2018`ethnicity'') _tab _tab (`kt_ckd3_2019`ethnicity'') _tab _tab (`kt_ckd3_2020`ethnicity'') _tab _ta
+> b (`kt_ckd3_2021`ethnicity'') _tab _tab (`kt_ckd3_2022`ethnicity'') _n
+ 25. file write tablecontent _tab ("KRT unclear") _tab _tab (`unclear_ckd3_2017`ethnicity'') _tab _tab (`unclear_ckd3_2018`ethnicity'') _tab _tab (`unclear_ckd3_2019`ethnicity'') _tab _tab (`unclear_ckd3_2020`
+> ethnicity'') _tab _tab (`unclear_ckd3_2021`ethnicity'') _tab _tab (`unclear_ckd3_2022`ethnicity'') _n
+ 26. file write tablecontent _tab ("Deceased") _tab _tab (`deceased_ckd3_2017`ethnicity'') _tab _tab (`deceased_ckd3_2018`ethnicity'') _tab _tab (`deceased_ckd3_2019`ethnicity'') _tab _tab (`deceased_ckd3_2020
+> `ethnicity'') _tab _tab (`deceased_ckd3_2021`ethnicity'') _tab _tab (`deceased_ckd3_2022`ethnicity'') _n(2)
+ 27. 
+. *CKD stage 4/5 without KRT
+. file write tablecontent ("CKD stage 4/5") _tab _tab (`baseline_ckd4_2017`ethnicity'') _tab _tab (`baseline_ckd4_2018`ethnicity'') _tab _tab (`baseline_ckd4_2019`ethnicity'') _tab _tab (`baseline_ckd4_2020`et
+> hnicity'') _tab _tab (`baseline_ckd4_2021`ethnicity'') _tab _tab (`baseline_ckd4_2022`ethnicity'') _n(2)
+ 28. file write tablecontent _tab ("No progression") _tab _tab (`none_ckd4_2017`ethnicity'') _tab _tab (`none_ckd4_2018`ethnicity'') _tab _tab (`none_ckd4_2019`ethnicity'') _tab _tab (`none_ckd4_2020`ethnicity
+> '') _tab _tab (`none_ckd4_2021`ethnicity'') _tab _tab (`none_ckd4_2022`ethnicity'') _n
+ 29. file write tablecontent _tab ("Dialysis") _tab _tab (`dialysis_ckd4_2017`ethnicity'') _tab _tab (`dialysis_ckd4_2018`ethnicity'') _tab _tab (`dialysis_ckd4_2019`ethnicity'') _tab _tab (`dialysis_ckd4_2020
+> `ethnicity'') _tab _tab (`dialysis_ckd4_2021`ethnicity'') _tab _tab (`dialysis_ckd4_2022`ethnicity'') _n
+ 30. file write tablecontent _tab ("Transplant") _tab _tab (`kt_ckd4_2017`ethnicity'') _tab _tab (`kt_ckd4_2018`ethnicity'') _tab _tab (`kt_ckd4_2019`ethnicity'') _tab _tab (`kt_ckd4_2020`ethnicity'') _tab _ta
+> b (`kt_ckd4_2021`ethnicity'') _tab _tab (`kt_ckd4_2022`ethnicity'') _n
+ 31. file write tablecontent _tab ("KRT unclear") _tab _tab (`unclear_ckd4_2017`ethnicity'') _tab _tab (`unclear_ckd4_2018`ethnicity'') _tab _tab (`unclear_ckd4_2019`ethnicity'') _tab _tab (`unclear_ckd4_2020`
+> ethnicity'') _tab _tab (`unclear_ckd4_2021`ethnicity'') _tab _tab (`unclear_ckd4_2022`ethnicity'') _n
+ 32. file write tablecontent _tab ("Deceased") _tab _tab (`deceased_ckd4_2017`ethnicity'') _tab _tab (`deceased_ckd4_2018`ethnicity'') _tab _tab (`deceased_ckd4_2019`ethnicity'') _tab _tab (`deceased_ckd4_2020
+> `ethnicity'') _tab _tab (`deceased_ckd4_2021`ethnicity'') _tab _tab (`deceased_ckd4_2022`ethnicity'') _n(2)
+ 33. 
+. *Dialysis
+. file write tablecontent ("Dialysis") _tab _tab (`baseline_dialysis_2017`ethnicity'') _tab _tab (`baseline_dialysis_2018`ethnicity'') _tab _tab (`baseline_dialysis_2019`ethnicity'') _tab _tab (`baseline_dialy
+> sis_2020`ethnicity'') _tab _tab (`baseline_dialysis_2021`ethnicity'') _tab _tab (`baseline_dialysis_2022`ethnicity'') _n(2)
+ 34. file write tablecontent _tab ("No progression") _tab _tab (`none_dialysis_2017`ethnicity'') _tab _tab (`none_dialysis_2018`ethnicity'') _tab _tab (`none_dialysis_2019`ethnicity'') _tab _tab (`none_dialysi
+> s_2020`ethnicity'') _tab _tab (`none_dialysis_2021`ethnicity'') _tab _tab (`none_dialysis_2022`ethnicity'') _n
+ 35. file write tablecontent _tab ("Transplant") _tab _tab (`kt_dialysis_2017`ethnicity'') _tab _tab (`kt_dialysis_2018`ethnicity'') _tab _tab (`kt_dialysis_2019`ethnicity'') _tab _tab (`kt_dialysis_2020`ethni
+> city'') _tab _tab (`kt_dialysis_2021`ethnicity'') _tab _tab (`kt_dialysis_2022`ethnicity'') _n
+ 36. file write tablecontent _tab ("Deceased") _tab _tab (`deceased_dialysis_2017`ethnicity'') _tab _tab (`deceased_dialysis_2018`ethnicity'') _tab _tab (`deceased_dialysis_2019`ethnicity'') _tab _tab (`deceas
+> ed_dialysis_2020`ethnicity'') _tab _tab (`deceased_dialysis_2021`ethnicity'') _tab _tab (`deceased_dialysis_2022`ethnicity'') _n(2)
+ 37. 
+. *Kidney Transplant
+. file write tablecontent ("Transplant") _tab _tab (`baseline_kt_2017`ethnicity'') _tab _tab (`baseline_kt_2018`ethnicity'') _tab _tab (`baseline_kt_2019`ethnicity'') _tab _tab (`baseline_kt_2020`ethnicity'') 
+> _tab _tab (`baseline_kt_2021`ethnicity'') _tab _tab (`baseline_kt_2022`ethnicity'') _n(2)
+ 38. file write tablecontent _tab ("No progression") _tab _tab (`none_kt_2017`ethnicity'') _tab _tab (`none_kt_2018`ethnicity'') _tab _tab (`none_kt_2019`ethnicity'') _tab _tab (`none_kt_2020`ethnicity'') _tab
+>  _tab (`none_kt_2021`ethnicity'') _tab _tab (`none_kt_2022`ethnicity'') _n
+ 39. file write tablecontent _tab ("Dialysis") _tab _tab (`dialysis_kt_2017`ethnicity'') _tab _tab (`dialysis_kt_2018`ethnicity'') _tab _tab (`dialysis_kt_2019`ethnicity'') _tab _tab (`dialysis_kt_2020`ethnici
+> ty'') _tab _tab (`dialysis_kt_2021`ethnicity'') _tab _tab (`dialysis_kt_2022`ethnicity'') _n
+ 40. file write tablecontent _tab ("Deceased") _tab _tab (`deceased_kt_2017`ethnicity'') _tab _tab (`deceased_kt_2018`ethnicity'') _tab _tab (`deceased_kt_2019`ethnicity'') _tab _tab (`deceased_kt_2020`ethnici
+> ty'') _tab _tab (`deceased_kt_2021`ethnicity'') _tab _tab (`deceased_kt_2022`ethnicity'') _n(2)
+ 41. 
+. *KRT unclear modality
+. file write tablecontent ("KRT unclear") _tab _tab (`baseline_unclear_2017`ethnicity'') _tab _tab (`baseline_unclear_2018`ethnicity'') _tab _tab (`baseline_unclear_2019`ethnicity'') _tab _tab (`baseline_uncle
+> ar_2020`ethnicity'') _tab _tab (`baseline_unclear_2021`ethnicity'') _tab _tab (`baseline_unclear_2022`ethnicity'') _n(2)
+ 42. file write tablecontent _tab ("No progression") _tab _tab (`none_unclear_2017`ethnicity'') _tab _tab (`none_unclear_2018`ethnicity'') _tab _tab (`none_unclear_2019`ethnicity'') _tab _tab (`none_unclear_20
+> 20`ethnicity'') _tab _tab (`none_unclear_2021`ethnicity'') _tab _tab (`none_unclear_2022`ethnicity'') _n
+ 43. file write tablecontent _tab ("Dialysis") _tab _tab (`dialysis_unclear_2017`ethnicity'') _tab _tab (`dialysis_unclear_2018`ethnicity'') _tab _tab (`dialysis_unclear_2019`ethnicity'') _tab _tab (`dialysis_
+> unclear_2020`ethnicity'') _tab _tab (`dialysis_unclear_2021`ethnicity'') _tab _tab (`dialysis_unclear_2022`ethnicity'') _n
+ 44. file write tablecontent _tab ("Transplant") _tab _tab (`kt_unclear_2017`ethnicity'') _tab _tab (`kt_unclear_2018`ethnicity'') _tab _tab (`kt_unclear_2019`ethnicity'') _tab _tab (`kt_unclear_2020`ethnicity
+> '') _tab _tab (`kt_unclear_2021`ethnicity'') _tab _tab (`kt_unclear_2022`ethnicity'') _n
+ 45. file write tablecontent _tab ("Deceased") _tab _tab (`deceased_unclear_2017`ethnicity'') _tab _tab (`deceased_unclear_2018`ethnicity'') _tab _tab (`deceased_unclear_2019`ethnicity'') _tab _tab (`deceased_
+> unclear_2020`ethnicity'') _tab _tab (`deceased_unclear_2021`ethnicity'') _tab _tab (`deceased_unclear_2022`ethnicity'') _n(2)
+ 46. }
+
+. 
+. file close tablecontent
+
+. 
+. **Redact counts of 0 from each column in table (adapted from code by Emily Herrett)
+. clear
+
+. import delimited ./output/ckd_progression_ethnicity.csv
+(encoding automatically selected: ISO-8859-1)
+(14 vars, 258 obs)
+
+. local columns " "n_2017" "april_2018" "n_2018" "april_2019" "n_2019" "april_2020" "n_2020" "april_2021" "n_2021" "april_2022" "n_2022" "april_2023" "
+
+. foreach col in `columns' {
+  2. replace `col'=. if `col'<=5
+  3. }
+(5 real changes made, 5 to missing)
+(87 real changes made, 87 to missing)
+(8 real changes made, 8 to missing)
+(89 real changes made, 89 to missing)
+(4 real changes made, 4 to missing)
+(89 real changes made, 89 to missing)
+(7 real changes made, 7 to missing)
+(81 real changes made, 81 to missing)
+(6 real changes made, 6 to missing)
+(86 real changes made, 86 to missing)
+(6 real changes made, 6 to missing)
+(82 real changes made, 82 to missing)
+
+.         
+. export delimited "./output/ckd_progression_ethnicity.csv", replace
+file ./output/ckd_progression_ethnicity.csv saved
+
+. 
+end of do-file
+
+. browse
+
