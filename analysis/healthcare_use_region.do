@@ -13,8 +13,14 @@ file open tablecontent using ./output/`dataset'_healthcare_use_region.csv, write
 file write tablecontent _tab _tab ("n_`dataset'") _tab ("April") _tab ("May") _tab ("June") _tab ("July") _tab ("August") _tab ("September") _tab ("October") _tab ("November") _tab ("December") _tab ("January") _tab ("February") _tab ("March") _n(2)
 use ./output/`dataset'_ckd_complete.dta, clear
 
+*Totals for non-binary healthcare resource outcomes by region
+foreach aggregate of varlist m4_hospital_days m5_hospital_days m6_hospital_days m7_hospital_days m8_hospital_days m9_hospital_days m10_hospital_days m11_hospital_days m12_hospital_days m1_hospital_days m2_hospital_days m3_hospital_days m4_critical_care_days m5_critical_care_days m6_critical_care_days m7_critical_care_days m8_critical_care_days m9_critical_care_days m10_critical_care_days m11_critical_care_days m12_critical_care_days m1_critical_care_days m2_critical_care_days m3_critical_care_days m4_emergency_days m5_emergency_days m6_emergency_days m7_emergency_days m8_emergency_days m9_emergency_days m10_emergency_days m11_emergency_days m12_emergency_days m1_emergency_days m2_emergency_days m3_emergency_days m4_op_appts m5_op_appts m6_op_appts m7_op_appts m8_op_appts m9_op_appts m10_op_appts m11_op_appts m12_op_appts m1_op_appts m2_op_appts m3_op_appts m4_neph_appts m5_neph_appts m6_neph_appts m7_neph_appts m8_neph_appts m9_neph_appts m10_neph_appts m11_neph_appts m12_neph_appts m1_neph_appts m2_neph_appts m3_neph_appts m4_tx_appts m5_tx_appts m6_tx_appts m7_tx_appts m8_tx_appts m9_tx_appts m10_tx_appts m11_tx_appts m12_tx_appts m1_tx_appts m2_tx_appts m3_tx_appts m4_gp_interactions m5_gp_interactions m6_gp_interactions m7_gp_interactions m8_gp_interactions m9_gp_interactions m10_gp_interactions m11_gp_interactions m12_gp_interactions m1_gp_interactions m2_gp_interactions m3_gp_interactions {
+bysort region: egen region_`aggregate' = total(`aggregate')
+}
+save ./output/`dataset'_ckd_complete_region, replace
+
 forvalues region = 1/9 {
-use ./output/`dataset'_ckd_complete.dta, clear
+use ./output/`dataset'_ckd_complete_region.dta, clear
 drop if region !=`region'
 qui safecount
 local baseline_ckd`region' = round(r(N),5)
@@ -23,8 +29,10 @@ foreach binary of varlist m4_admitted_patients m5_admitted_patients m6_admitted_
 qui safecount if `binary'==1
 local ckd_`binary'`region' = round(r(N),5)
 }
+
 foreach aggregate of varlist m4_hospital_days m5_hospital_days m6_hospital_days m7_hospital_days m8_hospital_days m9_hospital_days m10_hospital_days m11_hospital_days m12_hospital_days m1_hospital_days m2_hospital_days m3_hospital_days m4_critical_care_days m5_critical_care_days m6_critical_care_days m7_critical_care_days m8_critical_care_days m9_critical_care_days m10_critical_care_days m11_critical_care_days m12_critical_care_days m1_critical_care_days m2_critical_care_days m3_critical_care_days m4_emergency_days m5_emergency_days m6_emergency_days m7_emergency_days m8_emergency_days m9_emergency_days m10_emergency_days m11_emergency_days m12_emergency_days m1_emergency_days m2_emergency_days m3_emergency_days m4_op_appts m5_op_appts m6_op_appts m7_op_appts m8_op_appts m9_op_appts m10_op_appts m11_op_appts m12_op_appts m1_op_appts m2_op_appts m3_op_appts m4_neph_appts m5_neph_appts m6_neph_appts m7_neph_appts m8_neph_appts m9_neph_appts m10_neph_appts m11_neph_appts m12_neph_appts m1_neph_appts m2_neph_appts m3_neph_appts m4_tx_appts m5_tx_appts m6_tx_appts m7_tx_appts m8_tx_appts m9_tx_appts m10_tx_appts m11_tx_appts m12_tx_appts m1_tx_appts m2_tx_appts m3_tx_appts m4_gp_interactions m5_gp_interactions m6_gp_interactions m7_gp_interactions m8_gp_interactions m9_gp_interactions m10_gp_interactions m11_gp_interactions m12_gp_interactions m1_gp_interactions m2_gp_interactions m3_gp_interactions {
-qui su overall_`aggregate'
+
+qui su region_`aggregate'
 local ckd_`aggregate'`region' = r(mean)
 }
 local lab0: label region `region'
@@ -65,8 +73,13 @@ cap file close tablecontent
 file open tablecontent using ./output/2017_healthcare_use_region.csv, write text replace
 file write tablecontent _tab _tab ("n_2017'") _tab ("April") _tab ("May") _tab ("June") _tab ("July") _tab ("August") _tab ("September") _tab ("October") _tab ("November") _tab ("December") _tab ("January") _tab ("February") _tab ("March") _n(2)
 use ./output/2017_ckd_complete.dta, clear
+*Totals for non-binary healthcare resource outcomes by region
+foreach aggregate of varlist m4_hospital_days m5_hospital_days m6_hospital_days m7_hospital_days m8_hospital_days m9_hospital_days m10_hospital_days m11_hospital_days m12_hospital_days m1_hospital_days m2_hospital_days m3_hospital_days m4_critical_care_days m5_critical_care_days m6_critical_care_days m7_critical_care_days m8_critical_care_days m9_critical_care_days m10_critical_care_days m11_critical_care_days m12_critical_care_days m1_critical_care_days m2_critical_care_days m3_critical_care_days m4_emergency_days m5_emergency_days m6_emergency_days m7_emergency_days m8_emergency_days m9_emergency_days m10_emergency_days m11_emergency_days m12_emergency_days m1_emergency_days m2_emergency_days m3_emergency_days m4_op_appts m5_op_appts m6_op_appts m7_op_appts m8_op_appts m9_op_appts m10_op_appts m11_op_appts m12_op_appts m1_op_appts m2_op_appts m3_op_appts m4_neph_appts m5_neph_appts m6_neph_appts m7_neph_appts m8_neph_appts m9_neph_appts m10_neph_appts m11_neph_appts m12_neph_appts m1_neph_appts m2_neph_appts m3_neph_appts m4_tx_appts m5_tx_appts m6_tx_appts m7_tx_appts m8_tx_appts m9_tx_appts m10_tx_appts m11_tx_appts m12_tx_appts m1_tx_appts m2_tx_appts m3_tx_appts m4_gp_interactions m5_gp_interactions m6_gp_interactions m7_gp_interactions m8_gp_interactions m9_gp_interactions m10_gp_interactions m11_gp_interactions m12_gp_interactions m1_gp_interactions m2_gp_interactions m3_gp_interactions {
+bysort region: egen region_`aggregate' = total(`aggregate')
+}
+save ./output/2017_ckd_complete_region, replace
 forvalues region = 1/9 {
-use ./output/2017_ckd_complete.dta, clear
+use ./output/2017_ckd_complete_region.dta, clear
 drop if region !=`region'
 qui safecount
 local baseline_ckd`region' = round(r(N),5)
@@ -76,7 +89,7 @@ qui safecount if `binary'==1
 local ckd_`binary'`region' = round(r(N),5)
 }
 foreach aggregate of varlist m4_hospital_days m5_hospital_days m6_hospital_days m7_hospital_days m8_hospital_days m9_hospital_days m10_hospital_days m11_hospital_days m12_hospital_days m1_hospital_days m2_hospital_days m3_hospital_days m4_critical_care_days m5_critical_care_days m6_critical_care_days m7_critical_care_days m8_critical_care_days m9_critical_care_days m10_critical_care_days m11_critical_care_days m12_critical_care_days m1_critical_care_days m2_critical_care_days m3_critical_care_days m4_emergency_days m5_emergency_days m6_emergency_days m7_emergency_days m8_emergency_days m9_emergency_days m10_emergency_days m11_emergency_days m12_emergency_days m1_emergency_days m2_emergency_days m3_emergency_days m4_op_appts m5_op_appts m6_op_appts m7_op_appts m8_op_appts m9_op_appts m10_op_appts m11_op_appts m12_op_appts m1_op_appts m2_op_appts m3_op_appts m4_neph_appts m5_neph_appts m6_neph_appts m7_neph_appts m8_neph_appts m9_neph_appts m10_neph_appts m11_neph_appts m12_neph_appts m1_neph_appts m2_neph_appts m3_neph_appts m4_tx_appts m5_tx_appts m6_tx_appts m7_tx_appts m8_tx_appts m9_tx_appts m10_tx_appts m11_tx_appts m12_tx_appts m1_tx_appts m2_tx_appts m3_tx_appts m4_gp_interactions m5_gp_interactions m6_gp_interactions m7_gp_interactions m8_gp_interactions m9_gp_interactions m10_gp_interactions m11_gp_interactions m12_gp_interactions m1_gp_interactions m2_gp_interactions m3_gp_interactions {
-qui su overall_`aggregate'
+qui su region_`aggregate'
 local ckd_`aggregate'`region' = r(mean)
 }
 local lab0: label region `region'
