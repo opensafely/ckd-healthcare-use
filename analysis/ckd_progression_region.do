@@ -137,8 +137,8 @@ qui safecount if ckd_group==6 & ckd_progression==6
 local deceased_unclear_`x'`region' = round(r(N),5)
 }
 }
-**Populate table with redacted counts
-forvalues region = 1/6 {
+**Populate table with rounded counts
+forvalues region = 1/9 {
 local lab0: label region `region'
 file write tablecontent ("`lab0'") _n(2)
 

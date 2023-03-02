@@ -137,7 +137,7 @@ qui safecount if ckd_group==6 & ckd_progression==6
 local deceased_unclear_`x'`ethnicity' = round(r(N),5)
 }
 }
-**Populate table with redacted counts
+**Populate table with rounded counts
 forvalues ethnicity = 1/6 {
 local lab0: label ethnicity `ethnicity'
 file write tablecontent ("`lab0'") _n(2)
