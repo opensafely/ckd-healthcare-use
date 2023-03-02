@@ -18,14 +18,13 @@ file write tablecontent _tab _tab ("N_2017") _tab ("April_2018") _tab ("N_2018")
 **Loops through datasets for each year `x' 2017-2022
 local year "2017 2018 2019 2020 2021 2022"
 foreach x of local year {
-use ./output/`x'_ckd_complete.dta, clear
-
 **Disclosure minimisation
 *safecount provides a count with any counts <=5 returned at "<=5"
 *round(r(N),5) rounds counts to the nearest 5 with any counts <=5 returned as "."
-
 forvalues ethnicity = 1/6 {
 use ./output/`x'_ckd_complete.dta, clear
+*CKD stage 3 and above only
+drop if ckd_group==1
 drop if ethnicity !=`ethnicity'
 **Overall
 qui safecount
@@ -33,9 +32,6 @@ local baseline_ckd_`x'`ethnicity' = round(r(N),5)
 *Total number of people in group who do not progress by the end of the year
 qui safecount if ckd_progression==0
 local none_ckd_`x'`ethnicity' = round(r(N),5)
-*Total number of people in group who progress to CKD stage 3 by the end of the year
-qui safecount if ckd_progression==1
-local ckd3_ckd_`x'`ethnicity' = round(r(N),5)
 *Total number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
 qui safecount if ckd_progression==2
 local ckd4_ckd_`x'`ethnicity' = round(r(N),5)
@@ -51,32 +47,6 @@ local unclear_ckd_`x'`ethnicity' = round(r(N),5)
 *Total number of people in group who die by the end of the year
 qui safecount if ckd_progression==6
 local deceased_ckd_`x'`ethnicity' = round(r(N),5)
-
-**eGFR >60 with albuminuria
-*Number of people in group (baseline_ckd2_`x'`ethnicity') at the beginning of each year ckd2_`x'`ethnicity'
-qui safecount if ckd_group==1
-local baseline_ckd2_`x'`ethnicity' = round(r(N),5)
-*Number of people in group who do not progress by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==0
-local none_ckd2_`x'`ethnicity' = round(r(N),5)
-*Number of people in group who progress to CKD stage 3 by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==1
-local ckd3_ckd2_`x'`ethnicity' = round(r(N),5)
-*Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==2
-local ckd4_ckd2_`x'`ethnicity' = round(r(N),5)
-*Number of people in group who progress to dialysis by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==3
-local dialysis_ckd2_`x'`ethnicity' = round(r(N),5)
-*Number of people in group who progress to kidney kt by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==4
-local kt_ckd2_`x'`ethnicity' = round(r(N),5)
-*Number of people in group who progress to KRT (unclear modality) by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==5
-local unclear_ckd2_`x'`ethnicity' = round(r(N),5)
-*Number of people in group who die by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==6
-local deceased_ckd2_`x'`ethnicity' = round(r(N),5)
 
 **CKD stage 3
 *Number of people in group (baseline_ckd3_`x'`ethnicity') at the beginning of each year ckd3_`x'`ethnicity'
@@ -175,22 +145,11 @@ file write tablecontent ("`lab0'") _n(2)
 *Overall
 file write tablecontent ("All CKD groups") _tab _tab (`baseline_ckd_2017`ethnicity'') _tab _tab (`baseline_ckd_2018`ethnicity'') _tab _tab (`baseline_ckd_2019`ethnicity'') _tab _tab (`baseline_ckd_2020`ethnicity'') _tab _tab (`baseline_ckd_2021`ethnicity'') _tab _tab (`baseline_ckd_2022`ethnicity'') _n(2)
 file write tablecontent _tab ("No progression") _tab _tab (`none_ckd_2017`ethnicity'') _tab _tab (`none_ckd_2018`ethnicity'') _tab _tab (`none_ckd_2019`ethnicity'') _tab _tab (`none_ckd_2020`ethnicity'') _tab _tab (`none_ckd_2021`ethnicity'') _tab _tab (`none_ckd_2022`ethnicity'') _n
-file write tablecontent _tab ("CKD stage 3") _tab _tab (`ckd3_ckd_2017`ethnicity'') _tab _tab (`ckd3_ckd_2018`ethnicity'') _tab _tab (`ckd3_ckd_2019`ethnicity'') _tab _tab (`ckd3_ckd_2020`ethnicity'') _tab _tab (`ckd3_ckd_2021`ethnicity'') _tab _tab (`ckd3_ckd_2022`ethnicity'') _n
 file write tablecontent _tab ("CKD stage 4/5") _tab _tab (`ckd4_ckd_2017`ethnicity'') _tab _tab (`ckd4_ckd_2018`ethnicity'') _tab _tab (`ckd4_ckd_2019`ethnicity'') _tab _tab (`ckd4_ckd_2020`ethnicity'') _tab _tab (`ckd4_ckd_2021`ethnicity'') _tab _tab (`ckd4_ckd_2022`ethnicity'') _n
 file write tablecontent _tab ("Dialysis") _tab _tab (`dialysis_ckd_2017`ethnicity'') _tab _tab (`dialysis_ckd_2018`ethnicity'') _tab _tab (`dialysis_ckd_2019`ethnicity'') _tab _tab (`dialysis_ckd_2020`ethnicity'') _tab _tab (`dialysis_ckd_2021`ethnicity'') _tab _tab (`dialysis_ckd_2022`ethnicity'') _n
 file write tablecontent _tab ("Transplant") _tab _tab (`kt_ckd_2017`ethnicity'') _tab _tab (`kt_ckd_2018`ethnicity'') _tab _tab (`kt_ckd_2019`ethnicity'') _tab _tab (`kt_ckd_2020`ethnicity'') _tab _tab (`kt_ckd_2021`ethnicity'') _tab _tab (`kt_ckd_2022`ethnicity'') _n
 file write tablecontent _tab ("KRT unclear") _tab _tab (`unclear_ckd_2017`ethnicity'') _tab _tab (`unclear_ckd_2018`ethnicity'') _tab _tab (`unclear_ckd_2019`ethnicity'') _tab _tab (`unclear_ckd_2020`ethnicity'') _tab _tab (`unclear_ckd_2021`ethnicity'') _tab _tab (`unclear_ckd_2022`ethnicity'') _n
 file write tablecontent _tab ("Deceased") _tab _tab (`deceased_ckd_2017`ethnicity'') _tab _tab (`deceased_ckd_2018`ethnicity'') _tab _tab (`deceased_ckd_2019`ethnicity'') _tab _tab (`deceased_ckd_2020`ethnicity'') _tab _tab (`deceased_ckd_2021`ethnicity'') _tab _tab (`deceased_ckd_2022`ethnicity'') _n(2)
-
-*eGFR >60 with albuminuria
-file write tablecontent ("Albuminuria") _tab _tab (`baseline_ckd2_2017`ethnicity'') _tab _tab (`baseline_ckd2_2018`ethnicity'') _tab _tab (`baseline_ckd2_2019`ethnicity'') _tab _tab (`baseline_ckd2_2020`ethnicity'') _tab _tab (`baseline_ckd2_2021`ethnicity'') _tab _tab (`baseline_ckd2_2022`ethnicity'') _n(2)
-file write tablecontent _tab ("No progression") _tab _tab (`none_ckd2_2017`ethnicity'') _tab _tab (`none_ckd2_2018`ethnicity'') _tab _tab (`none_ckd2_2019`ethnicity'') _tab _tab (`none_ckd2_2020`ethnicity'') _tab _tab (`none_ckd2_2021`ethnicity'') _tab _tab (`none_ckd2_2022`ethnicity'') _n
-file write tablecontent _tab ("CKD stage 3") _tab _tab (`ckd3_ckd2_2017`ethnicity'') _tab _tab (`ckd3_ckd2_2018`ethnicity'') _tab _tab (`ckd3_ckd2_2019`ethnicity'') _tab _tab (`ckd3_ckd2_2020`ethnicity'') _tab _tab (`ckd3_ckd2_2021`ethnicity'') _tab _tab (`ckd3_ckd2_2022`ethnicity'') _n
-file write tablecontent _tab ("CKD stage 4/5") _tab _tab (`ckd4_ckd2_2017`ethnicity'') _tab _tab (`ckd4_ckd2_2018`ethnicity'') _tab _tab (`ckd4_ckd2_2019`ethnicity'') _tab _tab (`ckd4_ckd2_2020`ethnicity'') _tab _tab (`ckd4_ckd2_2021`ethnicity'') _tab _tab (`ckd4_ckd2_2022`ethnicity'') _n
-file write tablecontent _tab ("Dialysis") _tab _tab (`dialysis_ckd2_2017`ethnicity'') _tab _tab (`dialysis_ckd2_2018`ethnicity'') _tab _tab (`dialysis_ckd2_2019`ethnicity'') _tab _tab (`dialysis_ckd2_2020`ethnicity'') _tab _tab (`dialysis_ckd2_2021`ethnicity'') _tab _tab (`dialysis_ckd2_2022`ethnicity'') _n
-file write tablecontent _tab ("Transplant") _tab _tab (`kt_ckd2_2017`ethnicity'') _tab _tab (`kt_ckd2_2018`ethnicity'') _tab _tab (`kt_ckd2_2019`ethnicity'') _tab _tab (`kt_ckd2_2020`ethnicity'') _tab _tab (`kt_ckd2_2021`ethnicity'') _tab _tab (`kt_ckd2_2022`ethnicity'') _n
-file write tablecontent _tab ("KRT unclear") _tab _tab (`unclear_ckd2_2017`ethnicity'') _tab _tab (`unclear_ckd2_2018`ethnicity'') _tab _tab (`unclear_ckd2_2019`ethnicity'') _tab _tab (`unclear_ckd2_2020`ethnicity'') _tab _tab (`unclear_ckd2_2021`ethnicity'') _tab _tab (`unclear_ckd2_2022`ethnicity'') _n
-file write tablecontent _tab ("Deceased") _tab _tab (`deceased_ckd2_2017`ethnicity'') _tab _tab (`deceased_ckd2_2018`ethnicity'') _tab _tab (`deceased_ckd2_2019`ethnicity'') _tab _tab (`deceased_ckd2_2020`ethnicity'') _tab _tab (`deceased_ckd2_2021`ethnicity'') _tab _tab (`deceased_ckd2_2022`ethnicity'') _n(2)
 
 *CKD stage 3
 file write tablecontent ("CKD stage 3") _tab _tab (`baseline_ckd3_2017`ethnicity'') _tab _tab (`baseline_ckd3_2018`ethnicity'') _tab _tab (`baseline_ckd3_2019`ethnicity'') _tab _tab (`baseline_ckd3_2020`ethnicity'') _tab _tab (`baseline_ckd3_2021`ethnicity'') _tab _tab (`baseline_ckd3_2022`ethnicity'') _n(2)
