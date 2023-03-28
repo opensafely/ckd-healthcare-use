@@ -146,6 +146,15 @@ def generate_variables_initial(index_date_variable):
             "incidence": 0.60,
         }
     ),
+    latest_creatinine=patients.mean_recorded_value(
+        creatinine_codes,
+        on_most_recent_day_of_measurement=True,
+        between=["index_date - 18 months","index_date - 1 day"],
+        return_expectations={
+            "float": {"distribution": "normal", "mean": 80, "stddev": 40},
+            "incidence": 0.60,
+        }
+    ),
     has_follow_up=patients.registered_with_one_practice_between(
         "index_date - 3 months", "index_date",
         return_expectations={"incidence":0.95,
