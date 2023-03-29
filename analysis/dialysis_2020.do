@@ -3,7 +3,7 @@ sysdir set PERSONAL ./analysis/adofiles
 pwd
 
 cap log close
-log using ./logs/2020_dialysis_ukrr, replace t
+log using ./logs/2020_dialysis, replace t
 clear
 
 import delimited ./output/input_2020.csv, delimiter(comma) varnames(1) case(preserve) 
@@ -78,6 +78,27 @@ replace dialysis_sus_egfr = 0 if esrd_egfr==0
 tab dialysis_primary_care dialysis_sus_egfr
 
 tab ukrr
+rename ukrr ukrr_string
+gen ukrr = 0
+replace ukrr = 1 if ukrr_string=="HD"
+replace ukrr = 1 if ukrr_string=="HHD"
+replace ukrr = 1 if ukrr_string=="ICHD"
+replace ukrr = 1 if ukrr_string=="PD"
+replace ukrr = 2 if ukrr_string=="Tx"
+drop ukrr_string
+gen ukrr_dialysis = ukrr
+replace ukrr_dialysis = 0 if ukrr==2
+
+tab ukrr_dialysis dialysis_primary_care
+tab ukrr_dialysis dialysis_sus
+tab ukrr_dialysis dialysis_sus_egfr
+
+gen dialysis_oscodes = dialysis_primary_care
+replace dialysis_oscodes = 1 if dialysis_sus==1
+gen dialysis_oscodes_egfr = dialysis_primary_care
+replace dialysis_oscodes_egfr = 1 if dialysis_sus_egfr==1
+tab ukrr_dialysis dialysis_oscodes
+tab ukrr_dialysis dialysis_oscodes_egfr
 
 log close
 
