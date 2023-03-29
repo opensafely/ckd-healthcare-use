@@ -3,7 +3,7 @@ sysdir set PERSONAL ./analysis/adofiles
 pwd
 
 cap log close
-log using ./logs/2020_dialysis, replace t
+log using ./logs/2020_dialysis_ukrr, replace t
 clear
 
 import delimited ./output/input_2020.csv, delimiter(comma) varnames(1) case(preserve) 
