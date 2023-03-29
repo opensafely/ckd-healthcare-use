@@ -2,14 +2,12 @@ sysdir set PLUS ./analysis/adofiles
 sysdir set PERSONAL ./analysis/adofiles
 pwd
 
-local dataset `1'
-
 cap log close
-log using ./logs/`dataset'_dialysis, replace t
+log using ./logs/2020_dialysis, replace t
 clear
 
-import delimited ./output/input_`dataset'.csv, delimiter(comma) varnames(1) case(preserve) 
-*import delimited ./output/input_2017.csv, delimiter(comma) varnames(1) case(preserve) 
+import delimited ./output/input_2020.csv, delimiter(comma) varnames(1) case(preserve) 
+
 
 **Exclusions
 * Age <18 at index date
@@ -78,6 +76,8 @@ tab dialysis_primary_care dialysis_sus
 gen dialysis_sus_egfr = dialysis_sus
 replace dialysis_sus_egfr = 0 if esrd_egfr==0
 tab dialysis_primary_care dialysis_sus_egfr
+
+tab ukrr
 
 log close
 
