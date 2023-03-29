@@ -2,11 +2,13 @@ sysdir set PLUS ./analysis/adofiles
 sysdir set PERSONAL ./analysis/adofiles
 pwd
 
+local dataset `1'
+
 cap log close
-log using ./logs/2020_dialysis_ukrr, replace t
+log using ./logs/`dataset'_dialysis_ukrr, replace t
 clear
 
-import delimited ./output/input_2020.csv, delimiter(comma) varnames(1) case(preserve) 
+import delimited ./output/input_`dataset'.csv, delimiter(comma) varnames(1) case(preserve) 
 
 
 **Exclusions

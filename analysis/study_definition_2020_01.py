@@ -15,7 +15,7 @@ variables_initial= generate_variables_initial(index_date_variable="index_date")
 
 study = StudyDefinition(
     default_expectations={
-        "date": {"earliest": "1980-01-01", "latest": "2021-04-01"},
+        "date": {"earliest": "1980-01-01", "latest": "2020-01-01"},
         "rate": "uniform",
         "incidence": 0.7, 
     },
@@ -29,10 +29,10 @@ study = StudyDefinition(
         AND NOT deceased = "1"
         """,
     ),
-    index_date="2021-04-01",
+    index_date="2020-01-01",
 
     ukrr = patients.with_record_in_ukrr(
-        from_dataset="2020_prevalence",
+        from_dataset="2019_prevalence",
         returning="treatment_modality_prevalence",
         return_expectations={
                 "category": {"ratios": {"ICHD": 0.5, "Tx": 0.5}},
