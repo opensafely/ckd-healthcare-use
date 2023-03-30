@@ -1,0 +1,327 @@
+------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/2020_01_ckd.log
+  log type:  text
+ opened on:  30 Mar 2023, 09:59:24
+
+. clear
+
+. 
+. import delimited ./output/input_2020_01.csv, delimiter(comma) varnames(1) case(preserve) 
+(encoding automatically selected: ISO-8859-1)
+(19 vars, 50,000 obs)
+
+. 
+. **Exclusions
+. * Age <18 at index date
+. drop if age <18
+(10,416 observations deleted)
+
+. 
+. * Anyone not registered at one practice for 3 months before index date
+. drop if has_follow_up==0
+(1,978 observations deleted)
+
+. drop has_follow_up
+
+. 
+. * Deceased before index date
+. drop if deceased==1
+(3,777 observations deleted)
+
+. drop deceased
+
+. 
+. * Region
+. tab region
+
+                  region |      Freq.     Percent        Cum.
+-------------------------+-----------------------------------
+                    East |      3,329        9.84        9.84
+           East Midlands |      3,368        9.96       19.80
+                  London |      6,757       19.97       39.77
+              North East |      3,407       10.07       49.84
+              North West |      3,289        9.72       59.56
+              South East |      3,371        9.96       69.53
+              South West |      3,459       10.22       79.75
+           West Midlands |      3,452       10.20       89.96
+Yorkshire and The Humber |      3,397       10.04      100.00
+-------------------------+-----------------------------------
+                   Total |     33,829      100.00
+
+. drop if region==""
+(0 observations deleted)
+
+. 
+. * IMD
+. tab imd
+
+        imd |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      1,749        5.17        5.17
+          1 |      6,316       18.67       23.84
+          2 |      6,349       18.77       42.61
+          3 |      6,429       19.00       61.61
+          4 |      6,513       19.25       80.87
+          5 |      6,473       19.13      100.00
+------------+-----------------------------------
+      Total |     33,829      100.00
+
+. drop if imd==0
+(1,749 observations deleted)
+
+. drop if imd==.
+(0 observations deleted)
+
+. 
+. * eGFR>60 without albuminuria
+. gen albuminuria = 0
+
+. replace albuminuria = 1 if acr >=3
+(15,911 real changes made)
+
+. replace albuminuria = 0 if acr_operator =="<"
+(818 real changes made)
+
+. replace albuminuria = 0 if acr_operator =="<="
+(801 real changes made)
+
+. label define albuminuria 0 "No albuminuria" 1 "Albuminuria"
+
+. label values albuminuria albuminuria
+
+. assert inlist(sex, "M", "F")
+
+. gen male = (sex=="M")
+
+. drop sex
+
+. label define sexLab 1 "Male" 0 "Female"
+
+. label values male sexLab
+
+. label var male "Sex (0=F 1=M)"
+
+. replace baseline_creatinine = . if !inrange(baseline_creatinine, 20, 3000)
+(14,088 real changes made, 14,088 to missing)
+
+. gen mgdl_baseline_creatinine = baseline_creatinine/88.4
+(14,088 missing values generated)
+
+. gen min_baseline_creatinine=.
+(32,080 missing values generated)
+
+. replace min_baseline_creatinine = mgdl_baseline_creatinine/0.7 if male==0
+(9,173 real changes made)
+
+. replace min_baseline_creatinine = mgdl_baseline_creatinine/0.9 if male==1
+(8,819 real changes made)
+
+. replace min_baseline_creatinine = min_baseline_creatinine^-0.329  if male==0
+(9,173 real changes made)
+
+. replace min_baseline_creatinine = min_baseline_creatinine^-0.411  if male==1
+(8,819 real changes made)
+
+. replace min_baseline_creatinine = 1 if min_baseline_creatinine<1
+(11,416 real changes made)
+
+. gen max_baseline_creatinine=.
+(32,080 missing values generated)
+
+. replace max_baseline_creatinine = mgdl_baseline_creatinine/0.7 if male==0
+(9,173 real changes made)
+
+. replace max_baseline_creatinine = mgdl_baseline_creatinine/0.9 if male==1
+(8,819 real changes made)
+
+. replace max_baseline_creatinine = max_baseline_creatinine^-1.209
+(17,992 real changes made)
+
+. replace max_baseline_creatinine = 1 if max_baseline_creatinine>1
+(20,664 real changes made)
+
+. gen baseline_egfr = min_baseline_creatinine*max_baseline_creatinine*141
+(14,088 missing values generated)
+
+. replace baseline_egfr = baseline_egfr*(0.993^age)
+(17,992 real changes made)
+
+. replace baseline_egfr = baseline_egfr*1.018 if male==0
+(9,173 real changes made)
+
+. drop baseline_creatinine
+
+. drop mgdl_baseline_creatinine
+
+. drop min_baseline_creatinine
+
+. drop max_baseline_creatinine
+
+. gen ckd = albuminuria
+
+. replace ckd = 1 if baseline_egfr <60
+(2,764 real changes made)
+
+. sum acr, de
+
+                             acr
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs              32,080
+25%            0              0       Sum of wgt.      32,080
+
+50%            0                      Mean           12.39821
+                        Largest       Std. dev.      12.98882
+75%     24.95132       42.14389
+90%      29.1628       42.16737       Variance       168.7094
+95%     31.47222       42.21239       Skewness       .2288348
+99%      35.2105       42.65368       Kurtosis       1.304828
+
+. tab acr_operator
+
+acr_operato |
+          r |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          < |      1,664        5.77        5.77
+         <= |      1,600        5.55       11.33
+          = |     20,719       71.91       83.23
+          > |      1,622        5.63       88.86
+         >= |      1,585        5.50       94.36
+          ~ |      1,624        5.64      100.00
+------------+-----------------------------------
+      Total |     28,814      100.00
+
+. tab albuminuria
+
+   albuminuria |      Freq.     Percent        Cum.
+---------------+-----------------------------------
+No albuminuria |     17,788       55.45       55.45
+   Albuminuria |     14,292       44.55      100.00
+---------------+-----------------------------------
+         Total |     32,080      100.00
+
+. tab ckd
+
+        ckd |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |     15,024       46.83       46.83
+          1 |     17,056       53.17      100.00
+------------+-----------------------------------
+      Total |     32,080      100.00
+
+. egen egfr_status = cut(baseline_egfr), at(0, 60, 5000)
+(14,088 missing values generated)
+
+. recode egfr_status 0=2 60=1
+(17,992 changes made to egfr_status)
+
+. replace egfr_status = 0 if baseline_egfr==.
+(14,088 real changes made)
+
+. 
+. rename ukrr ukrr_string
+
+. gen ukrr = 0
+
+. replace ukrr = 1 if ukrr_string=="HD"
+(0 real changes made)
+
+. replace ukrr = 1 if ukrr_string=="HHD"
+(0 real changes made)
+
+. replace ukrr = 1 if ukrr_string=="ICHD"
+(776 real changes made)
+
+. replace ukrr = 1 if ukrr_string=="PD"
+(0 real changes made)
+
+. replace ukrr = 2 if ukrr_string=="Tx"
+(825 real changes made)
+
+. drop ukrr_string
+
+. label define ukrr 0 "No KRT" 1 "Dialysis" 2 "Transplant"
+
+. label values ukrr ukrr
+
+. tab ukrr, m
+
+       ukrr |      Freq.     Percent        Cum.
+------------+-----------------------------------
+     No KRT |     30,479       95.01       95.01
+   Dialysis |        776        2.42       97.43
+ Transplant |        825        2.57      100.00
+------------+-----------------------------------
+      Total |     32,080      100.00
+
+. replace egfr_status=3 if ukrr!=0
+(1,601 real changes made)
+
+. replace ckd = 1 if ukrr!=0
+(754 real changes made)
+
+. 
+. label define egfr_status 0 "No eGFR" 1 "eGFR >=60" 2 "eGFR <60" 3 "KRT"
+
+. label values egfr_status egfr_status
+
+. tab egfr_status albuminuria
+
+egfr_statu |      albuminuria
+         s | No albumi  Albuminur |     Total
+-----------+----------------------+----------
+   No eGFR |     7,408      5,975 |    13,383 
+ eGFR >=60 |     6,862      5,476 |    12,338 
+  eGFR <60 |     2,646      2,112 |     4,758 
+       KRT |       872        729 |     1,601 
+-----------+----------------------+----------
+     Total |    17,788     14,292 |    32,080 
+
+. tab ckd, m
+
+        ckd |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |     14,270       44.48       44.48
+          1 |     17,810       55.52      100.00
+------------+-----------------------------------
+      Total |     32,080      100.00
+
+. drop if ckd==0
+(14,270 observations deleted)
+
+. drop ckd
+
+. drop acr
+
+. drop acr_operator
+
+. tab egfr_status albuminuria
+
+egfr_statu |      albuminuria
+         s | No albumi  Albuminur |     Total
+-----------+----------------------+----------
+   No eGFR |         0      5,975 |     5,975 
+ eGFR >=60 |         0      5,476 |     5,476 
+  eGFR <60 |     2,646      2,112 |     4,758 
+       KRT |       872        729 |     1,601 
+-----------+----------------------+----------
+     Total |     3,518     14,292 |    17,810 
+
+. drop albuminuria
+
+. drop egfr_status
+
+. 
+. export delimited using "./output/2020_01_ckd.csv", replace
+file ./output/2020_01_ckd.csv saved
+
+. 
+. log close
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/2020_01_ckd.log
+  log type:  text
+ closed on:  30 Mar 2023, 09:59:25
+------------------------------------------------------------------------------------------------------------------------------------
