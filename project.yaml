@@ -941,3 +941,11 @@ ckd_progression:
         analysis_dataset: output/2022_ckd_complete_v3.dta
       moderately_sensitive:
         log: logs/2022_ckd_complete_v3.log
+
+  ckd_progression_v3:
+    run: stata-mp:latest analysis/ckd_progression_v3.do
+    needs: [2017_clean_ckd_complete_v3, 2018_clean_ckd_complete_v3, 2019_clean_ckd_complete_v3, 2020_clean_ckd_complete_v3, 2021_clean_ckd_complete_v3, 2022_clean_ckd_complete_v3, 2017_healthcare_use, 2018_healthcare_use, 2019_healthcare_use, 2020_healthcare_use, 2021_healthcare_use, 2022_healthcare_use]
+    outputs:
+      moderately_sensitive:
+        log: logs/ckd_progression_v3.log
+        output: output/ckd_progression_v3.csv
