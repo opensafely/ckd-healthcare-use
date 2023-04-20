@@ -9,10 +9,9 @@ cap file close tablecontent
 file open tablecontent using ./output/ckd_progression_v2.csv, write text replace
 
 **Column headings
-*There are three column headings for each year 2017-2022:
+*There are two column headings for each year 2017-2022:
 *Column 1 = the number of people in each CKD group as of the beginning of each year (i.e. in April)
 *Column 2 = the number of people who remain within the same CKD group, progress to a more advanced CKD group, or die by the end of the year (i.e. by the subsequent April)
-*Column 3 = Column 2 as a percentage of Column 1
 file write tablecontent _tab _tab ("N_2017") _tab ("April_2018") _tab ("N_2018") _tab ("April_2019") _tab ("N_2019") _tab ("April_2020") _tab ("N_2020") _tab ("April_2021") _tab ("N_2021") _tab ("April_2022") _tab ("N_2022") _tab ("April_2023") _n(2)
 
 **Loops through datasets for each year `x' 2017-2022
