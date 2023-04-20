@@ -8,11 +8,11 @@ cap log close
 log using ./logs/`dataset'_ckd_complete_v3, replace t
 clear
 
-*Merge `dataset'_ckd with `dataset'_ckd_complete_v3
+*Merge `dataset'_ckd with `dataset'_ckd_complete
 capture noisily import delimited ./output/`dataset'_ckd.csv, clear
 tempfile `dataset'_ckd
 save ``dataset'_ckd', replace
-capture noisily import delimited ./output/input_`dataset'_ckd_complete_v3.csv, clear
+capture noisily import delimited ./output/input_`dataset'_ckd_complete.csv, clear
 merge 1:1 patient_id using ``dataset'_ckd'
 keep if _merge==3
 drop _merge
