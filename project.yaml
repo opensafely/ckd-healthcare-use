@@ -419,7 +419,54 @@ actions:
         log: logs/2022_healthcare_use_ethnicity.log
         output: output/2022_healthcare_use_ethnicity.csv
 
-  ckd_progression:
+  2022_ckd:
+    run: stata-mp:latest analysis/ckd.do 2022
+    needs: [2022]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2022_ckd.csv
+      moderately_sensitive:
+        log: logs/2022_ckd.log
+  
+  2022_ckd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2022_ckd_complete
+    needs: [2022, 2022_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2022_ckd_complete.csv
+
+  2022_clean_ckd_complete:
+    run: stata-mp:latest analysis/ckd_complete.do 2022
+    needs: [2022, 2022_ckd, 2022_ckd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2022_ckd_complete.dta
+      moderately_sensitive:
+        log: logs/2022_ckd_complete.log
+
+  2023:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2023
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2023.csv
+
+  2023_ckd:
+    run: stata-mp:latest analysis/ckd.do 2023
+    needs: [2023]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2023_ckd.csv
+      moderately_sensitive:
+        log: logs/2023_ckd.log
+  
+  2023_ckd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2023_ckd_complete
+    needs: [2023, 2023_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2023_ckd_complete.csv
+
+ckd_progression:
     run: stata-mp:latest analysis/ckd_progression.do
     needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_healthcare_use, 2018_healthcare_use, 2019_healthcare_use, 2020_healthcare_use, 2021_healthcare_use, 2022_healthcare_use]
     outputs:
@@ -648,12 +695,6 @@ actions:
       moderately_sensitive:
         log: logs/2022_healthcare_use_v2.log
         output: output/2022_healthcare_use_v2.csv
-
-  2023:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_2023
-    outputs:
-      highly_sensitive:
-        cohort: output/input_2023.csv
 
   2023_ckd_v2:
     run: stata-mp:latest analysis/ckd_v2.do 2023

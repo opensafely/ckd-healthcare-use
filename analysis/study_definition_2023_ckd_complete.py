@@ -10,19 +10,19 @@ from cohortextractor import (
 
 from codelists import *
 
-CKD = "output/2022_ckd.csv"
+CKD = "output/2023_ckd.csv"
 
 from variables_additional import generate_variables_additional
 variables_additional= generate_variables_additional(index_date_variable="index_date")
 
 study = StudyDefinition(
     default_expectations={
-        "date": {"earliest": "2022-04-01", "latest": "2023-03-31"},
+        "date": {"earliest": "2023-04-01", "latest": "2023-04-19"},
         "rate": "uniform",
         "incidence" : 0.2
     },
     population=patients.which_exist_in_file(CKD), 
-    index_date="2022-04-01",
+    index_date="2023-04-01",
 
     **variables_additional,
 ) 
