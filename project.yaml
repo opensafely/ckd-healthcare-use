@@ -981,3 +981,17 @@ actions:
       moderately_sensitive:
         log: logs/2022_healthcare_use_v3_dialysis.log
         output: output/2022_healthcare_use_v3_dialysis.csv
+
+  2020_ukrr:
+    run: stata-mp:latest analysis/ukrr.do 2020
+    needs: [2020, 2020_ckd, 2020_ckd_complete, 2020_clean_ckd_complete_v3]
+    outputs:
+      moderately_sensitive:
+        log: logs/2020_ukrr.log
+
+  2021_ukrr:
+    run: stata-mp:latest analysis/ukrr.do 2021
+    needs: [2021, 2021_ckd, 2021_ckd_complete, 2021_clean_ckd_complete_v3]
+    outputs:
+      moderately_sensitive:
+        log: logs/2021_ukrr.log
