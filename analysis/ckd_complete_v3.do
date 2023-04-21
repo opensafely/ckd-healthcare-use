@@ -55,13 +55,19 @@ replace dialysis = 0 if esrd_egfr==0
 gen kidney_transplant = 0
 replace kidney_transplant = 1 if kidney_transplant_baseline_date!=""
 replace kidney_transplant = 0 if dialysis==1
+gen modality_unclear = 0
+replace modality_unclear = 1 if modality_baseline=="Modality unclear"
+replace modality_unclear = 0 if dialysis==1
+replace modality_unclear = 0 if kidney_transplant==1
 tab modality_baseline dialysis
 tab modality_baseline kidney_transplant
+tab modality_baseline modality_unclear
+tab dialysis kidney_transplant
 egen ckd_group = cut(baseline_egfr), at(0, 30, 60, 5000)
 recode ckd_group 0=3 30=2 60=1
 replace ckd_group = 4 if dialysis==1
 replace ckd_group = 5 if kidney_transplant==1
-replace ckd_group = 6 if modality_baseline=="Modality unclear"
+replace ckd_group = 6 if modality_unclear==1
 *ckd_group==. are those with albuminuria without available eGFR measurement or code for KRT
 replace ckd_group = 1 if ckd_group==.
 label define ckd_group 1 "Albuminuria" 2 "CKD stage 3" 3 "CKD stage 4/5" 4 "Dialysis" 5 "Transplant" 6 "KRT unclear modality"
