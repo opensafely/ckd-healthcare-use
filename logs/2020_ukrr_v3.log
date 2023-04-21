@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/2020_ukrr_v3.log
   log type:  text
- opened on:  21 Apr 2023, 15:11:44
+ opened on:  21 Apr 2023, 15:42:20
 
 . clear
 
@@ -14,16 +14,54 @@ end of do-file
 . do "C:\Users\LSH170~1\AppData\Local\Temp\STD2af0_000000.tmp"
 
 . tab ukrr
-variable ukrr not found
-r(111);
 
-end of do-file
+       ukrr |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       ICHD |         53       48.18       48.18
+         Tx |         57       51.82      100.00
+------------+-----------------------------------
+      Total |        110      100.00
 
-r(111);
+. rename ukrr ukrr_string
 
+. gen ukrr = 0
+
+. replace ukrr = 1 if ukrr_string=="HD"
+(0 real changes made)
+
+. replace ukrr = 1 if ukrr_string=="HHD"
+(0 real changes made)
+
+. replace ukrr = 1 if ukrr_string=="ICHD"
+(53 real changes made)
+
+. replace ukrr = 1 if ukrr_string=="PD"
+(0 real changes made)
+
+. replace ukrr = 2 if ukrr_string=="Tx"
+(57 real changes made)
+
+. drop ukrr_string
+
+. 
+. tab ckd_group ukrr, m
+
+                     |               ukrr
+           CKD group |         0          1          2 |     Total
+---------------------+---------------------------------+----------
+         Albuminuria |     1,299         34         40 |     1,373 
+         CKD stage 3 |       340          8          5 |       353 
+       CKD stage 4/5 |        19          0          0 |        19 
+            Dialysis |        74          2          1 |        77 
+          Transplant |       271          9         10 |       290 
+KRT unclear modality |        30          0          1 |        31 
+---------------------+---------------------------------+----------
+               Total |     2,033         53         57 |     2,143 
+
+. 
 . log close
       name:  <unnamed>
        log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/2020_ukrr_v3.log
   log type:  text
- closed on:  21 Apr 2023, 15:14:56
+ closed on:  21 Apr 2023, 15:42:25
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
