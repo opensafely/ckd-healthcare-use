@@ -31,6 +31,15 @@ study = StudyDefinition(
     ),
     index_date="2022-04-01",
 
+    ukrr = patients.with_record_in_ukrr(
+        from_dataset="2021_prevalence",
+        returning="treatment_modality_prevalence",
+        return_expectations={
+                "category": {"ratios": {"ICHD": 0.5, "Tx": 0.5}},
+                "incidence": 0.05,
+            },
+    ),
+
     **variables_initial,
 )
 
