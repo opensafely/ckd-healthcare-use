@@ -767,7 +767,7 @@ actions:
         cohort: output/input_2020_01.csv
 
   2020_01_ckd:
-    run: stata-mp:latest analysis/ckd_2020_01.do
+    run: stata-mp:latest analysis/ckd.do 2020_01
     needs: [2020_01]
     outputs:
       highly_sensitive:
@@ -1002,3 +1002,19 @@ actions:
     outputs:
       moderately_sensitive:
         log: logs/2022_ukrr_v3.log
+
+  2020_01_clean_ckd_complete_v3:
+    run: stata-mp:latest analysis/ckd_complete_v3.do 2020_01
+    needs: [2020_01, 2020_01_ckd, 2020_01_ckd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2020_01_ckd_complete_v3.dta
+      moderately_sensitive:
+        log: logs/2020_01_ckd_complete_v3.log
+
+  2020_01_ukrr_v3:
+    run: stata-mp:latest analysis/ukrr_v3.do 2020_01
+    needs: [2020_01, 2020_01_ckd, 2020_01_ckd_complete, 2020_01_clean_ckd_complete_v3]
+    outputs:
+      moderately_sensitive:
+        log: logs/2020_01_ukrr_v3.log

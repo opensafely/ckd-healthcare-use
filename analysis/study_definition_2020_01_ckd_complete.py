@@ -12,8 +12,8 @@ from codelists import *
 
 CKD = "output/2020_01_ckd.csv"
 
-from variables_additional_2020_01 import generate_variables_additional_2020_01
-variables_additional_2020_01= generate_variables_additional_2020_01(index_date_variable="index_date")
+from variables_additional import generate_variables_additional
+variables_additional= generate_variables_additional(index_date_variable="index_date")
 
 study = StudyDefinition(
     default_expectations={
@@ -33,5 +33,5 @@ study = StudyDefinition(
             },
     ),
 
-    **variables_additional_2020_01,
+    **variables_additional,
 ) 
