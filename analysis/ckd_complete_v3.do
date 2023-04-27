@@ -144,11 +144,11 @@ label var ckd_progression "CKD progression"
 tab ckd_progression, m
 
 *eGFR cut-offs to investigate timing of access formation
-egen access_egfr = cut(baseline_egfr), at (0, 5, 10, 15, 5000)
-recode access_egfr 0=1 5=2 10=3 15=4
+egen access_egfr = cut(baseline_egfr), at (0, 15, 5000)
+recode access_egfr 0=1 15=2
 replace access_egfr=0 if ckd_group==4
-replace access_egfr=5 if access_egfr==.
-label define access_egfr 0 "Dialysis" 1 "eGFR 0-4" 2 "eGFR 5-9" 3 "eGFR 10-14" 4 "eGFR >= 15" 5 "Unknown"
+replace access_egfr=3 if access_egfr==.
+label define access_egfr 0 "Dialysis" 1 "eGFR 0-14" 2 "eGFR >= 15" 3 "Unknown"
 label values access_egfr access_egfr
 
 *Totals for non-binary healthcare resource outcomes

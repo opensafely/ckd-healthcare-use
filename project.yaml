@@ -760,53 +760,6 @@ actions:
       moderately_sensitive:
         log: logs/2021_dialysis_ukrr.log
 
-  2020_01:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_2020_01
-    outputs:
-      highly_sensitive:
-        cohort: output/input_2020_01.csv
-
-  2020_01_ckd:
-    run: stata-mp:latest analysis/ckd_2020_01.do
-    needs: [2020_01]
-    outputs:
-      highly_sensitive:
-        analysis_dataset: output/2020_01_ckd.csv
-      moderately_sensitive:
-        log: logs/2020_01_ckd.log
-
-  2020_01_ckd_complete:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_2020_01_ckd_complete
-    needs: [2020_01, 2020_01_ckd]
-    outputs:
-      highly_sensitive:
-        cohort: output/input_2020_01_ckd_complete.csv
-
-  2020_01_clean_ckd_complete:
-    run: stata-mp:latest analysis/ckd_complete_2020_01.do
-    needs: [2020_01, 2020_01_ckd, 2020_01_ckd_complete]
-    outputs:
-      highly_sensitive:
-        analysis_dataset: output/2020_01_ckd_complete.dta
-      moderately_sensitive:
-        log: logs/2020_01_ckd_complete.log
-
-  2020_01_healthcare_use:
-    run: stata-mp:latest analysis/healthcare_use.do 2020_01
-    needs: [2020_01, 2020_01_ckd, 2020_01_ckd_complete, 2020_01_clean_ckd_complete]
-    outputs:
-      moderately_sensitive:
-        log: logs/2020_01_healthcare_use.log
-        output: output/2020_01_healthcare_use.csv
-
-  2020_01_ckd_progression:
-    run: stata-mp:latest analysis/ckd_progression_2020_01.do
-    needs: [2020_01_clean_ckd_complete]
-    outputs:
-      moderately_sensitive:
-        log: logs/2020_01_ckd_progression.log
-        output: output/2020_01_ckd_progression.csv
-
   ckd_progression_v2_dialysis:
     run: stata-mp:latest analysis/ckd_progression_v2_dialysis.do
     needs: [2017_clean_ckd_complete_v2, 2018_clean_ckd_complete_v2, 2019_clean_ckd_complete_v2, 2020_clean_ckd_complete_v2, 2021_clean_ckd_complete_v2, 2022_clean_ckd_complete_v2, 2023_clean_ckd_complete_v2, 2017_healthcare_use_v2, 2018_healthcare_use_v2, 2019_healthcare_use_v2, 2020_healthcare_use_v2, 2021_healthcare_use_v2, 2022_healthcare_use_v2]
@@ -1002,3 +955,117 @@ actions:
     outputs:
       moderately_sensitive:
         log: logs/2022_ukrr_v3.log
+
+  2020_01:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2020_01
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2020_01.csv
+
+  2020_01_ckd:
+    run: stata-mp:latest analysis/ckd.do 2020_01
+    needs: [2020_01]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2020_01_ckd.csv
+      moderately_sensitive:
+        log: logs/2020_01_ckd.log
+
+  2020_01_ckd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2020_01_ckd_complete
+    needs: [2020_01, 2020_01_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2020_01_ckd_complete.csv
+
+  2020_01_clean_ckd_complete_v3:
+    run: stata-mp:latest analysis/ckd_complete_v3.do 2020_01
+    needs: [2020_01, 2020_01_ckd, 2020_01_ckd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2020_01_ckd_complete_v3.dta
+      moderately_sensitive:
+        log: logs/2020_01_ckd_complete_v3.log
+
+  2020_01_ukrr_v3:
+    run: stata-mp:latest analysis/ukrr_v3.do 2020_01
+    needs: [2020_01, 2020_01_ckd, 2020_01_ckd_complete, 2020_01_clean_ckd_complete_v3]
+    outputs:
+      moderately_sensitive:
+        log: logs/2020_01_ukrr_v3.log
+
+  2021_01:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2021_01
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2021_01.csv
+
+  2021_01_ckd:
+    run: stata-mp:latest analysis/ckd.do 2021_01
+    needs: [2021_01]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2021_01_ckd.csv
+      moderately_sensitive:
+        log: logs/2021_01_ckd.log
+
+  2021_01_ckd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2021_01_ckd_complete
+    needs: [2021_01, 2021_01_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2021_01_ckd_complete.csv
+
+  2021_01_clean_ckd_complete_v3:
+    run: stata-mp:latest analysis/ckd_complete_v3.do 2021_01
+    needs: [2021_01, 2021_01_ckd, 2021_01_ckd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2021_01_ckd_complete_v3.dta
+      moderately_sensitive:
+        log: logs/2021_01_ckd_complete_v3.log
+
+  2021_01_ukrr_v3:
+    run: stata-mp:latest analysis/ukrr_v3.do 2021_01
+    needs: [2021_01, 2021_01_ckd, 2021_01_ckd_complete, 2021_01_clean_ckd_complete_v3]
+    outputs:
+      moderately_sensitive:
+        log: logs/2021_01_ukrr_v3.log
+
+  2022_01:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2022_01
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2022_01.csv
+
+  2022_01_ckd:
+    run: stata-mp:latest analysis/ckd.do 2022_01
+    needs: [2022_01]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2022_01_ckd.csv
+      moderately_sensitive:
+        log: logs/2022_01_ckd.log
+
+  2022_01_ckd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2022_01_ckd_complete
+    needs: [2022_01, 2022_01_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2022_01_ckd_complete.csv
+
+  2022_01_clean_ckd_complete_v3:
+    run: stata-mp:latest analysis/ckd_complete_v3.do 2022_01
+    needs: [2022_01, 2022_01_ckd, 2022_01_ckd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2022_01_ckd_complete_v3.dta
+      moderately_sensitive:
+        log: logs/2022_01_ckd_complete_v3.log
+
+  2022_01_ukrr_v3:
+    run: stata-mp:latest analysis/ukrr_v3.do 2022_01
+    needs: [2022_01, 2022_01_ckd, 2022_01_ckd_complete, 2022_01_clean_ckd_complete_v3]
+    outputs:
+      moderately_sensitive:
+        log: logs/2022_01_ukrr_v3.log

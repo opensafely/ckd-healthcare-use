@@ -36,7 +36,7 @@ file write tablecontent ("All CKD groups") _tab _tab (`baseline_ckd') _n
 file write tablecontent _tab ("AVF formations") _tab _tab (`ckd_m4_fistula_formation') _tab (`ckd_m5_fistula_formation') _tab (`ckd_m6_fistula_formation') _tab (`ckd_m7_fistula_formation') _tab (`ckd_m8_fistula_formation') _tab (`ckd_m9_fistula_formation') _tab (`ckd_m10_fistula_formation') _tab (`ckd_m11_fistula_formation') _tab (`ckd_m12_fistula_formation') _tab (`ckd_m1_fistula_formation') _tab (`ckd_m2_fistula_formation') _tab (`ckd_m3_fistula_formation') _n
 file write tablecontent _tab ("PD insertions") _tab _tab (`ckd_m4_pd_insertion') _tab (`ckd_m5_pd_insertion') _tab (`ckd_m6_pd_insertion') _tab (`ckd_m7_pd_insertion') _tab (`ckd_m8_pd_insertion') _tab (`ckd_m9_pd_insertion') _tab (`ckd_m10_pd_insertion') _tab (`ckd_m11_pd_insertion') _tab (`ckd_m12_pd_insertion') _tab (`ckd_m1_pd_insertion') _tab (`ckd_m2_pd_insertion') _tab (`ckd_m3_pd_insertion') _n
 
-forvalues egfr = 0/5 {
+forvalues egfr = 0/3 {
 use ./output/2017_ckd_complete_v3.dta, clear
 drop if access_egfr!=`egfr'
 qui safecount
@@ -93,7 +93,7 @@ file close tablecontent
 
 
 **Redact counts of 0 from each column in table (adapted from code by Emily Herrett)
-import delimited ./output/`dataset'_healthcare_use_v3_dialysis.csv, clear
+import delimited ./output/2017_healthcare_use_v3_dialysis.csv, clear
 local columns " "n_`dataset'" "april" "may" "june" "july" "august" "september" "october" "november" "december" "january" "february" "march" "april" "
 foreach col in `columns' {
 replace `col'=. if `col'<=5
@@ -111,7 +111,7 @@ file write tablecontent ("All CKD groups") _tab _tab (`baseline_ckd') _n
 file write tablecontent _tab ("AVF formations") _tab _tab (`ckd_m4_fistula_formation') _tab (`ckd_m5_fistula_formation') _tab (`ckd_m6_fistula_formation') _tab (`ckd_m7_fistula_formation') _tab (`ckd_m8_fistula_formation') _tab (`ckd_m9_fistula_formation') _tab (`ckd_m10_fistula_formation') _tab (`ckd_m11_fistula_formation') _tab (`ckd_m12_fistula_formation') _tab (`ckd_m1_fistula_formation') _tab (`ckd_m2_fistula_formation') _tab (`ckd_m3_fistula_formation') _n
 file write tablecontent _tab ("PD insertions") _tab _tab (`ckd_m4_pd_insertion') _tab (`ckd_m5_pd_insertion') _tab (`ckd_m6_pd_insertion') _tab (`ckd_m7_pd_insertion') _tab (`ckd_m8_pd_insertion') _tab (`ckd_m9_pd_insertion') _tab (`ckd_m10_pd_insertion') _tab (`ckd_m11_pd_insertion') _tab (`ckd_m12_pd_insertion') _tab (`ckd_m1_pd_insertion') _tab (`ckd_m2_pd_insertion') _tab (`ckd_m3_pd_insertion') _n
 
-forvalues egfr = 0/5 {
+forvalues egfr = 0/3 {
 use ./output/`dataset'_ckd_complete_v3.dta, clear
 drop if access_egfr!=`egfr'
 qui safecount
