@@ -52,9 +52,9 @@ dialysis_opcs_4_codes = codelist_from_csv(
     column="code",
 )
 dialysis_codes = codelist_from_csv(
-    "codelists/opensafely-dialysis.csv",
+    "codelists/user-viyaasan-dialysis-chronic.csv",
     system="ctv3",
-    column="CTV3ID"
+    column="code"
 )
 #Dialysis access procedures
 avf_formation_codes = codelist_from_csv(
