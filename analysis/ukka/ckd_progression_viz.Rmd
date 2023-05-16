@@ -14,7 +14,7 @@ library('cowplot')
 library('scales')
 
 # Read in data
-setwd("C:/Users/viymah/Documents/GitHub/ckd-healthcare-use/analysis/ukka")
+#setwd("C:/Users/viymah/Documents/GitHub/ckd-healthcare-use/analysis/ukka")
 d = read.csv("ckd_progression_final.csv", fileEncoding="UTF-8-BOM")
 
 # Pick out perecentages
@@ -343,27 +343,34 @@ d1 = rbind(
 ) %>%
   # select variables of interest
   select(Date, count, outcome)
-```
-#### Combination bar charts
-```{r, fig.width=7, fig.height=4}
-d2 = d1
 
-# Set plot limits
-plot_ymin = min(d2$count, na.rm=T)*0.9
-plot_ymax = max(d2$count, na.rm=T)*1.1
+# Change date coding
+d1$Date_factor = factor(d1$Date)
+d1$Date_factor = recode_factor(d1$Date_factor, "2017-04-01" = "2016/17", "2018-04-01" = "2017/18", "2019-04-01" = "2018/19", "2020-04-01" = "2019/20", "2021-04-01" = "2020/21", "2022-04-01" = "2021/22") 
+
+```
+
+#### Combination bar charts
+```{r, fig.width=9, fig.height=4}
+d2 = d1
 
 # Set factor levels for outcome
 d2$outcome = factor(d2$outcome, levels = c("Outpatient appointments", "GP interactions", "ED presentations"))
 
 # Generate plot
-ggplot(d2, aes(x = Date, y = count, colour=outcome)) + 
+ggplot(d2, aes(x = Date_factor, y = count, fill=outcome)) + 
+    facet_grid(.~outcome) + xlab("") +
      geom_bar(stat="identity") + ylab("Count") +
-     theme_bw() + ylim(plot_ymin,plot_ymax) + labs(colour = "Healthcare setting") +
-     scale_colour_manual(values=palette) +
-     theme(legend.position = "right", 
+     theme_bw() + labs(colour = "Healthcare setting") +
+     scale_fill_manual(values=palette) +
+     theme(legend.position = "none", 
+           strip.background = element_blank(),
+           strip.placement = "outside",
+           strip.text.y.left = element_text(angle = 0),
+           strip.text = element_text(size=14),
            axis.text = element_text(size=14), 
+           axis.text.x = element_text(size=14, angle = 45, hjust=1), 
            axis.title = element_text(size=14),
-           legend.title = element_text(size=14), 
            legend.text = element_text(size=10) 
            )
 ```
