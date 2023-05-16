@@ -1,0 +1,90 @@
+#Load packages
+library(tidyverse)
+library(readr)
+library(webshot)
+library(phantomjs)
+#Set local working directory
+setwd("C:/Users/viymah/Documents/GitHub/ckd-healthcare-use/analysis/sankey")
+# Read CSV files with nodes (CKD groups with a specified ID #) and edges (transitions between each ID # 
+# with weights for each transition)
+# NB - fileEncoding="UTF-8-BOM" added because nodes kept prefixing id with "ï.." otherwise
+nodes <- read.csv("nodes.csv", fileEncoding="UTF-8-BOM")
+edges_2017 <- read_csv("edges_2017.csv")
+edges_2018 <- read_csv("edges_2018.csv")
+edges_2019 <- read_csv("edges_2019.csv")
+edges_2020 <- read_csv("edges_2020.csv")
+edges_2021 <- read_csv("edges_2021.csv")
+edges_2022 <- read_csv("edges_2022.csv")
+library("networkD3")
+nodes_d3 <- mutate(nodes, id = id - 1)
+edges_d3_2017 <- mutate(edges_2017, from = from - 1, to = to - 1)
+edges_d3_2018 <- mutate(edges_2018, from = from - 1, to = to - 1)
+edges_d3_2019 <- mutate(edges_2019, from = from - 1, to = to - 1)
+edges_d3_2020 <- mutate(edges_2020, from = from - 1, to = to - 1)
+edges_d3_2021 <- mutate(edges_2021, from = from - 1, to = to - 1)
+edges_d3_2022 <- mutate(edges_2021, from = from - 1, to = to - 1)
+# progression_2017 = object which can then be saved
+progression_2017 <- sankeyNetwork(
+  Links = edges_d3_2017, Nodes = nodes_d3, 
+  Source = "from", Target = "to", 
+  NodeID = "label", Value = "weight", 
+  fontSize = 36, unit = "Letter(s)")
+# Save as HTML file
+saveNetwork(progression_2017, "2017.html")
+# Export from HTML to PNG
+webshot::webshot("2017.html","2017.png", vwidth = 1000, vheight = 900)
+
+# progression_2018 = object which can then be saved
+progression_2018 <- sankeyNetwork(
+  Links = edges_d3_2018, Nodes = nodes_d3, 
+  Source = "from", Target = "to", 
+  NodeID = "label", Value = "weight", 
+  fontSize = 36, unit = "Letter(s)")
+# Save as HTML file
+saveNetwork(progression_2018, "2018.html")
+# Export from HTML to PNG
+webshot::webshot("2018.html","2018.png", vwidth = 1000, vheight = 900)
+
+# progression_2019 = object which can then be saved
+progression_2019 <- sankeyNetwork(
+  Links = edges_d3_2019, Nodes = nodes_d3, 
+  Source = "from", Target = "to", 
+  NodeID = "label", Value = "weight", 
+  fontSize = 36, unit = "Letter(s)")
+# Save as HTML file
+saveNetwork(progression_2019, "2019.html")
+# Export from HTML to PNG
+webshot::webshot("2019.html","2019.png", vwidth = 1000, vheight = 900)
+
+# progression_2020 = object which can then be saved
+progression_2020 <- sankeyNetwork(
+  Links = edges_d3_2020, Nodes = nodes_d3, 
+  Source = "from", Target = "to", 
+  NodeID = "label", Value = "weight", 
+  fontSize = 36, unit = "Letter(s)")
+# Save as HTML file
+saveNetwork(progression_2020, "2020.html")
+# Export from HTML to PNG
+webshot::webshot("2020.html","2020.png", vwidth = 1000, vheight = 900)
+
+# progression_2021 = object which can then be saved
+progression_2021 <- sankeyNetwork(
+  Links = edges_d3_2021, Nodes = nodes_d3, 
+  Source = "from", Target = "to", 
+  NodeID = "label", Value = "weight", 
+  fontSize = 36, unit = "Letter(s)")
+# Save as HTML file
+saveNetwork(progression_2021, "2021.html")
+# Export from HTML to PNG
+webshot::webshot("2021.html","2021.png", vwidth = 1000, vheight = 900)
+
+# progression_2022 = object which can then be saved
+progression_2022 <- sankeyNetwork(
+  Links = edges_d3_2022, Nodes = nodes_d3, 
+  Source = "from", Target = "to", 
+  NodeID = "label", Value = "weight", 
+  fontSize = 36, unit = "Letter(s)")
+# Save as HTML file
+saveNetwork(progression_2022, "2022.html")
+# Export from HTML to PNG
+webshot::webshot("2022.html","2022.png", vwidth = 1000, vheight = 900)

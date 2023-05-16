@@ -1,0 +1,369 @@
+---
+title: "CKD plots"
+output: html_document
+---
+
+### CKD progression
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+
+## Import libraries
+library('tidyverse')
+library('kableExtra')
+library('cowplot')
+library('scales')
+
+# Read in data
+setwd("C:/Users/viymah/Documents/GitHub/ckd-healthcare-use/analysis/ukka")
+d = read.csv("ckd_progression_final.csv", fileEncoding="UTF-8-BOM")
+
+# Pick out perecentages
+d1 = subset(d, metric=="Percentage")
+
+# Create stacked dataframe with 1 row per data point
+d2 = rbind(
+  d1 %>% mutate(count = count_2017, year = 2017),
+  d1 %>% mutate(count = count_2018, year = 2018),
+  d1 %>% mutate(count = count_2019, year = 2019),
+  d1 %>% mutate(count = count_2020, year = 2020),
+  d1 %>% mutate(count = count_2021, year = 2021),
+  d1 %>% mutate(count = count_2022, year = 2022)
+) %>%
+  # select variables of interest
+  select(start_status, end_status, count, year)
+
+# Set factor levels for end status
+d2$end_status = factor(d2$end_status, 
+                       levels = c("No progression", "Dialysis", "Transplant", "Deceased"))
+```
+
+#### Plot with 'No progression' included
+```{r, fig.width=9, fig.height=5}
+# Generate ggplot with year as x axis and % as y axis
+ggplot(d2, aes(x = year, y = count, fill = end_status)) + 
+   geom_bar(stat="identity", alpha=0.9) + 
+   ylab("%") + xlab("") +
+   # generate facets by starting status (vertical) and ending status (horizontal)
+   # switch = "y" to put the strip text on left of plot
+   facet_grid(start_status ~ end_status, switch = "y" ) +
+   # set colours (a good resource for finding hex codes is here: https://colorbrewer2.org)
+   scale_fill_manual(values = c("#3B9AB2", "#EBCC2A","#E1AF00","#B40F20")) +
+   scale_x_continuous(breaks=seq(2017, 2022, by = 1)) +
+   theme_bw() + 
+   theme(legend.position = "none", 
+         axis.text = element_text(size=14), 
+         axis.title = element_text(size=14),
+         strip.background = element_blank(),
+         strip.placement = "outside",
+         strip.text.y.left = element_text(angle = 0),
+         strip.text = element_text(size=14),
+         axis.text.x = element_text(angle=45, hjust = 1)
+         )
+```
+
+#### Plot with 'No progression' excluded
+```{r, fig.width=8, fig.height=5}
+# Generate ggplot with year as x axis and % as y axis
+ggplot(subset(d2, end_status!="No progression"), aes(x = year, y = count, fill = end_status)) + 
+   geom_bar(stat="identity", alpha=0.9) + 
+   ylab("%") + xlab("") +
+   facet_grid(start_status ~ end_status, switch="y") +
+   scale_fill_manual(values = c("#EBCC2A","#E1AF00","#B40F20")) +
+   scale_x_continuous(breaks=seq(2017, 2022, by = 1)) +
+   theme_bw() + 
+   theme(legend.position = "none", 
+         axis.text = element_text(size=14), 
+         axis.title = element_text(size=14),
+         strip.placement = "outside",
+         strip.text.y.left = element_text(angle = 0),
+         strip.background = element_blank(),
+         strip.text = element_text(size=14), 
+         axis.text.x = element_text(angle=45, hjust = 1)
+         )
+```
+
+### CKD time series
+```{r}
+# Read in data
+d = read.csv("ckd_timeseries_final.csv")
+d$Date = as.Date(d$Date, format="%d/%m/%Y")
+
+# Create stacked dataframe with 1 row per data point
+d1 = rbind(
+  d %>% mutate(count = Hospital_days, outcome = "Hospital days"),
+  d %>% mutate(count = ICU_days, outcome = "ICU days"),
+  d %>% mutate(count = ED_days, outcome = "ED days"),
+  d %>% mutate(count = OPD_appts, outcome = "OPD appts"),
+  d %>% mutate(count = GP_interactions, outcome = "GP interactions")
+) %>%
+  # select variables of interest
+  select(Date, count, outcome)
+```
+
+#### Hospital days
+```{r, fig.width=5, fig.height=3}
+palette = c("#3B9AB2","#EBCC2A","#E1AF00","#B40F20", "#6e016b") # a few nice colours
+
+# function to create a plot for a selected outcome
+# by wrapping the plot code in a function, you can avoid lots of copying/pasting below
+
+single_plot = function(plot_outcome, colour_hex="#E1AF00") {
+  
+  d2 = subset(d1, outcome==plot_outcome)
+  plot_ymin = min(d2$count, na.rm=T)*0.9
+  plot_ymax = max(d2$count, na.rm=T)*1.1
+  ggplot(d2, aes(x = Date, y = count)) + 
+     geom_line(colour = colour_hex, size=0.8) + 
+     # Label y axis by first item in outcome variable
+     ylab(d2$outcome[1]) +
+     # Add shaded rectangles starting 1st April for every second year (to mark cohort initiation points)
+     annotate("rect", xmin = as.Date("01/04/2018", format="%d/%m/%Y"), 
+              xmax = as.Date("31/03/2019", format="%d/%m/%Y"), ymin = plot_ymin, ymax = plot_ymax, alpha = .1) +
+     annotate("rect", xmin = as.Date("01/04/2020", format="%d/%m/%Y"), 
+              xmax = as.Date("31/03/2021", format="%d/%m/%Y"), ymin = plot_ymin, ymax = plot_ymax, alpha = .1) +
+     annotate("rect", xmin = as.Date("01/04/2022", format="%d/%m/%Y"), 
+              xmax = as.Date("31/03/2023", format="%d/%m/%Y"), ymin = plot_ymin, ymax = plot_ymax, alpha = .1) +
+     theme_bw() + ylim(plot_ymin,plot_ymax) +
+     theme(legend.position = "none", 
+           axis.text = element_text(size=14), 
+           axis.title = element_text(size=14)
+           )
+}
+
+single_plot(plot_outcome="Hospital days", colour_hex=palette[1])
+```
+
+#### ICU days
+```{r, fig.width=5, fig.height=3}
+single_plot(plot_outcome="ICU days", colour_hex=palette[5])
+```
+
+#### ED days
+```{r, fig.width=5, fig.height=3}
+single_plot(plot_outcome="ED days", colour_hex=palette[4])
+```
+
+#### OPD appts
+```{r, fig.width=5, fig.height=3}
+single_plot(plot_outcome="OPD appts", colour_hex=palette[2])
+```
+
+#### GP interactions
+```{r, fig.width=5, fig.height=3}
+single_plot(plot_outcome="GP interactions", colour_hex=palette[3])
+```
+
+#### Combination plot
+```{r, fig.width=7, fig.height=4}
+d2 = d1
+
+# Scale ICU and ED days up by 10-fold to fit on same axis
+d2$count[d2$outcome=="ICU days"] = d2$count[d2$outcome=="ICU days"]*10
+d2$count[d2$outcome=="ED days"] = d2$count[d2$outcome=="ED days"]*10
+d2$outcome[d2$outcome=="ICU days"] = "ICU days x 10"
+d2$outcome[d2$outcome=="ED days"] = "ED days x 10"
+
+# Set plot limits
+plot_ymin = min(d2$count, na.rm=T)*0.9
+plot_ymax = max(d2$count, na.rm=T)*1.1
+
+# Set factor levels for outcome
+d2$outcome = factor(d2$outcome, levels = c("Hospital days", "OPD appts", "GP interactions", "ED days x 10", "ICU days x 10"))
+
+# Generate plot
+ggplot(d2, aes(x = Date, y = count, colour=outcome)) + 
+     geom_line(size=0.8) + ylab("Count") +
+     annotate("rect", xmin = as.Date("01/04/2018", format="%d/%m/%Y"), 
+              xmax = as.Date("31/03/2019", format="%d/%m/%Y"), ymin = plot_ymin, ymax = plot_ymax, alpha = .1) +
+     annotate("rect", xmin = as.Date("01/04/2020", format="%d/%m/%Y"), 
+              xmax = as.Date("31/03/2021", format="%d/%m/%Y"), ymin = plot_ymin, ymax = plot_ymax, alpha = .1) +
+     annotate("rect", xmin = as.Date("01/04/2022", format="%d/%m/%Y"), 
+              xmax = as.Date("31/03/2023", format="%d/%m/%Y"), ymin = plot_ymin, ymax = plot_ymax, alpha = .1) +
+     theme_bw() + ylim(plot_ymin,plot_ymax) + labs(colour = "Outcome") +
+     scale_colour_manual(values=palette) +
+     theme(legend.position = "right", 
+           axis.text = element_text(size=14), 
+           axis.title = element_text(size=14),
+           legend.title = element_text(size=14), 
+           legend.text = element_text(size=10) 
+           )
+```
+
+#### Facet plot
+```{r, fig.width=8, fig.height=5}
+# Generate plot
+ggplot(d2, aes(x = Date, y = count, colour=outcome)) + 
+    facet_wrap(outcome~.) +
+     geom_line(size=0.8) + ylab("Count") +
+     annotate("rect", xmin = as.Date("01/04/2018", format="%d/%m/%Y"), 
+              xmax = as.Date("31/03/2019", format="%d/%m/%Y"), ymin = plot_ymin, ymax = plot_ymax, alpha = .1) +
+     annotate("rect", xmin = as.Date("01/04/2020", format="%d/%m/%Y"), 
+              xmax = as.Date("31/03/2021", format="%d/%m/%Y"), ymin = plot_ymin, ymax = plot_ymax, alpha = .1) +
+     annotate("rect", xmin = as.Date("01/04/2022", format="%d/%m/%Y"), 
+              xmax = as.Date("31/03/2023", format="%d/%m/%Y"), ymin = plot_ymin, ymax = plot_ymax, alpha = .1) +
+     theme_bw() + ylim(plot_ymin,plot_ymax) + labs(colour = "Outcome") +
+      scale_colour_manual(values=palette) +
+     theme(legend.position = "none", 
+           strip.background = element_blank(),
+           strip.placement = "outside",
+           strip.text.y.left = element_text(angle = 0),
+           strip.text = element_text(size=14),
+           axis.text = element_text(size=14), 
+           axis.title = element_text(size=14),
+           legend.text = element_text(size=10) 
+           )
+```
+
+### Dialysis/transplant populations
+```{r}
+# Read in data
+d = read.csv("dialysis_transplant.csv", fileEncoding="UTF-8-BOM")
+d$Date = as.Date(d$Date, format="%d/%m/%Y")
+
+# Create stacked dataframe with 1 row per data point
+d1 = rbind(
+  d %>% mutate(count = Dialysis_OS, outcome = "Dialysis (OpenSAFELY)"),
+  d %>% mutate(count = Transplant_OS, outcome = "Kidney transplants (OpenSAFLY)"),
+  d %>% mutate(count = Dialysis_UKRR, outcome = "Dialysis (UK Renal Registry)"),
+  d %>% mutate(count = Transplant_UKRR, outcome = "Kidney transplants (UK Renal Registry)")
+) %>%
+  # select variables of interest
+  select(Date, count, outcome)
+```
+
+#### Prevalent kidney replacement therapy populations overlaid
+```{r, fig.width=7, fig.height=4}
+d2 = d1
+
+# Set plot limits
+plot_ymin = min(0)
+plot_ymax = max(d2$count, na.rm=T)*1.1
+
+# Set factor levels for outcome
+d2$outcome = factor(d2$outcome, levels = c("Dialysis (OpenSAFELY)", "Kidney transplants (OpenSAFLY)", "Dialysis (UK Renal Registry)", "Kidney transplants (UK Renal Registry)"))
+
+# Generate plot
+ggplot(d2, aes(x = Date, y = count, colour=outcome)) + 
+     geom_line(size=0.8) + ylab("Number of prevalent patients") + xlab("Year") +
+     theme_bw() + ylim(plot_ymin,plot_ymax) + labs(colour = "Modality (data source)") +
+     scale_colour_manual(values=palette) +
+     theme(legend.position = "right", 
+           axis.text = element_text(size=14), 
+           axis.title = element_text(size=14),
+           legend.title = element_text(size=14), 
+           legend.text = element_text(size=10) 
+           )
+```
+### Dialysis/transplant populations
+```{r}
+# Read in data
+d = read.csv("access.csv", fileEncoding="UTF-8-BOM")
+d$Date = as.Date(d$Date, format="%d/%m/%Y")
+
+# Create stacked dataframe with 1 row per data point
+d1 = rbind(
+  d %>% mutate(count = avf, outcome = "AVF"),
+  d %>% mutate(count = pd, outcome = "PD catheter")
+) %>%
+  # select variables of interest
+  select(Date, count, outcome)
+```
+#### Dialysis access
+```{r, fig.width=7, fig.height=4}
+d2 = d1
+
+# Set plot limits
+plot_ymin = min(0)
+plot_ymax = max(d2$count, na.rm=T)*1.1
+
+# Set factor levels for outcome
+d2$outcome = factor(d2$outcome, levels = c("AVF", "PD catheter"))
+
+# Generate plot
+ggplot(d2, aes(x = Date, y = count, colour=outcome)) + 
+     geom_line(size=0.8) + ylab("Count") + xlab("Month") +
+     theme_bw() + ylim(plot_ymin,plot_ymax) + labs(colour = "Access modality") +
+     scale_colour_manual(values=palette) +
+     theme(legend.position = "right", 
+           axis.text = element_text(size=14), 
+           axis.title = element_text(size=14),
+           legend.title = element_text(size=14), 
+           legend.text = element_text(size=10) 
+           )
+```
+### CKD time series (restricted to OPD, ED & GP)
+```{r}
+# Read in data
+d = read.csv("ckd_timeseries_ukka.csv", fileEncoding="UTF-8-BOM")
+d$Date = as.Date(d$Date, format="%d/%m/%Y")
+
+# Create stacked dataframe with 1 row per data point
+d1 = rbind(
+  d %>% mutate(count = ED_days, outcome = "ED days"),
+  d %>% mutate(count = OPD_appts, outcome = "OPD appts"),
+  d %>% mutate(count = GP_interactions, outcome = "GP interactions")
+) %>%
+  # select variables of interest
+  select(Date, count, outcome)
+```
+#### Combination plot
+```{r, fig.width=7, fig.height=4}
+d2 = d1
+
+# Set plot limits
+plot_ymin = min(d2$count, na.rm=T)*0.9
+plot_ymax = max(d2$count, na.rm=T)*1.1
+
+# Set factor levels for outcome
+d2$outcome = factor(d2$outcome, levels = c("OPD appts", "GP interactions", "ED days"))
+
+# Generate plot
+ggplot(d2, aes(x = Date, y = count, colour=outcome)) + 
+     geom_line(size=0.8) + ylab("Count") +
+     theme_bw() + ylim(plot_ymin,plot_ymax) + labs(colour = "Healthcare setting") +
+     scale_colour_manual(values=palette) +
+     theme(legend.position = "right", 
+           axis.text = element_text(size=14), 
+           axis.title = element_text(size=14),
+           legend.title = element_text(size=14), 
+           legend.text = element_text(size=10) 
+           )
+```
+### Annual healthcare use (restricted to OPD, ED & GP)
+```{r}
+# Read in data
+d = read.csv("annual_healthcare.csv", fileEncoding="UTF-8-BOM")
+d$Date = as.Date(d$Date, format="%d/%m/%Y")
+
+# Create stacked dataframe with 1 row per data point
+d1 = rbind(
+  d %>% mutate(count = ed, outcome = "ED presentations"),
+  d %>% mutate(count = opd, outcome = "Outpatient appointments"),
+  d %>% mutate(count = gp, outcome = "GP interactions")
+) %>%
+  # select variables of interest
+  select(Date, count, outcome)
+```
+#### Combination bar charts
+```{r, fig.width=7, fig.height=4}
+d2 = d1
+
+# Set plot limits
+plot_ymin = min(d2$count, na.rm=T)*0.9
+plot_ymax = max(d2$count, na.rm=T)*1.1
+
+# Set factor levels for outcome
+d2$outcome = factor(d2$outcome, levels = c("Outpatient appointments", "GP interactions", "ED presentations"))
+
+# Generate plot
+ggplot(d2, aes(x = Date, y = count, colour=outcome)) + 
+     geom_bar(stat="identity") + ylab("Count") +
+     theme_bw() + ylim(plot_ymin,plot_ymax) + labs(colour = "Healthcare setting") +
+     scale_colour_manual(values=palette) +
+     theme(legend.position = "right", 
+           axis.text = element_text(size=14), 
+           axis.title = element_text(size=14),
+           legend.title = element_text(size=14), 
+           legend.text = element_text(size=10) 
+           )
+```
