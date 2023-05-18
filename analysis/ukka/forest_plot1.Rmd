@@ -1,0 +1,94 @@
+---
+title: "forest_plots_ukkw_2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+
+## Import libraries
+library('tidyverse')
+library('kableExtra')
+library('cowplot')
+library('scales')
+library('forestplot')
+library('dplyr')
+library('tibble')
+library('gridExtra')
+
+```
+```{r, fig.width=21, fig.height=12}
+palette = c("#d7191c","#fdae61","#abdda4","#2b83ba")
+# Read in data
+setwd("C:/Users/viymah/Documents/GitHub/ckd-healthcare-use/analysis/ukka")
+covid_outcomes <- read.csv("covid_outcomes.csv", fileEncoding = "UTF-8-BOM")
+
+covid_outcomes |>
+  forestplot(
+    labeltext = c(outcome, exposure, hr, number, events, rate),
+    boxsize = 0.4,
+    vertices = TRUE,
+    xscale = c(0.8, 4),
+    xlab = "Hazard ratio (95% confidence interval)",
+    zero = 1,
+    xticks = c(0.5, 1.0,  2.0, 3.0, 4.0)
+  ) |>
+  fp_set_style(
+    box = "#d7191c",
+    line = "#d7191c",
+    hrz_lines = "#999999",
+    txt_gp = fpTxtGp(
+      label = list(gpar(fontfamily = "sans"), gpar(fontfamily = "sans", col = "#660000")),
+      ticks = gpar(fontfamily = "sans", cex = 1),
+      xlab = gpar(fontfamily = "sans", cex = 1.5)
+    )
+  ) |>
+  fp_add_header(
+    outcome = c("", ""),
+    exposure = c("", ""),
+    hr = c("Hazard ratio", "(95% confidence interval)") |> fp_align_center(),
+    number = c("", "Number") |> fp_align_center(),
+    events = c("", "Events") |> fp_align_center(),
+    rate = c("Rate", "(per 100,000 person-years)")
+  ) |>
+  fp_decorate_graph(graph.pos = 3)
+  
+
+
+```
+```{r, fig.width=16, fig.height=9}
+palette = c("#d7191c","#fdae61","#abdda4","#2b83ba")
+# Read in data
+setwd("C:/Users/viymah/Dropbox/PhD/study a/forest")
+covid_esrd <- read.csv("covid_esrd.csv", fileEncoding = "UTF-8-BOM")
+
+covid_esrd |>
+  forestplot(
+    labeltext = c(exposure, hr, number, events),
+    boxsize = 0.2,
+    vertices = TRUE,
+    xscale = c(0.8, 2.5),
+    xlab = "Hazard ratio (95% confidence interval)",
+    zero = 1,
+    lines = "black",
+    vrtcl_lines = "black",
+    xticks = c(0.5, 1.0, 1.5, 2.0, 2.5)
+  ) |>
+  fp_set_style(
+    box = "#d7191c",
+    line = "#d7191c",
+    hrz_lines = "#999999",
+    txt_gp = fpTxtGp(
+      label = list(gpar(fontfamily = "sans"), gpar(fontfamily = "sans", col = "#660000")),
+      ticks = gpar(fontfamily = "sans", cex = 1),
+      xlab = gpar(fontfamily = "sans", cex = 1.5)
+    )
+  ) |>
+  fp_add_header(
+    exposure = c(""),
+    hr = c("Hazard ratio (95% confidence interval)") |> fp_align_center(),
+    number = c("Number") |> fp_align_center(),
+    events = c("Events") |> fp_align_center()
+  ) |>
+  fp_decorate_graph(graph.pos = 2)
+```
