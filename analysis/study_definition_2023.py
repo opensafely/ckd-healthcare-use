@@ -29,7 +29,7 @@ study = StudyDefinition(
         AND NOT deceased = "1"
         """,
     ),
-    index_date="2022-04-01",
+    index_date="2023-04-01",
 
     **variables_initial,
 )
