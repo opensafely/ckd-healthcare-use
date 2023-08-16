@@ -39,19 +39,38 @@ foreach var of varlist 	dialysis_baseline_primary_care	///
 						dialysis_baseline_date			///
 						kt_baseline_primary_care		///
 						kt_baseline_icd_10				///
-						kt_baseline_opcs_4				///
-						kidney_transplant_baseline_date {
+						kt_baseline_opcs_4				{
 	drop `var'
 	}
 tab modality_baseline, m
+*To reduce misclassification of dialysis, anyone with eGFR >15 with modality_baseline=="Dialysis" will be reclassified as non-dialysis (e.g. they may have received acute dialysis and recovered)
+*For modality_baseline="Modality unclear" (i.e. whose dialysis and kidney transplant baseline dates are identical), those with eGFR <15 will be assumed to be on dialysis and those >15 as kidney transplant
+egen esrd_egfr = cut(baseline_egfr), at (0, 15, 5000)
+recode esrd_egfr 0=1 15=0
+tab esrd_egfr, m
+gen dialysis = 0
+replace dialysis = 1 if modality_baseline=="Dialysis"
+replace dialysis = 1 if modality_baseline=="Modality unclear" & esrd_egfr!=.
+replace dialysis = 0 if esrd_egfr==0
+gen kidney_transplant = 0
+replace kidney_transplant = 1 if kidney_transplant_baseline_date!=""
+replace kidney_transplant = 0 if dialysis==1
+gen modality_unclear = 0
+replace modality_unclear = 1 if modality_baseline=="Modality unclear"
+replace modality_unclear = 0 if dialysis==1
+replace modality_unclear = 0 if kidney_transplant==1
+tab modality_baseline dialysis
+tab modality_baseline kidney_transplant
+tab modality_baseline modality_unclear
+tab dialysis kidney_transplant
 egen ckd_group = cut(baseline_egfr), at(0, 30, 60, 5000)
 recode ckd_group 0=3 30=2 60=1
-replace ckd_group = 4 if modality_baseline=="Dialysis"
-replace ckd_group = 5 if modality_baseline=="Kidney transplant"
-replace ckd_group = 6 if modality_baseline=="Modality unclear"
+replace ckd_group = 4 if dialysis==1
+replace ckd_group = 5 if kidney_transplant==1
+replace ckd_group = 6 if modality_unclear==1
 *ckd_group==. are those with albuminuria without available eGFR measurement or code for KRT
 replace ckd_group = 1 if ckd_group==.
-label define ckd_group 1 "Albuminuria" 2 "CKD stage 3" 3 "CKD stage 4/5" 4 "Dialysis" 5 "Transplant" 6 "KRT unclear"
+label define ckd_group 1 "Albuminuria" 2 "CKD stage 3" 3 "CKD stage 4/5" 4 "Dialysis" 5 "Transplant" 6 "KRT unclear modality"
 label values ckd_group ckd_group
 label var ckd_group "CKD group"
 tab ckd_group, m
@@ -98,7 +117,6 @@ drop mgdl_creatinine_outcome
 drop min_creatinine_outcome
 drop max_creatinine_outcome
 egen egfr_end = cut(egfr_outcome), at(0, 30, 60, 5000)
-drop egfr_outcome
 recode egfr_end 0=3 30=2 60=1
 label define egfr_end 1 "≥60" 2 "30-59" 3 "<30"
 label values egfr_end egfr_end
@@ -107,14 +125,31 @@ gen ckd_progression = 0
 replace ckd_progression = 1 if egfr_end==2 & ckd_group==1
 replace ckd_progression = 2 if egfr_end==3 & ckd_group==1
 replace ckd_progression = 2 if egfr_end==3 & ckd_group==2
-replace ckd_progression = 3 if modality_outcome=="Dialysis"
-replace ckd_progression = 4 if modality_outcome=="Kidney transplant"
+egen esrd_egfr_end = cut(egfr_outcome), at (0, 15, 5000)
+recode esrd_egfr_end 0=1 15=0
+tab esrd_egfr_end, m
+gen dialysis_outcome = 0
+replace dialysis_outcome = 1 if modality_outcome=="Dialysis"
+replace dialysis_outcome = 1 if modality_outcome=="Modality unclear" & esrd_egfr_end==1
+gen kidney_transplant_outcome = 0
+replace kidney_transplant_outcome = 1 if modality_outcome=="Kidney transplant"
+replace kidney_transplant_outcome = 1 if modality_outcome=="Modality unclear" & esrd_egfr_end==0
 replace ckd_progression = 5 if modality_outcome=="Modality unclear"
+replace ckd_progression = 3 if dialysis_outcome==1
+replace ckd_progression = 4 if kidney_transplant_outcome==1
 replace ckd_progression = 6 if modality_outcome=="Deceased"
 label define ckd_progression 0 "No progression" 1 "CKD 3" 2 "CKD 4/5 pre-KRT" 3 "Dialysis" 4 "Kidney transplant" 5 "KRT unclear modality" 6 "Deceased"
 label values ckd_progression ckd_progression
 label var ckd_progression "CKD progression"
 tab ckd_progression, m
+
+*eGFR cut-offs to investigate timing of access formation
+egen access_egfr = cut(baseline_egfr), at (0, 15, 5000)
+recode access_egfr 0=1 15=2
+replace access_egfr=0 if ckd_group==4
+replace access_egfr=3 if access_egfr==.
+label define access_egfr 0 "Dialysis" 1 "eGFR 0-14" 2 "eGFR >= 15" 3 "Unknown"
+label values access_egfr access_egfr
 
 *Totals for non-binary healthcare resource outcomes
 foreach aggregate of varlist m4_hospital_days m5_hospital_days m6_hospital_days m7_hospital_days m8_hospital_days m9_hospital_days m10_hospital_days m11_hospital_days m12_hospital_days m1_hospital_days m2_hospital_days m3_hospital_days m4_critical_care_days m5_critical_care_days m6_critical_care_days m7_critical_care_days m8_critical_care_days m9_critical_care_days m10_critical_care_days m11_critical_care_days m12_critical_care_days m1_critical_care_days m2_critical_care_days m3_critical_care_days m4_emergency_days m5_emergency_days m6_emergency_days m7_emergency_days m8_emergency_days m9_emergency_days m10_emergency_days m11_emergency_days m12_emergency_days m1_emergency_days m2_emergency_days m3_emergency_days m4_op_appts m5_op_appts m6_op_appts m7_op_appts m8_op_appts m9_op_appts m10_op_appts m11_op_appts m12_op_appts m1_op_appts m2_op_appts m3_op_appts m4_neph_appts m5_neph_appts m6_neph_appts m7_neph_appts m8_neph_appts m9_neph_appts m10_neph_appts m11_neph_appts m12_neph_appts m1_neph_appts m2_neph_appts m3_neph_appts m4_tx_appts m5_tx_appts m6_tx_appts m7_tx_appts m8_tx_appts m9_tx_appts m10_tx_appts m11_tx_appts m12_tx_appts m1_tx_appts m2_tx_appts m3_tx_appts m4_gp_interactions m5_gp_interactions m6_gp_interactions m7_gp_interactions m8_gp_interactions m9_gp_interactions m10_gp_interactions m11_gp_interactions m12_gp_interactions m1_gp_interactions m2_gp_interactions m3_gp_interactions {
