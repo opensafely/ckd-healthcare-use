@@ -15,7 +15,7 @@ variables_initial= generate_variables_initial(index_date_variable="index_date")
 
 study = StudyDefinition(
     default_expectations={
-        "date": {"earliest": "1980-01-01", "latest": "2022-04-01"},
+        "date": {"earliest": "1980-01-01", "latest": "2023-04-01"},
         "rate": "uniform",
         "incidence": 0.7, 
     },
