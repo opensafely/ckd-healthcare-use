@@ -17,7 +17,7 @@ variables_additional= generate_variables_additional(index_date_variable="index_d
 
 study = StudyDefinition(
     default_expectations={
-        "date": {"earliest": "2023-04-01", "latest": "2023-07-19"},
+        "date": {"earliest": "2023-04-01", "latest": "2023-08-16"},
         "rate": "uniform",
         "incidence" : 0.2
     },
