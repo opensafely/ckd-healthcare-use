@@ -1,0 +1,84 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/healthcare_use_ckd3.log
+  log type:  text
+ opened on:  17 Aug 2023, 16:26:59
+
+. cap file close tablecontent
+
+. **Creates output file for each year (`dataset')
+. file open tablecontent using ./output/healthcare_use_ckd3.csv, write text replace
+(file ./output/healthcare_use_ckd3.csv not found)
+
+. **Column headings
+. file write tablecontent ("Date") _tab ("ip") _tab ("icu") _tab ("ed") _tab ("opd") _tab ("neph") _tab ("gp") _tab ("bp") _tab ("uacr") _tab ("scr") _n
+
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2. file write tablecontent ("01/04/`x'") _tab
+  3. use ./output/`x'_ckd_complete.dta, clear
+  4. drop if ckd_group!=2
+  5. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
+  6. qui su total_`aggregate'
+  7. local `x'_`aggregate' = r(mean)
+  8. }
+  9. foreach binary of varlist fistula_formation pd_insertion blood_pressure albuminuria creatinine {
+ 10. qui safecount if `binary'==1
+ 11. local `x'_`binary' = round(r(N),5)
+ 12. }
+ 13. file write tablecontent (``x'_hospital_days') _tab (``x'_critical_care_days') _tab (``x'_emergency_days') _tab (``x'_op_appts') _tab (``x'_neph_appts') _tab (``x'_gp_interactions') _tab (``x'_blood_pressu
+> re') _tab (``x'_albuminuria') _tab (``x'_creatinine') _n
+ 14. }
+(1,676 observations deleted)
+(1,721 observations deleted)
+(1,680 observations deleted)
+(1,737 observations deleted)
+(1,752 observations deleted)
+(1,700 observations deleted)
+
+. file close tablecontent
+
+. 
+. import delimited ./output/healthcare_use_ckd3.csv, clear
+(encoding automatically selected: ISO-8859-2)
+(10 vars, 6 obs)
+
+. local columns ""ip" "icu" "ed" "opd" "neph" "gp" "bp" "uacr" "scr""
+
+. foreach col of local columns {
+  2.     replace `col' = . if `col' <= 5
+  3. }
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+
+. 
+. 
+. export delimited "./output/healthcare_use_ckd3.csv", replace
+file ./output/healthcare_use_ckd3.csv saved
+
+. 
+end of do-file
+
+. do "C:\Users\lsh1703468\Documents\Repo\ckd-healthcare-use\analysis\healthcare_use_ckd4.do"
+
+. sysdir set PLUS ./analysis/adofiles
+
+. sysdir set PERSONAL ./analysis/adofiles
+
+. pwd
+C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use
+
+. **Loops through datasets for each year 2017-2018 to 2022-2023
+. * `dataset' specifies year from project.yaml script
+. local dataset `1'
+
+. cap log close

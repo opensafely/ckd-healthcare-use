@@ -1,0 +1,71 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/healthcare_use_dialysis.log
+  log type:  text
+ opened on:  17 Aug 2023, 16:35:57
+
+. cap file close tablecontent
+
+. **Creates output file for each year (`dataset')
+. file open tablecontent using ./output/healthcare_use_dialysis.csv, write text replace
+(file ./output/healthcare_use_dialysis.csv not found)
+
+. **Column headings
+. file write tablecontent ("Date") _tab ("ip") _tab ("icu") _tab ("ed") _tab ("avf") _tab ("pd") _tab ("opd") _tab ("neph") _tab ("tx") _tab ("gp") _tab ("bp") _n
+
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2. file write tablecontent ("01/04/`x'") _tab
+  3. use ./output/`x'_ckd_complete.dta, clear
+  4. drop if ckd_group!=4
+  5. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
+  6. qui su total_`aggregate'
+  7. local `x'_`aggregate' = r(mean)
+  8. }
+  9. foreach binary of varlist fistula_formation pd_insertion blood_pressure {
+ 10. qui safecount if `binary'==1
+ 11. local `x'_`binary' = round(r(N),5)
+ 12. }
+ 13. file write tablecontent (``x'_hospital_days') _tab (``x'_critical_care_days') _tab (``x'_emergency_days') _tab (``x'_fistula_formation') _tab (``x'_pd_insertion') _tab (``x'_op_appts') _tab (``x'_neph_app
+> ts') _tab (``x'_tx_appts') _tab (``x'_gp_interactions') _tab (``x'_blood_pressure') _n
+ 14. }
+(1,998 observations deleted)
+(2,017 observations deleted)
+(1,976 observations deleted)
+(2,049 observations deleted)
+(2,061 observations deleted)
+(2,007 observations deleted)
+
+. file close tablecontent
+
+. 
+. import delimited ./output/healthcare_use_dialysis.csv, clear
+(encoding automatically selected: ISO-8859-2)
+(11 vars, 6 obs)
+
+. local columns ""ip" "icu" "ed" "avf" "pd" "opd" "neph" "tx" "gp" "bp""
+
+. foreach col of local columns {
+  2.     replace `col' = . if `col' <= 5
+  3. }
+(0 real changes made)
+(0 real changes made)
+(1 real change made, 1 to missing)
+(1 real change made, 1 to missing)
+(1 real change made, 1 to missing)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+
+. 
+. 
+. export delimited "./output/healthcare_use_dialysis.csv", replace
+file ./output/healthcare_use_dialysis.csv saved
+
+. 
+end of do-file
+

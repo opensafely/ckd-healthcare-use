@@ -441,6 +441,15 @@ actions:
       highly_sensitive:
         cohort: output/input_2023_ckd_complete.csv
 
+  2023_clean_ckd_complete:
+    run: stata-mp:latest analysis/ckd_complete.do 2023
+    needs: [2023, 2023_ckd, 2023_ckd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2023_ckd_complete.dta
+      moderately_sensitive:
+        log: logs/2023_ckd_complete.log
+
   ckd_progression:
     run: stata-mp:latest analysis/ckd_progression.do
     needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_healthcare_use, 2018_healthcare_use, 2019_healthcare_use, 2020_healthcare_use, 2021_healthcare_use, 2022_healthcare_use]
@@ -472,3 +481,51 @@ actions:
       moderately_sensitive:
         log: logs/ckd_progression_imd.log
         output: output/ckd_progression_imd.csv
+
+  healthcare_use_overall:
+    run: stata-mp:latest analysis/healthcare_use_overall.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/healthcare_use_overall.log
+        output: output/healthcare_use_overall.csv
+
+  healthcare_use_albuminuria:
+    run: stata-mp:latest analysis/healthcare_use_albuminuria.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/healthcare_use_albuminuria.log
+        output: output/healthcare_use_albuminuria.csv
+
+  healthcare_use_ckd3:
+    run: stata-mp:latest analysis/healthcare_use_ckd3.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/healthcare_use_ckd3.log
+        output: output/healthcare_use_ckd3.csv
+
+  healthcare_use_ckd4:
+    run: stata-mp:latest analysis/healthcare_use_ckd4.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/healthcare_use_ckd4.log
+        output: output/healthcare_use_ckd4.csv
+
+  healthcare_use_dialysis:
+    run: stata-mp:latest analysis/healthcare_use_dialysis.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/healthcare_use_dialysis.log
+        output: output/healthcare_use_dialysis.csv
+
+  healthcare_use_transplant:
+    run: stata-mp:latest analysis/healthcare_use_transplant.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/healthcare_use_transplant.log
+        output: output/healthcare_use_transplant.csv
