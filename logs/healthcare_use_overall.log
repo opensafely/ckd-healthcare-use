@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/healthcare_use_overall.log
   log type:  text
- opened on:  17 Aug 2023, 16:15:34
+ opened on:  19 Aug 2023, 00:04:11
 
 . cap file close tablecontent
 
@@ -10,13 +10,13 @@
 . file open tablecontent using ./output/healthcare_use_overall.csv, write text replace
 
 . **Column headings
-. file write tablecontent ("Date") _tab ("ip") _tab ("icu") _tab ("ed") _tab ("avf") _tab ("pd") _tab ("opd") _tab ("neph") _tab ("tx") _tab ("gp") _tab ("bp") _tab ("uacr") _tab ("scr") _n
+. file write tablecontent ("Date") _tab ("stratum") _tab ("ip") _tab ("icu") _tab ("ed") _tab ("avf") _tab ("pd") _tab ("opd") _tab ("neph") _tab ("tx") _tab ("gp") _tab ("bp") _tab ("uacr") _tab ("scr") _n
 
 . 
 . local year "2017 2018 2019 2020 2021 2022"
 
 . foreach x of local year {
-  2. file write tablecontent ("01/04/`x'") _tab
+  2. file write tablecontent ("01/04/`x'") _tab ("all") _tab
   3. use ./output/`x'_ckd_complete.dta, clear
   4. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
   5. qui su overall_`aggregate'
@@ -30,29 +30,107 @@
 > ts') _tab (``x'_tx_appts') _tab (``x'_gp_interactions') _tab (``x'_blood_pressure') _tab (``x'_albuminuria') _tab (``x'_creatinine') _n
  13. }
 
+. 
+. forvalues i=1/6 {
+  2. local label`i': label ethnicity `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
+  7. qui su ethnicity_`aggregate' if ethnicity==`i'
+  8. local `x'_`aggregate' = r(mean)
+  9. }
+ 10. foreach binary of varlist fistula_formation pd_insertion blood_pressure albuminuria creatinine {
+ 11. qui safecount if `binary'==1 & ethnicity==`i'
+ 12. local `x'_`binary' = round(r(N),5)
+ 13. }
+ 14. file write tablecontent (``x'_hospital_days') _tab (``x'_critical_care_days') _tab (``x'_emergency_days') _tab (``x'_fistula_formation') _tab (``x'_pd_insertion') _tab (``x'_op_appts') _tab (``x'_neph_app
+> ts') _tab (``x'_tx_appts') _tab (``x'_gp_interactions') _tab (``x'_blood_pressure') _tab (``x'_albuminuria') _tab (``x'_creatinine') _n
+ 15. }
+ 16. }
+
+. 
+. forvalues i=1/5 {
+  2. local label`i': label imd `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
+  7. qui su imd_`aggregate' if imd==`i'
+  8. local `x'_`aggregate' = r(mean)
+  9. }
+ 10. foreach binary of varlist fistula_formation pd_insertion blood_pressure albuminuria creatinine {
+ 11. qui safecount if `binary'==1 & imd==`i'
+ 12. local `x'_`binary' = round(r(N),5)
+ 13. }
+ 14. file write tablecontent (``x'_hospital_days') _tab (``x'_critical_care_days') _tab (``x'_emergency_days') _tab (``x'_fistula_formation') _tab (``x'_pd_insertion') _tab (``x'_op_appts') _tab (``x'_neph_app
+> ts') _tab (``x'_tx_appts') _tab (``x'_gp_interactions') _tab (``x'_blood_pressure') _tab (``x'_albuminuria') _tab (``x'_creatinine') _n
+ 15. }
+ 16. }
+
+. 
+. forvalues i=1/9 {
+  2. local label`i': label region `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
+  7. qui su region_`aggregate' if region==`i'
+  8. local `x'_`aggregate' = r(mean)
+  9. }
+ 10. foreach binary of varlist fistula_formation pd_insertion blood_pressure albuminuria creatinine {
+ 11. qui safecount if `binary'==1 & region==`i'
+ 12. local `x'_`binary' = round(r(N),5)
+ 13. }
+ 14. file write tablecontent (``x'_hospital_days') _tab (``x'_critical_care_days') _tab (``x'_emergency_days') _tab (``x'_fistula_formation') _tab (``x'_pd_insertion') _tab (``x'_op_appts') _tab (``x'_neph_app
+> ts') _tab (``x'_tx_appts') _tab (``x'_gp_interactions') _tab (``x'_blood_pressure') _tab (``x'_albuminuria') _tab (``x'_creatinine') _n
+ 15. }
+ 16. }
+
+. 
+. forvalues i=0/1 {
+  2. local label`i': label urban `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
+  7. qui su urban_`aggregate' if urban==`i'
+  8. local `x'_`aggregate' = r(mean)
+  9. }
+ 10. foreach binary of varlist fistula_formation pd_insertion blood_pressure albuminuria creatinine {
+ 11. qui safecount if `binary'==1 & urban==`i'
+ 12. local `x'_`binary' = round(r(N),5)
+ 13. }
+ 14. file write tablecontent (``x'_hospital_days') _tab (``x'_critical_care_days') _tab (``x'_emergency_days') _tab (``x'_fistula_formation') _tab (``x'_pd_insertion') _tab (``x'_op_appts') _tab (``x'_neph_app
+> ts') _tab (``x'_tx_appts') _tab (``x'_gp_interactions') _tab (``x'_blood_pressure') _tab (``x'_albuminuria') _tab (``x'_creatinine') _n
+ 15. }
+ 16. }
+
+. 
+. 
 . file close tablecontent
 
 . 
 . import delimited ./output/healthcare_use_overall.csv, clear
 (encoding automatically selected: ISO-8859-1)
-(13 vars, 6 obs)
+(14 vars, 138 obs)
 
 . local columns ""ip" "icu" "ed" "avf" "pd" "opd" "neph" "tx" "gp" "bp" "uacr" "scr""
 
 . foreach col of local columns {
   2.     replace `col' = . if `col' <= 5
   3. }
+(1 real change made, 1 to missing)
+(3 real changes made, 3 to missing)
+(2 real changes made, 2 to missing)
+(21 real changes made, 21 to missing)
+(22 real changes made, 22 to missing)
 (0 real changes made)
+(1 real change made, 1 to missing)
+(1 real change made, 1 to missing)
+(1 real change made, 1 to missing)
 (0 real changes made)
-(0 real changes made)
-(0 real changes made)
-(0 real changes made)
-(0 real changes made)
-(0 real changes made)
-(0 real changes made)
-(0 real changes made)
-(0 real changes made)
-(0 real changes made)
+(11 real changes made, 11 to missing)
 (0 real changes made)
 
 . 
@@ -63,17 +141,3 @@ file ./output/healthcare_use_overall.csv saved
 . 
 end of do-file
 
-. do "C:\Users\LSH170~1\AppData\Local\Temp\STDf08_000000.tmp"
-
-. sysdir set PLUS ./analysis/adofiles
-
-. sysdir set PERSONAL ./analysis/adofiles
-
-. pwd
-C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use
-
-. **Loops through datasets for each year 2017-2018 to 2022-2023
-. * `dataset' specifies year from project.yaml script
-. local dataset `1'
-
-. cap log close

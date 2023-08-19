@@ -25,7 +25,7 @@ capture noisily import delimited ./output/2017_ckd.csv, clear
 tempfile 2017_ckd
 save ./output/2017_ckd, replace
 capture noisily import delimited ./output/input_2017_ckd_complete.csv, clear
-merge 1:1 patient_id using 2017_ckd
+merge 1:1 patient_id using ./output/2017_ckd
 keep if _merge==3
 drop _merge
 tempfile 2017_ckd_complete
@@ -230,6 +230,11 @@ label define urban 0 "Rural" 1 "Urban"
 label values urban urban
 drop rural_urban
 
+foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
+foreach var of varlist ethnicity imd region urban {
+bysort `var': egen `var'_`aggregate' = total(`aggregate')
+}
+}
 
 
 save "./output/`dataset'_ckd_complete.dta", replace

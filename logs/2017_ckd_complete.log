@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/logs/2017_ckd_complete.log
   log type:  text
- opened on:  17 Aug 2023, 11:47:02
+ opened on:  18 Aug 2023, 17:32:10
 
 . clear
 
@@ -14,8 +14,8 @@
 . tempfile `dataset'_ckd
 
 . save ``dataset'_ckd', replace
-(note: file /tmp/St00015.000001 not found)
-file /tmp/St00015.000001 saved
+(note: file /tmp/St00016.000001 not found)
+file /tmp/St00016.000001 saved
 
 . capture noisily import delimited ./output/input_`dataset'_ckd_complete.csv, c
 > lear
@@ -40,8 +40,8 @@ file /tmp/St00015.000001 saved
 . tempfile `dataset'_ckd_complete
 
 . save ``dataset'_ckd_complete', replace
-(note: file /tmp/St00015.000002 not found)
-file /tmp/St00015.000002 saved
+(note: file /tmp/St00016.000002 not found)
+file /tmp/St00016.000002 saved
 
 . 
 . /*Generate dummy data
@@ -50,7 +50,7 @@ file /tmp/St00015.000002 saved
 > tempfile 2017_ckd
 > save ./output/2017_ckd, replace
 > capture noisily import delimited ./output/input_2017_ckd_complete.csv, clear
-> merge 1:1 patient_id using 2017_ckd
+> merge 1:1 patient_id using ./output/2017_ckd
 > keep if _merge==3
 > drop _merge
 > tempfile 2017_ckd_complete
@@ -2114,6 +2114,13 @@ overall_m3.. |      2,078         582           0        582        582
 . drop rural_urban
 
 . 
+. foreach aggregate of varlist hospital_days critical_care_days emergency_days 
+> op_appts neph_appts tx_appts gp_interactions {
+  2. foreach var of varlist ethnicity imd region urban {
+  3. bysort `var': egen `var'_`aggregate' = total(`aggregate')
+  4. }
+  5. }
+
 . 
 . 
 . save "./output/`dataset'_ckd_complete.dta", replace
@@ -2124,5 +2131,5 @@ file ./output/2017_ckd_complete.dta saved
       name:  <unnamed>
        log:  /workspace/logs/2017_ckd_complete.log
   log type:  text
- closed on:  17 Aug 2023, 11:47:07
+ closed on:  18 Aug 2023, 17:32:13
 -------------------------------------------------------------------------------
