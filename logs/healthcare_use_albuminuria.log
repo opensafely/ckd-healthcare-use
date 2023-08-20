@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/healthcare_use_albuminuria.log
   log type:  text
- opened on:  17 Aug 2023, 16:32:41
+ opened on:  20 Aug 2023, 23:27:11
 
 . cap file close tablecontent
 
@@ -10,13 +10,13 @@
 . file open tablecontent using ./output/healthcare_use_albuminuria.csv, write text replace
 
 . **Column headings
-. file write tablecontent ("Date") _tab ("ip") _tab ("icu") _tab ("ed") _tab ("opd") _tab ("neph") _tab ("gp") _tab ("bp") _tab ("uacr") _tab ("scr") _n
+. file write tablecontent ("Date") _tab ("stratum") _tab ("ip") _tab ("icu") _tab ("ed") _tab ("opd") _tab ("neph") _tab ("gp") _tab ("bp") _tab ("uacr") _tab ("scr") _n
 
 . 
 . local year "2017 2018 2019 2020 2021 2022"
 
 . foreach x of local year {
-  2. file write tablecontent ("01/04/`x'") _tab
+  2. file write tablecontent ("01/04/`x'") _tab ("all") _tab
   3. use ./output/`x'_ckd_complete.dta, clear
   4. drop if ckd_group!=1
   5. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
@@ -37,27 +37,240 @@
 (806 observations deleted)
 (801 observations deleted)
 
+. 
+. forvalues i=1/6 {
+  2. local label`i': label ethnicity `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. drop if ckd_group!=1
+  7. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
+  8. qui su ethnicity_`aggregate' if ethnicity==`i'
+  9. local `x'_`aggregate' = r(mean)
+ 10. }
+ 11. foreach binary of varlist blood_pressure albuminuria creatinine {
+ 12. qui safecount if `binary'==1 & ethnicity==`i'
+ 13. local `x'_`binary' = round(r(N),5)
+ 14. }
+ 15. file write tablecontent (``x'_hospital_days') _tab (``x'_critical_care_days') _tab (``x'_emergency_days') _tab (``x'_op_appts') _tab (``x'_neph_appts') _tab (``x'_gp_interactions') _tab (``x'_blood_pressu
+> re') _tab (``x'_albuminuria') _tab (``x'_creatinine') _n
+ 16. }
+ 17. }
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+
+. 
+. forvalues i=1/5 {
+  2. local label`i': label imd `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. drop if ckd_group!=1
+  7. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
+  8. qui su imd_`aggregate' if imd==`i'
+  9. local `x'_`aggregate' = r(mean)
+ 10. }
+ 11. foreach binary of varlist blood_pressure albuminuria creatinine {
+ 12. qui safecount if `binary'==1 & imd==`i'
+ 13. local `x'_`binary' = round(r(N),5)
+ 14. }
+ 15. file write tablecontent (``x'_hospital_days') _tab (``x'_critical_care_days') _tab (``x'_emergency_days') _tab (``x'_op_appts') _tab (``x'_neph_appts') _tab (``x'_gp_interactions') _tab (``x'_blood_pressu
+> re') _tab (``x'_albuminuria') _tab (``x'_creatinine') _n
+ 16. }
+ 17. }
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+
+. 
+. forvalues i=1/9 {
+  2. local label`i': label region `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. drop if ckd_group!=1
+  7. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
+  8. qui su region_`aggregate' if region==`i'
+  9. local `x'_`aggregate' = r(mean)
+ 10. }
+ 11. foreach binary of varlist blood_pressure albuminuria creatinine {
+ 12. qui safecount if `binary'==1 & region==`i'
+ 13. local `x'_`binary' = round(r(N),5)
+ 14. }
+ 15. file write tablecontent (``x'_hospital_days') _tab (``x'_critical_care_days') _tab (``x'_emergency_days') _tab (``x'_op_appts') _tab (``x'_neph_appts') _tab (``x'_gp_interactions') _tab (``x'_blood_pressu
+> re') _tab (``x'_albuminuria') _tab (``x'_creatinine') _n
+ 16. }
+ 17. }
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+
+. 
+. forvalues i=0/1 {
+  2. local label`i': label urban `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. drop if ckd_group!=1
+  7. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
+  8. qui su urban_`aggregate' if urban==`i'
+  9. local `x'_`aggregate' = r(mean)
+ 10. }
+ 11. foreach binary of varlist blood_pressure albuminuria creatinine {
+ 12. qui safecount if `binary'==1 & urban==`i'
+ 13. local `x'_`binary' = round(r(N),5)
+ 14. }
+ 15. file write tablecontent (``x'_hospital_days') _tab (``x'_critical_care_days') _tab (``x'_emergency_days') _tab (``x'_op_appts') _tab (``x'_neph_appts') _tab (``x'_gp_interactions') _tab (``x'_blood_pressu
+> re') _tab (``x'_albuminuria') _tab (``x'_creatinine') _n
+ 16. }
+ 17. }
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+(848 observations deleted)
+(788 observations deleted)
+(798 observations deleted)
+(836 observations deleted)
+(806 observations deleted)
+(801 observations deleted)
+
+. 
 . file close tablecontent
 
 . 
 . import delimited ./output/healthcare_use_albuminuria.csv, clear
-(encoding automatically selected: ISO-8859-2)
-(10 vars, 6 obs)
+(encoding automatically selected: ISO-8859-1)
+(11 vars, 138 obs)
 
 . local columns ""ip" "icu" "ed" "opd" "neph" "gp" "bp" "uacr" "scr""
 
 . foreach col of local columns {
   2.     replace `col' = . if `col' <= 5
   3. }
+(1 real change made, 1 to missing)
+(3 real changes made, 3 to missing)
+(2 real changes made, 2 to missing)
 (0 real changes made)
-(0 real changes made)
-(0 real changes made)
-(0 real changes made)
-(0 real changes made)
-(0 real changes made)
-(0 real changes made)
-(0 real changes made)
-(0 real changes made)
+(1 real change made, 1 to missing)
+(1 real change made, 1 to missing)
+(1 real change made, 1 to missing)
+(22 real changes made, 22 to missing)
+(2 real changes made, 2 to missing)
 
 . 
 . 
@@ -67,7 +280,7 @@ file ./output/healthcare_use_albuminuria.csv saved
 . 
 end of do-file
 
-. do "C:\Users\LSH170~1\AppData\Local\Temp\STDf08_000000.tmp"
+. do "C:\Users\lsh1703468\Documents\Repo\ckd-healthcare-use\analysis\healthcare_use_ckd3.do"
 
 . sysdir set PLUS ./analysis/adofiles
 
