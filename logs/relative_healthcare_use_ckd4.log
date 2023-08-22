@@ -1,13 +1,13 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/healthcare_use_transplant.log
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/relative_healthcare_use_ckd4.log
   log type:  text
- opened on:  22 Aug 2023, 14:34:20
+ opened on:  22 Aug 2023, 14:10:10
 
 . cap file close tablecontent
 
 . **Creates output file for each year (`dataset')
-. file open tablecontent using ./output/healthcare_use_transplant.csv, write text replace
+. file open tablecontent using ./output/relative_healthcare_use_ckd4.csv, write text replace
 
 . **Column headings
 . *Ratios are per 1000 patients
@@ -19,7 +19,7 @@
 . foreach x of local year {
   2. file write tablecontent ("01/04/`x'") _tab ("all") _tab
   3. use ./output/`x'_ckd_complete.dta, clear
-  4. drop if ckd_group!=5
+  4. drop if ckd_group!=3
   5. qui safecount
   6. local denom = round(r(N),5)
   7. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
@@ -33,12 +33,12 @@
  15. file write tablecontent %4.2f (``x'_hospital_days') _tab %4.2f (``x'_critical_care_days') _tab %4.2f (``x'_emergency_days') _tab %4.2f (``x'_fistula_formation') _tab %4.2f (``x'_pd_insertion') _tab %4.2f (``x'_
 > op_appts') _tab %4.2f (``x'_neph_appts') _tab %4.2f (``x'_tx_appts') _tab %4.2f (``x'_gp_interactions') _tab %4.2f (``x'_blood_pressure') _tab %4.2f (``x'_albuminuria') _tab %4.2f (``x'_creatinine') _n
  16. }
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
 
 . 
 . forvalues i=1/6 {
@@ -46,7 +46,7 @@
   3. foreach x of local year {
   4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
   5. use ./output/`x'_ckd_complete.dta, clear
-  6. drop if ckd_group!=5
+  6. drop if ckd_group!=3
   7. qui safecount if ethnicity==`i'
   8. local denom = round(r(N),5)
   9. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
@@ -61,42 +61,42 @@
 > op_appts') _tab %4.2f (``x'_neph_appts') _tab %4.2f (``x'_tx_appts') _tab %4.2f (``x'_gp_interactions') _tab %4.2f (``x'_blood_pressure') _tab %4.2f (``x'_albuminuria') _tab %4.2f (``x'_creatinine') _n
  18. }
  19. }
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
 
 . 
 . forvalues i=1/5 {
@@ -104,7 +104,7 @@
   3. foreach x of local year {
   4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
   5. use ./output/`x'_ckd_complete.dta, clear
-  6. drop if ckd_group!=5
+  6. drop if ckd_group!=3
   7. qui safecount if imd==`i'
   8. local denom = round(r(N),5)
   9. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
@@ -119,36 +119,36 @@
 > op_appts') _tab %4.2f (``x'_neph_appts') _tab %4.2f (``x'_tx_appts') _tab %4.2f (``x'_gp_interactions') _tab %4.2f (``x'_blood_pressure') _tab %4.2f (``x'_albuminuria') _tab %4.2f (``x'_creatinine') _n
  18. }
  19. }
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
 
 . 
 . forvalues i=1/9 {
@@ -156,7 +156,7 @@
   3. foreach x of local year {
   4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
   5. use ./output/`x'_ckd_complete.dta, clear
-  6. drop if ckd_group!=5
+  6. drop if ckd_group!=3
   7. qui safecount if region==`i'
   8. local denom = round(r(N),5)
   9. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
@@ -171,60 +171,60 @@
 > op_appts') _tab %4.2f (``x'_neph_appts') _tab %4.2f (``x'_tx_appts') _tab %4.2f (``x'_gp_interactions') _tab %4.2f (``x'_blood_pressure') _tab %4.2f (``x'_albuminuria') _tab %4.2f (``x'_creatinine') _n
  18. }
  19. }
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
 
 . 
 . forvalues i=0/1 {
@@ -232,7 +232,7 @@
   3. foreach x of local year {
   4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
   5. use ./output/`x'_ckd_complete.dta, clear
-  6. drop if ckd_group!=5
+  6. drop if ckd_group!=3
   7. qui safecount if urban==`i'
   8. local denom = round(r(N),5)
   9. foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
@@ -247,28 +247,25 @@
 > op_appts') _tab %4.2f (``x'_neph_appts') _tab %4.2f (``x'_tx_appts') _tab %4.2f (``x'_gp_interactions') _tab %4.2f (``x'_blood_pressure') _tab %4.2f (``x'_albuminuria') _tab %4.2f (``x'_creatinine') _n
  18. }
  19. }
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
-(1,761 observations deleted)
-(1,819 observations deleted)
-(1,757 observations deleted)
-(1,826 observations deleted)
-(1,860 observations deleted)
-(1,767 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
+(2,065 observations deleted)
+(2,072 observations deleted)
+(2,041 observations deleted)
+(2,118 observations deleted)
+(2,131 observations deleted)
+(2,053 observations deleted)
 
-. 
 . file close tablecontent
 
 . 
-. 
-. 
 end of do-file
 
-. do "C:\Users\LSH170~1\AppData\Local\Temp\STD5de0_000000.tmp"
+. do "C:\Users\lsh1703468\Documents\Repo\ckd-healthcare-use\analysis\relative_healthcare_use_overall.do"
 
 . sysdir set PLUS ./analysis/adofiles
 

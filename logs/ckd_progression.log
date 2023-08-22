@@ -1,8 +1,8 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/ckd_progression.log
   log type:  text
- opened on:  16 Aug 2023, 18:34:57
+ opened on:  22 Aug 2023, 13:37:45
 
 . 
 . cap file close tablecontent
@@ -45,7 +45,7 @@
  16. local deceased_ckd_`x' = round(r(N),5)
  17. 
 . **eGFR >60 with albuminuria
-. *Number of people in group (baseline_ckd2_`x') at the beginning of each year ckd2_`x'
+. *Number of people in group (baseline_ckd2_`x') at the beginning of each year
 . qui safecount if ckd_group==1
  18. local baseline_ckd2_`x' = round(r(N),5)
  19. *Number of people in group who do not progress by the end of the year
@@ -68,7 +68,7 @@
  30. local deceased_ckd2_`x' = round(r(N),5)
  31. 
 . **CKD stage 3
-. *Number of people in group (baseline_ckd3_`x') at the beginning of each year ckd3_`x'
+. *Number of people in group (baseline_ckd3_`x') at the beginning of each year
 . qui safecount if ckd_group==2
  32. local baseline_ckd3_`x' = round(r(N),5)
  33. *Number of people in group who do not progress by the end of the year
@@ -88,7 +88,7 @@
  42. local deceased_ckd3_`x' = round(r(N),5)
  43. 
 . **CKD stage 4/5 without KRT
-. *Number of people in group (baseline_ckd4_`x') at the beginning of each year ckd4_`x'
+. *Number of people in group (baseline_ckd4_`x') at the beginning of each year
 . qui safecount if ckd_group==3
  44. local baseline_ckd4_`x' = round(r(N),5)
  45. *Number of people in group who do not progress by the end of the year
@@ -105,7 +105,7 @@
  52. local deceased_ckd4_`x' = round(r(N),5)
  53. 
 . **Dialysis
-. *Number of people in group (baseline_dialysis_`x') at the beginning of each year dialysis_`x'
+. *Number of people in group (baseline_dialysis_`x') at the beginning of each year
 . qui safecount if ckd_group==4
  54. local baseline_dialysis_`x' = round(r(N),5)
  55. *Number of people in group remaining on dialysis by the end of the year
@@ -119,7 +119,7 @@
  60. local deceased_dialysis_`x' = round(r(N),5)
  61. 
 . **Kidney transplant
-. *Number of people in group (baseline_kt_`x') at the beginning of each year kt_`x'
+. *Number of people in group (baseline_kt_`x') at the beginning of each year
 . qui safecount if ckd_group==5
  62. local baseline_kt_`x' = round(r(N),5)
  63. *Number of people in group remaining with kidney transplant by the end of the year
@@ -136,8 +136,7 @@
 . 
 . **Populate table with redacted counts
 . *Overall
-. file write tablecontent ("Overall") _tab ("Total") _tab (`baseline_ckd_2017') _tab (`baseline_ckd_2018') _tab (`baseline_ckd_2019') _tab (`baseline_ckd_2020') _tab (`baseline_ckd_2021') _tab (`baseline_ckd_2
-> 022') _n(2)
+. file write tablecontent ("Overall") _tab ("Total") _tab (`baseline_ckd_2017') _tab (`baseline_ckd_2018') _tab (`baseline_ckd_2019') _tab (`baseline_ckd_2020') _tab (`baseline_ckd_2021') _tab (`baseline_ckd_2022') _n(2)
 
 . file write tablecontent ("Overall") _tab ("No progression") _tab (`none_ckd_2017') _tab (`none_ckd_2018') _tab (`none_ckd_2019') _tab (`none_ckd_2020') _tab (`none_ckd_2021') _tab (`none_ckd_2022') _n
 
@@ -145,96 +144,74 @@
 
 . file write tablecontent ("Overall") _tab ("CKD stage 4/5") _tab (`ckd4_ckd_2017') _tab (`ckd4_ckd_2018') _tab (`ckd4_ckd_2019') _tab (`ckd4_ckd_2020') _tab (`ckd4_ckd_2021') _tab (`ckd4_ckd_2022') _n
 
-. file write tablecontent ("Overall") _tab ("Dialysis") _tab (`dialysis_ckd_2017') _tab (`dialysis_ckd_2018') _tab (`dialysis_ckd_2019') _tab (`dialysis_ckd_2020') _tab (`dialysis_ckd_2021') _tab (`dialysis_ck
-> d_2022') _n
+. file write tablecontent ("Overall") _tab ("Dialysis") _tab (`dialysis_ckd_2017') _tab (`dialysis_ckd_2018') _tab (`dialysis_ckd_2019') _tab (`dialysis_ckd_2020') _tab (`dialysis_ckd_2021') _tab (`dialysis_ckd_2022') _n
 
 . file write tablecontent ("Overall") _tab ("Transplant") _tab (`kt_ckd_2017') _tab (`kt_ckd_2018') _tab (`kt_ckd_2019') _tab (`kt_ckd_2020') _tab (`kt_ckd_2021') _tab (`kt_ckd_2022') _n
 
-. file write tablecontent ("Overall") _tab ("Deceased") _tab (`deceased_ckd_2017') _tab (`deceased_ckd_2018') _tab (`deceased_ckd_2019') _tab (`deceased_ckd_2020') _tab (`deceased_ckd_2021') _tab (`deceased_ck
-> d_2022') _n
+. file write tablecontent ("Overall") _tab ("Deceased") _tab (`deceased_ckd_2017') _tab (`deceased_ckd_2018') _tab (`deceased_ckd_2019') _tab (`deceased_ckd_2020') _tab (`deceased_ckd_2021') _tab (`deceased_ckd_2022') _n
 
 . 
 . *eGFR >60 with albuminuria
-. file write tablecontent ("Albuminuria") _tab ("Total") _tab (`baseline_ckd2_2017') _tab (`baseline_ckd2_2018') _tab (`baseline_ckd2_2019') _tab (`baseline_ckd2_2020') _tab (`baseline_ckd2_2021') _tab (`basel
-> ine_ckd2_2022') _n(2)
+. file write tablecontent ("Albuminuria") _tab ("Total") _tab (`baseline_ckd2_2017') _tab (`baseline_ckd2_2018') _tab (`baseline_ckd2_2019') _tab (`baseline_ckd2_2020') _tab (`baseline_ckd2_2021') _tab (`baseline_ckd2_2022') _n(2)
 
-. file write tablecontent ("Albuminuria") _tab ("No progression") _tab (`none_ckd2_2017') _tab (`none_ckd2_2018') _tab (`none_ckd2_2019') _tab (`none_ckd2_2020') _tab (`none_ckd2_2021') _tab (`none_ckd2_2022')
->  _n
+. file write tablecontent ("Albuminuria") _tab ("No progression") _tab (`none_ckd2_2017') _tab (`none_ckd2_2018') _tab (`none_ckd2_2019') _tab (`none_ckd2_2020') _tab (`none_ckd2_2021') _tab (`none_ckd2_2022') _n
 
 . file write tablecontent ("Albuminuria") _tab ("CKD stage 3") _tab (`ckd3_ckd2_2017') _tab (`ckd3_ckd2_2018') _tab (`ckd3_ckd2_2019') _tab (`ckd3_ckd2_2020') _tab (`ckd3_ckd2_2021') _tab (`ckd3_ckd2_2022') _n
 
-. file write tablecontent ("Albuminuria") _tab ("CKD stage 4/5") _tab (`ckd4_ckd2_2017') _tab (`ckd4_ckd2_2018') _tab (`ckd4_ckd2_2019') _tab (`ckd4_ckd2_2020') _tab (`ckd4_ckd2_2021') _tab (`ckd4_ckd2_2022') 
-> _n
+. file write tablecontent ("Albuminuria") _tab ("CKD stage 4/5") _tab (`ckd4_ckd2_2017') _tab (`ckd4_ckd2_2018') _tab (`ckd4_ckd2_2019') _tab (`ckd4_ckd2_2020') _tab (`ckd4_ckd2_2021') _tab (`ckd4_ckd2_2022') _n
 
-. file write tablecontent ("Albuminuria") _tab ("Dialysis") _tab (`dialysis_ckd2_2017') _tab (`dialysis_ckd2_2018') _tab (`dialysis_ckd2_2019') _tab (`dialysis_ckd2_2020') _tab (`dialysis_ckd2_2021') _tab (`di
-> alysis_ckd2_2022') _n
+. file write tablecontent ("Albuminuria") _tab ("Dialysis") _tab (`dialysis_ckd2_2017') _tab (`dialysis_ckd2_2018') _tab (`dialysis_ckd2_2019') _tab (`dialysis_ckd2_2020') _tab (`dialysis_ckd2_2021') _tab (`dialysis_ckd2_2022') _n
 
 . file write tablecontent ("Albuminuria") _tab ("Transplant") _tab (`kt_ckd2_2017') _tab (`kt_ckd2_2018') _tab (`kt_ckd2_2019') _tab (`kt_ckd2_2020') _tab (`kt_ckd2_2021') _tab (`kt_ckd2_2022') _n
 
-. file write tablecontent("Albuminuria") _tab ("Deceased") _tab (`deceased_ckd2_2017') _tab (`deceased_ckd2_2018') _tab (`deceased_ckd2_2019') _tab (`deceased_ckd2_2020') _tab (`deceased_ckd2_2021') _tab (`dec
-> eased_ckd2_2022') _n
+. file write tablecontent("Albuminuria") _tab ("Deceased") _tab (`deceased_ckd2_2017') _tab (`deceased_ckd2_2018') _tab (`deceased_ckd2_2019') _tab (`deceased_ckd2_2020') _tab (`deceased_ckd2_2021') _tab (`deceased_ckd2_2022') _n
 
 . 
 . *CKD stage 3
-. file write tablecontent ("CKD stage 3") _tab ("Total") _tab (`baseline_ckd3_2017') _tab (`baseline_ckd3_2018') _tab (`baseline_ckd3_2019') _tab (`baseline_ckd3_2020') _tab (`baseline_ckd3_2021') _tab (`basel
-> ine_ckd3_2022') _n(2)
+. file write tablecontent ("CKD stage 3") _tab ("Total") _tab (`baseline_ckd3_2017') _tab (`baseline_ckd3_2018') _tab (`baseline_ckd3_2019') _tab (`baseline_ckd3_2020') _tab (`baseline_ckd3_2021') _tab (`baseline_ckd3_2022') _n(2)
 
-. file write tablecontent ("CKD stage 3") _tab ("No progression") _tab (`none_ckd3_2017') _tab (`none_ckd3_2018') _tab (`none_ckd3_2019') _tab (`none_ckd3_2020') _tab (`none_ckd3_2021') _tab (`none_ckd3_2022')
->  _n
+. file write tablecontent ("CKD stage 3") _tab ("No progression") _tab (`none_ckd3_2017') _tab (`none_ckd3_2018') _tab (`none_ckd3_2019') _tab (`none_ckd3_2020') _tab (`none_ckd3_2021') _tab (`none_ckd3_2022') _n
 
-. file write tablecontent ("CKD stage 3") _tab ("CKD stage 4/5") _tab (`ckd4_ckd3_2017') _tab (`ckd4_ckd3_2018') _tab (`ckd4_ckd3_2019') _tab (`ckd4_ckd3_2020') _tab (`ckd4_ckd3_2021') _tab (`ckd4_ckd3_2022') 
-> _n
+. file write tablecontent ("CKD stage 3") _tab ("CKD stage 4/5") _tab (`ckd4_ckd3_2017') _tab (`ckd4_ckd3_2018') _tab (`ckd4_ckd3_2019') _tab (`ckd4_ckd3_2020') _tab (`ckd4_ckd3_2021') _tab (`ckd4_ckd3_2022') _n
 
-. file write tablecontent ("CKD stage 3") _tab ("Dialysis") _tab (`dialysis_ckd3_2017') _tab (`dialysis_ckd3_2018') _tab (`dialysis_ckd3_2019') _tab (`dialysis_ckd3_2020') _tab (`dialysis_ckd3_2021') _tab (`di
-> alysis_ckd3_2022') _n
+. file write tablecontent ("CKD stage 3") _tab ("Dialysis") _tab (`dialysis_ckd3_2017') _tab (`dialysis_ckd3_2018') _tab (`dialysis_ckd3_2019') _tab (`dialysis_ckd3_2020') _tab (`dialysis_ckd3_2021') _tab (`dialysis_ckd3_2022') _n
 
 . file write tablecontent ("CKD stage 3") _tab ("Transplant") _tab (`kt_ckd3_2017') _tab (`kt_ckd3_2018') _tab (`kt_ckd3_2019') _tab (`kt_ckd3_2020') _tab (`kt_ckd3_2021') _tab (`kt_ckd3_2022') _n
 
-. file write tablecontent ("CKD stage 3") _tab ("Deceased") _tab (`deceased_ckd3_2017') _tab (`deceased_ckd3_2018') _tab (`deceased_ckd3_2019') _tab (`deceased_ckd3_2020') _tab (`deceased_ckd3_2021') _tab (`de
-> ceased_ckd3_2022') _n(2)
+. file write tablecontent ("CKD stage 3") _tab ("Deceased") _tab (`deceased_ckd3_2017') _tab (`deceased_ckd3_2018') _tab (`deceased_ckd3_2019') _tab (`deceased_ckd3_2020') _tab (`deceased_ckd3_2021') _tab (`deceased_ckd3_2022') _n(2)
 
 . 
 . *CKD stage 4/5 without KRT
-. file write tablecontent ("CKD stage 4/5") _tab ("Total") _tab (`baseline_ckd4_2017') _tab (`baseline_ckd4_2018') _tab (`baseline_ckd4_2019') _tab (`baseline_ckd4_2020') _tab (`baseline_ckd4_2021') _tab (`bas
-> eline_ckd4_2022') _n(2)
+. file write tablecontent ("CKD stage 4/5") _tab ("Total") _tab (`baseline_ckd4_2017') _tab (`baseline_ckd4_2018') _tab (`baseline_ckd4_2019') _tab (`baseline_ckd4_2020') _tab (`baseline_ckd4_2021') _tab (`baseline_ckd4_2022') _n(2)
 
-. file write tablecontent ("CKD stage 4/5") _tab ("No progression") _tab (`none_ckd4_2017') _tab (`none_ckd4_2018') _tab (`none_ckd4_2019') _tab (`none_ckd4_2020') _tab (`none_ckd4_2021') _tab (`none_ckd4_2022
-> ') _n
+. file write tablecontent ("CKD stage 4/5") _tab ("No progression") _tab (`none_ckd4_2017') _tab (`none_ckd4_2018') _tab (`none_ckd4_2019') _tab (`none_ckd4_2020') _tab (`none_ckd4_2021') _tab (`none_ckd4_2022') _n
 
-. file write tablecontent ("CKD stage 4/5") _tab ("Dialysis") _tab (`dialysis_ckd4_2017') _tab (`dialysis_ckd4_2018') _tab (`dialysis_ckd4_2019') _tab (`dialysis_ckd4_2020') _tab (`dialysis_ckd4_2021') _tab (`
-> dialysis_ckd4_2022') _n
+. file write tablecontent ("CKD stage 4/5") _tab ("Dialysis") _tab (`dialysis_ckd4_2017') _tab (`dialysis_ckd4_2018') _tab (`dialysis_ckd4_2019') _tab (`dialysis_ckd4_2020') _tab (`dialysis_ckd4_2021') _tab (`dialysis_ckd4_2022') _n
 
 . file write tablecontent ("CKD stage 4/5") _tab ("Transplant") _tab (`kt_ckd4_2017') _tab (`kt_ckd4_2018') _tab (`kt_ckd4_2019') _tab (`kt_ckd4_2020') _tab (`kt_ckd4_2021') _tab (`kt_ckd4_2022') _n
 
-. file write tablecontent ("CKD stage 4/5") _tab ("Deceased") _tab (`deceased_ckd4_2017') _tab (`deceased_ckd4_2018') _tab (`deceased_ckd4_2019') _tab (`deceased_ckd4_2020') _tab (`deceased_ckd4_2021') _tab (`
-> deceased_ckd4_2022') _n(2)
+. file write tablecontent ("CKD stage 4/5") _tab ("Deceased") _tab (`deceased_ckd4_2017') _tab (`deceased_ckd4_2018') _tab (`deceased_ckd4_2019') _tab (`deceased_ckd4_2020') _tab (`deceased_ckd4_2021') _tab (`deceased_ckd4_2022') _n(2)
 
 . 
 . *Dialysis
-. file write tablecontent ("Dialysis") _tab ("Total") _tab (`baseline_dialysis_2017') _tab (`baseline_dialysis_2018') _tab (`baseline_dialysis_2019') _tab (`baseline_dialysis_2020') _tab (`baseline_dialysis_20
-> 21') _tab (`baseline_dialysis_2022') _n(2)
+. file write tablecontent ("Dialysis") _tab ("Total") _tab (`baseline_dialysis_2017') _tab (`baseline_dialysis_2018') _tab (`baseline_dialysis_2019') _tab (`baseline_dialysis_2020') _tab (`baseline_dialysis_2021') _tab (`baseline_dialysis_2022') _n(2)
 
-. file write tablecontent ("Dialysis") _tab ("No progression") _tab (`none_dialysis_2017') _tab (`none_dialysis_2018') _tab (`none_dialysis_2019') _tab (`none_dialysis_2020') _tab (`none_dialysis_2021') _tab (
-> `none_dialysis_2022') _n
+. file write tablecontent ("Dialysis") _tab ("No progression") _tab (`none_dialysis_2017') _tab (`none_dialysis_2018') _tab (`none_dialysis_2019') _tab (`none_dialysis_2020') _tab (`none_dialysis_2021') _tab (`none_dialysis_2022') _n
 
-. file write tablecontent ("Dialysis") _tab ("Transplant") _tab (`kt_dialysis_2017') _tab (`kt_dialysis_2018') _tab (`kt_dialysis_2019') _tab (`kt_dialysis_2020') _tab (`kt_dialysis_2021') _tab (`kt_dialysis_2
-> 022') _n
+. file write tablecontent ("Dialysis") _tab ("Transplant") _tab (`kt_dialysis_2017') _tab (`kt_dialysis_2018') _tab (`kt_dialysis_2019') _tab (`kt_dialysis_2020') _tab (`kt_dialysis_2021') _tab (`kt_dialysis_2022') _n
 
-. file write tablecontent ("Dialysis") _tab ("Deceased") _tab (`deceased_dialysis_2017') _tab (`deceased_dialysis_2018') _tab (`deceased_dialysis_2019') _tab (`deceased_dialysis_2020') _tab (`deceased_dialysis
-> _2021') _tab (`deceased_dialysis_2022') _n(2)
+. file write tablecontent ("Dialysis") _tab ("Deceased") _tab (`deceased_dialysis_2017') _tab (`deceased_dialysis_2018') _tab (`deceased_dialysis_2019') _tab (`deceased_dialysis_2020') _tab (`deceased_dialysis_2021') _tab (`deceased_dialysis_2022') _n(
+> 2)
 
 . 
 . *Kidney Transplant
-. file write tablecontent ("Transplant") _tab ("Total") _tab (`baseline_kt_2017') _tab (`baseline_kt_2018') _tab (`baseline_kt_2019') _tab (`baseline_kt_2020') _tab (`baseline_kt_2021') _tab (`baseline_kt_2022
-> ') _n(2)
+. file write tablecontent ("Transplant") _tab ("Total") _tab (`baseline_kt_2017') _tab (`baseline_kt_2018') _tab (`baseline_kt_2019') _tab (`baseline_kt_2020') _tab (`baseline_kt_2021') _tab (`baseline_kt_2022') _n(2)
 
 . file write tablecontent ("Transplant") _tab ("No progression") _tab (`none_kt_2017') _tab (`none_kt_2018') _tab (`none_kt_2019') _tab (`none_kt_2020') _tab (`none_kt_2021') _tab (`none_kt_2022') _n
 
-. file write tablecontent ("Transplant") _tab ("Dialysis") _tab (`dialysis_kt_2017') _tab (`dialysis_kt_2018') _tab (`dialysis_kt_2019') _tab (`dialysis_kt_2020') _tab (`dialysis_kt_2021') _tab (`dialysis_kt_2
-> 022') _n
+. file write tablecontent ("Transplant") _tab ("Dialysis") _tab (`dialysis_kt_2017') _tab (`dialysis_kt_2018') _tab (`dialysis_kt_2019') _tab (`dialysis_kt_2020') _tab (`dialysis_kt_2021') _tab (`dialysis_kt_2022') _n
 
-. file write tablecontent ("Transplant") _tab ("Deceased") _tab (`deceased_kt_2017') _tab (`deceased_kt_2018') _tab (`deceased_kt_2019') _tab (`deceased_kt_2020') _tab (`deceased_kt_2021') _tab (`deceased_kt_2
-> 022')
+. file write tablecontent ("Transplant") _tab ("Deceased") _tab (`deceased_kt_2017') _tab (`deceased_kt_2018') _tab (`deceased_kt_2019') _tab (`deceased_kt_2020') _tab (`deceased_kt_2021') _tab (`deceased_kt_2022')
 
 . 
 . file close tablecontent
@@ -252,12 +229,12 @@
 . foreach col in `columns' {
   2. replace `col'=. if `col'<=5
   3. }
+(0 real changes made)
 (3 real changes made, 3 to missing)
 (2 real changes made, 2 to missing)
-(2 real changes made, 2 to missing)
-(2 real changes made, 2 to missing)
-(3 real changes made, 3 to missing)
-(2 real changes made, 2 to missing)
+(1 real change made, 1 to missing)
+(0 real changes made)
+(0 real changes made)
 
 .         
 . export delimited "./output/ckd_progression.csv", replace
@@ -266,587 +243,7 @@ file ./output/ckd_progression.csv saved
 . 
 end of do-file
 
-. do "C:\Users\LSH170~1\AppData\Local\Temp\STDf08_000000.tmp"
-
-. cap file close tablecontent
-
-. file open tablecontent using ./output/2017_healthcare_use.csv, write text replace
-
-. file write tablecontent _tab _tab ("n_2017'") _tab ("April") _tab ("May") _tab ("June") _tab ("July") _tab ("August") _tab ("September") _tab ("October") _tab ("November") _tab ("December") _tab ("January") 
-> _tab ("February") _tab ("March") _n(2)
-
-. use ./output/2017_ckd_complete.dta, clear
-
-. 
-end of do-file
-
-. do "C:\Users\LSH170~1\AppData\Local\Temp\STDf08_000000.tmp"
-
-. qui safecount
-
-. local baseline_ckd = round(r(N),5)
-
-. foreach binary of varlist m4_admitted_patients m5_admitted_patients m6_admitted_patients m7_admitted_patients m8_admitted_patients m9_admitted_patients m10_admitted_patients m11_admitted_patients m12_admitte
-> d_patients m1_admitted_patients m2_admitted_patients m3_admitted_patients m4_fistula_formation m5_fistula_formation m6_fistula_formation m7_fistula_formation m8_fistula_formation m9_fistula_formation m10_fis
-> tula_formation m11_fistula_formation m12_fistula_formation m1_fistula_formation m2_fistula_formation m3_fistula_formation m4_pd_insertion m5_pd_insertion m6_pd_insertion m7_pd_insertion m8_pd_insertion m9_pd
-> _insertion m10_pd_insertion m11_pd_insertion m12_pd_insertion m1_pd_insertion m2_pd_insertion m3_pd_insertion m4_critical_care_patients m5_critical_care_patients m6_critical_care_patients m7_critical_care_pa
-> tients m8_critical_care_patients m9_critical_care_patients m10_critical_care_patients m11_critical_care_patients m12_critical_care_patients m1_critical_care_patients m2_critical_care_patients m3_critical_car
-> e_patients m4_blood_pressure m5_blood_pressure m6_blood_pressure m7_blood_pressure m8_blood_pressure m9_blood_pressure m10_blood_pressure m11_blood_pressure m12_blood_pressure m1_blood_pressure m2_blood_pres
-> sure m3_blood_pressure m4_albuminuria m5_albuminuria m6_albuminuria m7_albuminuria m8_albuminuria m9_albuminuria m10_albuminuria m11_albuminuria m12_albuminuria m1_albuminuria m2_albuminuria m3_albuminuria m
-> 4_creatinine m5_creatinine m6_creatinine m7_creatinine m8_creatinine m9_creatinine m10_creatinine m11_creatinine m12_creatinine m1_creatinine m2_creatinine m3_creatinine {
-  2. *Number of people in each CKD group coded for each binary measure each month
-. qui safecount if `binary'==1
-  3. local ckd_`binary' = round(r(N),5)
-  4. }
-
-. foreach aggregate of varlist m4_hospital_days m5_hospital_days m6_hospital_days m7_hospital_days m8_hospital_days m9_hospital_days m10_hospital_days m11_hospital_days m12_hospital_days m1_hospital_days m2_ho
-> spital_days m3_hospital_days m4_critical_care_days m5_critical_care_days m6_critical_care_days m7_critical_care_days m8_critical_care_days m9_critical_care_days m10_critical_care_days m11_critical_care_days 
-> m12_critical_care_days m1_critical_care_days m2_critical_care_days m3_critical_care_days m4_emergency_days m5_emergency_days m6_emergency_days m7_emergency_days m8_emergency_days m9_emergency_days m10_emerge
-> ncy_days m11_emergency_days m12_emergency_days m1_emergency_days m2_emergency_days m3_emergency_days m4_op_appts m5_op_appts m6_op_appts m7_op_appts m8_op_appts m9_op_appts m10_op_appts m11_op_appts m12_op_a
-> ppts m1_op_appts m2_op_appts m3_op_appts m4_neph_appts m5_neph_appts m6_neph_appts m7_neph_appts m8_neph_appts m9_neph_appts m10_neph_appts m11_neph_appts m12_neph_appts m1_neph_appts m2_neph_appts m3_neph_a
-> ppts m4_tx_appts m5_tx_appts m6_tx_appts m7_tx_appts m8_tx_appts m9_tx_appts m10_tx_appts m11_tx_appts m12_tx_appts m1_tx_appts m2_tx_appts m3_tx_appts m4_gp_interactions m5_gp_interactions m6_gp_interaction
-> s m7_gp_interactions m8_gp_interactions m9_gp_interactions m10_gp_interactions m11_gp_interactions m12_gp_interactions m1_gp_interactions m2_gp_interactions m3_gp_interactions {
-  2. qui su overall_`aggregate'
-  3. local ckd_`aggregate' = r(mean)
-  4. }
-
-. 
-. file write tablecontent ("All CKD groups") _tab _tab (`baseline_ckd') _n
-
-. file write tablecontent _tab ("Hospital days") _tab _tab (`ckd_m4_hospital_days') _tab (`ckd_m5_hospital_days') _tab (`ckd_m6_hospital_days') _tab (`ckd_m7_hospital_days') _tab (`ckd_m8_hospital_days') _tab 
-> (`ckd_m9_hospital_days') _tab (`ckd_m10_hospital_days') _tab (`ckd_m11_hospital_days') _tab (`ckd_m12_hospital_days') _tab (`ckd_m1_hospital_days') _tab (`ckd_m2_hospital_days') _tab (`ckd_m3_hospital_days')
->  _n
-
-. file write tablecontent _tab ("Hospitalised patients") _tab _tab (`ckd_m4_admitted_patients') _tab (`ckd_m5_admitted_patients') _tab (`ckd_m6_admitted_patients') _tab (`ckd_m7_admitted_patients') _tab (`ckd_
-> m8_admitted_patients') _tab (`ckd_m9_admitted_patients') _tab (`ckd_m10_admitted_patients') _tab (`ckd_m11_admitted_patients') _tab (`ckd_m12_admitted_patients') _tab (`ckd_m1_admitted_patients') _tab (`ckd_
-> m2_admitted_patients') _tab (`ckd_m3_admitted_patients') _n
-
-. file write tablecontent _tab ("AVF formations") _tab _tab (`ckd_m4_fistula_formation') _tab (`ckd_m5_fistula_formation') _tab (`ckd_m6_fistula_formation') _tab (`ckd_m7_fistula_formation') _tab (`ckd_m8_fist
-> ula_formation') _tab (`ckd_m9_fistula_formation') _tab (`ckd_m10_fistula_formation') _tab (`ckd_m11_fistula_formation') _tab (`ckd_m12_fistula_formation') _tab (`ckd_m1_fistula_formation') _tab (`ckd_m2_fist
-> ula_formation') _tab (`ckd_m3_fistula_formation') _n
-
-. file write tablecontent _tab ("PD insertions") _tab _tab (`ckd_m4_pd_insertion') _tab (`ckd_m5_pd_insertion') _tab (`ckd_m6_pd_insertion') _tab (`ckd_m7_pd_insertion') _tab (`ckd_m8_pd_insertion') _tab (`ckd
-> _m9_pd_insertion') _tab (`ckd_m10_pd_insertion') _tab (`ckd_m11_pd_insertion') _tab (`ckd_m12_pd_insertion') _tab (`ckd_m1_pd_insertion') _tab (`ckd_m2_pd_insertion') _tab (`ckd_m3_pd_insertion') _n
-
-. file write tablecontent _tab ("ICU days") _tab _tab (`ckd_m4_critical_care_days') _tab (`ckd_m5_critical_care_days') _tab (`ckd_m6_critical_care_days') _tab (`ckd_m7_critical_care_days') _tab (`ckd_m8_critic
-> al_care_days') _tab (`ckd_m9_critical_care_days') _tab (`ckd_m10_critical_care_days') _tab (`ckd_m11_critical_care_days') _tab (`ckd_m12_critical_care_days') _tab (`ckd_m1_critical_care_days') _tab (`ckd_m2_
-> critical_care_days') _tab (`ckd_m3_critical_care_days') _n
-
-. file write tablecontent _tab ("ICU patients") _tab _tab (`ckd_m4_critical_care_patients') _tab (`ckd_m5_critical_care_patients') _tab (`ckd_m6_critical_care_patients') _tab (`ckd_m7_critical_care_patients') 
-> _tab (`ckd_m8_critical_care_patients') _tab (`ckd_m9_critical_care_patients') _tab (`ckd_m10_critical_care_patients') _tab (`ckd_m11_critical_care_patients') _tab (`ckd_m12_critical_care_patients') _tab (`ck
-> d_m1_critical_care_patients') _tab (`ckd_m2_critical_care_patients') _tab (`ckd_m3_critical_care_patients') _n
-
-. file write tablecontent _tab ("ED days") _tab _tab (`ckd_m4_emergency_days') _tab (`ckd_m5_emergency_days') _tab (`ckd_m6_emergency_days') _tab (`ckd_m7_emergency_days') _tab (`ckd_m8_emergency_days') _tab (
-> `ckd_m9_emergency_days') _tab (`ckd_m10_emergency_days') _tab (`ckd_m11_emergency_days') _tab (`ckd_m12_emergency_days') _tab (`ckd_m1_emergency_days') _tab (`ckd_m2_emergency_days') _tab (`ckd_m3_emergency_
-> days') _n
-
-. file write tablecontent _tab ("OPD appts") _tab _tab (`ckd_m4_op_appts') _tab (`ckd_m5_op_appts') _tab (`ckd_m6_op_appts') _tab (`ckd_m7_op_appts') _tab (`ckd_m8_op_appts') _tab (`ckd_m9_op_appts') _tab (`ck
-> d_m10_op_appts') _tab (`ckd_m11_op_appts') _tab (`ckd_m12_op_appts') _tab (`ckd_m1_op_appts') _tab (`ckd_m2_op_appts') _tab (`ckd_m3_op_appts') _n
-
-. file write tablecontent _tab ("Neph appts") _tab _tab (`ckd_m4_neph_appts') _tab (`ckd_m5_neph_appts') _tab (`ckd_m6_neph_appts') _tab (`ckd_m7_neph_appts') _tab (`ckd_m8_neph_appts') _tab (`ckd_m9_neph_appt
-> s') _tab (`ckd_m10_neph_appts') _tab (`ckd_m11_neph_appts') _tab (`ckd_m12_neph_appts') _tab (`ckd_m1_neph_appts') _tab (`ckd_m2_neph_appts') _tab (`ckd_m3_neph_appts') _n
-
-. file write tablecontent _tab ("Tx appts") _tab _tab (`ckd_m4_tx_appts') _tab (`ckd_m5_tx_appts') _tab (`ckd_m6_tx_appts') _tab (`ckd_m7_tx_appts') _tab (`ckd_m8_tx_appts') _tab (`ckd_m9_tx_appts') _tab (`ckd
-> _m10_tx_appts') _tab (`ckd_m11_tx_appts') _tab (`ckd_m12_tx_appts') _tab (`ckd_m1_tx_appts') _tab (`ckd_m2_tx_appts') _tab (`ckd_m3_tx_appts') _n
-
-. file write tablecontent _tab ("GP interactions") _tab _tab (`ckd_m4_gp_interactions') _tab (`ckd_m5_gp_interactions') _tab (`ckd_m6_gp_interactions') _tab (`ckd_m7_gp_interactions') _tab (`ckd_m8_gp_interact
-> ions') _tab (`ckd_m9_gp_interactions') _tab (`ckd_m10_gp_interactions') _tab (`ckd_m11_gp_interactions') _tab (`ckd_m12_gp_interactions') _tab (`ckd_m1_gp_interactions') _tab (`ckd_m2_gp_interactions') _tab 
-> (`ckd_m3_gp_interactions') _n
-
-. file write tablecontent _tab ("BP patients") _tab _tab (`ckd_m4_blood_pressure') _tab (`ckd_m5_blood_pressure') _tab (`ckd_m6_blood_pressure') _tab (`ckd_m7_blood_pressure') _tab (`ckd_m8_blood_pressure') _t
-> ab (`ckd_m9_blood_pressure') _tab (`ckd_m10_blood_pressure') _tab (`ckd_m11_blood_pressure') _tab (`ckd_m12_blood_pressure') _tab (`ckd_m1_blood_pressure') _tab (`ckd_m2_blood_pressure') _tab (`ckd_m3_blood_
-> pressure') _n
-
-. file write tablecontent _tab ("uACR patients") _tab _tab (`ckd_m4_albuminuria') _tab (`ckd_m5_albuminuria') _tab (`ckd_m6_albuminuria') _tab (`ckd_m7_albuminuria') _tab (`ckd_m8_albuminuria') _tab (`ckd_m9_a
-> lbuminuria') _tab (`ckd_m10_albuminuria') _tab (`ckd_m11_albuminuria') _tab (`ckd_m12_albuminuria') _tab (`ckd_m1_albuminuria') _tab (`ckd_m2_albuminuria') _tab (`ckd_m3_albuminuria') _n
-
-. file write tablecontent _tab ("SCr patients") _tab _tab (`ckd_m4_creatinine') _tab (`ckd_m5_creatinine') _tab (`ckd_m6_creatinine') _tab (`ckd_m7_creatinine') _tab (`ckd_m8_creatinine') _tab (`ckd_m9_creatin
-> ine') _tab (`ckd_m10_creatinine') _tab (`ckd_m11_creatinine') _tab (`ckd_m12_creatinine') _tab (`ckd_m1_creatinine') _tab (`ckd_m2_creatinine') _tab (`ckd_m3_creatinine') _n(2)
-
-. 
-. 
-. **Extract healthcare use measures by CKD group
-. *CKD group categories:
-. *1 = eGFR >60 with albuminuria
-. *2 = CKD 3A
-. *3 = CKD 4/5 without kidney replacement therapy
-. *4 = Dialysis
-. *5 = Kidney transplant
-. *6 = Kidney replacement therapy unknown modality
-. forvalues cat = 1/6 {
-  2. *Disclosure minimisation:
-. *safecount provides a count with any counts <=5 returned at "<=5"
-. *round(r(N),5) rounds counts to the nearest 5 with any counts <=5 returned as "."
-. qui safecount if ckd_group==`cat'
-  3. local baseline_ckd`cat' = round(r(N),5)
-  4. *Monthly resources measures through financial year:
-. *m4 = April, m5 = May... m1 = January of subsequent year
-. foreach binary of varlist m4_admitted_patients m5_admitted_patients m6_admitted_patients m7_admitted_patients m8_admitted_patients m9_admitted_patients m10_admitted_patients m11_admitted_patients m12_admitte
-> d_patients m1_admitted_patients m2_admitted_patients m3_admitted_patients m4_fistula_formation m5_fistula_formation m6_fistula_formation m7_fistula_formation m8_fistula_formation m9_fistula_formation m10_fis
-> tula_formation m11_fistula_formation m12_fistula_formation m1_fistula_formation m2_fistula_formation m3_fistula_formation m4_pd_insertion m5_pd_insertion m6_pd_insertion m7_pd_insertion m8_pd_insertion m9_pd
-> _insertion m10_pd_insertion m11_pd_insertion m12_pd_insertion m1_pd_insertion m2_pd_insertion m3_pd_insertion m4_critical_care_patients m5_critical_care_patients m6_critical_care_patients m7_critical_care_pa
-> tients m8_critical_care_patients m9_critical_care_patients m10_critical_care_patients m11_critical_care_patients m12_critical_care_patients m1_critical_care_patients m2_critical_care_patients m3_critical_car
-> e_patients m4_blood_pressure m5_blood_pressure m6_blood_pressure m7_blood_pressure m8_blood_pressure m9_blood_pressure m10_blood_pressure m11_blood_pressure m12_blood_pressure m1_blood_pressure m2_blood_pres
-> sure m3_blood_pressure m4_albuminuria m5_albuminuria m6_albuminuria m7_albuminuria m8_albuminuria m9_albuminuria m10_albuminuria m11_albuminuria m12_albuminuria m1_albuminuria m2_albuminuria m3_albuminuria m
-> 4_creatinine m5_creatinine m6_creatinine m7_creatinine m8_creatinine m9_creatinine m10_creatinine m11_creatinine m12_creatinine m1_creatinine m2_creatinine m3_creatinine {
-  5. *Number of people in each CKD group coded for each binary measure each month
-. qui safecount if ckd_group==`cat' & `binary'==1
-  6. local ckd`cat'_`binary' = round(r(N),5)
-  7. }
-  8. foreach aggregate of varlist m4_hospital_days m5_hospital_days m6_hospital_days m7_hospital_days m8_hospital_days m9_hospital_days m10_hospital_days m11_hospital_days m12_hospital_days m1_hospital_days m2
-> _hospital_days m3_hospital_days m4_critical_care_days m5_critical_care_days m6_critical_care_days m7_critical_care_days m8_critical_care_days m9_critical_care_days m10_critical_care_days m11_critical_care_da
-> ys m12_critical_care_days m1_critical_care_days m2_critical_care_days m3_critical_care_days m4_emergency_days m5_emergency_days m6_emergency_days m7_emergency_days m8_emergency_days m9_emergency_days m10_eme
-> rgency_days m11_emergency_days m12_emergency_days m1_emergency_days m2_emergency_days m3_emergency_days m4_op_appts m5_op_appts m6_op_appts m7_op_appts m8_op_appts m9_op_appts m10_op_appts m11_op_appts m12_o
-> p_appts m1_op_appts m2_op_appts m3_op_appts m4_neph_appts m5_neph_appts m6_neph_appts m7_neph_appts m8_neph_appts m9_neph_appts m10_neph_appts m11_neph_appts m12_neph_appts m1_neph_appts m2_neph_appts m3_nep
-> h_appts m4_tx_appts m5_tx_appts m6_tx_appts m7_tx_appts m8_tx_appts m9_tx_appts m10_tx_appts m11_tx_appts m12_tx_appts m1_tx_appts m2_tx_appts m3_tx_appts m4_gp_interactions m5_gp_interactions m6_gp_interact
-> ions m7_gp_interactions m8_gp_interactions m9_gp_interactions m10_gp_interactions m11_gp_interactions m12_gp_interactions m1_gp_interactions m2_gp_interactions m3_gp_interactions {
-  9. qui su total_`aggregate' if ckd_group==`cat'
- 10. local ckd`cat'_`aggregate' = r(mean)
- 11. }
- 12. 
-. local lab1: label ckd_group 1
- 13. local lab2: label ckd_group 2
- 14. local lab3: label ckd_group 3
- 15. local lab4: label ckd_group 4
- 16. local lab5: label ckd_group 5
- 17. local lab6: label ckd_group 6
- 18. 
-. **Populate table for each CKD group with redacted counts
-. file write tablecontent ("`lab`cat''") _tab _tab (`baseline_ckd`cat'') _n
- 19. file write tablecontent _tab ("Hospital days") _tab _tab (`ckd`cat'_m4_hospital_days') _tab (`ckd`cat'_m5_hospital_days') _tab (`ckd`cat'_m6_hospital_days') _tab (`ckd`cat'_m7_hospital_days') _tab (`ckd`c
-> at'_m8_hospital_days') _tab (`ckd`cat'_m9_hospital_days') _tab (`ckd`cat'_m10_hospital_days') _tab (`ckd`cat'_m11_hospital_days') _tab (`ckd`cat'_m12_hospital_days') _tab (`ckd`cat'_m1_hospital_days') _tab (
-> `ckd`cat'_m2_hospital_days') _tab (`ckd`cat'_m3_hospital_days') _n
- 20. file write tablecontent _tab ("Hospitalised patients") _tab _tab (`ckd`cat'_m4_admitted_patients') _tab (`ckd`cat'_m5_admitted_patients') _tab (`ckd`cat'_m6_admitted_patients') _tab (`ckd`cat'_m7_admitted
-> _patients') _tab (`ckd`cat'_m8_admitted_patients') _tab (`ckd`cat'_m9_admitted_patients') _tab (`ckd`cat'_m10_admitted_patients') _tab (`ckd`cat'_m11_admitted_patients') _tab (`ckd`cat'_m12_admitted_patients
-> ') _tab (`ckd`cat'_m1_admitted_patients') _tab (`ckd`cat'_m2_admitted_patients') _tab (`ckd`cat'_m3_admitted_patients') _n
- 21. file write tablecontent _tab ("AVF formations") _tab _tab (`ckd`cat'_m4_fistula_formation') _tab (`ckd`cat'_m5_fistula_formation') _tab (`ckd`cat'_m6_fistula_formation') _tab (`ckd`cat'_m7_fistula_formati
-> on') _tab (`ckd`cat'_m8_fistula_formation') _tab (`ckd`cat'_m9_fistula_formation') _tab (`ckd`cat'_m10_fistula_formation') _tab (`ckd`cat'_m11_fistula_formation') _tab (`ckd`cat'_m12_fistula_formation') _tab
->  (`ckd`cat'_m1_fistula_formation') _tab (`ckd`cat'_m2_fistula_formation') _tab (`ckd`cat'_m3_fistula_formation') _n
- 22. file write tablecontent _tab ("PD insertions") _tab _tab (`ckd`cat'_m4_pd_insertion') _tab (`ckd`cat'_m5_pd_insertion') _tab (`ckd`cat'_m6_pd_insertion') _tab (`ckd`cat'_m7_pd_insertion') _tab (`ckd`cat'_
-> m8_pd_insertion') _tab (`ckd`cat'_m9_pd_insertion') _tab (`ckd`cat'_m10_pd_insertion') _tab (`ckd`cat'_m11_pd_insertion') _tab (`ckd`cat'_m12_pd_insertion') _tab (`ckd`cat'_m1_pd_insertion') _tab (`ckd`cat'_
-> m2_pd_insertion') _tab (`ckd`cat'_m3_pd_insertion') _n
- 23. file write tablecontent _tab ("ICU days") _tab _tab (`ckd`cat'_m4_critical_care_days') _tab (`ckd`cat'_m5_critical_care_days') _tab (`ckd`cat'_m6_critical_care_days') _tab (`ckd`cat'_m7_critical_care_days
-> ') _tab (`ckd`cat'_m8_critical_care_days') _tab (`ckd`cat'_m9_critical_care_days') _tab (`ckd`cat'_m10_critical_care_days') _tab (`ckd`cat'_m11_critical_care_days') _tab (`ckd`cat'_m12_critical_care_days') _
-> tab (`ckd`cat'_m1_critical_care_days') _tab (`ckd`cat'_m2_critical_care_days') _tab (`ckd`cat'_m3_critical_care_days') _n
- 24. file write tablecontent _tab ("ICU patients") _tab _tab (`ckd`cat'_m4_critical_care_patients') _tab (`ckd`cat'_m5_critical_care_patients') _tab (`ckd`cat'_m6_critical_care_patients') _tab (`ckd`cat'_m7_cr
-> itical_care_patients') _tab (`ckd`cat'_m8_critical_care_patients') _tab (`ckd`cat'_m9_critical_care_patients') _tab (`ckd`cat'_m10_critical_care_patients') _tab (`ckd`cat'_m11_critical_care_patients') _tab (
-> `ckd`cat'_m12_critical_care_patients') _tab (`ckd`cat'_m1_critical_care_patients') _tab (`ckd`cat'_m2_critical_care_patients') _tab (`ckd`cat'_m3_critical_care_patients') _n
- 25. file write tablecontent _tab ("ED days") _tab _tab (`ckd`cat'_m4_emergency_days') _tab (`ckd`cat'_m5_emergency_days') _tab (`ckd`cat'_m6_emergency_days') _tab (`ckd`cat'_m7_emergency_days') _tab (`ckd`cat
-> '_m8_emergency_days') _tab (`ckd`cat'_m9_emergency_days') _tab (`ckd`cat'_m10_emergency_days') _tab (`ckd`cat'_m11_emergency_days') _tab (`ckd`cat'_m12_emergency_days') _tab (`ckd`cat'_m1_emergency_days') _t
-> ab (`ckd`cat'_m2_emergency_days') _tab (`ckd`cat'_m3_emergency_days') _n
- 26. file write tablecontent _tab ("OPD appts") _tab _tab (`ckd`cat'_m4_op_appts') _tab (`ckd`cat'_m5_op_appts') _tab (`ckd`cat'_m6_op_appts') _tab (`ckd`cat'_m7_op_appts') _tab (`ckd`cat'_m8_op_appts') _tab (
-> `ckd`cat'_m9_op_appts') _tab (`ckd`cat'_m10_op_appts') _tab (`ckd`cat'_m11_op_appts') _tab (`ckd`cat'_m12_op_appts') _tab (`ckd`cat'_m1_op_appts') _tab (`ckd`cat'_m2_op_appts') _tab (`ckd`cat'_m3_op_appts') 
-> _n
- 27. file write tablecontent _tab ("Neph appts") _tab _tab (`ckd`cat'_m4_neph_appts') _tab (`ckd`cat'_m5_neph_appts') _tab (`ckd`cat'_m6_neph_appts') _tab (`ckd`cat'_m7_neph_appts') _tab (`ckd`cat'_m8_neph_app
-> ts') _tab (`ckd`cat'_m9_neph_appts') _tab (`ckd`cat'_m10_neph_appts') _tab (`ckd`cat'_m11_neph_appts') _tab (`ckd`cat'_m12_neph_appts') _tab (`ckd`cat'_m1_neph_appts') _tab (`ckd`cat'_m2_neph_appts') _tab (`
-> ckd`cat'_m3_neph_appts') _n
- 28. file write tablecontent _tab ("Tx appts") _tab _tab (`ckd`cat'_m4_tx_appts') _tab (`ckd`cat'_m5_tx_appts') _tab (`ckd`cat'_m6_tx_appts') _tab (`ckd`cat'_m7_tx_appts') _tab (`ckd`cat'_m8_tx_appts') _tab (`
-> ckd`cat'_m9_tx_appts') _tab (`ckd`cat'_m10_tx_appts') _tab (`ckd`cat'_m11_tx_appts') _tab (`ckd`cat'_m12_tx_appts') _tab (`ckd`cat'_m1_tx_appts') _tab (`ckd`cat'_m2_tx_appts') _tab (`ckd`cat'_m3_tx_appts') _
-> n
- 29. file write tablecontent _tab ("GP interactions") _tab _tab (`ckd`cat'_m4_gp_interactions') _tab (`ckd`cat'_m5_gp_interactions') _tab (`ckd`cat'_m6_gp_interactions') _tab (`ckd`cat'_m7_gp_interactions') _t
-> ab (`ckd`cat'_m8_gp_interactions') _tab (`ckd`cat'_m9_gp_interactions') _tab (`ckd`cat'_m10_gp_interactions') _tab (`ckd`cat'_m11_gp_interactions') _tab (`ckd`cat'_m12_gp_interactions') _tab (`ckd`cat'_m1_gp
-> _interactions') _tab (`ckd`cat'_m2_gp_interactions') _tab (`ckd`cat'_m3_gp_interactions') _n
- 30. file write tablecontent _tab ("BP patients") _tab _tab (`ckd`cat'_m4_blood_pressure') _tab (`ckd`cat'_m5_blood_pressure') _tab (`ckd`cat'_m6_blood_pressure') _tab (`ckd`cat'_m7_blood_pressure') _tab (`ckd
-> `cat'_m8_blood_pressure') _tab (`ckd`cat'_m9_blood_pressure') _tab (`ckd`cat'_m10_blood_pressure') _tab (`ckd`cat'_m11_blood_pressure') _tab (`ckd`cat'_m12_blood_pressure') _tab (`ckd`cat'_m1_blood_pressure'
-> ) _tab (`ckd`cat'_m2_blood_pressure') _tab (`ckd`cat'_m3_blood_pressure') _n
- 31. file write tablecontent _tab ("uACR patients") _tab _tab (`ckd`cat'_m4_albuminuria') _tab (`ckd`cat'_m5_albuminuria') _tab (`ckd`cat'_m6_albuminuria') _tab (`ckd`cat'_m7_albuminuria') _tab (`ckd`cat'_m8_a
-> lbuminuria') _tab (`ckd`cat'_m9_albuminuria') _tab (`ckd`cat'_m10_albuminuria') _tab (`ckd`cat'_m11_albuminuria') _tab (`ckd`cat'_m12_albuminuria') _tab (`ckd`cat'_m1_albuminuria') _tab (`ckd`cat'_m2_albumin
-> uria') _tab (`ckd`cat'_m3_albuminuria') _n
- 32. file write tablecontent _tab ("SCr patients") _tab _tab (`ckd`cat'_m4_creatinine') _tab (`ckd`cat'_m5_creatinine') _tab (`ckd`cat'_m6_creatinine') _tab (`ckd`cat'_m7_creatinine') _tab (`ckd`cat'_m8_creati
-> nine') _tab (`ckd`cat'_m9_creatinine') _tab (`ckd`cat'_m10_creatinine') _tab (`ckd`cat'_m11_creatinine') _tab (`ckd`cat'_m12_creatinine') _tab (`ckd`cat'_m1_creatinine') _tab (`ckd`cat'_m2_creatinine') _tab 
-> (`ckd`cat'_m3_creatinine') _n(2)
- 33. }
-
-. file close tablecontent
-
-. 
-end of do-file
-
-. do "C:\Users\LSH170~1\AppData\Local\Temp\STDf08_000000.tmp"
-
-. import delimited ./output/2017_healthcare_use.csv, clear
-(encoding automatically selected: ISO-8859-1)
-(15 vars, 105 obs)
-
-. local columns " "n_2017" "april" "may" "june" "july" "august" "september" "october" "november" "december" "january" "february" "march" "april" "
-
-. foreach col in `columns' {
-  2. replace `col'=. if `col'<=5
-  3. }
-(0 real changes made)
-(10 real changes made, 10 to missing)
-(9 real changes made, 9 to missing)
-(11 real changes made, 11 to missing)
-(15 real changes made, 15 to missing)
-(18 real changes made, 18 to missing)
-(11 real changes made, 11 to missing)
-(16 real changes made, 16 to missing)
-(12 real changes made, 12 to missing)
-(16 real changes made, 16 to missing)
-(14 real changes made, 14 to missing)
-(12 real changes made, 12 to missing)
-(7 real changes made, 7 to missing)
-(0 real changes made)
-
-. export delimited "./output/2017_healthcare_use.csv", replace
-file ./output/2017_healthcare_use.csv saved
-
-. 
-end of do-file
-
-. import delimited ./output/input_2023.csv, delimiter(comma) varnames(1) case(preserve)
-no; data in memory would be lost
-r(4);
-
-. clear
-
-. import delimited ./output/input_2023.csv, delimiter(comma) varnames(1) case(preserve)
-(encoding automatically selected: ISO-8859-1)
-(18 vars, 50,000 obs)
-
-. do "C:\Users\LSH170~1\AppData\Local\Temp\STDf08_000000.tmp"
-
-. **Exclusions
-. * Age <18 at index date
-. drop if age <18
-(10,631 observations deleted)
-
-. 
-. * Anyone not registered at one practice for 3 months before index date
-. drop if has_follow_up==0
-(1,949 observations deleted)
-
-. drop has_follow_up
-
-. 
-. * Deceased before index date
-. drop if deceased==1
-(3,714 observations deleted)
-
-. drop deceased
-
-. 
-. * Region
-. tab region
-
-                  region |      Freq.     Percent        Cum.
--------------------------+-----------------------------------
-                    East |      3,336        9.90        9.90
-           East Midlands |      3,378       10.02       19.92
-                  London |      6,678       19.81       39.73
-              North East |      3,360        9.97       49.70
-              North West |      3,455       10.25       59.95
-              South East |      3,310        9.82       69.77
-              South West |      3,349        9.94       79.71
-           West Midlands |      3,303        9.80       89.51
-Yorkshire and The Humber |      3,537       10.49      100.00
--------------------------+-----------------------------------
-                   Total |     33,706      100.00
-
-. drop if region==""
-(0 observations deleted)
-
-. 
-. * IMD
-. tab imd
-
-        imd |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |      1,605        4.76        4.76
-          1 |      6,542       19.41       24.17
-          2 |      6,424       19.06       43.23
-          3 |      6,292       18.67       61.90
-          4 |      6,407       19.01       80.91
-          5 |      6,436       19.09      100.00
-------------+-----------------------------------
-      Total |     33,706      100.00
-
-. drop if imd==0
-(1,605 observations deleted)
-
-. drop if imd==.
-(0 observations deleted)
-
-. 
-. * eGFR>60 without albuminuria
-. gen albuminuria = 0
-
-. replace albuminuria = 1 if acr >=3
-(16,065 real changes made)
-
-. replace albuminuria = 0 if acr_operator =="<"
-(820 real changes made)
-
-. replace albuminuria = 0 if acr_operator =="<="
-(799 real changes made)
-
-. label define albuminuria 0 "No albuminuria" 1 "Albuminuria"
-
-. label values albuminuria albuminuria
-
-. assert inlist(sex, "M", "F")
-
-. gen male = (sex=="M")
-
-. drop sex
-
-. label define sexLab 1 "Male" 0 "Female"
-
-. label values male sexLab
-
-. label var male "Sex (0=F 1=M)"
-
-. replace baseline_creatinine = . if !inrange(baseline_creatinine, 20, 3000)
-(14,110 real changes made, 14,110 to missing)
-
-. gen mgdl_baseline_creatinine = baseline_creatinine/88.4
-(14,110 missing values generated)
-
-. gen min_baseline_creatinine=.
-(32,101 missing values generated)
-
-. replace min_baseline_creatinine = mgdl_baseline_creatinine/0.7 if male==0
-(9,116 real changes made)
-
-. replace min_baseline_creatinine = mgdl_baseline_creatinine/0.9 if male==1
-(8,875 real changes made)
-
-. replace min_baseline_creatinine = min_baseline_creatinine^-0.329  if male==0
-(9,116 real changes made)
-
-. replace min_baseline_creatinine = min_baseline_creatinine^-0.411  if male==1
-(8,875 real changes made)
-
-. replace min_baseline_creatinine = 1 if min_baseline_creatinine<1
-(11,392 real changes made)
-
-. gen max_baseline_creatinine=.
-(32,101 missing values generated)
-
-. replace max_baseline_creatinine = mgdl_baseline_creatinine/0.7 if male==0
-(9,116 real changes made)
-
-. replace max_baseline_creatinine = mgdl_baseline_creatinine/0.9 if male==1
-(8,875 real changes made)
-
-. replace max_baseline_creatinine = max_baseline_creatinine^-1.209
-(17,991 real changes made)
-
-. replace max_baseline_creatinine = 1 if max_baseline_creatinine>1
-(20,709 real changes made)
-
-. gen baseline_egfr = min_baseline_creatinine*max_baseline_creatinine*141
-(14,110 missing values generated)
-
-. replace baseline_egfr = baseline_egfr*(0.993^age)
-(17,991 real changes made)
-
-. replace baseline_egfr = baseline_egfr*1.018 if male==0
-(9,116 real changes made)
-
-. drop baseline_creatinine
-
-. drop mgdl_baseline_creatinine
-
-. drop min_baseline_creatinine
-
-. drop max_baseline_creatinine
-
-. gen ckd = albuminuria
-
-. replace ckd = 1 if baseline_egfr <60
-(2,685 real changes made)
-
-. sum acr, de
-
-                             acr
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            0              0
- 5%            0              0
-10%            0              0       Obs              32,101
-25%            0              0       Sum of wgt.      32,101
-
-50%     9.469906                      Mean           12.50794
-                        Largest       Std. dev.      12.99379
-75%     24.95644       42.26842
-90%     29.27088       42.47053       Variance       168.8386
-95%     31.45131       43.63746       Skewness       .2150793
-99%     35.33138       45.53928       Kurtosis       1.306313
-
-. tab acr_operator
-
-acr_operato |
-          r |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          < |      1,629        5.63        5.63
-         <= |      1,596        5.52       11.15
-          = |     20,862       72.12       83.27
-          > |      1,592        5.50       88.77
-         >= |      1,653        5.71       94.48
-          ~ |      1,596        5.52      100.00
-------------+-----------------------------------
-      Total |     28,928      100.00
-
-. tab albuminuria
-
-   albuminuria |      Freq.     Percent        Cum.
----------------+-----------------------------------
-No albuminuria |     17,655       55.00       55.00
-   Albuminuria |     14,446       45.00      100.00
----------------+-----------------------------------
-         Total |     32,101      100.00
-
-. tab ckd
-
-        ckd |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |     14,970       46.63       46.63
-          1 |     17,131       53.37      100.00
-------------+-----------------------------------
-      Total |     32,101      100.00
-
-. egen egfr_status = cut(baseline_egfr), at(0, 60, 5000)
-(14,110 missing values generated)
-
-. recode egfr_status 0=2 60=1
-(17,991 changes made to egfr_status)
-
-. replace egfr_status = 0 if baseline_egfr==.
-(14,110 real changes made)
-
-. foreach krt of varlist  dialysis_primary_care                   ///
->                                                 dialysis_icd_10                                 ///
->                                                 dialysis_opcs_4                                 ///
->                                                 kidney_transplant_primary_care  ///
->                                                 kidney_transplant_icd_10                ///
->                                                 kidney_transplant_opcs_4                {
-  2. tab `krt'
-  3. replace egfr_status=3 if `krt'==1
-  4. replace ckd = 1 if `krt'==1
-  5. drop `krt'
-  6. }
-
-dialysis_pr |
- imary_care |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |     30,520       95.07       95.07
-          1 |      1,581        4.93      100.00
-------------+-----------------------------------
-      Total |     32,101      100.00
-(1,581 real changes made)
-(738 real changes made)
-
-dialysis_ic |
-       d_10 |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |     30,498       95.01       95.01
-          1 |      1,603        4.99      100.00
-------------+-----------------------------------
-      Total |     32,101      100.00
-(1,530 real changes made)
-(712 real changes made)
-
-dialysis_op |
-       cs_4 |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |     30,497       95.00       95.00
-          1 |      1,604        5.00      100.00
-------------+-----------------------------------
-      Total |     32,101      100.00
-(1,420 real changes made)
-(620 real changes made)
-
-kidney_tran |
-splant_prim |
-   ary_care |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |     30,488       94.98       94.98
-          1 |      1,613        5.02      100.00
-------------+-----------------------------------
-      Total |     32,101      100.00
-(1,374 real changes made)
-(650 real changes made)
-
-kidney_tran |
-splant_icd_ |
-         10 |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |     30,507       95.03       95.03
-          1 |      1,594        4.97      100.00
-------------+-----------------------------------
-      Total |     32,101      100.00
-(1,315 real changes made)
-(600 real changes made)
-
-kidney_tran |
-splant_opcs |
-         _4 |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |     30,478       94.94       94.94
-          1 |      1,623        5.06      100.00
-------------+-----------------------------------
-      Total |     32,101      100.00
-(1,241 real changes made)
-(570 real changes made)
-
-. label define egfr_status 0 "No eGFR" 1 "eGFR >=60" 2 "eGFR <60" 3 "KRT"
-
-. label values egfr_status egfr_status
-
-. tab egfr_status albuminuria
-
-egfr_statu |      albuminuria
-         s | No albumi  Albuminur |     Total
------------+----------------------+----------
-   No eGFR |     5,685      4,674 |    10,359 
- eGFR >=60 |     5,395      4,288 |     9,683 
-  eGFR <60 |     1,947      1,651 |     3,598 
-       KRT |     4,628      3,833 |     8,461 
------------+----------------------+----------
-     Total |    17,655     14,446 |    32,101 
-
-. tab ckd, m
-
-        ckd |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |     11,080       34.52       34.52
-          1 |     21,021       65.48      100.00
-------------+-----------------------------------
-      Total |     32,101      100.00
-
-. drop if ckd==0
-(11,080 observations deleted)
-
-. drop ckd
-
-. drop acr
-
-. drop acr_operator
-
-. tab egfr_status albuminuria
-
-egfr_statu |      albuminuria
-         s | No albumi  Albuminur |     Total
------------+----------------------+----------
-   No eGFR |         0      4,674 |     4,674 
- eGFR >=60 |         0      4,288 |     4,288 
-  eGFR <60 |     1,947      1,651 |     3,598 
-       KRT |     4,628      3,833 |     8,461 
------------+----------------------+----------
-     Total |     6,575     14,446 |    21,021 
-
-. drop albuminuria
-
-. drop egfr_status
-
-. 
-end of do-file
-
-. export delimited using "./output/2023_ckd.csv", replace
-file ./output/2023_ckd.csv saved
-
-. do "C:\Users\LSH170~1\AppData\Local\Temp\STDf08_000000.tmp"
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD5de0_000000.tmp"
 
 . sysdir set PLUS ./analysis/adofiles
 
