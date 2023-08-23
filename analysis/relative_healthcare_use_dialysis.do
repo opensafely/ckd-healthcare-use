@@ -11,7 +11,7 @@ cap file close tablecontent
 **Creates output file for each year (`dataset')
 file open tablecontent using ./output/relative_healthcare_use_dialysis.csv, write text replace
 **Column headings
-*Ratios are per 1000 patients
+*Ratios are per 100 patients
 file write tablecontent ("Date") _tab ("stratum") _tab ("ip") _tab ("icu") _tab ("ed") _tab ("avf") _tab ("pd") _tab ("opd") _tab ("neph") _tab ("tx") _tab ("gp") _n
 
 local year "2017 2018 2019 2020 2021 2022"
@@ -23,13 +23,13 @@ qui safecount
 local denom = round(r(N),5)
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
 qui su total_`aggregate'
-local `x'_`aggregate' = (r(mean)/`denom')*1000
+local `x'_`aggregate' = (r(mean)/`denom')*100
 }
 foreach binary of varlist fistula_formation pd_insertion {
 qui safecount if `binary'==1
-local `x'_`binary' = (round(r(N),5)/`denom')*1000
+local `x'_`binary' = (round(r(N),5)/`denom')*100
 }
-file write tablecontent %4.2f (``x'_hospital_days') _tab %4.2f (``x'_critical_care_days') _tab %4.2f (``x'_emergency_days') _tab %4.2f (``x'_fistula_formation') _tab %4.2f (``x'_pd_insertion') _tab %4.2f (``x'_op_appts') _tab %4.2f (``x'_neph_appts') _tab %4.2f (``x'_tx_appts') _tab %4.2f (``x'_gp_interactions') _n
+file write tablecontent %10.2f (``x'_hospital_days') _tab %10.2f (``x'_critical_care_days') _tab %10.2f (``x'_emergency_days') _tab %10.2f (``x'_fistula_formation') _tab %10.2f (``x'_pd_insertion') _tab %10.2f (``x'_op_appts') _tab %10.2f (``x'_neph_appts') _tab %10.2f (``x'_tx_appts') _tab %10.2f (``x'_gp_interactions') _n
 }
 
 forvalues i=1/6 {
@@ -42,13 +42,13 @@ qui safecount if ethnicity==`i'
 local denom = round(r(N),5)
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
 qui su ethnicity_`aggregate' if ethnicity==`i'
-local `x'_`aggregate' = (r(mean)/`denom')*1000
+local `x'_`aggregate' = (r(mean)/`denom')*100
 }
 foreach binary of varlist fistula_formation pd_insertion {
 qui safecount if `binary'==1 & ethnicity==`i'
-local `x'_`binary' = (round(r(N),5)/`denom')*1000
+local `x'_`binary' = (round(r(N),5)/`denom')*100
 }
-file write tablecontent %4.2f (``x'_hospital_days') _tab %4.2f (``x'_critical_care_days') _tab %4.2f (``x'_emergency_days') _tab %4.2f (``x'_fistula_formation') _tab %4.2f (``x'_pd_insertion') _tab %4.2f (``x'_op_appts') _tab %4.2f (``x'_neph_appts') _tab %4.2f (``x'_tx_appts') _tab %4.2f (``x'_gp_interactions') _n
+file write tablecontent %10.2f (``x'_hospital_days') _tab %10.2f (``x'_critical_care_days') _tab %10.2f (``x'_emergency_days') _tab %10.2f (``x'_fistula_formation') _tab %10.2f (``x'_pd_insertion') _tab %10.2f (``x'_op_appts') _tab %10.2f (``x'_neph_appts') _tab %10.2f (``x'_tx_appts') _tab %10.2f (``x'_gp_interactions') _n
 }
 }
 
@@ -62,13 +62,13 @@ qui safecount if imd==`i'
 local denom = round(r(N),5)
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
 qui su imd_`aggregate' if imd==`i'
-local `x'_`aggregate' = (r(mean)/`denom')*1000
+local `x'_`aggregate' = (r(mean)/`denom')*100
 }
 foreach binary of varlist fistula_formation pd_insertion {
 qui safecount if `binary'==1 & imd==`i'
-local `x'_`binary' = (round(r(N),5)/`denom')*1000
+local `x'_`binary' = (round(r(N),5)/`denom')*100
 }
-file write tablecontent %4.2f (``x'_hospital_days') _tab %4.2f (``x'_critical_care_days') _tab %4.2f (``x'_emergency_days') _tab %4.2f (``x'_fistula_formation') _tab %4.2f (``x'_pd_insertion') _tab %4.2f (``x'_op_appts') _tab %4.2f (``x'_neph_appts') _tab %4.2f (``x'_tx_appts') _tab %4.2f (``x'_gp_interactions') _n
+file write tablecontent %10.2f (``x'_hospital_days') _tab %10.2f (``x'_critical_care_days') _tab %10.2f (``x'_emergency_days') _tab %10.2f (``x'_fistula_formation') _tab %10.2f (``x'_pd_insertion') _tab %10.2f (``x'_op_appts') _tab %10.2f (``x'_neph_appts') _tab %10.2f (``x'_tx_appts') _tab %10.2f (``x'_gp_interactions') _n
 }
 }
 
@@ -82,13 +82,13 @@ qui safecount if region==`i'
 local denom = round(r(N),5)
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
 qui su region_`aggregate' if region==`i'
-local `x'_`aggregate' = (r(mean)/`denom')*1000
+local `x'_`aggregate' = (r(mean)/`denom')*100
 }
 foreach binary of varlist fistula_formation pd_insertion {
 qui safecount if `binary'==1 & region==`i'
-local `x'_`binary' = (round(r(N),5)/`denom')*1000
+local `x'_`binary' = (round(r(N),5)/`denom')*100
 }
-file write tablecontent %4.2f (``x'_hospital_days') _tab %4.2f (``x'_critical_care_days') _tab %4.2f (``x'_emergency_days') _tab %4.2f (``x'_fistula_formation') _tab %4.2f (``x'_pd_insertion') _tab %4.2f (``x'_op_appts') _tab %4.2f (``x'_neph_appts') _tab %4.2f (``x'_tx_appts') _tab %4.2f (``x'_gp_interactions') _n
+file write tablecontent %10.2f (``x'_hospital_days') _tab %10.2f (``x'_critical_care_days') _tab %10.2f (``x'_emergency_days') _tab %10.2f (``x'_fistula_formation') _tab %10.2f (``x'_pd_insertion') _tab %10.2f (``x'_op_appts') _tab %10.2f (``x'_neph_appts') _tab %10.2f (``x'_tx_appts') _tab %10.2f (``x'_gp_interactions') _n
 }
 }
 
@@ -102,13 +102,13 @@ qui safecount if urban==`i'
 local denom = round(r(N),5)
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
 qui su urban_`aggregate' if urban==`i'
-local `x'_`aggregate' = (r(mean)/`denom')*1000
+local `x'_`aggregate' = (r(mean)/`denom')*100
 }
 foreach binary of varlist fistula_formation pd_insertion {
 qui safecount if `binary'==1 & urban==`i'
-local `x'_`binary' = (round(r(N),5)/`denom')*1000
+local `x'_`binary' = (round(r(N),5)/`denom')*100
 }
-file write tablecontent %4.2f (``x'_hospital_days') _tab %4.2f (``x'_critical_care_days') _tab %4.2f (``x'_emergency_days') _tab %4.2f (``x'_fistula_formation') _tab %4.2f (``x'_pd_insertion') _tab %4.2f (``x'_op_appts') _tab %4.2f (``x'_neph_appts') _tab %4.2f (``x'_tx_appts') _tab %4.2f (``x'_gp_interactions') _n
+file write tablecontent %10.2f (``x'_hospital_days') _tab %10.2f (``x'_critical_care_days') _tab %10.2f (``x'_emergency_days') _tab %10.2f (``x'_fistula_formation') _tab %10.2f (``x'_pd_insertion') _tab %10.2f (``x'_op_appts') _tab %10.2f (``x'_neph_appts') _tab %10.2f (``x'_tx_appts') _tab %10.2f (``x'_gp_interactions') _n
 }
 }
 
