@@ -99,7 +99,7 @@ drop if ckd_group!=2
 qui safecount if region==`i'
 local denom = round(r(N),5)
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
-qui su region_`aggregate'_ckd_ckd if region==`i'
+qui su region_`aggregate'_ckd if region==`i'
 local `x'_`aggregate' = (r(mean)/`denom')*100
 local `x'_`aggregate'_ef = exp(1.96 * sqrt(1 / ``x'_`aggregate''))
 local `x'_`aggregate'_ul = ``x'_`aggregate'' * ``x'_`aggregate'_ef'
