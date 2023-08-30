@@ -160,14 +160,6 @@ actions:
       moderately_sensitive:
         log: logs/2021_ckd_complete.log
 
-  2021_healthcare_use:
-    run: stata-mp:latest analysis/healthcare_use.do 2021
-    needs: [2021, 2021_ckd, 2021_ckd_complete, 2021_clean_ckd_complete]
-    outputs:
-      moderately_sensitive:
-        log: logs/2021_healthcare_use.log
-        output: output/2021_healthcare_use.csv
-
   2022:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2022
     outputs:
@@ -198,14 +190,6 @@ actions:
         analysis_dataset: output/2022_ckd_complete.dta
       moderately_sensitive:
         log: logs/2022_ckd_complete.log
-
-  2022_healthcare_use:
-    run: stata-mp:latest analysis/healthcare_use.do 2022
-    needs: [2022, 2022_ckd, 2022_ckd_complete, 2022_clean_ckd_complete]
-    outputs:
-      moderately_sensitive:
-        log: logs/2022_healthcare_use.log
-        output: output/2022_healthcare_use.csv
 
   2023:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2023
@@ -240,7 +224,7 @@ actions:
 
   ckd_progression:
     run: stata-mp:latest analysis/ckd_progression.do
-    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_healthcare_use, 2018_healthcare_use, 2019_healthcare_use, 2020_healthcare_use, 2021_healthcare_use, 2022_healthcare_use]
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
     outputs:
       moderately_sensitive:
         log: logs/ckd_progression.log
