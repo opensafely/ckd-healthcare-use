@@ -36,7 +36,7 @@ file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
 use ./output/`x'_ckd_complete.dta, clear
 drop if ckd_group!=2
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
-qui su ethnicity_`aggregate' if ethnicity==`i'
+qui su ethnicity_`aggregate'_ckd if ethnicity==`i'
 local `x'_`aggregate' = r(mean)
 }
 foreach binary of varlist blood_pressure albuminuria creatinine {
@@ -54,7 +54,7 @@ file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
 use ./output/`x'_ckd_complete.dta, clear
 drop if ckd_group!=2
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
-qui su imd_`aggregate' if imd==`i'
+qui su imd_`aggregate'_ckd if imd==`i'
 local `x'_`aggregate' = r(mean)
 }
 foreach binary of varlist blood_pressure albuminuria creatinine {
@@ -72,7 +72,7 @@ file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
 use ./output/`x'_ckd_complete.dta, clear
 drop if ckd_group!=2
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
-qui su region_`aggregate' if region==`i'
+qui su region_`aggregate'_ckd if region==`i'
 local `x'_`aggregate' = r(mean)
 }
 foreach binary of varlist blood_pressure albuminuria creatinine {
@@ -90,7 +90,7 @@ file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
 use ./output/`x'_ckd_complete.dta, clear
 drop if ckd_group!=2
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
-qui su urban_`aggregate' if urban==`i'
+qui su urban_`aggregate'_ckd if urban==`i'
 local `x'_`aggregate' = r(mean)
 }
 foreach binary of varlist blood_pressure albuminuria creatinine {

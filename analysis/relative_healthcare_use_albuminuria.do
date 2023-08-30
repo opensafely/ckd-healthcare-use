@@ -47,7 +47,7 @@ drop if ckd_group!=1
 qui safecount if ethnicity==`i'
 local denom = round(r(N),5)
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
-qui su ethnicity_`aggregate' if ethnicity==`i'
+qui su ethnicity_`aggregate'_ckd if ethnicity==`i'
 local `x'_`aggregate' = (r(mean)/`denom')*100
 local `x'_`aggregate'_ef = exp(1.96 * sqrt(1 / ``x'_`aggregate''))
 local `x'_`aggregate'_ul = ``x'_`aggregate'' * ``x'_`aggregate'_ef'
@@ -73,7 +73,7 @@ drop if ckd_group!=1
 qui safecount if imd==`i'
 local denom = round(r(N),5)
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
-qui su imd_`aggregate' if imd==`i'
+qui su imd_`aggregate'_ckd if imd==`i'
 local `x'_`aggregate' = (r(mean)/`denom')*100
 local `x'_`aggregate'_ef = exp(1.96 * sqrt(1 / ``x'_`aggregate''))
 local `x'_`aggregate'_ul = ``x'_`aggregate'' * ``x'_`aggregate'_ef'
@@ -99,7 +99,7 @@ drop if ckd_group!=1
 qui safecount if region==`i'
 local denom = round(r(N),5)
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
-qui su region_`aggregate' if region==`i'
+qui su region_`aggregate'_ckd if region==`i'
 local `x'_`aggregate' = (r(mean)/`denom')*100
 local `x'_`aggregate'_ef = exp(1.96 * sqrt(1 / ``x'_`aggregate''))
 local `x'_`aggregate'_ul = ``x'_`aggregate'' * ``x'_`aggregate'_ef'
@@ -125,7 +125,7 @@ drop if ckd_group!=1
 qui safecount if urban==`i'
 local denom = round(r(N),5)
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions {
-qui su urban_`aggregate' if urban==`i'
+qui su urban_`aggregate'_ckd if urban==`i'
 local `x'_`aggregate' = (r(mean)/`denom')*100
 local `x'_`aggregate'_ef = exp(1.96 * sqrt(1 / ``x'_`aggregate''))
 local `x'_`aggregate'_ul = ``x'_`aggregate'' * ``x'_`aggregate'_ef'

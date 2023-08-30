@@ -230,9 +230,13 @@ label define urban 0 "Rural" 1 "Urban"
 label values urban urban
 drop rural_urban
 
+* Create variable for total # of each aggregated outcome
+* `var'_`aggregate' = total # of each aggregated outcome overall stratified by ethnicity/imd/region/urban
+* `var'_`aggregate'_ckd = total # of each aggregated outcome in each CKD group stratified by ethnicity/imd/region/urban
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
 foreach var of varlist ethnicity imd region urban {
 bysort `var': egen `var'_`aggregate' = total(`aggregate')
+bysort `var' ckd_group: egen `var'_`aggregate'_ckd = total(`aggregate')
 }
 }
 
