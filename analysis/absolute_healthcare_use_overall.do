@@ -11,11 +11,11 @@ cap file close tablecontent
 **Creates output file for each year (`dataset')
 file open tablecontent using ./output/absolute_healthcare_use_overall.csv, write text replace
 **Column headings
-file write tablecontent ("Date") _tab ("stratum") _tab ("ip") _tab ("icu") _tab ("ed") _tab ("avf") _tab ("pd") _tab ("opd") _tab ("neph") _tab ("tx") _tab ("gp") _tab ("bp") _tab ("uacr") _tab ("scr") _n
+file write tablecontent ("Date") _tab ("ip") _tab ("icu") _tab ("ed") _tab ("avf") _tab ("pd") _tab ("opd") _tab ("neph") _tab ("tx") _tab ("gp") _tab ("bp") _tab ("uacr") _tab ("scr") _n
 
 local year "2017 2018 2019 2020 2021 2022"
 foreach x of local year {
-file write tablecontent ("01/04/`x'") _tab ("all") _tab
+file write tablecontent ("01/04/`x'") _tab
 use ./output/`x'_ckd_complete.dta, clear
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
 qui su overall_`aggregate'
