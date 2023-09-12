@@ -240,11 +240,33 @@ bysort `var' ckd_group: egen `var'_`aggregate'_ckd = total(`aggregate')
 }
 }
 
-
+*Merge cost data
 save "./output/`dataset'_ckd_complete.dta", replace
+capture noisily import delimited ./output/costs_`dataset'.csv, clear
+keep patient_id apcs_cost ec_cost opa_cost
+merge 1:1 patient_id using ./output/`dataset'_ckd_complete
+drop if _merge==1
+foreach cost of varlist apcs_cost ec_cost opa_cost {
+sum `cost', d
+bysort ckd_group: egen total_`cost' = total(`cost')
+egen overall_`cost' = total(`cost')
+tab ckd_group, sum(total_`cost')
+sum overall_`cost'
+foreach var of varlist ethnicity imd region urban {
+bysort `var': egen `var'_`cost' = total(`cost')
+bysort `var' ckd_group: egen `var'_`cost'_ckd = total(`cost')
+}
+}
+save "./output/`dataset'_ckd_complete.dta", replace
+
 log close
 
 /*
+save "./output/2017_ckd_complete.dta", replace
+capture noisily import delimited ./output/costs_2017.csv, clear
+keep patient_id apcs_cost ec_cost opa_cost
+merge 1:1 patient_id using ./output/2017_ckd_complete
+drop if _merge==1
 save "./output/2017_ckd_complete.dta", replace
 */
 
