@@ -29,11 +29,10 @@ actions:
 
   2017_clean_ckd_complete:
     run: stata-mp:latest analysis/ckd_complete.do 2017
-    needs: [2017, 2017_ckd, 2017_ckd_complete]
+    needs: [2017, 2017_ckd, 2017_ckd_complete, costs_2017]
     outputs:
       highly_sensitive:
         analysis_dataset: output/2017_ckd_complete.dta
-        cohort: output/2017_ckd_complete.csv
       moderately_sensitive:
         log: logs/2017_ckd_complete.log
 
@@ -61,7 +60,7 @@ actions:
 
   2018_clean_ckd_complete:
     run: stata-mp:latest analysis/ckd_complete.do 2018
-    needs: [2018, 2018_ckd, 2018_ckd_complete]
+    needs: [2018, 2018_ckd, 2018_ckd_complete, costs_2018]
     outputs:
       highly_sensitive:
         analysis_dataset: output/2018_ckd_complete.dta
@@ -92,7 +91,7 @@ actions:
 
   2019_clean_ckd_complete:
     run: stata-mp:latest analysis/ckd_complete.do 2019
-    needs: [2019, 2019_ckd, 2019_ckd_complete]
+    needs: [2019, 2019_ckd, 2019_ckd_complete, costs_2019]
     outputs:
       highly_sensitive:
         analysis_dataset: output/2019_ckd_complete.dta
@@ -123,7 +122,7 @@ actions:
 
   2020_clean_ckd_complete:
     run: stata-mp:latest analysis/ckd_complete.do 2020
-    needs: [2020, 2020_ckd, 2020_ckd_complete]
+    needs: [2020, 2020_ckd, 2020_ckd_complete, costs_2020]
     outputs:
       highly_sensitive:
         analysis_dataset: output/2020_ckd_complete.dta
@@ -154,7 +153,7 @@ actions:
 
   2021_clean_ckd_complete:
     run: stata-mp:latest analysis/ckd_complete.do 2021
-    needs: [2021, 2021_ckd, 2021_ckd_complete]
+    needs: [2021, 2021_ckd, 2021_ckd_complete, costs_2021]
     outputs:
       highly_sensitive:
         analysis_dataset: output/2021_ckd_complete.dta
@@ -185,7 +184,7 @@ actions:
 
   2022_clean_ckd_complete:
     run: stata-mp:latest analysis/ckd_complete.do 2022
-    needs: [2022, 2022_ckd, 2022_ckd_complete]
+    needs: [2022, 2022_ckd, 2022_ckd_complete, costs_2022]
     outputs:
       highly_sensitive:
         analysis_dataset: output/2022_ckd_complete.dta
@@ -422,3 +421,51 @@ actions:
     outputs:
       highly_sensitive:
         costs_2022: output/costs_2022.csv
+
+  costs_overall:
+    run: stata-mp:latest analysis/costs_overall.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/costs_overall.log
+        output: output/costs_overall.csv
+
+  costs_albuminuria:
+    run: stata-mp:latest analysis/costs_albuminuria.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/costs_albuminuria.log
+        output: output/costs_albuminuria.csv
+
+  costs_ckd3:
+    run: stata-mp:latest analysis/costs_ckd3.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/costs_ckd3.log
+        output: output/costs_ckd3.csv
+
+  costs_ckd4:
+    run: stata-mp:latest analysis/costs_ckd4.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/costs_ckd4.log
+        output: output/costs_ckd4.csv
+
+  costs_dialysis:
+    run: stata-mp:latest analysis/costs_dialysis.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/costs_dialysis.log
+        output: output/costs_dialysis.csv
+
+  costs_transplant:
+    run: stata-mp:latest analysis/costs_transplant.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/costs_transplant.log
+        output: output/costs_transplant.csv

@@ -267,6 +267,7 @@ capture noisily import delimited ./output/costs_2017.csv, clear
 keep patient_id apcs_cost ec_cost opa_cost
 merge 1:1 patient_id using ./output/2017_ckd_complete
 drop if _merge==1
+drop _merge
 save "./output/2017_ckd_complete.dta", replace
 */
 

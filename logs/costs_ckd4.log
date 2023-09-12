@@ -1,0 +1,233 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\Repo\ckd-healthcare-use\logs/costs_ckd4.log
+  log type:  text
+ opened on:  12 Sep 2023, 15:48:13
+
+. cap file close tablecontent
+
+. **Creates output file for each year (`dataset')
+. file open tablecontent using ./output/costs_ckd4.csv, write text replace
+(file ./output/costs_ckd4.csv not found)
+
+. **Column headings
+. file write tablecontent ("Date") _tab ("stratum") _tab ("apcs") _tab ("ec") _tab ("opa") _n
+
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2. file write tablecontent ("01/04/`x'") _tab ("all") _tab
+  3. use ./output/`x'_ckd_complete.dta, clear
+  4. drop if ckd_group!=3
+  5. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  6. qui su total_`cost'
+  7. local `x'_`cost' = r(mean)
+  8. }
+  9. file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost') _tab %10.2f (``x'_opa_cost') _n
+ 10. }
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+
+. 
+. forvalues i=1/6 {
+  2. local label`i': label ethnicity `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. drop if ckd_group!=3
+  7. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  8. qui su ethnicity_`cost' if ethnicity==`i'
+  9. local `x'_`cost' = r(mean)
+ 10. }
+ 11. file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost') _tab %10.2f (``x'_opa_cost') _n
+ 12. }
+ 13. }
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+
+. 
+. forvalues i=1/5 {
+  2. local label`i': label imd `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. drop if ckd_group!=3
+  7. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  8. qui su imd_`cost' if imd==`i'
+  9. local `x'_`cost' = r(mean)
+ 10. }
+ 11. file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost') _tab %10.2f (``x'_opa_cost') _n
+ 12. }
+ 13. }
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+
+. 
+. forvalues i=1/9 {
+  2. local label`i': label region `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. drop if ckd_group!=3
+  7. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  8. qui su region_`cost' if region==`i'
+  9. local `x'_`cost' = r(mean)
+ 10. }
+ 11. file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost') _tab %10.2f (``x'_opa_cost') _n
+ 12. }
+ 13. }
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+
+. 
+. forvalues i=0/1 {
+  2. local label`i': label urban `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. drop if ckd_group!=3
+  7. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  8. qui su urban_`cost' if urban==`i'
+  9. local `x'_`cost' = r(mean)
+ 10. }
+ 11. file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost') _tab %10.2f (``x'_opa_cost') _n
+ 12. }
+ 13. }
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+(2,053 observations deleted)
+(2,101 observations deleted)
+(2,087 observations deleted)
+(2,135 observations deleted)
+(2,082 observations deleted)
+(2,094 observations deleted)
+
+. 
+. file close tablecontent
+
+. 
+end of do-file
+

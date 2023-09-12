@@ -1,0 +1,106 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /workspace/logs/costs_overall.log
+  log type:  text
+ opened on:  12 Sep 2023, 14:53:07
+
+. cap file close tablecontent
+
+. **Creates output file for each year (`dataset')
+. file open tablecontent using ./output/costs_overall.csv, write text replace
+(note: file ./output/costs_overall.csv not found)
+
+. **Column headings
+. file write tablecontent ("Date") _tab ("stratum") _tab ("apcs") _tab ("ec") _
+> tab ("opa") _n
+
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2. file write tablecontent ("01/04/`x'") _tab ("all") _tab
+  3. use ./output/`x'_ckd_complete.dta, clear
+  4. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  5. qui su overall_`cost'
+  6. local `x'_`cost' = r(mean)
+  7. }
+  8. file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost
+> ') _tab %10.2f (``x'_opa_cost') _n
+  9. }
+
+. 
+. forvalues i=1/6 {
+  2. local label`i': label ethnicity `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  7. qui su ethnicity_`cost' if ethnicity==`i'
+  8. local `x'_`cost' = r(mean)
+  9. }
+ 10. file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost
+> ') _tab %10.2f (``x'_opa_cost') _n
+ 11. }
+ 12. }
+
+. 
+. forvalues i=1/5 {
+  2. local label`i': label imd `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  7. qui su imd_`cost' if imd==`i'
+  8. local `x'_`cost' = r(mean)
+  9. }
+ 10. file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost
+> ') _tab %10.2f (``x'_opa_cost') _n
+ 11. }
+ 12. }
+
+. 
+. forvalues i=1/9 {
+  2. local label`i': label region `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  7. qui su region_`cost' if region==`i'
+  8. local `x'_`cost' = r(mean)
+  9. }
+ 10. file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost
+> ') _tab %10.2f (``x'_opa_cost') _n
+ 11. }
+ 12. }
+
+. 
+. forvalues i=0/1 {
+  2. local label`i': label urban `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  7. qui su urban_`cost' if urban==`i'
+  8. local `x'_`cost' = r(mean)
+  9. }
+ 10. file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost
+> ') _tab %10.2f (``x'_opa_cost') _n
+ 11. }
+ 12. }
+
+. 
+. file close tablecontent
+
+. 
+end of do-file
+
+. . file open output using "/tmp/costs_overall.do.9HAf.out", write text replace
+
+. . file write output "success" 
+
+. . file close output
+
+. 
+end of do-file
+
+
