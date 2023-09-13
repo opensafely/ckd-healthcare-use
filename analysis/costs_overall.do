@@ -21,7 +21,7 @@ foreach cost of varlist apcs_cost ec_cost opa_cost {
 qui su overall_`cost'
 local `x'_`cost' = r(mean)
 }
-file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost') _tab %10.2f (``x'_opa_cost') _n
+file write tablecontent %12.0f (``x'_apcs_cost') _tab %12.0f (``x'_ec_cost') _tab %12.0f (``x'_opa_cost') _n
 }
 
 forvalues i=1/6 {
@@ -33,7 +33,7 @@ foreach cost of varlist apcs_cost ec_cost opa_cost {
 qui su ethnicity_`cost' if ethnicity==`i'
 local `x'_`cost' = r(mean)
 }
-file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost') _tab %10.2f (``x'_opa_cost') _n
+file write tablecontent %12.0f (``x'_apcs_cost') _tab %12.0f (``x'_ec_cost') _tab %12.0f (``x'_opa_cost') _n
 }
 }
 
@@ -46,7 +46,7 @@ foreach cost of varlist apcs_cost ec_cost opa_cost {
 qui su imd_`cost' if imd==`i'
 local `x'_`cost' = r(mean)
 }
-file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost') _tab %10.2f (``x'_opa_cost') _n
+file write tablecontent %12.0f (``x'_apcs_cost') _tab %12.0f (``x'_ec_cost') _tab %12.0f (``x'_opa_cost') _n
 }
 }
 
@@ -59,7 +59,7 @@ foreach cost of varlist apcs_cost ec_cost opa_cost {
 qui su region_`cost' if region==`i'
 local `x'_`cost' = r(mean)
 }
-file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost') _tab %10.2f (``x'_opa_cost') _n
+file write tablecontent %12.0f (``x'_apcs_cost') _tab %12.0f (``x'_ec_cost') _tab %12.0f (``x'_opa_cost') _n
 }
 }
 
@@ -72,7 +72,7 @@ foreach cost of varlist apcs_cost ec_cost opa_cost {
 qui su urban_`cost' if urban==`i'
 local `x'_`cost' = r(mean)
 }
-file write tablecontent %10.2f (``x'_apcs_cost') _tab %10.2f (``x'_ec_cost') _tab %10.2f (``x'_opa_cost') _n
+file write tablecontent %12.0f (``x'_apcs_cost') _tab %12.0f (``x'_ec_cost') _tab %12.0f (``x'_opa_cost') _n
 }
 }
 
