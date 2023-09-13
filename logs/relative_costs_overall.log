@@ -1,0 +1,113 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\Repo\ckd-healthcare-use\logs/relative_costs_overall.log
+  log type:  text
+ opened on:  13 Sep 2023, 13:28:41
+
+. cap file close tablecontent
+
+. **Creates output file for each year (`dataset')
+. file open tablecontent using ./output/relative_costs_overall.csv, write text replace
+
+. **Column headings
+. file write tablecontent ("Date") _tab ("stratum") _tab ("apcs") _tab ("ec") _tab ("opa") _n
+
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2. file write tablecontent ("01/04/`x'") _tab ("all") _tab
+  3. use ./output/`x'_ckd_complete.dta, clear
+  4. qui safecount
+  5. local denom = round(r(N),5)
+  6. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  7. qui su overall_`cost'
+  8. local `x'_`cost' = (r(mean))/`denom'
+  9. }
+ 10. file write tablecontent %12.0f (``x'_apcs_cost') _tab %12.0f (``x'_ec_cost') _tab %12.0f (``x'_opa_cost') _n
+ 11. }
+
+. 
+. forvalues i=1/6 {
+  2. local label`i': label ethnicity `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. qui safecount if ethnicity==`i'
+  7. local denom = round(r(N),5)
+  8. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  9. qui su ethnicity_`cost' if ethnicity==`i'
+ 10. local `x'_`cost' = (r(mean))/`denom'
+ 11. }
+ 12. file write tablecontent %12.0f (``x'_apcs_cost') _tab %12.0f (``x'_ec_cost') _tab %12.0f (``x'_opa_cost') _n
+ 13. }
+ 14. }
+
+. 
+. forvalues i=1/5 {
+  2. local label`i': label imd `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. qui safecount if imd==`i'
+  7. local denom = round(r(N),5)
+  8. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  9. qui su imd_`cost' if imd==`i'
+ 10. local `x'_`cost' = (r(mean))/`denom'
+ 11. }
+ 12. file write tablecontent %12.0f (``x'_apcs_cost') _tab %12.0f (``x'_ec_cost') _tab %12.0f (``x'_opa_cost') _n
+ 13. }
+ 14. }
+
+. 
+. forvalues i=1/9 {
+  2. local label`i': label region `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. qui safecount if region==`i'
+  7. local denom = round(r(N),5)
+  8. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  9. qui su region_`cost' if region==`i'
+ 10. local `x'_`cost' = (r(mean))/`denom'
+ 11. }
+ 12. file write tablecontent %12.0f (``x'_apcs_cost') _tab %12.0f (``x'_ec_cost') _tab %12.0f (``x'_opa_cost') _n
+ 13. }
+ 14. }
+
+. 
+. forvalues i=0/1 {
+  2. local label`i': label urban `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. qui safecount if urban==`i'
+  7. local denom = round(r(N),5)
+  8. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  9. qui su urban_`cost' if urban==`i'
+ 10. local `x'_`cost' = (r(mean))/`denom'
+ 11. }
+ 12. file write tablecontent %12.0f (``x'_apcs_cost') _tab %12.0f (``x'_ec_cost') _tab %12.0f (``x'_opa_cost') _n
+ 13. }
+ 14. }
+
+. 
+. file close tablecontent
+
+. 
+end of do-file
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD7b20_000000.tmp"
+
+. sysdir set PLUS ./analysis/adofiles
+
+. sysdir set PERSONAL ./analysis/adofiles
+
+. pwd
+C:\Users\lsh1703468\Documents\Repo\ckd-healthcare-use
+
+. **Loops through datasets for each year 2017-2018 to 2022-2023
+. * `dataset' specifies year from project.yaml script
+. local dataset `1'
+
+. cap log close
