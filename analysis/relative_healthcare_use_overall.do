@@ -37,8 +37,6 @@ local `x'_`binary'_ll = ``x'_`binary'' / ``x'_`binary'_ef'
 file write tablecontent %10.2f (``x'_hospital_days') _tab %10.2f (``x'_hospital_days_ll') _tab %10.2f (``x'_hospital_days_ul') _tab %10.2f (``x'_critical_care_days') _tab %10.2f (``x'_critical_care_days_ll') _tab %10.2f (``x'_critical_care_days_ul') _tab %10.2f (``x'_emergency_days') _tab %10.2f (``x'_emergency_days_ll') _tab %10.2f (``x'_emergency_days_ul') _tab %10.2f (``x'_fistula_formation') _tab %10.2f (``x'_fistula_formation_ll') _tab %10.2f (``x'_fistula_formation_ul') _tab %10.2f (``x'_pd_insertion') _tab %10.2f (``x'_pd_insertion_ll') _tab %10.2f (``x'_pd_insertion_ul') _tab %10.2f (``x'_op_appts') _tab %10.2f (``x'_op_appts_ll') _tab %10.2f (``x'_op_appts_ul') _tab %10.2f (``x'_neph_appts') _tab %10.2f (``x'_neph_appts_ll') _tab %10.2f (``x'_neph_appts_ul') _tab %10.2f (``x'_tx_appts') _tab %10.2f (``x'_tx_appts_ll') _tab %10.2f (``x'_tx_appts_ul') _tab %10.2f (``x'_gp_interactions') _tab %10.2f (``x'_gp_interactions_ll') _tab %10.2f (``x'_gp_interactions_ul') _tab %10.2f (``x'_blood_pressure') _tab %10.2f (``x'_blood_pressure_ll') _tab %10.2f (``x'_blood_pressure_ul') _tab %10.2f (``x'_albuminuria') _tab %10.2f (``x'_albuminuria_ll') _tab %10.2f (``x'_albuminuria_ul') _tab %10.2f (``x'_creatinine') _tab %10.2f (``x'_creatinine_ll') _tab %10.2f (``x'_creatinine_ul') _n
 }
 
-********Need to fix below here
-
 forvalues i=1/6 {
 local label`i': label ethnicity `i'
 foreach x of local year {

@@ -1,0 +1,220 @@
+---
+title: "CKD population growth"
+output: html_document
+output_dir: "C:/Users/lsh1703468/Documents/Repo/ckd-healthcare-use/results"
+output_file: "ckd_baseline.html"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+
+## Import libraries
+library('tidyverse')
+library('kableExtra')
+library('cowplot')
+library('scales')
+```
+
+```{r}
+setwd("C:/Users/lsh1703468/Dropbox/PhD/health economics/figures")
+### Annual healthcare use (restricted to OPD, ED & GP)
+palette <- c("#3B9AB2", "#EBCC2A", "#E1AF00", "#B40F20", "#5DBB63", "#FF5733", "#FFC300", "#FF8C00", "#CD5C5C", "#FF1493", "#9370DB", "#6A5ACD")
+
+# Read in data
+d <- read.csv("ckd_baseline.csv", na.strings = "NA")
+d$Date <- as.Date(d$Date, format = "%d/%m/%Y")
+
+  # select variables of interest
+d1 <- d %>% select(Date, stratum, start_status, count)
+
+# Change date coding
+d1$Date_factor <- factor(d1$Date)
+d1$Date_factor <- recode_factor(d1$Date_factor, "2017-04-01" = "2016/17", "2018-04-01" = "2017/18", "2019-04-01" = "2018/19", "2020-04-01" = "2019/20", "2021-04-01" = "2020/21", "2022-04-01" = "2021/22") 
+```
+
+<b>[All CKD]{style="font-size: 20px;"}</b>
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_overall <- d1 %>%
+  filter(start_status == "Overall")
+
+d2_overall$stratum <- factor(d2_overall$stratum, levels = c("All"))
+
+plot_ymax = max(d2_overall$count, na.rm=T)*1.2
+
+# Generate plot
+ggplot(d2_overall %>% filter(!is.na(stratum)), aes(x = Date, y = count)) + 
+  geom_line(size = 0.8, se = FALSE) + 
+  ylab("Count") + 
+  xlab("Year") +
+  labs(colour = "Overall") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  scale_y_continuous(labels = scales::comma, limits = c(0, plot_ymax)) +
+  theme_bw() + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+<b>[eGFR >60 with albuminuria]{style="font-size: 20px;"}</b>
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_albuminuria <- d1 %>%
+  filter(start_status == "Albuminuria")
+
+d2_albuminuria$stratum <- factor(d2_overall$stratum, levels = c("All"))
+
+plot_ymax = max(d2_albuminuria$count, na.rm=T)*1.2
+
+# Generate plot
+ggplot(d2_albuminuria %>% filter(!is.na(stratum)), aes(x = Date, y = count)) + 
+  geom_line(size = 0.8, se = FALSE) + 
+  ylab("Count") + 
+  xlab("Year") +
+  labs(colour = "Albuminuria") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  scale_y_continuous(labels = scales::comma, limits = c(0, plot_ymax)) +
+  theme_bw() + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+<b>[CKD stage 3]{style="font-size: 20px;"}</b>
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_ckd3 <- d1 %>%
+  filter(start_status == "CKD stage 3")
+
+d2_ckd3$stratum <- factor(d2_ckd3$stratum, levels = c("All"))
+
+plot_ymax = max(d2_ckd3$count, na.rm=T)*1.2
+
+# Generate plot
+ggplot(d2_ckd3 %>% filter(!is.na(stratum)), aes(x = Date, y = count)) + 
+  geom_line(size = 0.8, se = FALSE) + 
+  ylab("Count") + 
+  xlab("Year") +
+  labs(colour = "CKD stage 3") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  scale_y_continuous(labels = scales::comma, limits = c(0, plot_ymax)) +
+  theme_bw() + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+<b>[CKD stage 4/5]{style="font-size: 20px;"}</b>
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_ckd4 <- d1 %>%
+  filter(start_status == "CKD stage 4/5")
+
+d2_ckd4$stratum <- factor(d2_ckd4$stratum, levels = c("All"))
+
+plot_ymax = max(d2_ckd4$count, na.rm=T)*1.2
+
+# Generate plot
+ggplot(d2_ckd4 %>% filter(!is.na(stratum)), aes(x = Date, y = count)) + 
+  geom_line(size = 0.8, se = FALSE) + 
+  ylab("Count") + 
+  xlab("Year") +
+  labs(colour = "CKD stage 4/5") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  scale_y_continuous(labels = scales::comma, limits = c(0, plot_ymax)) +
+  theme_bw() + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+<b>[Dialysis]{style="font-size: 20px;"}</b>
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_dialysis <- d1 %>%
+  filter(start_status == "Dialysis")
+
+d2_dialysis$stratum <- factor(d2_dialysis$stratum, levels = c("All"))
+
+plot_ymax = max(d2_dialysis$count, na.rm=T)*1.2
+
+# Generate plot
+ggplot(d2_dialysis %>% filter(!is.na(stratum)), aes(x = Date, y = count)) + 
+  geom_line(size = 0.8, se = FALSE) + 
+  ylab("Count") + 
+  xlab("Year") +
+  labs(colour = "Dialysis") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  scale_y_continuous(labels = scales::comma, limits = c(0, plot_ymax)) +
+  theme_bw() + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+
+<b>[Kidney transplant patients]{style="font-size: 20px;"}</b>
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_transplant <- d1 %>%
+  filter(start_status == "Transplant")
+
+d2_transplant$stratum <- factor(d2_transplant$stratum, levels = c("All"))
+
+plot_ymax = max(d2_transplant$count, na.rm=T)*1.2
+
+# Generate plot
+ggplot(d2_transplant %>% filter(!is.na(stratum)), aes(x = Date, y = count)) + 
+  geom_line(size = 0.8, se = FALSE) + 
+  ylab("Count") + 
+  xlab("Year") +
+  labs(colour = "Transplant") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  scale_y_continuous(labels = scales::comma, limits = c(0, plot_ymax)) +
+  theme_bw() + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
