@@ -40,7 +40,7 @@ qui su region_`aggregate' if region==`i'
 local `aggregate' = r(mean)
 }
 foreach cost of varlist apcs_cost ec_cost opa_cost {
-qui su overall_`cost'
+qui su region_`cost' if region==`i'
 local `cost' = r(mean)
 }
 local apcs_unit = `apcs_cost'/`hospital_days'
