@@ -1,0 +1,62 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/unit_cost_overall.log
+  log type:  text
+ opened on:  15 Sep 2023, 15:39:15
+
+. cap file close tablecontent
+
+. **Creates output file for each year (`dataset')
+. file open tablecontent using ./output/unit_cost_overall.csv, write text replace
+
+. **Column headings
+. *Ratios are per 100 patients
+. file write tablecontent ("Date") _tab ("stratum") _tab ("ip_daily") _tab ("ed_presentation") _tab ("opd_appointment") _n
+
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2. file write tablecontent ("01/04/`x'") _tab ("all") _tab
+  3. use ./output/`x'_ckd_complete.dta, clear
+  4. foreach aggregate of varlist hospital_days emergency_days op_appts {
+  5. qui su overall_`aggregate'
+  6. local `aggregate' = r(mean)
+  7. }
+  8. foreach cost of varlist apcs_cost ec_cost opa_cost {
+  9. qui su overall_`cost'
+ 10. local `cost' = r(mean)
+ 11. }
+ 12. local apcs_unit = `apcs_cost'/`hospital_days'
+ 13. local ec_unit = `ec_cost'/`emergency_days'
+ 14. local opa_unit = `opa_cost'/`op_appts'
+ 15. file write tablecontent %5.0f (`apcs_unit') _tab %5.0f (`ec_unit') _tab %5.0f (`opa_unit') _n
+ 16. }
+
+. 
+. forvalues i=1/9 {
+  2. local label`i': label region `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. foreach aggregate of varlist hospital_days emergency_days op_appts {
+  7. qui su region_`aggregate' if region==`i'
+  8. local `aggregate' = r(mean)
+  9. }
+ 10. foreach cost of varlist apcs_cost ec_cost opa_cost {
+ 11. qui su overall_`cost'
+ 12. local `cost' = r(mean)
+ 13. }
+ 14. local apcs_unit = `apcs_cost'/`hospital_days'
+ 15. local ec_unit = `ec_cost'/`emergency_days'
+ 16. local opa_unit = `opa_cost'/`op_appts'
+ 17. file write tablecontent %5.0f (`apcs_unit') _tab %5.0f (`ec_unit') _tab %5.0f (`opa_unit') _n
+ 18. }
+ 19. }
+
+. 
+. file close tablecontent
+
+. 
+end of do-file
+
