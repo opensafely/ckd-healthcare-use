@@ -16,12 +16,20 @@ library('scales')
 ```
 
 ```{r}
-setwd("C:/Users/lsh1703468/Dropbox/PhD/health economics/figures")
+#setwd("C:/Users/lsh1703468/Dropbox/PhD/health economics/figures")
 ### Annual healthcare use (restricted to OPD, ED & GP)
 palette <- c("#3B9AB2", "#EBCC2A", "#E1AF00", "#B40F20", "#5DBB63", "#FF5733", "#FFC300", "#FF8C00", "#CD5C5C", "#FF1493", "#9370DB", "#6A5ACD")
 
 # Read in data
-d <- read.csv("relative_healthcare_use_albuminuria.csv", sep = "\t", na.strings = "N/A")
+### Suggestion 1: Read in all the data together, while defining 'group'
+### group will become your vertical facet for each outcome plot
+### NB some groups lack certain columns, so you may need to add blank columns filled with NAs to get this to work
+d <- rbind(
+  read.csv("/Users/icrueprk/Desktop/V_data/relative_healthcare_use_overall.csv", 
+           sep = "\t", na.strings = "N/A") %>% mutate(group = "Overall"),
+  read.csv("/Users/icrueprk/Desktop/V_data/relative_healthcare_use_ckd4.csv", 
+           sep = "\t", na.strings = "N/A") %>% mutate(group = "CKD4")
+)
 d$Date <- as.Date(d$Date, format = "%d/%m/%Y")
 
 # Create stacked dataframe with 1 row per data point
@@ -37,7 +45,7 @@ d1 <- rbind(
   d %>% mutate(count = scr, outcome = "SCr measurements", rate = scr, ll = scr_ll, ul = scr_ul)
 ) %>%
   # select variables of interest
-  select(Date, stratum, outcome, rate, ll, ul)
+  select(Date, group, stratum, outcome, rate, ll, ul)
 
 # Change date coding
 d1$Date_factor <- factor(d1$Date)
@@ -53,11 +61,13 @@ d1$Date_factor <- recode_factor(d1$Date_factor, "2017-04-01" = "2016/17", "2018-
 d2_ip <- d1 %>%
   filter(outcome == "Inpatient days")
 
+d2_ip$group <- factor(d2_ip$group, levels = c("Overall", "CKD4"))
 d2_ip$stratum <- factor(d2_ip$stratum, levels = c("all"))
 
 # Generate plot
-ggplot(d2_ip, aes(x = Date, y = rate)) + 
+col1 = ggplot(d2_ip, aes(x = Date, y = rate)) + 
   geom_smooth(size = 0.8) + 
+  facet_grid(group~.) + ### EP comment: add vertical facet 
   ylab("Inpatient days/100 patients") + 
   xlab("Year") +
   geom_smooth(aes(ymin = ll, ymax = ul), alpha = 0.2) +
@@ -66,8 +76,10 @@ ggplot(d2_ip, aes(x = Date, y = rate)) +
   scale_fill_manual(values = palette, guide = FALSE) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
   theme_bw() + 
-  ylim(0, 500) +
-  theme(legend.position = "right", 
+  #ylim(0, 500) +
+  theme(strip.background = element_blank(),
+        strip.text = element_blank(), ### EP coment: add this line if you only want the facet labels on the right hand plot
+        legend.position = "right", 
         axis.text = element_text(size = 10), 
         axis.title = element_text(size = 10),
         legend.title = element_text(size = 10), 
@@ -83,21 +95,25 @@ Inpatient days by ethnicity
 d2_ip <- d1 %>%
   filter(outcome == "Inpatient days")
 
+d2_ip$group <- factor(d2_ip$group, levels = c("Overall", "CKD4"))
 d2_ip$stratum <- factor(d2_ip$stratum, levels = c("White", "South Asian", "Black", "Mixed", "Other", "Unknown"))
 
 # Generate plot
-ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+col2 = ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
   geom_line(size = 0.8) + 
-  ylab("Inpatient days/100 patients") + 
+  facet_grid(group~.) + ### EP comment: add vertical facet 
+  ylab(" ") + ### EP comment: y axis label removed for cols 2-5, but can be added back in
   xlab("Year") +
   labs(colour = "Inpatient days") +
   scale_colour_manual(values = palette) +
   scale_fill_manual(values = palette, guide = FALSE) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
   theme_bw() + 
-  ylim(0, 500) +
+  #ylim(0, 500) +
   labs(color = "Ethnicity") +  # Set the legend title to "Ethnicity"
-  theme(legend.position = "right", 
+  theme(strip.background = element_blank(),
+        strip.text = element_blank(), ### EP coment: add this line if you only want the facet labels on the right hand plot  
+        legend.position = "bottom", 
         axis.text = element_text(size = 10), 
         axis.title = element_text(size = 10),
         legend.title = element_text(size = 10), 
@@ -105,7 +121,6 @@ ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratu
         axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
         axis.ticks.x = element_blank()  # Remove x-axis ticks
   )
-
 ```
 
 Inpatient days by IMD
@@ -114,21 +129,25 @@ Inpatient days by IMD
 d2_ip <- d1 %>%
   filter(outcome == "Inpatient days")
 
+d2_ip$group <- factor(d2_ip$group, levels = c("Overall", "CKD4"))
 d2_ip$stratum <- factor(d2_ip$stratum, levels = c("1 Most deprived", "2", "3", "4", "5 Least deprived"))
 
 # Generate plot
-ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+col3 = ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
   geom_line(size = 0.8) + 
-  ylab("Inpatient days/100 patients") + 
+  facet_grid(group~.) + ### EP comment: add vertical facet 
+  ylab(" ") + ### EP comment: y axis label removed for cols 2-5, but can be added back in
   xlab("Year") +
   labs(colour = "Inpatient days") +
   scale_colour_manual(values = palette) +
   scale_fill_manual(values = palette, guide = FALSE) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
   theme_bw() + 
-  ylim(0, 500) +
+  #ylim(0, 500) +
   labs(color = "IMD") +  # Set the legend title to "Ethnicity"
-  theme(legend.position = "right", 
+  theme(strip.background = element_blank(),
+        strip.text = element_blank(), ### EP coment: add this line if you only want the facet labels on the right hand plot  
+        legend.position = "bottom", 
         axis.text = element_text(size = 10), 
         axis.title = element_text(size = 10),
         legend.title = element_text(size = 10), 
@@ -145,21 +164,25 @@ Inpatient days by region
 d2_ip <- d1 %>%
   filter(outcome == "Inpatient days")
 
+d2_ip$group <- factor(d2_ip$group, levels = c("Overall", "CKD4"))
 d2_ip$stratum <- factor(d2_ip$stratum, levels = c("East Midlands", "East", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"))
 
 # Generate plot
-ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+col4 = ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
   geom_line(size = 0.8) + 
-  ylab("Inpatient days/100 patients") + 
+  facet_grid(group~.) + ### EP comment: add vertical facet 
+  ylab(" ") + ### EP comment: y axis label removed for cols 2-5, but can be added back in
   xlab("Year") +
   labs(colour = "Inpatient days") +
   scale_colour_manual(values = palette) +
   scale_fill_manual(values = palette, guide = FALSE) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
   theme_bw() + 
-  ylim(0, 500) +
+  #ylim(0, 500) +
   labs(color = "Region") +  # Set the legend title to "Ethnicity"
-  theme(legend.position = "right", 
+  theme(strip.background = element_blank(),
+        strip.text = element_blank(), ### EP coment: add this line if you only want the facet labels on the right hand plot  
+        legend.position = "bottom", 
         axis.text = element_text(size = 10), 
         axis.title = element_text(size = 10),
         legend.title = element_text(size = 10), 
@@ -167,7 +190,6 @@ ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratu
         axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
         axis.ticks.x = element_blank()  # Remove x-axis ticks
   )
-
 ```
 
 Inpatient days by rural/urban
@@ -176,21 +198,24 @@ Inpatient days by rural/urban
 d2_ip <- d1 %>%
   filter(outcome == "Inpatient days")
 
+d2_ip$group <- factor(d2_ip$group, levels = c("Overall", "CKD4"))
 d2_ip$stratum <- factor(d2_ip$stratum, levels = c("Rural", "Urban"))
 
 # Generate plot
-ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+col5 = ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
   geom_line(size = 0.8) + 
-  ylab("Inpatient days/100 patients") + 
+  facet_grid(group~.) + ### EP comment: add vertical facet 
+  ylab(" ") + ### EP comment: y axis label removed for cols 2-5, but can be added back in
   xlab("Year") +
   labs(colour = "Inpatient days") +
   scale_colour_manual(values = palette) +
   scale_fill_manual(values = palette, guide = FALSE) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
   theme_bw() + 
-  ylim(0, 500) +
+  #ylim(0, 500) +
   labs(color = "Rural/urban") +  # Set the legend title to "Ethnicity"
-  theme(legend.position = "right", 
+  theme(strip.background = element_blank(),
+        legend.position = "bottom", 
         axis.text = element_text(size = 10), 
         axis.title = element_text(size = 10),
         legend.title = element_text(size = 10), 
@@ -198,7 +223,13 @@ ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratu
         axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
         axis.ticks.x = element_blank()  # Remove x-axis ticks
   )
+```
 
+### Full plot
+```{r, fig.width=8, fig.height=3, message=FALSE}
+### EP comment - adjust width and height above as needed
+plot_grid(col1, col2, col3, col4, col5, 
+          ncol=5, align="h", axis="tb")
 ```
 
 <b>[ICU days]{style="font-size: 20px;"}</b>
