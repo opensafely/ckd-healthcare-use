@@ -1,0 +1,2465 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/age_death.log
+  log type:  text
+ opened on:  20 Sep 2023, 18:36:51
+
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./output/age_death.csv, write text replace
+
+. 
+. file write tablecontent ("stratum") _tab ("start_status") _tab ("median_2017") _tab ("median_2018") _tab ("median_2019") _tab ("median_2020") _tab ("median_2021") _tab ("median_2022") _tab ("mode_2017") _tab ("mod
+> e_2018") _tab ("mode_2019") _tab ("mode_2020") _tab ("mode_2021") _tab ("mode_2022") _n
+
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2. use ./output/`x'_ckd_complete.dta, clear
+  3. drop _merge
+  4. merge 1:1 patient_id using ./output/`x'_nockd_complete
+  5. drop if ckd_progression!=6
+  6. 
+. bysort ckd_group: egen mode_age = mode(age), minmode
+  7. 
+. forvalues i=0/5{
+  8. qui su age if ckd_group==`i', d
+  9. local `x'_q2_`i' = r(p50)
+ 10. local `x'_q1_`i' = r(p25)
+ 11. local `x'_q3_`i' = r(p75)
+ 12. qui su mode_age if ckd_group==`i'
+ 13. local `x'_mode_`i' = r(mean)
+ 14. } 
+ 15. }
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,932 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,811 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,961 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,899 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,934 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,854 observations deleted)
+
+. 
+. file write tablecontent ("All") _tab ("No CKD") _tab (`2017_q2_0') (" (") (`2017_q1_0') ("-") (`2017_q3_0') (")") _tab (`2018_q2_0') (" (") (`2018_q1_0') ("-") (`2018_q3_0') (")") _tab (`2019_q2_0') (" (") (`2019_
+> q1_0') ("-") (`2019_q3_0') (")") _tab (`2020_q2_0') (" (") (`2020_q1_0') ("-") (`2020_q3_0') (")") _tab (`2021_q2_0') (" (") (`2021_q1_0') ("-") (`2021_q3_0') (")") _tab (`2022_q2_0') (" (") (`2022_q1_0') ("-") (`
+> 2022_q3_0') (")") _tab (`2017_mode_0') _tab (`2018_mode_0') _tab (`2019_mode_0') _tab (`2020_mode_0') _tab (`2021_mode_0') _tab (`2022_mode_0') _n
+
+. file write tablecontent ("All") _tab ("Albuminuria") _tab (`2017_q2_1') (" (") (`2017_q1_1') ("-") (`2017_q3_1') (")") _tab (`2018_q2_1') (" (") (`2018_q1_1') ("-") (`2018_q3_1') (")") _tab (`2019_q2_1') (" (") (`
+> 2019_q1_1') ("-") (`2019_q3_1') (")") _tab (`2020_q2_1') (" (") (`2020_q1_1') ("-") (`2020_q3_1') (")") _tab (`2021_q2_1') (" (") (`2021_q1_1') ("-") (`2021_q3_1') (")") _tab (`2022_q2_1') (" (") (`2022_q1_1') ("-
+> ") (`2022_q3_1') (")") _tab (`2017_mode_1') _tab (`2018_mode_1') _tab (`2019_mode_1') _tab (`2020_mode_1') _tab (`2021_mode_1') _tab (`2022_mode_1') _n
+
+. file write tablecontent ("All") _tab ("CKD stage 3") _tab (`2017_q2_2') (" (") (`2017_q1_2') ("-") (`2017_q3_2') (")") _tab (`2018_q2_2') (" (") (`2018_q1_2') ("-") (`2018_q3_2') (")") _tab (`2019_q2_2') (" (") (`
+> 2019_q1_2') ("-") (`2019_q3_2') (")") _tab (`2020_q2_2') (" (") (`2020_q1_2') ("-") (`2020_q3_2') (")") _tab (`2021_q2_2') (" (") (`2021_q1_2') ("-") (`2021_q3_2') (")") _tab (`2022_q2_2') (" (") (`2022_q1_2') ("-
+> ") (`2022_q3_2') (")") _tab (`2017_mode_2') _tab (`2018_mode_2') _tab (`2019_mode_2') _tab (`2020_mode_2') _tab (`2021_mode_2') _tab (`2022_mode_2') _n
+
+. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab (`2017_q2_3') (" (") (`2017_q1_3') ("-") (`2017_q3_3') (")") _tab (`2018_q2_3') (" (") (`2018_q1_3') ("-") (`2018_q3_3') (")") _tab (`2019_q2_3') (" (") 
+> (`2019_q1_3') ("-") (`2019_q3_3') (")") _tab (`2020_q2_3') (" (") (`2020_q1_3') ("-") (`2020_q3_3') (")") _tab (`2021_q2_3') (" (") (`2021_q1_3') ("-") (`2021_q3_3') (")") _tab (`2022_q2_3') (" (") (`2022_q1_3') (
+> "-") (`2022_q3_3') (")") _tab (`2017_mode_3') _tab (`2018_mode_3') _tab (`2019_mode_3') _tab (`2020_mode_3') _tab (`2021_mode_3') _tab (`2022_mode_3') _n
+
+. file write tablecontent ("All") _tab ("Dialysis") _tab (`2017_q2_4') (" (") (`2017_q1_4') ("-") (`2017_q3_4') (")") _tab (`2018_q2_4') (" (") (`2018_q1_4') ("-") (`2018_q3_4') (")") _tab (`2019_q2_4') (" (") (`201
+> 9_q1_4') ("-") (`2019_q3_4') (")") _tab (`2020_q2_4') (" (") (`2020_q1_4') ("-") (`2020_q3_4') (")") _tab (`2021_q2_4') (" (") (`2021_q1_4') ("-") (`2021_q3_4') (")") _tab (`2022_q2_4') (" (") (`2022_q1_4') ("-") 
+> (`2022_q3_4') (")") _tab (`2017_mode_4') _tab (`2018_mode_4') _tab (`2019_mode_4') _tab (`2020_mode_4') _tab (`2021_mode_4') _tab (`2022_mode_4') _n
+
+. file write tablecontent ("All") _tab ("Transplant") _tab (`2017_q2_5') (" (") (`2017_q1_5') ("-") (`2017_q3_5') (")") _tab (`2018_q2_5') (" (") (`2018_q1_5') ("-") (`2018_q3_5') (")") _tab (`2019_q2_5') (" (") (`2
+> 019_q1_5') ("-") (`2019_q3_5') (")") _tab (`2020_q2_5') (" (") (`2020_q1_5') ("-") (`2020_q3_5') (")") _tab (`2021_q2_5') (" (") (`2021_q1_5') ("-") (`2021_q3_5') (")") _tab (`2022_q2_5') (" (") (`2022_q1_5') ("-"
+> ) (`2022_q3_5') (")") _tab (`2017_mode_5') _tab (`2018_mode_5') _tab (`2019_mode_5') _tab (`2020_mode_5') _tab (`2021_mode_5') _tab (`2022_mode_5') _n
+
+. 
+. *Ethnicity
+. forvalues j=1/6 {
+  2. local label`j': label ethnicity `j'
+  3. foreach x of local year {
+  4. use ./output/`x'_ckd_complete.dta, clear
+  5. drop _merge
+  6. merge 1:1 patient_id using ./output/`x'_nockd_complete
+  7. drop if ckd_progression!=6 & ethnicity!=`j'
+  8. bysort ckd_group: egen mode_age = mode(age), minmode
+  9. forvalues i=0/5{
+ 10. qui su age if ckd_group==`i', d
+ 11. local `x'_q2_`i'_`j' = r(p50)
+ 12. local `x'_q1_`i'_`j' = r(p25)
+ 13. local `x'_q3_`i'_`j' = r(p75)
+ 14. qui su mode_age if ckd_group==`i'
+ 15. local `x'_mode_`i'_`j' = r(mean)
+ 16. }
+ 17. }
+ 18. file write tablecontent ("`label`j''") _tab ("No CKD") _tab (`2017_q2_0_`j'') (" (") (`2017_q1_0_`j'') ("-") (`2017_q3_0_`j'') (")") _tab (`2018_q2_0_`j'') (" (") (`2018_q1_0_`j'') ("-") (`2018_q3_0_`j'') (")")
+>  _tab (`2019_q2_0_`j'') (" (") (`2019_q1_0_`j'') ("-") (`2019_q3_0_`j'') (")") _tab (`2020_q2_0_`j'') (" (") (`2020_q1_0_`j'') ("-") (`2020_q3_0_`j'') (")") _tab (`2021_q2_0_`j'') (" (") (`2021_q1_0_`j'') ("-") (`
+> 2021_q3_0_`j'') (")") _tab (`2022_q2_0_`j'') (" (") (`2022_q1_0_`j'') ("-") (`2022_q3_0_`j'') (")") _tab (`2017_mode_0_`j'') _tab (`2018_mode_0_`j'') _tab (`2019_mode_0_`j'') _tab (`2020_mode_0_`j'') _tab (`2021_m
+> ode_0_`j'') _tab (`2022_mode_0_`j'') _n
+ 19. file write tablecontent ("`label`j''") _tab ("Albuminuria") _tab (`2017_q2_1_`j'') (" (") (`2017_q1_1_`j'') ("-") (`2017_q3_1_`j'') (")") _tab (`2018_q2_1_`j'') (" (") (`2018_q1_1_`j'') ("-") (`2018_q3_1_`j'') 
+> (")") _tab (`2019_q2_1_`j'') (" (") (`2019_q1_1_`j'') ("-") (`2019_q3_1_`j'') (")") _tab (`2020_q2_1_`j'') (" (") (`2020_q1_1_`j'') ("-") (`2020_q3_1_`j'') (")") _tab (`2021_q2_1_`j'') (" (") (`2021_q1_1_`j'') ("-
+> ") (`2021_q3_1_`j'') (")") _tab (`2022_q2_1_`j'') (" (") (`2022_q1_1_`j'') ("-") (`2022_q3_1_`j'') (")") _tab (`2017_mode_1_`j'') _tab (`2018_mode_1_`j'') _tab (`2019_mode_1_`j'') _tab (`2020_mode_1_`j'') _tab (`2
+> 021_mode_1_`j'') _tab (`2022_mode_1_`j'') _n
+ 20. file write tablecontent ("`label`j''") _tab ("CKD stage 3") _tab (`2017_q2_2_`j'') (" (") (`2017_q1_2_`j'') ("-") (`2017_q3_2_`j'') (")") _tab (`2018_q2_2_`j'') (" (") (`2018_q1_2_`j'') ("-") (`2018_q3_2_`j'') 
+> (")") _tab (`2019_q2_2_`j'') (" (") (`2019_q1_2_`j'') ("-") (`2019_q3_2_`j'') (")") _tab (`2020_q2_2_`j'') (" (") (`2020_q1_2_`j'') ("-") (`2020_q3_2_`j'') (")") _tab (`2021_q2_2_`j'') (" (") (`2021_q1_2_`j'') ("-
+> ") (`2021_q3_2_`j'') (")") _tab (`2022_q2_2_`j'') (" (") (`2022_q1_2_`j'') ("-") (`2022_q3_2_`j'') (")") _tab (`2017_mode_2_`j'') _tab (`2018_mode_2_`j'') _tab (`2019_mode_2_`j'') _tab (`2020_mode_2_`j'') _tab (`2
+> 021_mode_2_`j'') _tab (`2022_mode_2_`j'') _n
+ 21. file write tablecontent ("`label`j''") _tab ("CKD stage 4/5") _tab (`2017_q2_3_`j'') (" (") (`2017_q1_3_`j'') ("-") (`2017_q3_3_`j'') (")") _tab (`2018_q2_3_`j'') (" (") (`2018_q1_3_`j'') ("-") (`2018_q3_3_`j''
+> ) (")") _tab (`2019_q2_3_`j'') (" (") (`2019_q1_3_`j'') ("-") (`2019_q3_3_`j'') (")") _tab (`2020_q2_3_`j'') (" (") (`2020_q1_3_`j'') ("-") (`2020_q3_3_`j'') (")") _tab (`2021_q2_3_`j'') (" (") (`2021_q1_3_`j'') (
+> "-") (`2021_q3_3_`j'') (")") _tab (`2022_q2_3_`j'') (" (") (`2022_q1_3_`j'') ("-") (`2022_q3_3_`j'') (")") _tab (`2017_mode_3_`j'') _tab (`2018_mode_3_`j'') _tab (`2019_mode_3_`j'') _tab (`2020_mode_3_`j'') _tab (
+> `2021_mode_3_`j'') _tab (`2022_mode_3_`j'') _n
+ 22. file write tablecontent ("`label`j''") _tab ("Dialysis") _tab (`2017_q2_4_`j'') (" (") (`2017_q1_4_`j'') ("-") (`2017_q3_4_`j'') (")") _tab (`2018_q2_4_`j'') (" (") (`2018_q1_4_`j'') ("-") (`2018_q3_4_`j'') (")
+> ") _tab (`2019_q2_4_`j'') (" (") (`2019_q1_4_`j'') ("-") (`2019_q3_4_`j'') (")") _tab (`2020_q2_4_`j'') (" (") (`2020_q1_4_`j'') ("-") (`2020_q3_4_`j'') (")") _tab (`2021_q2_4_`j'') (" (") (`2021_q1_4_`j'') ("-") 
+> (`2021_q3_4_`j'') (")") _tab (`2022_q2_4_`j'') (" (") (`2022_q1_4_`j'') ("-") (`2022_q3_4_`j'') (")") _tab (`2017_mode_4_`j'') _tab (`2018_mode_4_`j'') _tab (`2019_mode_4_`j'') _tab (`2020_mode_4_`j'') _tab (`2021
+> _mode_4_`j'') _tab (`2022_mode_4_`j'') _n
+ 23. file write tablecontent ("`label`j''") _tab ("Transplant") _tab (`2017_q2_5_`j'') (" (") (`2017_q1_5_`j'') ("-") (`2017_q3_5_`j'') (")") _tab (`2018_q2_5_`j'') (" (") (`2018_q1_5_`j'') ("-") (`2018_q3_5_`j'') (
+> ")") _tab (`2019_q2_5_`j'') (" (") (`2019_q1_5_`j'') ("-") (`2019_q3_5_`j'') (")") _tab (`2020_q2_5_`j'') (" (") (`2020_q1_5_`j'') ("-") (`2020_q3_5_`j'') (")") _tab (`2021_q2_5_`j'') (" (") (`2021_q1_5_`j'') ("-"
+> ) (`2021_q3_5_`j'') (")") _tab (`2022_q2_5_`j'') (" (") (`2022_q1_5_`j'') ("-") (`2022_q3_5_`j'') (")") _tab (`2017_mode_5_`j'') _tab (`2018_mode_5_`j'') _tab (`2019_mode_5_`j'') _tab (`2020_mode_5_`j'') _tab (`20
+> 21_mode_5_`j'') _tab (`2022_mode_5_`j'') _n
+ 24. }
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,186 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,134 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,167 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,174 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,201 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,157 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,806 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,714 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,848 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,772 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,824 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,747 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,809 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,723 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,859 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,787 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,840 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,733 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,819 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,697 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,864 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,782 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,812 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,745 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,816 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,703 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,866 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,794 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,819 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,761 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,224 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,084 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,201 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,186 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,174 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,127 observations deleted)
+
+. 
+. *IMD
+. forvalues j=1/5 {
+  2. local label`j': label imd `j'
+  3. foreach x of local year {
+  4. use ./output/`x'_ckd_complete.dta, clear
+  5. drop _merge
+  6. merge 1:1 patient_id using ./output/`x'_nockd_complete
+  7. drop if ckd_progression!=6 & imd!=`j'
+  8. bysort ckd_group: egen mode_age = mode(age), minmode
+  9. forvalues i=0/5{
+ 10. qui su age if ckd_group==`i', d
+ 11. local `x'_q2_`i'_`j' = r(p50)
+ 12. local `x'_q1_`i'_`j' = r(p25)
+ 13. local `x'_q3_`i'_`j' = r(p75)
+ 14. qui su mode_age if ckd_group==`i'
+ 15. local `x'_mode_`i'_`j' = r(mean)
+ 16. }
+ 17. }
+ 18. file write tablecontent ("`label`j''") _tab ("No CKD") _tab (`2017_q2_0_`j'') (" (") (`2017_q1_0_`j'') ("-") (`2017_q3_0_`j'') (")") _tab (`2018_q2_0_`j'') (" (") (`2018_q1_0_`j'') ("-") (`2018_q3_0_`j'') (")")
+>  _tab (`2019_q2_0_`j'') (" (") (`2019_q1_0_`j'') ("-") (`2019_q3_0_`j'') (")") _tab (`2020_q2_0_`j'') (" (") (`2020_q1_0_`j'') ("-") (`2020_q3_0_`j'') (")") _tab (`2021_q2_0_`j'') (" (") (`2021_q1_0_`j'') ("-") (`
+> 2021_q3_0_`j'') (")") _tab (`2022_q2_0_`j'') (" (") (`2022_q1_0_`j'') ("-") (`2022_q3_0_`j'') (")") _tab (`2017_mode_0_`j'') _tab (`2018_mode_0_`j'') _tab (`2019_mode_0_`j'') _tab (`2020_mode_0_`j'') _tab (`2021_m
+> ode_0_`j'') _tab (`2022_mode_0_`j'') _n
+ 19. file write tablecontent ("`label`j''") _tab ("Albuminuria") _tab (`2017_q2_1_`j'') (" (") (`2017_q1_1_`j'') ("-") (`2017_q3_1_`j'') (")") _tab (`2018_q2_1_`j'') (" (") (`2018_q1_1_`j'') ("-") (`2018_q3_1_`j'') 
+> (")") _tab (`2019_q2_1_`j'') (" (") (`2019_q1_1_`j'') ("-") (`2019_q3_1_`j'') (")") _tab (`2020_q2_1_`j'') (" (") (`2020_q1_1_`j'') ("-") (`2020_q3_1_`j'') (")") _tab (`2021_q2_1_`j'') (" (") (`2021_q1_1_`j'') ("-
+> ") (`2021_q3_1_`j'') (")") _tab (`2022_q2_1_`j'') (" (") (`2022_q1_1_`j'') ("-") (`2022_q3_1_`j'') (")") _tab (`2017_mode_1_`j'') _tab (`2018_mode_1_`j'') _tab (`2019_mode_1_`j'') _tab (`2020_mode_1_`j'') _tab (`2
+> 021_mode_1_`j'') _tab (`2022_mode_1_`j'') _n
+ 20. file write tablecontent ("`label`j''") _tab ("CKD stage 3") _tab (`2017_q2_2_`j'') (" (") (`2017_q1_2_`j'') ("-") (`2017_q3_2_`j'') (")") _tab (`2018_q2_2_`j'') (" (") (`2018_q1_2_`j'') ("-") (`2018_q3_2_`j'') 
+> (")") _tab (`2019_q2_2_`j'') (" (") (`2019_q1_2_`j'') ("-") (`2019_q3_2_`j'') (")") _tab (`2020_q2_2_`j'') (" (") (`2020_q1_2_`j'') ("-") (`2020_q3_2_`j'') (")") _tab (`2021_q2_2_`j'') (" (") (`2021_q1_2_`j'') ("-
+> ") (`2021_q3_2_`j'') (")") _tab (`2022_q2_2_`j'') (" (") (`2022_q1_2_`j'') ("-") (`2022_q3_2_`j'') (")") _tab (`2017_mode_2_`j'') _tab (`2018_mode_2_`j'') _tab (`2019_mode_2_`j'') _tab (`2020_mode_2_`j'') _tab (`2
+> 021_mode_2_`j'') _tab (`2022_mode_2_`j'') _n
+ 21. file write tablecontent ("`label`j''") _tab ("CKD stage 4/5") _tab (`2017_q2_3_`j'') (" (") (`2017_q1_3_`j'') ("-") (`2017_q3_3_`j'') (")") _tab (`2018_q2_3_`j'') (" (") (`2018_q1_3_`j'') ("-") (`2018_q3_3_`j''
+> ) (")") _tab (`2019_q2_3_`j'') (" (") (`2019_q1_3_`j'') ("-") (`2019_q3_3_`j'') (")") _tab (`2020_q2_3_`j'') (" (") (`2020_q1_3_`j'') ("-") (`2020_q3_3_`j'') (")") _tab (`2021_q2_3_`j'') (" (") (`2021_q1_3_`j'') (
+> "-") (`2021_q3_3_`j'') (")") _tab (`2022_q2_3_`j'') (" (") (`2022_q1_3_`j'') ("-") (`2022_q3_3_`j'') (")") _tab (`2017_mode_3_`j'') _tab (`2018_mode_3_`j'') _tab (`2019_mode_3_`j'') _tab (`2020_mode_3_`j'') _tab (
+> `2021_mode_3_`j'') _tab (`2022_mode_3_`j'') _n
+ 22. file write tablecontent ("`label`j''") _tab ("Dialysis") _tab (`2017_q2_4_`j'') (" (") (`2017_q1_4_`j'') ("-") (`2017_q3_4_`j'') (")") _tab (`2018_q2_4_`j'') (" (") (`2018_q1_4_`j'') ("-") (`2018_q3_4_`j'') (")
+> ") _tab (`2019_q2_4_`j'') (" (") (`2019_q1_4_`j'') ("-") (`2019_q3_4_`j'') (")") _tab (`2020_q2_4_`j'') (" (") (`2020_q1_4_`j'') ("-") (`2020_q3_4_`j'') (")") _tab (`2021_q2_4_`j'') (" (") (`2021_q1_4_`j'') ("-") 
+> (`2021_q3_4_`j'') (")") _tab (`2022_q2_4_`j'') (" (") (`2022_q1_4_`j'') ("-") (`2022_q3_4_`j'') (")") _tab (`2017_mode_4_`j'') _tab (`2018_mode_4_`j'') _tab (`2019_mode_4_`j'') _tab (`2020_mode_4_`j'') _tab (`2021
+> _mode_4_`j'') _tab (`2022_mode_4_`j'') _n
+ 23. file write tablecontent ("`label`j''") _tab ("Transplant") _tab (`2017_q2_5_`j'') (" (") (`2017_q1_5_`j'') ("-") (`2017_q3_5_`j'') (")") _tab (`2018_q2_5_`j'') (" (") (`2018_q1_5_`j'') ("-") (`2018_q3_5_`j'') (
+> ")") _tab (`2019_q2_5_`j'') (" (") (`2019_q1_5_`j'') ("-") (`2019_q3_5_`j'') (")") _tab (`2020_q2_5_`j'') (" (") (`2020_q1_5_`j'') ("-") (`2020_q3_5_`j'') (")") _tab (`2021_q2_5_`j'') (" (") (`2021_q1_5_`j'') ("-"
+> ) (`2021_q3_5_`j'') (")") _tab (`2022_q2_5_`j'') (" (") (`2022_q1_5_`j'') ("-") (`2022_q3_5_`j'') (")") _tab (`2017_mode_5_`j'') _tab (`2018_mode_5_`j'') _tab (`2019_mode_5_`j'') _tab (`2020_mode_5_`j'') _tab (`20
+> 21_mode_5_`j'') _tab (`2022_mode_5_`j'') _n
+ 24. }
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,356 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,242 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,352 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,332 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,357 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,260 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,368 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,274 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,399 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,258 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,346 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,281 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,319 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,272 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,360 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,318 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,329 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,295 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,353 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,209 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,392 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,358 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,332 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,322 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,332 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,247 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,341 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,330 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,372 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,258 observations deleted)
+
+. 
+. *Region
+. forvalues j=1/9 {
+  2. local label`j': label region `j'
+  3. foreach x of local year {
+  4. use ./output/`x'_ckd_complete.dta, clear
+  5. drop _merge
+  6. merge 1:1 patient_id using ./output/`x'_nockd_complete
+  7. drop if ckd_progression!=6 & region!=`j'
+  8. bysort ckd_group: egen mode_age = mode(age), minmode
+  9. forvalues i=0/5{
+ 10. qui su age if ckd_group==`i', d
+ 11. local `x'_q2_`i'_`j' = r(p50)
+ 12. local `x'_q1_`i'_`j' = r(p25)
+ 13. local `x'_q3_`i'_`j' = r(p75)
+ 14. qui su mode_age if ckd_group==`i'
+ 15. local `x'_mode_`i'_`j' = r(mean)
+ 16. }
+ 17. }
+ 18. file write tablecontent ("`label`j''") _tab ("No CKD") _tab (`2017_q2_0_`j'') (" (") (`2017_q1_0_`j'') ("-") (`2017_q3_0_`j'') (")") _tab (`2018_q2_0_`j'') (" (") (`2018_q1_0_`j'') ("-") (`2018_q3_0_`j'') (")")
+>  _tab (`2019_q2_0_`j'') (" (") (`2019_q1_0_`j'') ("-") (`2019_q3_0_`j'') (")") _tab (`2020_q2_0_`j'') (" (") (`2020_q1_0_`j'') ("-") (`2020_q3_0_`j'') (")") _tab (`2021_q2_0_`j'') (" (") (`2021_q1_0_`j'') ("-") (`
+> 2021_q3_0_`j'') (")") _tab (`2022_q2_0_`j'') (" (") (`2022_q1_0_`j'') ("-") (`2022_q3_0_`j'') (")") _tab (`2017_mode_0_`j'') _tab (`2018_mode_0_`j'') _tab (`2019_mode_0_`j'') _tab (`2020_mode_0_`j'') _tab (`2021_m
+> ode_0_`j'') _tab (`2022_mode_0_`j'') _n
+ 19. file write tablecontent ("`label`j''") _tab ("Albuminuria") _tab (`2017_q2_1_`j'') (" (") (`2017_q1_1_`j'') ("-") (`2017_q3_1_`j'') (")") _tab (`2018_q2_1_`j'') (" (") (`2018_q1_1_`j'') ("-") (`2018_q3_1_`j'') 
+> (")") _tab (`2019_q2_1_`j'') (" (") (`2019_q1_1_`j'') ("-") (`2019_q3_1_`j'') (")") _tab (`2020_q2_1_`j'') (" (") (`2020_q1_1_`j'') ("-") (`2020_q3_1_`j'') (")") _tab (`2021_q2_1_`j'') (" (") (`2021_q1_1_`j'') ("-
+> ") (`2021_q3_1_`j'') (")") _tab (`2022_q2_1_`j'') (" (") (`2022_q1_1_`j'') ("-") (`2022_q3_1_`j'') (")") _tab (`2017_mode_1_`j'') _tab (`2018_mode_1_`j'') _tab (`2019_mode_1_`j'') _tab (`2020_mode_1_`j'') _tab (`2
+> 021_mode_1_`j'') _tab (`2022_mode_1_`j'') _n
+ 20. file write tablecontent ("`label`j''") _tab ("CKD stage 3") _tab (`2017_q2_2_`j'') (" (") (`2017_q1_2_`j'') ("-") (`2017_q3_2_`j'') (")") _tab (`2018_q2_2_`j'') (" (") (`2018_q1_2_`j'') ("-") (`2018_q3_2_`j'') 
+> (")") _tab (`2019_q2_2_`j'') (" (") (`2019_q1_2_`j'') ("-") (`2019_q3_2_`j'') (")") _tab (`2020_q2_2_`j'') (" (") (`2020_q1_2_`j'') ("-") (`2020_q3_2_`j'') (")") _tab (`2021_q2_2_`j'') (" (") (`2021_q1_2_`j'') ("-
+> ") (`2021_q3_2_`j'') (")") _tab (`2022_q2_2_`j'') (" (") (`2022_q1_2_`j'') ("-") (`2022_q3_2_`j'') (")") _tab (`2017_mode_2_`j'') _tab (`2018_mode_2_`j'') _tab (`2019_mode_2_`j'') _tab (`2020_mode_2_`j'') _tab (`2
+> 021_mode_2_`j'') _tab (`2022_mode_2_`j'') _n
+ 21. file write tablecontent ("`label`j''") _tab ("CKD stage 4/5") _tab (`2017_q2_3_`j'') (" (") (`2017_q1_3_`j'') ("-") (`2017_q3_3_`j'') (")") _tab (`2018_q2_3_`j'') (" (") (`2018_q1_3_`j'') ("-") (`2018_q3_3_`j''
+> ) (")") _tab (`2019_q2_3_`j'') (" (") (`2019_q1_3_`j'') ("-") (`2019_q3_3_`j'') (")") _tab (`2020_q2_3_`j'') (" (") (`2020_q1_3_`j'') ("-") (`2020_q3_3_`j'') (")") _tab (`2021_q2_3_`j'') (" (") (`2021_q1_3_`j'') (
+> "-") (`2021_q3_3_`j'') (")") _tab (`2022_q2_3_`j'') (" (") (`2022_q1_3_`j'') ("-") (`2022_q3_3_`j'') (")") _tab (`2017_mode_3_`j'') _tab (`2018_mode_3_`j'') _tab (`2019_mode_3_`j'') _tab (`2020_mode_3_`j'') _tab (
+> `2021_mode_3_`j'') _tab (`2022_mode_3_`j'') _n
+ 22. file write tablecontent ("`label`j''") _tab ("Dialysis") _tab (`2017_q2_4_`j'') (" (") (`2017_q1_4_`j'') ("-") (`2017_q3_4_`j'') (")") _tab (`2018_q2_4_`j'') (" (") (`2018_q1_4_`j'') ("-") (`2018_q3_4_`j'') (")
+> ") _tab (`2019_q2_4_`j'') (" (") (`2019_q1_4_`j'') ("-") (`2019_q3_4_`j'') (")") _tab (`2020_q2_4_`j'') (" (") (`2020_q1_4_`j'') ("-") (`2020_q3_4_`j'') (")") _tab (`2021_q2_4_`j'') (" (") (`2021_q1_4_`j'') ("-") 
+> (`2021_q3_4_`j'') (")") _tab (`2022_q2_4_`j'') (" (") (`2022_q1_4_`j'') ("-") (`2022_q3_4_`j'') (")") _tab (`2017_mode_4_`j'') _tab (`2018_mode_4_`j'') _tab (`2019_mode_4_`j'') _tab (`2020_mode_4_`j'') _tab (`2021
+> _mode_4_`j'') _tab (`2022_mode_4_`j'') _n
+ 23. file write tablecontent ("`label`j''") _tab ("Transplant") _tab (`2017_q2_5_`j'') (" (") (`2017_q1_5_`j'') ("-") (`2017_q3_5_`j'') (")") _tab (`2018_q2_5_`j'') (" (") (`2018_q1_5_`j'') ("-") (`2018_q3_5_`j'') (
+> ")") _tab (`2019_q2_5_`j'') (" (") (`2019_q1_5_`j'') ("-") (`2019_q3_5_`j'') (")") _tab (`2020_q2_5_`j'') (" (") (`2020_q1_5_`j'') ("-") (`2020_q3_5_`j'') (")") _tab (`2021_q2_5_`j'') (" (") (`2021_q1_5_`j'') ("-"
+> ) (`2021_q3_5_`j'') (")") _tab (`2022_q2_5_`j'') (" (") (`2022_q1_5_`j'') ("-") (`2022_q3_5_`j'') (")") _tab (`2017_mode_5_`j'') _tab (`2018_mode_5_`j'') _tab (`2019_mode_5_`j'') _tab (`2020_mode_5_`j'') _tab (`20
+> 21_mode_5_`j'') _tab (`2022_mode_5_`j'') _n
+ 24. }
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,659 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,535 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,647 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,606 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,644 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,568 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,656 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,533 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,672 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,633 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,660 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,560 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,341 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,238 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,375 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,297 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,357 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,262 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,633 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,542 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,655 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,625 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,635 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,578 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,670 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,527 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,662 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,590 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,617 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,580 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,614 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,538 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,642 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,587 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,652 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,549 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,617 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,545 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,690 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,643 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,657 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,593 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,652 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,526 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,695 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,582 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,620 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,584 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,614 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,504 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,650 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,629 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,630 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,558 observations deleted)
+
+. 
+. *Rural/urban
+. forvalues j=0/1 {
+  2. local label`j': label urban `j'
+  3. foreach x of local year {
+  4. use ./output/`x'_ckd_complete.dta, clear
+  5. drop _merge
+  6. merge 1:1 patient_id using ./output/`x'_nockd_complete
+  7. drop if ckd_progression!=6 & urban!=`j'
+  8. bysort ckd_group: egen mode_age = mode(age), minmode
+  9. forvalues i=0/5{
+ 10. qui su age if ckd_group==`i', d
+ 11. local `x'_q2_`i'_`j' = r(p50)
+ 12. local `x'_q1_`i'_`j' = r(p25)
+ 13. local `x'_q3_`i'_`j' = r(p75)
+ 14. qui su mode_age if ckd_group==`i'
+ 15. local `x'_mode_`i'_`j' = r(mean)
+ 16. }
+ 17. }
+ 18. file write tablecontent ("`label`j''") _tab ("No CKD") _tab (`2017_q2_0_`j'') (" (") (`2017_q1_0_`j'') ("-") (`2017_q3_0_`j'') (")") _tab (`2018_q2_0_`j'') (" (") (`2018_q1_0_`j'') ("-") (`2018_q3_0_`j'') (")")
+>  _tab (`2019_q2_0_`j'') (" (") (`2019_q1_0_`j'') ("-") (`2019_q3_0_`j'') (")") _tab (`2020_q2_0_`j'') (" (") (`2020_q1_0_`j'') ("-") (`2020_q3_0_`j'') (")") _tab (`2021_q2_0_`j'') (" (") (`2021_q1_0_`j'') ("-") (`
+> 2021_q3_0_`j'') (")") _tab (`2022_q2_0_`j'') (" (") (`2022_q1_0_`j'') ("-") (`2022_q3_0_`j'') (")") _tab (`2017_mode_0_`j'') _tab (`2018_mode_0_`j'') _tab (`2019_mode_0_`j'') _tab (`2020_mode_0_`j'') _tab (`2021_m
+> ode_0_`j'') _tab (`2022_mode_0_`j'') _n
+ 19. file write tablecontent ("`label`j''") _tab ("Albuminuria") _tab (`2017_q2_1_`j'') (" (") (`2017_q1_1_`j'') ("-") (`2017_q3_1_`j'') (")") _tab (`2018_q2_1_`j'') (" (") (`2018_q1_1_`j'') ("-") (`2018_q3_1_`j'') 
+> (")") _tab (`2019_q2_1_`j'') (" (") (`2019_q1_1_`j'') ("-") (`2019_q3_1_`j'') (")") _tab (`2020_q2_1_`j'') (" (") (`2020_q1_1_`j'') ("-") (`2020_q3_1_`j'') (")") _tab (`2021_q2_1_`j'') (" (") (`2021_q1_1_`j'') ("-
+> ") (`2021_q3_1_`j'') (")") _tab (`2022_q2_1_`j'') (" (") (`2022_q1_1_`j'') ("-") (`2022_q3_1_`j'') (")") _tab (`2017_mode_1_`j'') _tab (`2018_mode_1_`j'') _tab (`2019_mode_1_`j'') _tab (`2020_mode_1_`j'') _tab (`2
+> 021_mode_1_`j'') _tab (`2022_mode_1_`j'') _n
+ 20. file write tablecontent ("`label`j''") _tab ("CKD stage 3") _tab (`2017_q2_2_`j'') (" (") (`2017_q1_2_`j'') ("-") (`2017_q3_2_`j'') (")") _tab (`2018_q2_2_`j'') (" (") (`2018_q1_2_`j'') ("-") (`2018_q3_2_`j'') 
+> (")") _tab (`2019_q2_2_`j'') (" (") (`2019_q1_2_`j'') ("-") (`2019_q3_2_`j'') (")") _tab (`2020_q2_2_`j'') (" (") (`2020_q1_2_`j'') ("-") (`2020_q3_2_`j'') (")") _tab (`2021_q2_2_`j'') (" (") (`2021_q1_2_`j'') ("-
+> ") (`2021_q3_2_`j'') (")") _tab (`2022_q2_2_`j'') (" (") (`2022_q1_2_`j'') ("-") (`2022_q3_2_`j'') (")") _tab (`2017_mode_2_`j'') _tab (`2018_mode_2_`j'') _tab (`2019_mode_2_`j'') _tab (`2020_mode_2_`j'') _tab (`2
+> 021_mode_2_`j'') _tab (`2022_mode_2_`j'') _n
+ 21. file write tablecontent ("`label`j''") _tab ("CKD stage 4/5") _tab (`2017_q2_3_`j'') (" (") (`2017_q1_3_`j'') ("-") (`2017_q3_3_`j'') (")") _tab (`2018_q2_3_`j'') (" (") (`2018_q1_3_`j'') ("-") (`2018_q3_3_`j''
+> ) (")") _tab (`2019_q2_3_`j'') (" (") (`2019_q1_3_`j'') ("-") (`2019_q3_3_`j'') (")") _tab (`2020_q2_3_`j'') (" (") (`2020_q1_3_`j'') ("-") (`2020_q3_3_`j'') (")") _tab (`2021_q2_3_`j'') (" (") (`2021_q1_3_`j'') (
+> "-") (`2021_q3_3_`j'') (")") _tab (`2022_q2_3_`j'') (" (") (`2022_q1_3_`j'') ("-") (`2022_q3_3_`j'') (")") _tab (`2017_mode_3_`j'') _tab (`2018_mode_3_`j'') _tab (`2019_mode_3_`j'') _tab (`2020_mode_3_`j'') _tab (
+> `2021_mode_3_`j'') _tab (`2022_mode_3_`j'') _n
+ 22. file write tablecontent ("`label`j''") _tab ("Dialysis") _tab (`2017_q2_4_`j'') (" (") (`2017_q1_4_`j'') ("-") (`2017_q3_4_`j'') (")") _tab (`2018_q2_4_`j'') (" (") (`2018_q1_4_`j'') ("-") (`2018_q3_4_`j'') (")
+> ") _tab (`2019_q2_4_`j'') (" (") (`2019_q1_4_`j'') ("-") (`2019_q3_4_`j'') (")") _tab (`2020_q2_4_`j'') (" (") (`2020_q1_4_`j'') ("-") (`2020_q3_4_`j'') (")") _tab (`2021_q2_4_`j'') (" (") (`2021_q1_4_`j'') ("-") 
+> (`2021_q3_4_`j'') (")") _tab (`2022_q2_4_`j'') (" (") (`2022_q1_4_`j'') ("-") (`2022_q3_4_`j'') (")") _tab (`2017_mode_4_`j'') _tab (`2018_mode_4_`j'') _tab (`2019_mode_4_`j'') _tab (`2020_mode_4_`j'') _tab (`2021
+> _mode_4_`j'') _tab (`2022_mode_4_`j'') _n
+ 23. file write tablecontent ("`label`j''") _tab ("Transplant") _tab (`2017_q2_5_`j'') (" (") (`2017_q1_5_`j'') ("-") (`2017_q3_5_`j'') (")") _tab (`2018_q2_5_`j'') (" (") (`2018_q1_5_`j'') ("-") (`2018_q3_5_`j'') (
+> ")") _tab (`2019_q2_5_`j'') (" (") (`2019_q1_5_`j'') ("-") (`2019_q3_5_`j'') (")") _tab (`2020_q2_5_`j'') (" (") (`2020_q1_5_`j'') ("-") (`2020_q3_5_`j'') (")") _tab (`2021_q2_5_`j'') (" (") (`2021_q1_5_`j'') ("-"
+> ) (`2021_q3_5_`j'') (")") _tab (`2022_q2_5_`j'') (" (") (`2022_q1_5_`j'') ("-") (`2022_q3_5_`j'') (")") _tab (`2017_mode_5_`j'') _tab (`2018_mode_5_`j'') _tab (`2019_mode_5_`j'') _tab (`2020_mode_5_`j'') _tab (`20
+> 21_mode_5_`j'') _tab (`2022_mode_5_`j'') _n
+ 24. }
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,146 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,097 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,175 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,129 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,179 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,162 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,242
+        from master                     2,123  (_merge==1)
+        from using                      1,119  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,786 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,137
+        from master                     2,049  (_merge==1)
+        from using                      1,088  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,714 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,293
+        from master                     2,233  (_merge==1)
+        from using                      1,060  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,786 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,231
+        from master                     2,125  (_merge==1)
+        from using                      1,106  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,770 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,280
+        from master                     2,139  (_merge==1)
+        from using                      1,141  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,755 observations deleted)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,152
+        from master                     2,054  (_merge==1)
+        from using                      1,098  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,692 observations deleted)
+
+. 
+. file close tablecontent
+
+. 
+end of do-file
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD2c24_000000.tmp"
+
+. sysdir set PLUS ./analysis/adofiles
+
+. sysdir set PERSONAL ./analysis/adofiles
+
+. pwd
+C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use
+
+. cap log close

@@ -2,13 +2,13 @@
       name:  <unnamed>
        log:  /workspace/logs/2020_ckd.log
   log type:  text
- opened on:  17 Aug 2023, 10:45:43
+ opened on:  20 Sep 2023, 15:49:21
 
 . clear
 
 . 
 . import delimited ./output/input_`dataset'.csv, delimiter(comma) varnames(1) c
-> ase(preserve) 
+> ase(preserve)
 (19 vars, 50,000 obs)
 
 . 
@@ -72,6 +72,11 @@ Yorkshire and The Humber |      3,281        9.76      100.00
 
 . drop if imd==.
 (0 observations deleted)
+
+. 
+. save ./output/input_`dataset', replace
+(note: file ./output/input_2020.dta not found)
+file ./output/input_2020.dta saved
 
 . 
 . * eGFR>60 without albuminuria
@@ -357,9 +362,32 @@ egfr_statu |      albuminuria
 file ./output/2020_ckd.csv saved
 
 . 
+. *Create dataset of non-CKD
+. merge 1:1 patient_id using ./output/input_`dataset'
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                        10,930
+        from master                         0  (_merge==1)
+        from using                     10,930  (_merge==2)
+
+    matched                            21,025  (_merge==3)
+    -----------------------------------------
+
+. keep if _merge==2
+(21,025 observations deleted)
+
+. drop _merge
+
+. 
+. export delimited using "./output/`dataset'_nockd.csv", replace
+(note: file ./output/2020_nockd.csv not found)
+file ./output/2020_nockd.csv saved
+
+. 
 . log close
       name:  <unnamed>
        log:  /workspace/logs/2020_ckd.log
   log type:  text
- closed on:  17 Aug 2023, 10:45:45
+ closed on:  20 Sep 2023, 15:49:22
 -------------------------------------------------------------------------------

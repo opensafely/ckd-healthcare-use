@@ -8,7 +8,7 @@ cap log close
 log using ./logs/`dataset'_ckd, replace t
 clear
 
-import delimited ./output/input_`dataset'.csv, delimiter(comma) varnames(1) case(preserve) 
+import delimited ./output/input_`dataset'.csv, delimiter(comma) varnames(1) case(preserve)
 
 **Exclusions
 * Age <18 at index date
@@ -30,6 +30,8 @@ drop if region==""
 tab imd
 drop if imd==0
 drop if imd==.
+
+save ./output/input_`dataset', replace
 
 * eGFR>60 without albuminuria
 gen albuminuria = 0
@@ -97,5 +99,12 @@ drop albuminuria
 drop egfr_status
 
 export delimited using "./output/`dataset'_ckd.csv", replace
+
+*Create dataset of non-CKD
+merge 1:1 patient_id using ./output/input_`dataset'
+keep if _merge==2
+drop _merge
+
+export delimited using "./output/`dataset'_nockd.csv", replace
 
 log close

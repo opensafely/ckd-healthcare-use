@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/logs/2019_ckd_complete.log
   log type:  text
- opened on:  12 Sep 2023, 14:35:24
+ opened on:  20 Sep 2023, 14:23:15
 
 . clear
 
@@ -19,21 +19,21 @@ file /tmp/St00015.000001 saved
 
 . capture noisily import delimited ./output/input_`dataset'_ckd_complete.csv, c
 > lear
-(235 vars, 50,000 obs)
+(236 vars, 50,000 obs)
 
 . merge 1:1 patient_id using ``dataset'_ckd'
 
     Result                           # of obs.
     -----------------------------------------
-    not matched                        66,833
-        from master                    47,896  (_merge==1)
-        from using                     18,937  (_merge==2)
+    not matched                        66,575
+        from master                    47,767  (_merge==1)
+        from using                     18,808  (_merge==2)
 
-    matched                             2,104  (_merge==3)
+    matched                             2,233  (_merge==3)
     -----------------------------------------
 
 . keep if _merge==3
-(66,833 observations deleted)
+(66,575 observations deleted)
 
 . drop _merge
 
@@ -78,12 +78,12 @@ file /tmp/St00015.000002 saved
 
 modality_baseline |      Freq.     Percent        Cum.
 ------------------+-----------------------------------
-         Dialysis |        208        9.89        9.89
-Kidney transplant |        193        9.17       19.06
- Modality unclear |         38        1.81       20.87
-          Pre KRT |      1,665       79.13      100.00
+         Dialysis |        229       10.26       10.26
+Kidney transplant |        180        8.06       18.32
+ Modality unclear |         43        1.93       20.24
+          Pre KRT |      1,781       79.76      100.00
 ------------------+-----------------------------------
-            Total |      2,104      100.00
+            Total |      2,233      100.00
 
 . *To reduce misclassification of dialysis, anyone with eGFR >15 with modality_
 > baseline=="Dialysis" will be reclassified as non-dialysis (e.g. they may have
@@ -92,115 +92,115 @@ Kidney transplant |        193        9.17       19.06
 > nsplant baseline dates are identical), those with eGFR <15 will be assumed to
 >  be on dialysis and those >15 as kidney transplant
 . egen esrd_egfr = cut(baseline_egfr), at (0, 15, 5000)
-(823 missing values generated)
+(917 missing values generated)
 
 . recode esrd_egfr 0=1 15=0
-(esrd_egfr: 1281 changes made)
+(esrd_egfr: 1316 changes made)
 
 . tab esrd_egfr, m
 
   esrd_egfr |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      1,281       60.88       60.88
-          . |        823       39.12      100.00
+          0 |      1,316       58.93       58.93
+          . |        917       41.07      100.00
 ------------+-----------------------------------
-      Total |      2,104      100.00
+      Total |      2,233      100.00
 
 . gen dialysis = 0
 
 . replace dialysis = 1 if modality_baseline=="Dialysis"
-(208 real changes made)
+(229 real changes made)
 
 . replace dialysis = 1 if modality_baseline=="Modality unclear" & esrd_egfr!=.
-(24 real changes made)
+(29 real changes made)
 
 . replace dialysis = 0 if esrd_egfr==0
-(150 real changes made)
+(169 real changes made)
 
 . gen kidney_transplant = 0
 
 . replace kidney_transplant = 1 if kidney_transplant_baseline_date!=""
-(289 real changes made)
+(327 real changes made)
 
 . replace kidney_transplant = 0 if dialysis==1
-(11 real changes made)
+(16 real changes made)
 
 . gen modality_unclear = 0
 
 . replace modality_unclear = 1 if modality_baseline=="Modality unclear"
-(38 real changes made)
+(43 real changes made)
 
 . replace modality_unclear = 0 if dialysis==1
 (0 real changes made)
 
 . replace modality_unclear = 0 if kidney_transplant==1
-(0 real changes made)
+(6 real changes made)
 
 . tab modality_baseline dialysis
 
                   |       dialysis
 modality_baseline |         0          1 |     Total
 ------------------+----------------------+----------
-         Dialysis |       126         82 |       208 
-Kidney transplant |       193          0 |       193 
- Modality unclear |        38          0 |        38 
-          Pre KRT |     1,665          0 |     1,665 
+         Dialysis |       140         89 |       229 
+Kidney transplant |       180          0 |       180 
+ Modality unclear |        43          0 |        43 
+          Pre KRT |     1,781          0 |     1,781 
 ------------------+----------------------+----------
-            Total |     2,022         82 |     2,104 
+            Total |     2,144         89 |     2,233 
 
 . tab modality_baseline kidney_transplant
 
                   |   kidney_transplant
 modality_baseline |         0          1 |     Total
 ------------------+----------------------+----------
-         Dialysis |       190         18 |       208 
-Kidney transplant |       162         31 |       193 
- Modality unclear |        38          0 |        38 
-          Pre KRT |     1,436        229 |     1,665 
+         Dialysis |       210         19 |       229 
+Kidney transplant |       150         30 |       180 
+ Modality unclear |        37          6 |        43 
+          Pre KRT |     1,525        256 |     1,781 
 ------------------+----------------------+----------
-            Total |     1,826        278 |     2,104 
+            Total |     1,922        311 |     2,233 
 
 . tab modality_baseline modality_unclear
 
                   |   modality_unclear
 modality_baseline |         0          1 |     Total
 ------------------+----------------------+----------
-         Dialysis |       208          0 |       208 
-Kidney transplant |       193          0 |       193 
- Modality unclear |         0         38 |        38 
-          Pre KRT |     1,665          0 |     1,665 
+         Dialysis |       229          0 |       229 
+Kidney transplant |       180          0 |       180 
+ Modality unclear |         6         37 |        43 
+          Pre KRT |     1,781          0 |     1,781 
 ------------------+----------------------+----------
-            Total |     2,066         38 |     2,104 
+            Total |     2,196         37 |     2,233 
 
 . tab dialysis kidney_transplant
 
            |   kidney_transplant
   dialysis |         0          1 |     Total
 -----------+----------------------+----------
-         0 |     1,744        278 |     2,022 
-         1 |        82          0 |        82 
+         0 |     1,833        311 |     2,144 
+         1 |        89          0 |        89 
 -----------+----------------------+----------
-     Total |     1,826        278 |     2,104 
+     Total |     1,922        311 |     2,233 
 
 . egen ckd_group = cut(baseline_egfr), at(0, 30, 60, 5000)
-(823 missing values generated)
+(917 missing values generated)
 
 . recode ckd_group 0=3 30=2 60=1
-(ckd_group: 1281 changes made)
+(ckd_group: 1316 changes made)
 
 . replace ckd_group = 4 if dialysis==1
-(82 real changes made)
+(89 real changes made)
 
 . replace ckd_group = 5 if kidney_transplant==1
-(278 real changes made)
+(311 real changes made)
 
 . replace ckd_group = 6 if modality_unclear==1
-(38 real changes made)
+(37 real changes made)
 
 . *ckd_group==. are those with albuminuria without available eGFR measurement o
 > r code for KRT
 . replace ckd_group = 1 if ckd_group==.
-(627 real changes made)
+(689 real changes made)
 
 . label define ckd_group 1 "Albuminuria" 2 "CKD stage 3" 3 "CKD stage 4/5" 4 "D
 > ialysis" 5 "Transplant" 6 "KRT unclear modality"
@@ -213,14 +213,14 @@ Kidney transplant |       193          0 |       193
 
            CKD group |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-         Albuminuria |      1,273       60.50       60.50
-         CKD stage 3 |        416       19.77       80.28
-       CKD stage 4/5 |         17        0.81       81.08
-            Dialysis |         82        3.90       84.98
-          Transplant |        278       13.21       98.19
-KRT unclear modality |         38        1.81      100.00
+         Albuminuria |      1,367       61.22       61.22
+         CKD stage 3 |        405       18.14       79.36
+       CKD stage 4/5 |         24        1.07       80.43
+            Dialysis |         89        3.99       84.42
+          Transplant |        311       13.93       98.34
+KRT unclear modality |         37        1.66      100.00
 ---------------------+-----------------------------------
-               Total |      2,104      100.00
+               Total |      2,233      100.00
 
 . drop if ckd_group==.
 (0 observations deleted)
@@ -230,14 +230,14 @@ KRT unclear modality |         38        1.81      100.00
                      |              modality_baseline
            CKD group |  Dialysis  Kidney ..  Modalit..    Pre KRT |     Total
 ---------------------+--------------------------------------------+----------
-         Albuminuria |        64        126          0      1,083 |     1,273 
-         CKD stage 3 |        44         35          0        337 |       416 
-       CKD stage 4/5 |         0          1          0         16 |        17 
-            Dialysis |        82          0          0          0 |        82 
-          Transplant |        18         31          0        229 |       278 
-KRT unclear modality |         0          0         38          0 |        38 
+         Albuminuria |        76        126          0      1,165 |     1,367 
+         CKD stage 3 |        41         23          0        341 |       405 
+       CKD stage 4/5 |         4          1          0         19 |        24 
+            Dialysis |        89          0          0          0 |        89 
+          Transplant |        19         30          6        256 |       311 
+KRT unclear modality |         0          0         37          0 |        37 
 ---------------------+--------------------------------------------+----------
-               Total |       208        193         38      1,665 |     2,104 
+               Total |       229        180         43      1,781 |     2,233 
 
 . 
 . *Dialysis & kidney transplant outcome classification
@@ -266,89 +266,89 @@ KRT unclear modality |         0          0         38          0 |        38
                      |              modality_outcome
            CKD group |  Deceased   Dialysis  Kidney ..  Modalit.. |     Total
 ---------------------+--------------------------------------------+----------
-         Albuminuria |       132         68         61          8 |     1,273 
-         CKD stage 3 |        28         23         21          2 |       416 
-       CKD stage 4/5 |         2          0          3          0 |        17 
-            Dialysis |         7          6          2          0 |        82 
-          Transplant |        25         17          7          2 |       278 
-KRT unclear modality |         1          1          0          0 |        38 
+         Albuminuria |       136         78         49         23 |     1,367 
+         CKD stage 3 |        38         15         25          7 |       405 
+       CKD stage 4/5 |         2          1          3          0 |        24 
+            Dialysis |        12          5          3          1 |        89 
+          Transplant |        32         18         14          6 |       311 
+KRT unclear modality |         4          1          3          0 |        37 
 ---------------------+--------------------------------------------+----------
-               Total |       195        115         94         12 |     2,104 
+               Total |       224        118         97         37 |     2,233 
 
 
                      | modality_o
                      |   utcome
            CKD group | Unchanged |     Total
 ---------------------+-----------+----------
-         Albuminuria |     1,004 |     1,273 
-         CKD stage 3 |       342 |       416 
-       CKD stage 4/5 |        12 |        17 
-            Dialysis |        67 |        82 
-          Transplant |       227 |       278 
-KRT unclear modality |        36 |        38 
+         Albuminuria |     1,081 |     1,367 
+         CKD stage 3 |       320 |       405 
+       CKD stage 4/5 |        18 |        24 
+            Dialysis |        68 |        89 
+          Transplant |       241 |       311 
+KRT unclear modality |        29 |        37 
 ---------------------+-----------+----------
-               Total |     1,688 |     2,104 
+               Total |     1,757 |     2,233 
 
 . 
 . *eGFR outcome classification based on updated mean eGFR over previous 18 mont
 > hs by the end of year
 . gen sex = 1 if male == "Male"
-(1,108 missing values generated)
+(1,209 missing values generated)
 
 . replace sex = 0 if male == "Female"
-(1,108 real changes made)
+(1,209 real changes made)
 
 . label define sex 0"Female" 1"Male"
 
 . label values sex sex
 
 . replace creatinine_outcome = . if !inrange(creatinine_outcome, 20, 3000)
-(967 real changes made, 967 to missing)
+(998 real changes made, 998 to missing)
 
 . gen mgdl_creatinine_outcome = creatinine_outcome/88.4
-(967 missing values generated)
+(998 missing values generated)
 
 . gen min_creatinine_outcome=.
-(2,104 missing values generated)
+(2,233 missing values generated)
 
 . replace min_creatinine_outcome = mgdl_creatinine_outcome/0.7 if sex==0
-(592 real changes made)
+(657 real changes made)
 
 . replace min_creatinine_outcome = mgdl_creatinine_outcome/0.9 if sex==1
-(545 real changes made)
+(578 real changes made)
 
 . replace min_creatinine_outcome = min_creatinine_outcome^-0.329  if sex==0
-(592 real changes made)
+(657 real changes made)
 
 . replace min_creatinine_outcome = min_creatinine_outcome^-0.411  if sex==1
-(545 real changes made)
+(578 real changes made)
 
 . replace min_creatinine_outcome = 1 if min_creatinine_outcome<1
-(739 real changes made)
+(799 real changes made)
 
 . gen max_creatinine_outcome=.
-(2,104 missing values generated)
+(2,233 missing values generated)
 
 . replace max_creatinine_outcome = mgdl_creatinine_outcome/0.7 if sex==0
-(592 real changes made)
+(657 real changes made)
 
 . replace max_creatinine_outcome = mgdl_creatinine_outcome/0.9 if sex==1
-(545 real changes made)
+(578 real changes made)
 
 . replace max_creatinine_outcome = max_creatinine_outcome^-1.209
-(1,137 real changes made)
+(1,235 real changes made)
 
 . replace max_creatinine_outcome = 1 if max_creatinine_outcome>1
-(1,365 real changes made)
+(1,434 real changes made)
 
 . gen egfr_outcome = min_creatinine_outcome*max_creatinine_outcome*141
-(967 missing values generated)
+(998 missing values generated)
 
 . replace egfr_outcome = egfr_outcome*(0.993^age)
-(1,137 real changes made)
+(1,235 real changes made)
 
 . replace egfr_outcome = egfr_outcome*1.018 if sex==0
-(592 real changes made)
+(657 real changes made)
 
 . drop creatinine_outcome
 
@@ -359,10 +359,10 @@ KRT unclear modality |        36 |        38
 . drop max_creatinine_outcome
 
 . egen egfr_end = cut(egfr_outcome), at(0, 30, 60, 5000)
-(967 missing values generated)
+(998 missing values generated)
 
 . recode egfr_end 0=3 30=2 60=1
-(egfr_end: 1137 changes made)
+(egfr_end: 1235 changes made)
 
 . label define egfr_end 1 "≥60" 2 "30-59" 3 "<30"
 
@@ -373,34 +373,34 @@ KRT unclear modality |        36 |        38
 . gen ckd_progression = 0
 
 . replace ckd_progression = 1 if egfr_end==2 & ckd_group==1
-(176 real changes made)
+(195 real changes made)
 
 . replace ckd_progression = 2 if egfr_end==3 & ckd_group==1
-(8 real changes made)
+(9 real changes made)
 
 . replace ckd_progression = 2 if egfr_end==3 & ckd_group==2
 (3 real changes made)
 
 . egen esrd_egfr_end = cut(egfr_outcome), at (0, 15, 5000)
-(967 missing values generated)
+(998 missing values generated)
 
 . recode esrd_egfr_end 0=1 15=0
-(esrd_egfr_end: 1137 changes made)
+(esrd_egfr_end: 1235 changes made)
 
 . tab esrd_egfr_end, m
 
 esrd_egfr_e |
          nd |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      1,137       54.04       54.04
-          . |        967       45.96      100.00
+          0 |      1,235       55.31       55.31
+          . |        998       44.69      100.00
 ------------+-----------------------------------
-      Total |      2,104      100.00
+      Total |      2,233      100.00
 
 . gen dialysis_outcome = 0
 
 . replace dialysis_outcome = 1 if modality_outcome=="Dialysis"
-(115 real changes made)
+(118 real changes made)
 
 . replace dialysis_outcome = 1 if modality_outcome=="Modality unclear" & esrd_e
 > gfr_end==1
@@ -410,23 +410,23 @@ esrd_egfr_e |
 
 . replace kidney_transplant_outcome = 1 if modality_outcome=="Kidney transplant
 > "
-(94 real changes made)
+(97 real changes made)
 
 . replace kidney_transplant_outcome = 1 if modality_outcome=="Modality unclear"
 >  & esrd_egfr_end==0
-(9 real changes made)
+(16 real changes made)
 
 . replace ckd_progression = 5 if modality_outcome=="Modality unclear"
-(12 real changes made)
+(37 real changes made)
 
 . replace ckd_progression = 3 if dialysis_outcome==1
-(115 real changes made)
+(118 real changes made)
 
 . replace ckd_progression = 4 if kidney_transplant_outcome==1
-(103 real changes made)
+(113 real changes made)
 
 . replace ckd_progression = 6 if modality_outcome=="Deceased"
-(195 real changes made)
+(224 real changes made)
 
 . label define ckd_progression 0 "No progression" 1 "CKD 3" 2 "CKD 4/5 pre-KRT"
 >  3 "Dialysis" 4 "Kidney transplant" 5 "KRT unclear modality" 6 "Deceased"
@@ -439,29 +439,29 @@ esrd_egfr_e |
 
      CKD progression |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      No progression |      1,544       73.38       73.38
-               CKD 3 |        136        6.46       79.85
-     CKD 4/5 pre-KRT |          8        0.38       80.23
-            Dialysis |        115        5.47       85.69
-   Kidney transplant |        103        4.90       90.59
-KRT unclear modality |          3        0.14       90.73
-            Deceased |        195        9.27      100.00
+      No progression |      1,587       71.07       71.07
+               CKD 3 |        160        7.17       78.24
+     CKD 4/5 pre-KRT |         10        0.45       78.68
+            Dialysis |        118        5.28       83.97
+   Kidney transplant |        113        5.06       89.03
+KRT unclear modality |         21        0.94       89.97
+            Deceased |        224       10.03      100.00
 ---------------------+-----------------------------------
-               Total |      2,104      100.00
+               Total |      2,233      100.00
 
 . 
 . *eGFR cut-offs to investigate timing of access formation
 . egen access_egfr = cut(baseline_egfr), at (0, 15, 5000)
-(823 missing values generated)
+(917 missing values generated)
 
 . recode access_egfr 0=1 15=2
-(access_egfr: 1281 changes made)
+(access_egfr: 1316 changes made)
 
 . replace access_egfr=0 if ckd_group==4
-(82 real changes made)
+(89 real changes made)
 
 . replace access_egfr=3 if access_egfr==.
-(741 real changes made)
+(828 real changes made)
 
 . label define access_egfr 0 "Dialysis" 1 "eGFR 0-14" 2 "eGFR >= 15" 3 "Unknown
 > "
@@ -499,1473 +499,1473 @@ KRT unclear modality |          3        0.14       90.73
             |   Summary of total_hospital_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         317           0       1,273
-  CKD stage |          86           0         416
-  CKD stage |           3           0          17
-   Dialysis |          14           0          82
-  Transplan |          70           0         278
-  KRT uncle |           5           0          38
+  Albuminur |         371           0       1,367
+  CKD stage |         112           0         405
+  CKD stage |           9           0          24
+   Dialysis |          34           0          89
+  Transplan |          82           0         311
+  KRT uncle |           7           0          37
 ------------+------------------------------------
-      Total |   218.71008   122.84407       2,104
+      Total |   260.42096   140.39335       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_ho~s |      2,104         495           0        495        495
+overall_ho~s |      2,233         615           0        615        615
 
             | Summary of total_critical_care_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         358           0       1,273
-  CKD stage |          79           0         416
-  CKD stage |           1           0          17
-   Dialysis |          16           0          82
-  Transplan |          59           0         278
-  KRT uncle |          14           0          38
+  Albuminur |         299           0       1,367
+  CKD stage |         135           0         405
+  CKD stage |           6           0          24
+   Dialysis |          36           0          89
+  Transplan |          69           0         311
+  KRT uncle |           9           0          37
 ------------+------------------------------------
-      Total |   240.90352   145.69525       2,104
+      Total |   218.78549   104.35189       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_cr~s |      2,104         527           0        527        527
+overall_cr~s |      2,233         554           0        554        554
 
             |   Summary of total_emergency_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         332           0       1,273
-  CKD stage |         128           0         416
-  CKD stage |           0           0          17
-   Dialysis |           9           0          82
-  Transplan |          85           0         278
-  KRT uncle |           2           0          38
+  Albuminur |         385           0       1,367
+  CKD stage |         109           0         405
+  CKD stage |           7           0          24
+   Dialysis |          45           0          89
+  Transplan |          91           0         311
+  KRT uncle |           8           0          37
 ------------+------------------------------------
-      Total |   237.79848   119.77353       2,104
+      Total |   270.13435     145.492       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_em~s |      2,104         556           0        556        556
+overall_em~s |      2,233         645           0        645        645
 
             |      Summary of total_op_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         304           0       1,273
-  CKD stage |         110           0         416
-  CKD stage |           8           0          17
-   Dialysis |          21           0          82
-  Transplan |          52           0         278
-  KRT uncle |           9           0          38
+  Albuminur |         365           0       1,367
+  CKD stage |         108           0         405
+  CKD stage |           8           0          24
+   Dialysis |          21           0          89
+  Transplan |          83           0         311
+  KRT uncle |          21           0          37
 ------------+------------------------------------
-      Total |   213.59696   114.30916       2,104
+      Total |   255.86476   138.56466       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_op~s |      2,104         504           0        504        504
+overall_op~s |      2,233         606           0        606        606
 
             |     Summary of total_neph_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         348           0       1,273
-  CKD stage |         102           0         416
-  CKD stage |           6           0          17
-   Dialysis |          15           0          82
-  Transplan |          73           0         278
-  KRT uncle |           8           0          38
+  Albuminur |         372           0       1,367
+  CKD stage |          94           0         405
+  CKD stage |           0           0          24
+   Dialysis |          13           0          89
+  Transplan |          96           0         311
+  KRT uncle |           6           0          37
 ------------+------------------------------------
-      Total |   241.14354    133.7992       2,104
+      Total |   258.76803   143.72849       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_ne~s |      2,104         552           0        552        552
+overall_ne~s |      2,233         581           0        581        581
 
             |      Summary of total_tx_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         307           0       1,273
-  CKD stage |          92           0         416
-  CKD stage |           7           0          17
-   Dialysis |          36           0          82
-  Transplan |          46           0         278
-  KRT uncle |           9           0          38
+  Albuminur |         333           0       1,367
+  CKD stage |         122           0         405
+  CKD stage |           7           0          24
+   Dialysis |          28           0          89
+  Transplan |          57           0         311
+  KRT uncle |          17           0          37
 ------------+------------------------------------
-      Total |   211.63688   119.35776       2,104
+      Total |   235.39498    125.1756       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_tx~s |      2,104         497           0        497        497
+overall_tx~s |      2,233         564           0        564        564
 
             |  Summary of total_gp_interactions
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         333           0       1,273
-  CKD stage |          98           0         416
-  CKD stage |           0           0          17
-   Dialysis |          14           0          82
-  Transplan |          72           0         278
-  KRT uncle |          21           0          38
+  Albuminur |         330           0       1,367
+  CKD stage |         105           0         405
+  CKD stage |           8           0          24
+   Dialysis |           9           0          89
+  Transplan |          73           0         311
+  KRT uncle |           6           0          37
 ------------+------------------------------------
-      Total |    231.2923   127.29134       2,104
+      Total |   231.77474   125.30091       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_gp~s |      2,104         538           0        538        538
+overall_gp~s |      2,233         531           0        531        531
 
             |  Summary of total_m4_hospital_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         352           0       1,273
-  CKD stage |          94           0         416
-  CKD stage |           8           0          17
-   Dialysis |          29           0          82
-  Transplan |          71           0         278
-  KRT uncle |          12           0          38
+  Albuminur |         381           0       1,367
+  CKD stage |         120           0         405
+  CKD stage |           8           0          24
+   Dialysis |          19           0          89
+  Transplan |          91           0         311
+  KRT uncle |          18           0          37
 ------------+------------------------------------
-      Total |   242.35171   136.71197       2,104
+      Total |   268.82087   142.81029       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m4~s |      2,104         566           0        566        566
+overall_m4~s |      2,233         637           0        637        637
 
             |  Summary of total_m5_hospital_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         304           0       1,273
-  CKD stage |          95           0         416
-  CKD stage |           6           0          17
-   Dialysis |          35           0          82
-  Transplan |          41           0         278
-  KRT uncle |          20           0          38
+  Albuminur |         311           0       1,367
+  CKD stage |         127           0         405
+  CKD stage |           1           0          24
+   Dialysis |          14           0          89
+  Transplan |          92           0         311
+  KRT uncle |          14           0          37
 ------------+------------------------------------
-      Total |   209.90589   117.99621       2,104
+      Total |   227.03627   108.56229       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m5~s |      2,104         501           0        501        501
+overall_m5~s |      2,233         559           0        559        559
 
             |  Summary of total_m6_hospital_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         309           0       1,273
-  CKD stage |         145           0         416
-  CKD stage |           8           0          17
-   Dialysis |          15           0          82
-  Transplan |          79           0         278
-  KRT uncle |          18           0          38
+  Albuminur |         346           0       1,367
+  CKD stage |          98           0         405
+  CKD stage |           4           0          24
+   Dialysis |          22           0          89
+  Transplan |          97           0         311
+  KRT uncle |           9           0          37
 ------------+------------------------------------
-      Total |    227.0385   105.94943       2,104
+      Total |   244.16749   129.42454       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m6~s |      2,104         574           0        574        574
+overall_m6~s |      2,233         576           0        576        576
 
             |  Summary of total_m7_hospital_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         330           0       1,273
-  CKD stage |         139           0         416
-  CKD stage |           7           0          17
-   Dialysis |          22           0          82
-  Transplan |          60           0         278
-  KRT uncle |           4           0          38
+  Albuminur |         301           0       1,367
+  CKD stage |          90           0         405
+  CKD stage |           3           0          24
+   Dialysis |          19           0          89
+  Transplan |          67           0         311
+  KRT uncle |           2           0          37
 ------------+------------------------------------
-      Total |   236.05941   120.36119       2,104
+      Total |   210.74384   114.74314       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m7~s |      2,104         562           0        562        562
+overall_m7~s |      2,233         482           0        482        482
 
             |  Summary of total_m8_hospital_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         310           0       1,273
-  CKD stage |         108           0         416
-  CKD stage |           6           0          17
-   Dialysis |          27           0          82
-  Transplan |          62           0         278
-  KRT uncle |          15           0          38
+  Albuminur |         330           0       1,367
+  CKD stage |         121           0         405
+  CKD stage |          11           0          24
+   Dialysis |          18           0          89
+  Transplan |          92           0         311
+  KRT uncle |          12           0          37
 ------------+------------------------------------
-      Total |   218.47909   115.17034       2,104
+      Total |   237.81326   118.18831       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m8~s |      2,104         528           0        528        528
+overall_m8~s |      2,233         584           0        584        584
 
             |  Summary of total_m9_hospital_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         259           0       1,273
-  CKD stage |          96           0         416
-  CKD stage |          15           0          17
-   Dialysis |          34           0          82
-  Transplan |          70           0         278
-  KRT uncle |          12           0          38
+  Albuminur |         334           0       1,367
+  CKD stage |         127           0         405
+  CKD stage |           4           0          24
+   Dialysis |           6           0          89
+  Transplan |          64           0         311
+  KRT uncle |          10           0          37
 ------------+------------------------------------
-      Total |   186.59791   91.053813       2,104
+      Total |   236.86386   125.27589       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m9~s |      2,104         486           0        486        486
+overall_m9~s |      2,233         545           0        545        545
 
             | Summary of total_m10_hospital_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         353           0       1,273
-  CKD stage |         108           0         416
-  CKD stage |           0           0          17
-   Dialysis |          21           0          82
-  Transplan |          59           0         278
-  KRT uncle |          16           0          38
+  Albuminur |         369           0       1,367
+  CKD stage |         103           0         405
+  CKD stage |           6           0          24
+   Dialysis |          25           0          89
+  Transplan |          62           0         311
+  KRT uncle |          11           0          37
 ------------+------------------------------------
-      Total |   243.83508   136.87398       2,104
+      Total |    254.4541   145.27409       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1~s |      2,104         557           0        557        557
+overall_m1~s |      2,233         576           0        576        576
 
             | Summary of total_m11_hospital_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         341           0       1,273
-  CKD stage |         114           0         416
-  CKD stage |           3           0          17
-   Dialysis |          29           0          82
-  Transplan |         102           0         278
-  KRT uncle |          15           0          38
+  Albuminur |         364           0       1,367
+  CKD stage |          98           0         405
+  CKD stage |           8           0          24
+   Dialysis |          31           0          89
+  Transplan |          84           0         311
+  KRT uncle |          12           0          37
 ------------+------------------------------------
-      Total |   243.76046   122.16176       2,104
+      Total |   253.82759   139.49112       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~1_hospit~s |      2,104         604           0        604        604
+o~1_hospit~s |      2,233         597           0        597        597
 
             | Summary of total_m12_hospital_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         300           0       1,273
-  CKD stage |         100           0         416
-  CKD stage |          13           0          17
-   Dialysis |          32           0          82
-  Transplan |          42           0         278
-  KRT uncle |          12           0          38
+  Albuminur |         274           0       1,367
+  CKD stage |          93           0         405
+  CKD stage |          20           0          24
+   Dialysis |          28           0          89
+  Transplan |          83           0         311
+  KRT uncle |           6           0          37
 ------------+------------------------------------
-      Total |   208.40162   115.25033       2,104
+      Total |   197.59516   97.389792       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~2_hospit~s |      2,104         499           0        499        499
+o~2_hospit~s |      2,233         504           0        504        504
 
             |  Summary of total_m1_hospital_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         370           0       1,273
-  CKD stage |         127           0         416
-  CKD stage |           3           0          17
-   Dialysis |          18           0          82
-  Transplan |          89           0         278
-  KRT uncle |           3           0          38
+  Albuminur |         352           0       1,367
+  CKD stage |         105           0         405
+  CKD stage |           5           0          24
+   Dialysis |          13           0          89
+  Transplan |          72           0         311
+  KRT uncle |          30           0          37
 ------------+------------------------------------
-      Total |   261.51378   136.73915       2,104
+      Total |    245.6283   135.16696       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1_~ |      2,104         610           0        610        610
+overall_m1_~ |      2,233         577           0        577        577
 
             |  Summary of total_m2_hospital_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         312           0       1,273
-  CKD stage |         133           0         416
-  CKD stage |           2           0          17
-   Dialysis |          22           0          82
-  Transplan |          72           0         278
-  KRT uncle |          10           0          38
+  Albuminur |         391           0       1,367
+  CKD stage |          85           0         405
+  CKD stage |           6           0          24
+   Dialysis |          17           0          89
+  Transplan |          72           0         311
+  KRT uncle |           0           0          37
 ------------+------------------------------------
-      Total |   225.63593   110.42712       2,104
+      Total |   265.54904   158.52476       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m2~s |      2,104         551           0        551        551
+overall_m2~s |      2,233         571           0        571        571
 
             |  Summary of total_m3_hospital_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         360           0       1,273
-  CKD stage |         128           0         416
-  CKD stage |           2           0          17
-   Dialysis |          34           0          82
-  Transplan |          81           0         278
-  KRT uncle |          18           0          38
+  Albuminur |         331           0       1,367
+  CKD stage |         130           0         405
+  CKD stage |           3           0          24
+   Dialysis |          22           0          89
+  Transplan |          91           0         311
+  KRT uncle |          10           0          37
 ------------+------------------------------------
-      Total |   255.49049   131.54094       2,104
+      Total |    239.9588   117.20331       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m3~s |      2,104         623           0        623        623
+overall_m3~s |      2,233         587           0        587        587
 
             |             Summary of
             |     total_m4_critical_care_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         347           0       1,273
-  CKD stage |         107           0         416
-  CKD stage |           3           0          17
-   Dialysis |          11           0          82
-  Transplan |          82           0         278
-  KRT uncle |           4           0          38
+  Albuminur |         341           0       1,367
+  CKD stage |         118           0         405
+  CKD stage |           7           0          24
+   Dialysis |          37           0          89
+  Transplan |          90           0         311
+  KRT uncle |          12           0          37
 ------------+------------------------------------
-      Total |   242.46388   131.25805       2,104
+      Total |   244.43887   123.09523       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m4.. |      2,104         554           0        554        554
+overall_m4.. |      2,233         605           0        605        605
 
             |             Summary of
             |     total_m5_critical_care_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         363           0       1,273
-  CKD stage |          88           0         416
-  CKD stage |           2           0          17
-   Dialysis |          25           0          82
-  Transplan |          55           0         278
-  KRT uncle |           8           0          38
+  Albuminur |         378           0       1,367
+  CKD stage |         106           0         405
+  CKD stage |           4           0          24
+   Dialysis |          29           0          89
+  Transplan |          62           0         311
+  KRT uncle |           6           0          37
 ------------+------------------------------------
-      Total |   245.43013   146.47824       2,104
+      Total |   260.56292   148.98087       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m5.. |      2,104         541           0        541        541
+overall_m5.. |      2,233         585           0        585        585
 
             |             Summary of
             |     total_m6_critical_care_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         321           0       1,273
-  CKD stage |          99           0         416
-  CKD stage |           2           0          17
-   Dialysis |           9           0          82
-  Transplan |          94           0         278
-  KRT uncle |           8           0          38
+  Albuminur |         297           0       1,367
+  CKD stage |          88           0         405
+  CKD stage |           1           0          24
+   Dialysis |          23           0          89
+  Transplan |          54           0         311
+  KRT uncle |          11           0          37
 ------------+------------------------------------
-      Total |   226.72291    118.5614       2,104
+      Total |   206.40887   115.04317       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m6.. |      2,104         533           0        533        533
+overall_m6.. |      2,233         474           0        474        474
 
             |             Summary of
             |     total_m7_critical_care_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         320           0       1,273
-  CKD stage |         120           0         416
-  CKD stage |           0           0          17
-   Dialysis |          19           0          82
-  Transplan |          79           0         278
-  KRT uncle |          11           0          38
+  Albuminur |         369           0       1,367
+  CKD stage |         116           0         405
+  CKD stage |           8           0          24
+   Dialysis |          34           0          89
+  Transplan |          76           0         311
+  KRT uncle |           7           0          37
 ------------+------------------------------------
-      Total |   228.71578   115.49609       2,104
+      Total |   259.07568   139.77213       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m7.. |      2,104         549           0        549        549
+overall_m7.. |      2,233         610           0        610        610
 
             |             Summary of
             |     total_m8_critical_care_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         311           0       1,273
-  CKD stage |         123           0         416
-  CKD stage |           0           0          17
-   Dialysis |          18           0          82
-  Transplan |          42           0         278
-  KRT uncle |           8           0          38
+  Albuminur |         375           0       1,367
+  CKD stage |          94           0         405
+  CKD stage |           0           0          24
+   Dialysis |          31           0          89
+  Transplan |          54           0         311
+  KRT uncle |           6           0          37
 ------------+------------------------------------
-      Total |   218.88165   117.70911       2,104
+      Total |   255.47246   151.26012       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m8.. |      2,104         502           0        502        502
+overall_m8.. |      2,233         560           0        560        560
 
             |             Summary of
             |     total_m9_critical_care_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         279           0       1,273
-  CKD stage |         145           0         416
-  CKD stage |           6           0          17
-   Dialysis |           9           0          82
-  Transplan |          70           0         278
-  KRT uncle |          14           0          38
+  Albuminur |         338           0       1,367
+  CKD stage |         130           0         405
+  CKD stage |           8           0          24
+   Dialysis |           1           0          89
+  Transplan |          97           0         311
+  KRT uncle |           6           0          37
 ------------+------------------------------------
-      Total |   207.37595   94.380447       2,104
+      Total |   244.23018   121.13258       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m9.. |      2,104         523           0        523        523
+overall_m9.. |      2,233         580           0        580        580
 
             |             Summary of
             |    total_m10_critical_care_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         379           0       1,273
-  CKD stage |          93           0         416
-  CKD stage |           0           0          17
-   Dialysis |          21           0          82
-  Transplan |          64           0         278
-  KRT uncle |           2           0          38
+  Albuminur |         346           0       1,367
+  CKD stage |         109           0         405
+  CKD stage |          15           0          24
+   Dialysis |          14           0          89
+  Transplan |          71           0         311
+  KRT uncle |           2           0          37
 ------------+------------------------------------
-      Total |   257.00808   152.10075       2,104
+      Total |   242.22481   132.25001       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         559           0        559        559
+overall_m1.. |      2,233         557           0        557        557
 
             |             Summary of
             |    total_m11_critical_care_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         284           0       1,273
-  CKD stage |         135           0         416
-  CKD stage |          -2           0          17
-   Dialysis |          42           0          82
-  Transplan |          98           0         278
-  KRT uncle |           8           0          38
+  Albuminur |         298           0       1,367
+  CKD stage |          72           0         405
+  CKD stage |           2           0          24
+   Dialysis |          28           0          89
+  Transplan |         104           0         311
+  KRT uncle |          12           0          37
 ------------+------------------------------------
-      Total |   213.23669   90.974296       2,104
+      Total |   211.30945   110.44541       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         565           0        565        565
+overall_m1.. |      2,233         516           0        516        516
 
             |             Summary of
             |    total_m12_critical_care_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         327           0       1,273
-  CKD stage |         108           0         416
-  CKD stage |           5           0          17
-   Dialysis |          20           0          82
-  Transplan |          62           0         278
-  KRT uncle |          16           0          38
+  Albuminur |         344           0       1,367
+  CKD stage |         118           0         405
+  CKD stage |           5           0          24
+   Dialysis |          23           0          89
+  Transplan |          81           0         311
+  KRT uncle |           6           0          37
 ------------+------------------------------------
-      Total |    228.5019   123.79332       2,104
+      Total |   244.34304   127.31029       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         538           0        538        538
+overall_m1.. |      2,233         577           0        577        577
 
             |             Summary of
             |     total_m1_critical_care_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         382           0       1,273
-  CKD stage |          75           0         416
-  CKD stage |           5           0          17
-   Dialysis |          23           0          82
-  Transplan |          90           0         278
-  KRT uncle |          14           0          38
+  Albuminur |         320           0       1,367
+  CKD stage |          65           0         405
+  CKD stage |           2           0          24
+   Dialysis |          42           0          89
+  Transplan |          61           0         311
+  KRT uncle |           8           0          37
 ------------+------------------------------------
-      Total |    259.0347   152.99835       2,104
+      Total |   218.01075   128.53786       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         589           0        589        589
+overall_m1.. |      2,233         498           0        498        498
 
             |             Summary of
             |     total_m2_critical_care_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         398           0       1,273
-  CKD stage |          89           0         416
-  CKD stage |           0           0          17
-   Dialysis |          33           0          82
-  Transplan |          77           0         278
-  KRT uncle |           9           0          38
+  Albuminur |         342           0       1,367
+  CKD stage |          85           0         405
+  CKD stage |           7           0          24
+   Dialysis |          16           0          89
+  Transplan |         119           0         311
+  KRT uncle |          11           0          37
 ------------+------------------------------------
-      Total |   270.02471   159.16207       2,104
+      Total |   242.25123    127.3583       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m2.. |      2,104         606           0        606        606
+overall_m2.. |      2,233         580           0        580        580
 
             |             Summary of
             |     total_m3_critical_care_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         273           0       1,273
-  CKD stage |          71           0         416
-  CKD stage |           8           0          17
-   Dialysis |           7           0          82
-  Transplan |          63           0         278
-  KRT uncle |          29           0          38
+  Albuminur |         334           0       1,367
+  CKD stage |         125           0         405
+  CKD stage |          12           0          24
+   Dialysis |          33           0          89
+  Transplan |          68           0         311
+  KRT uncle |           9           0          37
 ------------+------------------------------------
-      Total |   188.39876   105.55954       2,104
+      Total |   238.20376   122.81037       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m3.. |      2,104         451           0        451        451
+overall_m3.. |      2,233         581           0        581        581
 
             | Summary of total_m4_emergency_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         338           0       1,273
-  CKD stage |         143           0         416
-  CKD stage |          15           0          17
-   Dialysis |          20           0          82
-  Transplan |          75           0         278
-  KRT uncle |           3           0          38
+  Albuminur |         405           0       1,367
+  CKD stage |         103           0         405
+  CKD stage |           1           0          24
+   Dialysis |          29           0          89
+  Transplan |          79           0         311
+  KRT uncle |          22           0          37
 ------------+------------------------------------
-      Total |   243.64116   120.71379       2,104
+      Total |   279.14823   159.17131       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m4.. |      2,104         594           0        594        594
+overall_m4.. |      2,233         639           0        639        639
 
             | Summary of total_m5_emergency_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         301           0       1,273
-  CKD stage |         126           0         416
-  CKD stage |           0           0          17
-   Dialysis |          12           0          82
-  Transplan |          86           0         278
-  KRT uncle |          16           0          38
+  Albuminur |         347           0       1,367
+  CKD stage |         145           0         405
+  CKD stage |           2           0          24
+   Dialysis |           9           0          89
+  Transplan |          62           0         311
+  KRT uncle |          13           0          37
 ------------+------------------------------------
-      Total |   219.14876   104.51079       2,104
+      Total |   247.95611   128.81011       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m5.. |      2,104         541           0        541        541
+overall_m5.. |      2,233         578           0        578        578
 
             | Summary of total_m6_emergency_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         290           0       1,273
-  CKD stage |         102           0         416
-  CKD stage |          11           0          17
-   Dialysis |          21           0          82
-  Transplan |          80           0         278
-  KRT uncle |          11           0          38
+  Albuminur |         378           0       1,367
+  CKD stage |         113           0         405
+  CKD stage |           5           0          24
+   Dialysis |           8           0          89
+  Transplan |          84           0         311
+  KRT uncle |           8           0          37
 ------------+------------------------------------
-      Total |   207.30466   104.09932       2,104
+      Total |   264.10345   145.02471       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m6.. |      2,104         515           0        515        515
+overall_m6.. |      2,233         596           0        596        596
 
             | Summary of total_m7_emergency_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         327           0       1,273
-  CKD stage |         125           0         416
-  CKD stage |           3           0          17
-   Dialysis |          11           0          82
-  Transplan |          78           0         278
-  KRT uncle |           0           0          38
+  Albuminur |         470           0       1,367
+  CKD stage |         100           0         405
+  CKD stage |           9           0          24
+   Dialysis |           7           0          89
+  Transplan |          91           0         311
+  KRT uncle |          10           0          37
 ------------+------------------------------------
-      Total |   233.32129   119.00434       2,104
+      Total |   319.07747    190.8092       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m7.. |      2,104         544           0        544        544
+overall_m7.. |      2,233         687           0        687        687
 
             | Summary of total_m8_emergency_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         310           0       1,273
-  CKD stage |          57           0         416
-  CKD stage |          10           0          17
-   Dialysis |          30           0          82
-  Transplan |          75           0         278
-  KRT uncle |          10           0          38
+  Albuminur |         367           0       1,367
+  CKD stage |         130           0         405
+  CKD stage |           3           0          24
+   Dialysis |          29           0          89
+  Transplan |          62           0         311
+  KRT uncle |          10           0          37
 ------------+------------------------------------
-      Total |   210.17205   124.10676       2,104
+      Total |   258.23735   139.32697       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m8.. |      2,104         492           0        492        492
+overall_m8.. |      2,233         601           0        601        601
 
             | Summary of total_m9_emergency_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         301           0       1,273
-  CKD stage |         131           0         416
-  CKD stage |           3           0          17
-   Dialysis |          41           0          82
-  Transplan |          91           0         278
-  KRT uncle |          16           0          38
+  Albuminur |         383           0       1,367
+  CKD stage |         100           0         405
+  CKD stage |           0           0          24
+   Dialysis |           4           0          89
+  Transplan |          63           0         311
+  KRT uncle |          21           0          37
 ------------+------------------------------------
-      Total |   221.95247   100.58022       2,104
+      Total |   261.88401   153.62933       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m9.. |      2,104         583           0        583        583
+overall_m9.. |      2,233         571           0        571        571
 
             | Summary of total_m10_emergency_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         367           0       1,273
-  CKD stage |         116           0         416
-  CKD stage |           5           0          17
-   Dialysis |          23           0          82
-  Transplan |          88           0         278
-  KRT uncle |           3           0          38
+  Albuminur |         360           0       1,367
+  CKD stage |          98           0         405
+  CKD stage |          11           0          24
+   Dialysis |          23           0          89
+  Transplan |          76           0         311
+  KRT uncle |           1           0          37
 ------------+------------------------------------
-      Total |   257.60266    137.2825       2,104
+      Total |   249.79579   139.70749       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         602           0        602        602
+overall_m1.. |      2,233         569           0        569        569
 
             | Summary of total_m11_emergency_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         331           0       1,273
-  CKD stage |         129           0         416
-  CKD stage |           4           0          17
-   Dialysis |           7           0          82
-  Transplan |          50           0         278
-  KRT uncle |           9           0          38
+  Albuminur |         315           0       1,367
+  CKD stage |          98           0         405
+  CKD stage |           2           0          24
+   Dialysis |          10           0          89
+  Transplan |          71           0         311
+  KRT uncle |           7           0          37
 ------------+------------------------------------
-      Total |   232.84743   125.30829       2,104
+      Total |   221.03583   119.75827       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         530           0        530        530
+overall_m1.. |      2,233         503           0        503        503
 
             | Summary of total_m12_emergency_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         344           0       1,273
-  CKD stage |         136           0         416
-  CKD stage |          11           0          17
-   Dialysis |          17           0          82
-  Transplan |          87           0         278
-  KRT uncle |           6           0          38
+  Albuminur |         368           0       1,367
+  CKD stage |          94           0         405
+  CKD stage |           0           0          24
+   Dialysis |          17           0          89
+  Transplan |          88           0         311
+  KRT uncle |           5           0          37
 ------------+------------------------------------
-      Total |   247.37785   122.79709       2,104
+      Total |   255.34796    142.8412       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         601           0        601        601
+overall_m1.. |      2,233         572           0        572        572
 
             | Summary of total_m1_emergency_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         303           0       1,273
-  CKD stage |          92           0         416
-  CKD stage |           0           0          17
-   Dialysis |          17           0          82
-  Transplan |          67           0         278
-  KRT uncle |           9           0          38
+  Albuminur |         358           0       1,367
+  CKD stage |         120           0         405
+  CKD stage |          13           0          24
+   Dialysis |          33           0          89
+  Transplan |          96           0         311
+  KRT uncle |           9           0          37
 ------------+------------------------------------
-      Total |   211.19439    115.0239       2,104
+      Total |   255.89969   130.09356       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         488           0        488        488
+overall_m1.. |      2,233         629           0        629        629
 
             | Summary of total_m2_emergency_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         317           0       1,273
-  CKD stage |         111           0         416
-  CKD stage |          15           0          17
-   Dialysis |          18           0          82
-  Transplan |          96           0         278
-  KRT uncle |          17           0          38
+  Albuminur |         393           0       1,367
+  CKD stage |          77           0         405
+  CKD stage |           6           0          24
+   Dialysis |          24           0          89
+  Transplan |          56           0         311
+  KRT uncle |          20           0          37
 ------------+------------------------------------
-      Total |   227.55798   112.67885       2,104
+      Total |   263.70443   162.98675       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m2.. |      2,104         574           0        574        574
+overall_m2.. |      2,233         576           0        576        576
 
             | Summary of total_m3_emergency_days
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         276           0       1,273
-  CKD stage |         120           0         416
-  CKD stage |           4           0          17
-   Dialysis |          26           0          82
-  Transplan |          69           0         278
-  KRT uncle |           4           0          38
+  Albuminur |         338           0       1,367
+  CKD stage |         141           0         405
+  CKD stage |           7           0          24
+   Dialysis |          48           0          89
+  Transplan |          89           0         311
+  KRT uncle |          19           0          37
 ------------+------------------------------------
-      Total |   200.95152   95.995951       2,104
+      Total |   247.18898   116.82924       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m3.. |      2,104         499           0        499        499
+overall_m3.. |      2,233         642           0        642        642
 
             |    Summary of total_m4_op_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         362           0       1,273
-  CKD stage |          89           0         416
-  CKD stage |           5           0          17
-   Dialysis |          23           0          82
-  Transplan |          74           0         278
-  KRT uncle |          11           0          38
+  Albuminur |         325           0       1,367
+  CKD stage |         105           0         405
+  CKD stage |           5           0          24
+   Dialysis |          10           0          89
+  Transplan |          61           0         311
+  KRT uncle |          11           0          37
 ------------+------------------------------------
-      Total |   247.53375    142.6043       2,104
+      Total |     227.133   124.91318       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m~ts |      2,104         564           0        564        564
+overall_m~ts |      2,233         517           0        517        517
 
             |    Summary of total_m5_op_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         307           0       1,273
-  CKD stage |         132           0         416
-  CKD stage |          19           0          17
-   Dialysis |          47           0          82
-  Transplan |          65           0         278
-  KRT uncle |           8           0          38
+  Albuminur |         303           0       1,367
+  CKD stage |          89           0         405
+  CKD stage |           9           0          24
+   Dialysis |          40           0          89
+  Transplan |          69           0         311
+  KRT uncle |          14           0          37
 ------------+------------------------------------
-      Total |   222.56369   107.65037       2,104
+      Total |    213.1657   113.74316       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~5_op_appts |      2,104         578           0        578        578
+o~5_op_appts |      2,233         524           0        524        524
 
             |    Summary of total_m6_op_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         347           0       1,273
-  CKD stage |         104           0         416
-  CKD stage |           3           0          17
-   Dialysis |          14           0          82
-  Transplan |          63           0         278
-  KRT uncle |           9           0          38
+  Albuminur |         346           0       1,367
+  CKD stage |          92           0         405
+  CKD stage |          15           0          24
+   Dialysis |          25           0          89
+  Transplan |          92           0         311
+  KRT uncle |           0           0          37
 ------------+------------------------------------
-      Total |   239.56749    134.6855       2,104
+      Total |   242.47156   131.31787       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~6_op_appts |      2,104         540           0        540        540
+o~6_op_appts |      2,233         570           0        570        570
 
             |    Summary of total_m7_op_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         325           0       1,273
-  CKD stage |         102           0         416
-  CKD stage |           7           0          17
-   Dialysis |          24           0          82
-  Transplan |          99           0         278
-  KRT uncle |          17           0          38
+  Albuminur |         452           0       1,367
+  CKD stage |         111           0         405
+  CKD stage |           3           0          24
+   Dialysis |          31           0          89
+  Transplan |          73           0         311
+  KRT uncle |          13           0          37
 ------------+------------------------------------
-      Total |   231.18441   117.67591       2,104
+      Total |   308.48813   181.49075       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~7_op_appts |      2,104         574           0        574        574
+o~7_op_appts |      2,233         683           0        683        683
 
             |    Summary of total_m8_op_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         275           0       1,273
-  CKD stage |         122           0         416
-  CKD stage |           0           0          17
-   Dialysis |          32           0          82
-  Transplan |         103           0         278
-  KRT uncle |           1           0          38
+  Albuminur |         354           0       1,367
+  CKD stage |         115           0         405
+  CKD stage |          11           0          24
+   Dialysis |          32           0          89
+  Transplan |          88           0         311
+  KRT uncle |           5           0          37
 ------------+------------------------------------
-      Total |   205.38165   89.233915       2,104
+      Total |   251.30228   130.73092       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~8_op_appts |      2,104         533           0        533        533
+o~8_op_appts |      2,233         605           0        605        605
 
             |    Summary of total_m9_op_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         336           0       1,273
-  CKD stage |         151           0         416
-  CKD stage |           5           0          17
-   Dialysis |           7           0          82
-  Transplan |          22           0         278
-  KRT uncle |           8           0          38
+  Albuminur |         414           0       1,367
+  CKD stage |         130           0         405
+  CKD stage |           6           0          24
+   Dialysis |          24           0          89
+  Transplan |          70           0         311
+  KRT uncle |           7           0          37
 ------------+------------------------------------
-      Total |   236.51283   130.19796       2,104
+      Total |    287.9073   160.68003       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~9_op_appts |      2,104         529           0        529        529
+o~9_op_appts |      2,233         651           0        651        651
 
             |    Summary of total_m10_op_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         324           0       1,273
-  CKD stage |          99           0         416
-  CKD stage |           3           0          17
-   Dialysis |          39           0          82
-  Transplan |          67           0         278
-  KRT uncle |           7           0          38
+  Albuminur |         368           0       1,367
+  CKD stage |         133           0         405
+  CKD stage |           0           0          24
+   Dialysis |          31           0          89
+  Transplan |         116           0         311
+  KRT uncle |           8           0          37
 ------------+------------------------------------
-      Total |   226.12975   122.38517       2,104
+      Total |    266.9288   129.54622       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~0_op_appts |      2,104         539           0        539        539
+o~0_op_appts |      2,233         656           0        656        656
 
             |    Summary of total_m11_op_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         365           0       1,273
-  CKD stage |          69           0         416
-  CKD stage |           3           0          17
-   Dialysis |          19           0          82
-  Transplan |          65           0         278
-  KRT uncle |          10           0          38
+  Albuminur |         335           0       1,367
+  CKD stage |          97           0         405
+  CKD stage |           8           0          24
+   Dialysis |          20           0          89
+  Transplan |         100           0         311
+  KRT uncle |           2           0          37
 ------------+------------------------------------
-      Total |   244.01521    150.2965       2,104
+      Total |   237.51724   124.13872       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~1_op_appts |      2,104         531           0        531        531
+o~1_op_appts |      2,233         562           0        562        562
 
             |    Summary of total_m12_op_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         329           0       1,273
-  CKD stage |         109           0         416
-  CKD stage |           8           0          17
-   Dialysis |          23           0          82
-  Transplan |          48           0         278
-  KRT uncle |           9           0          38
+  Albuminur |         342           0       1,367
+  CKD stage |         105           0         405
+  CKD stage |           0           0          24
+   Dialysis |          11           0          89
+  Transplan |         101           0         311
+  KRT uncle |           7           0          37
 ------------+------------------------------------
-      Total |   228.07462   127.10502       2,104
+      Total |    243.0309   126.38135       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~2_op_appts |      2,104         526           0        526        526
+o~2_op_appts |      2,233         566           0        566        566
 
             |    Summary of total_m1_op_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         341           0       1,273
-  CKD stage |         115           0         416
-  CKD stage |           0           0          17
-   Dialysis |          17           0          82
-  Transplan |          84           0         278
-  KRT uncle |           9           0          38
+  Albuminur |         340           0       1,367
+  CKD stage |          91           0         405
+  CKD stage |           5           0          24
+   Dialysis |          17           0          89
+  Transplan |         101           0         311
+  KRT uncle |           0           0          37
 ------------+------------------------------------
-      Total |   240.97956   125.89944       2,104
+      Total |   239.44425   127.97014       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         566           0        566        566
+overall_m1.. |      2,233         554           0        554        554
 
             |    Summary of total_m2_op_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         274           0       1,273
-  CKD stage |          98           0         416
-  CKD stage |           8           0          17
-   Dialysis |          14           0          82
-  Transplan |          59           0         278
-  KRT uncle |          15           0          38
+  Albuminur |         313           0       1,367
+  CKD stage |          79           0         405
+  CKD stage |           1           0          24
+   Dialysis |          13           0          89
+  Transplan |          74           0         311
+  KRT uncle |           7           0          37
 ------------+------------------------------------
-      Total |   193.83365   101.13488       2,104
+      Total |   216.89207   121.82523       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m2.. |      2,104         468           0        468        468
+overall_m2.. |      2,233         487           0        487        487
 
             |    Summary of total_m3_op_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         309           0       1,273
-  CKD stage |          96           0         416
-  CKD stage |           2           0          17
-   Dialysis |          20           0          82
-  Transplan |          40           0         278
-  KRT uncle |          10           0          38
+  Albuminur |         251           0       1,367
+  CKD stage |         133           0         405
+  CKD stage |          14           0          24
+   Dialysis |          19           0          89
+  Transplan |          88           0         311
+  KRT uncle |           6           0          37
 ------------+------------------------------------
-      Total |   212.19914   121.65197       2,104
+      Total |   191.04299   79.858219       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~3_op_appts |      2,104         477           0        477        477
+o~3_op_appts |      2,233         511           0        511        511
 
             |   Summary of total_m4_neph_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         342           0       1,273
-  CKD stage |         101           0         416
-  CKD stage |           2           0          17
-   Dialysis |          21           0          82
-  Transplan |          53           0         278
-  KRT uncle |           6           0          38
+  Albuminur |         359           0       1,367
+  CKD stage |         104           0         405
+  CKD stage |           7           0          24
+   Dialysis |           8           0          89
+  Transplan |          84           0         311
+  KRT uncle |          12           0          37
 ------------+------------------------------------
-      Total |    234.8384   134.28742       2,104
+      Total |   250.92745   137.44908       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m4.. |      2,104         525           0        525        525
+overall_m4.. |      2,233         574           0        574        574
 
             |   Summary of total_m5_neph_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         303           0       1,273
-  CKD stage |         122           0         416
-  CKD stage |           1           0          17
-   Dialysis |          16           0          82
-  Transplan |          53           0         278
-  KRT uncle |           7           0          38
+  Albuminur |         310           0       1,367
+  CKD stage |          67           0         405
+  CKD stage |           1           0          24
+   Dialysis |          29           0          89
+  Transplan |          80           0         311
+  KRT uncle |          12           0          37
 ------------+------------------------------------
-      Total |   215.20913   112.08838       2,104
+      Total |   214.43529   120.81422       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m5.. |      2,104         502           0        502        502
+overall_m5.. |      2,233         499           0        499        499
 
             |   Summary of total_m6_neph_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         353           0       1,273
-  CKD stage |         113           0         416
-  CKD stage |           0           0          17
-   Dialysis |          21           0          82
-  Transplan |          65           0         278
-  KRT uncle |          14           0          38
+  Albuminur |         350           0       1,367
+  CKD stage |          90           0         405
+  CKD stage |           8           0          24
+   Dialysis |          30           0          89
+  Transplan |         106           0         311
+  KRT uncle |          16           0          37
 ------------+------------------------------------
-      Total |   245.58032   134.89173       2,104
+      Total |   246.89655   130.83085       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m6.. |      2,104         566           0        566        566
+overall_m6.. |      2,233         600           0        600        600
 
             |   Summary of total_m7_neph_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         299           0       1,273
-  CKD stage |         103           0         416
-  CKD stage |           2           0          17
-   Dialysis |          46           0          82
-  Transplan |          73           0         278
-  KRT uncle |          18           0          38
+  Albuminur |         423           0       1,367
+  CKD stage |          95           0         405
+  CKD stage |           8           0          24
+   Dialysis |          14           0          89
+  Transplan |          79           0         311
+  KRT uncle |          11           0          37
 ------------+------------------------------------
-      Total |   213.05086   107.68433       2,104
+      Total |   288.01164   170.63363       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m7.. |      2,104         541           0        541        541
+overall_m7.. |      2,233         630           0        630        630
 
             |   Summary of total_m8_neph_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         338           0       1,273
-  CKD stage |         137           0         416
-  CKD stage |          -2           0          17
-   Dialysis |          21           0          82
-  Transplan |          51           0         278
-  KRT uncle |           8           0          38
+  Albuminur |         379           0       1,367
+  CKD stage |         122           0         405
+  CKD stage |           8           0          24
+   Dialysis |          30           0          89
+  Transplan |          77           0         311
+  KRT uncle |           7           0          37
 ------------+------------------------------------
-      Total |   239.27567   126.29222       2,104
+      Total |   266.26556   143.55767       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m8.. |      2,104         553           0        553        553
+overall_m8.. |      2,233         623           0        623        623
 
             |   Summary of total_m9_neph_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         320           0       1,273
-  CKD stage |         132           0         416
-  CKD stage |           0           0          17
-   Dialysis |          16           0          82
-  Transplan |          87           0         278
-  KRT uncle |           8           0          38
+  Albuminur |         283           0       1,367
+  CKD stage |          65           0         405
+  CKD stage |           4           0          24
+   Dialysis |          12           0          89
+  Transplan |          94           0         311
+  KRT uncle |          12           0          37
 ------------+------------------------------------
-      Total |   231.97433   112.27672       2,104
+      Total |   198.84819    107.2321       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m9.. |      2,104         563           0        563        563
+overall_m9.. |      2,233         470           0        470        470
 
             |   Summary of total_m10_neph_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         357           0       1,273
-  CKD stage |         115           0         416
-  CKD stage |           0           0          17
-   Dialysis |          15           0          82
-  Transplan |          57           0         278
-  KRT uncle |           4           0          38
+  Albuminur |         377           0       1,367
+  CKD stage |         115           0         405
+  CKD stage |           7           0          24
+   Dialysis |          13           0          89
+  Transplan |         108           0         311
+  KRT uncle |           5           0          37
 ------------+------------------------------------
-      Total |   246.92443   138.57171       2,104
+      Total |   267.36767   139.86691       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         548           0        548        548
+overall_m1.. |      2,233         625           0        625        625
 
             |   Summary of total_m11_neph_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         341           0       1,273
-  CKD stage |         113           0         416
-  CKD stage |           4           0          17
-   Dialysis |          17           0          82
-  Transplan |         112           0         278
-  KRT uncle |           5           0          38
+  Albuminur |         367           0       1,367
+  CKD stage |         101           0         405
+  CKD stage |           8           0          24
+   Dialysis |          10           0          89
+  Transplan |          83           0         311
+  KRT uncle |          12           0          37
 ------------+------------------------------------
-      Total |   244.24382   122.06722       2,104
+      Total |   255.23197   141.90269       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         592           0        592        592
+overall_m1.. |      2,233         581           0        581        581
 
             |   Summary of total_m12_neph_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         291           0       1,273
-  CKD stage |          85           0         416
-  CKD stage |           1           0          17
-   Dialysis |          19           0          82
-  Transplan |          72           0         278
-  KRT uncle |          12           0          38
+  Albuminur |         345           0       1,367
+  CKD stage |          84           0         405
+  CKD stage |           9           0          24
+   Dialysis |          40           0          89
+  Transplan |          79           0         311
+  KRT uncle |           8           0          37
 ------------+------------------------------------
-      Total |   203.35076   109.63375       2,104
+      Total |   239.26377   133.56772       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         480           0        480        480
+overall_m1.. |      2,233         565           0        565        565
 
             |   Summary of total_m1_neph_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         375           0       1,273
-  CKD stage |          96           0         416
-  CKD stage |           9           0          17
-   Dialysis |          30           0          82
-  Transplan |          72           0         278
-  KRT uncle |          15           0          38
+  Albuminur |         272           0       1,367
+  CKD stage |         118           0         405
+  CKD stage |           7           0          24
+   Dialysis |          21           0          89
+  Transplan |         101           0         311
+  KRT uncle |           7           0          37
 ------------+------------------------------------
-      Total |   256.89639   147.12217       2,104
+      Total |   203.00985    89.70648       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         597           0        597        597
+overall_m1.. |      2,233         526           0        526        526
 
             |   Summary of total_m2_neph_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         367           0       1,273
-  CKD stage |          76           0         416
-  CKD stage |           5           0          17
-   Dialysis |          39           0          82
-  Transplan |          65           0         278
-  KRT uncle |          17           0          38
+  Albuminur |         385           0       1,367
+  CKD stage |         116           0         405
+  CKD stage |           7           0          24
+   Dialysis |          25           0          89
+  Transplan |          64           0         311
+  KRT uncle |          18           0          37
 ------------+------------------------------------
-      Total |   247.53137   148.30917       2,104
+      Total |   267.01209   149.98976       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m2.. |      2,104         569           0        569        569
+overall_m2.. |      2,233         615           0        615        615
 
             |   Summary of total_m3_neph_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         338           0       1,273
-  CKD stage |          90           0         416
-  CKD stage |           7           0          17
-   Dialysis |          20           0          82
-  Transplan |          75           0         278
-  KRT uncle |           4           0          38
+  Albuminur |         311           0       1,367
+  CKD stage |          71           0         405
+  CKD stage |           9           0          24
+   Dialysis |           5           0          89
+  Transplan |          50           0         311
+  KRT uncle |          17           0          37
 ------------+------------------------------------
-      Total |   233.11549   130.95153       2,104
+      Total |   210.80699   126.67866       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m3.. |      2,104         534           0        534        534
+overall_m3.. |      2,233         463           0        463        463
 
             |    Summary of total_m4_tx_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         323           0       1,273
-  CKD stage |          80           0         416
-  CKD stage |          16           0          17
-   Dialysis |           9           0          82
-  Transplan |          73           0         278
-  KRT uncle |          11           0          38
+  Albuminur |         396           0       1,367
+  CKD stage |         118           0         405
+  CKD stage |           8           0          24
+   Dialysis |          29           0          89
+  Transplan |          58           0         311
+  KRT uncle |          14           0          37
 ------------+------------------------------------
-      Total |   221.56892   126.54946       2,104
+      Total |   273.37707   155.90703       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~4_tx_appts |      2,104         512           0        512        512
+o~4_tx_appts |      2,233         623           0        623        623
 
             |    Summary of total_m5_tx_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         343           0       1,273
-  CKD stage |          79           0         416
-  CKD stage |           2           0          17
-   Dialysis |          14           0          82
-  Transplan |          55           0         278
-  KRT uncle |          13           0          38
+  Albuminur |         373           0       1,367
+  CKD stage |         119           0         405
+  CKD stage |          10           0          24
+   Dialysis |          20           0          89
+  Transplan |         114           0         311
+  KRT uncle |          21           0          37
 ------------+------------------------------------
-      Total |    231.2115    139.2011       2,104
+      Total |   267.05643   135.14394       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~5_tx_appts |      2,104         506           0        506        506
+o~5_tx_appts |      2,233         657           0        657        657
 
             |    Summary of total_m6_tx_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         388           0       1,273
-  CKD stage |         111           0         416
-  CKD stage |           2           0          17
-   Dialysis |          20           0          82
-  Transplan |          79           0         278
-  KRT uncle |           6           0          38
+  Albuminur |         401           0       1,367
+  CKD stage |         108           0         405
+  CKD stage |           4           0          24
+   Dialysis |          21           0          89
+  Transplan |         101           0         311
+  KRT uncle |           8           0          37
 ------------+------------------------------------
-      Total |   268.04373   150.08362       2,104
+      Total |   280.15181   153.36183       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~6_tx_appts |      2,104         606           0        606        606
+o~6_tx_appts |      2,233         643           0        643        643
 
             |    Summary of total_m7_tx_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         348           0       1,273
-  CKD stage |          98           0         416
-  CKD stage |           4           0          17
-   Dialysis |          30           0          82
-  Transplan |          71           0         278
-  KRT uncle |          17           0          38
+  Albuminur |         350           0       1,367
+  CKD stage |          94           0         405
+  CKD stage |           4           0          24
+   Dialysis |          41           0          89
+  Transplan |          85           0         311
+  KRT uncle |           1           0          37
 ------------+------------------------------------
-      Total |   240.81939   133.76258       2,104
+      Total |   244.84416   133.14457       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~7_tx_appts |      2,104         568           0        568        568
+o~7_tx_appts |      2,233         575           0        575        575
 
             |    Summary of total_m8_tx_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         322           0       1,273
-  CKD stage |         121           0         416
-  CKD stage |           5           0          17
-   Dialysis |          25           0          82
-  Transplan |          55           0         278
-  KRT uncle |          11           0          38
+  Albuminur |         398           0       1,367
+  CKD stage |          99           0         405
+  CKD stage |          10           0          24
+   Dialysis |          20           0          89
+  Transplan |          89           0         311
+  KRT uncle |           5           0          37
 ------------+------------------------------------
-      Total |   227.22671   120.12026       2,104
+      Total |   274.98657   155.76713       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~8_tx_appts |      2,104         539           0        539        539
+o~8_tx_appts |      2,233         621           0        621        621
 
             |    Summary of total_m9_tx_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         345           0       1,273
-  CKD stage |         100           0         416
-  CKD stage |           3           0          17
-   Dialysis |          41           0          82
-  Transplan |          67           0         278
-  KRT uncle |           4           0          38
+  Albuminur |         374           0       1,367
+  CKD stage |         114           0         405
+  CKD stage |           7           0          24
+   Dialysis |           5           0          89
+  Transplan |          60           0         311
+  KRT uncle |          10           0          37
 ------------+------------------------------------
-      Total |   239.05703   132.32875       2,104
+      Total |   258.42857   147.36171       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~9_tx_appts |      2,104         560           0        560        560
+o~9_tx_appts |      2,233         570           0        570        570
 
             |    Summary of total_m10_tx_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         385           0       1,273
-  CKD stage |          96           0         416
-  CKD stage |           0           0          17
-   Dialysis |          28           0          82
-  Transplan |          63           0         278
-  KRT uncle |           3           0          38
+  Albuminur |         400           0       1,367
+  CKD stage |          85           0         405
+  CKD stage |           2           0          24
+   Dialysis |          15           0          89
+  Transplan |          95           0         311
+  KRT uncle |           0           0          37
 ------------+------------------------------------
-      Total |   261.39021   154.09581       2,104
+      Total |   274.13927   159.32463       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~0_tx_appts |      2,104         575           0        575        575
+o~0_tx_appts |      2,233         597           0        597        597
 
             |    Summary of total_m11_tx_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         328           0       1,273
-  CKD stage |         123           0         416
-  CKD stage |           0           0          17
-   Dialysis |          36           0          82
-  Transplan |          73           0         278
-  KRT uncle |          11           0          38
+  Albuminur |         315           0       1,367
+  CKD stage |          99           0         405
+  CKD stage |          11           0          24
+   Dialysis |          12           0          89
+  Transplan |          78           0         311
+  KRT uncle |           1           0          37
 ------------+------------------------------------
-      Total |   234.01901   118.66888       2,104
+      Total |   222.26914   118.23008       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~1_tx_appts |      2,104         571           0        571        571
+o~1_tx_appts |      2,233         516           0        516        516
 
             |    Summary of total_m12_tx_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         351           0       1,273
-  CKD stage |         116           0         416
-  CKD stage |           0           0          17
-   Dialysis |          43           0          82
-  Transplan |          87           0         278
-  KRT uncle |           3           0          38
+  Albuminur |         352           0       1,367
+  CKD stage |         123           0         405
+  CKD stage |           0           0          24
+   Dialysis |          16           0          89
+  Transplan |         101           0         311
+  KRT uncle |          21           0          37
 ------------+------------------------------------
-      Total |   248.52899   128.51183       2,104
+      Total |   252.84863   126.91985       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~2_tx_appts |      2,104         600           0        600        600
+o~2_tx_appts |      2,233         613           0        613        613
 
             |    Summary of total_m1_tx_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         386           0       1,273
-  CKD stage |         119           0         416
-  CKD stage |           6           0          17
-   Dialysis |          42           0          82
-  Transplan |          86           0         278
-  KRT uncle |           9           0          38
+  Albuminur |         306           0       1,367
+  CKD stage |         140           0         405
+  CKD stage |           0           0          24
+   Dialysis |          28           0          89
+  Transplan |          58           0         311
+  KRT uncle |          17           0          37
 ------------+------------------------------------
-      Total |   270.28422   144.74898       2,104
+      Total |   222.19481   109.61951       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         648           0        648        648
+overall_m1.. |      2,233         549           0        549        549
 
             |    Summary of total_m2_tx_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         393           0       1,273
-  CKD stage |          92           0         416
-  CKD stage |           1           0          17
-   Dialysis |          16           0          82
-  Transplan |          84           0         278
-  KRT uncle |          15           0          38
+  Albuminur |         325           0       1,367
+  CKD stage |          99           0         405
+  CKD stage |           8           0          24
+   Dialysis |          34           0          89
+  Transplan |         101           0         311
+  KRT uncle |           8           0          37
 ------------+------------------------------------
-      Total |   267.97148    155.7889       2,104
+      Total |   232.55486   117.61044       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m2.. |      2,104         601           0        601        601
+overall_m2.. |      2,233         575           0        575        575
 
             |    Summary of total_m3_tx_appts
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         355           0       1,273
-  CKD stage |         116           0         416
-  CKD stage |           0           0          17
-   Dialysis |          33           0          82
-  Transplan |          62           0         278
-  KRT uncle |          12           0          38
+  Albuminur |         427           0       1,367
+  CKD stage |         103           0         405
+  CKD stage |           3           0          24
+   Dialysis |          19           0          89
+  Transplan |          88           0         311
+  KRT uncle |           8           0          37
 ------------+------------------------------------
-      Total |   247.41873   135.11483       2,104
+      Total |   293.26064   169.25605       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-o~3_tx_appts |      2,104         578           0        578        578
+o~3_tx_appts |      2,233         648           0        648        648
 
             | Summary of total_m4_gp_interactions
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         345           0       1,273
-  CKD stage |          90           0         416
-  CKD stage |           5           0          17
-   Dialysis |          13           0          82
-  Transplan |          63           0         278
-  KRT uncle |           8           0          38
+  Albuminur |         321           0       1,367
+  CKD stage |          78           0         405
+  CKD stage |           0           0          24
+   Dialysis |          32           0          89
+  Transplan |          74           0         311
+  KRT uncle |          11           0          37
 ------------+------------------------------------
-      Total |   235.54848   136.65404       2,104
+      Total |   222.42096   124.59754       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m~ns |      2,104         524           0        524        524
+overall_m~ns |      2,233         516           0        516        516
 
             | Summary of total_m5_gp_interactions
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         339           0       1,273
-  CKD stage |          63           0         416
-  CKD stage |           6           0          17
-   Dialysis |          14           0          82
-  Transplan |          81           0         278
-  KRT uncle |           8           0          38
+  Albuminur |         399           0       1,367
+  CKD stage |         105           0         405
+  CKD stage |           4           0          24
+   Dialysis |          27           0          89
+  Transplan |          82           0         311
+  KRT uncle |          10           0          37
 ------------+------------------------------------
-      Total |   229.00523   136.95921       2,104
+      Total |    276.0094   155.74486       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m5.. |      2,104         511           0        511        511
+overall_m5.. |      2,233         627           0        627        627
 
             | Summary of total_m6_gp_interactions
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         291           0       1,273
-  CKD stage |          90           0         416
-  CKD stage |           0           0          17
-   Dialysis |          17           0          82
-  Transplan |          68           0         278
-  KRT uncle |           4           0          38
+  Albuminur |         452           0       1,367
+  CKD stage |         134           0         405
+  CKD stage |          12           0          24
+   Dialysis |          17           0          89
+  Transplan |          75           0         311
+  KRT uncle |          11           0          37
 ------------+------------------------------------
-      Total |   203.58032   109.63589       2,104
+      Total |    312.4438   177.53641       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m6.. |      2,104         470           0        470        470
+overall_m6.. |      2,233         701           0        701        701
 
             | Summary of total_m7_gp_interactions
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         293           0       1,273
-  CKD stage |         110           0         416
-  CKD stage |           0           0          17
-   Dialysis |          12           0          82
-  Transplan |          54           0         278
-  KRT uncle |          21           0          38
+  Albuminur |         355           0       1,367
+  CKD stage |          91           0         405
+  CKD stage |           5           0          24
+   Dialysis |          38           0          89
+  Transplan |         106           0         311
+  KRT uncle |          20           0          37
 ------------+------------------------------------
-      Total |   207.00713   109.02692       2,104
+      Total |   250.49172   132.45046       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m7.. |      2,104         490           0        490        490
+overall_m7.. |      2,233         615           0        615        615
 
             | Summary of total_m8_gp_interactions
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         305           0       1,273
-  CKD stage |          83           0         416
-  CKD stage |           3           0          17
-   Dialysis |          13           0          82
-  Transplan |          63           0         278
-  KRT uncle |          16           0          38
+  Albuminur |         338           0       1,367
+  CKD stage |          96           0         405
+  CKD stage |           8           0          24
+   Dialysis |          19           0          89
+  Transplan |          86           0         311
+  KRT uncle |          13           0          37
 ------------+------------------------------------
-      Total |   210.09125   118.53182       2,104
+      Total |   237.36498   127.76006       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m8.. |      2,104         483           0        483        483
+overall_m8.. |      2,233         560           0        560        560
 
             | Summary of total_m9_gp_interactions
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         311           0       1,273
-  CKD stage |         123           0         416
-  CKD stage |           0           0          17
-   Dialysis |          35           0          82
-  Transplan |          57           0         278
-  KRT uncle |           4           0          38
+  Albuminur |         300           0       1,367
+  CKD stage |         110           0         405
+  CKD stage |          11           0          24
+   Dialysis |          36           0          89
+  Transplan |          93           0         311
+  KRT uncle |           4           0          37
 ------------+------------------------------------
-      Total |    221.4539   113.81043       2,104
+      Total |   218.17689    104.6538       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m9.. |      2,104         530           0        530        530
+overall_m9.. |      2,233         554           0        554        554
 
             |             Summary of
             |      total_m10_gp_interactions
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         313           0       1,273
-  CKD stage |          75           0         416
-  CKD stage |           6           0          17
-   Dialysis |          12           0          82
-  Transplan |          61           0         278
-  KRT uncle |           4           0          38
+  Albuminur |         372           0       1,367
+  CKD stage |         114           0         405
+  CKD stage |           6           0          24
+   Dialysis |          24           0          89
+  Transplan |          92           0         311
+  KRT uncle |           3           0          37
 ------------+------------------------------------
-      Total |   212.85409   124.84201       2,104
+      Total |   262.29154   139.59701       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         471           0        471        471
+overall_m1.. |      2,233         611           0        611        611
 
             |             Summary of
             |      total_m11_gp_interactions
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         368           0       1,273
-  CKD stage |          99           0         416
-  CKD stage |          10           0          17
-   Dialysis |          17           0          82
-  Transplan |          64           0         278
-  KRT uncle |          12           0          38
+  Albuminur |         288           0       1,367
+  CKD stage |         108           0         405
+  CKD stage |           7           0          24
+   Dialysis |          12           0          89
+  Transplan |          44           0         311
+  KRT uncle |          15           0          37
 ------------+------------------------------------
-      Total |   251.64449   145.31164       2,104
+      Total |   202.82624   109.72135       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         570           0        570        570
+overall_m1.. |      2,233         474           0        474        474
 
             |             Summary of
             |      total_m12_gp_interactions
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         273           0       1,273
-  CKD stage |         113           0         416
-  CKD stage |           9           0          17
-   Dialysis |          14           0          82
-  Transplan |          98           0         278
-  KRT uncle |           7           0          38
+  Albuminur |         343           0       1,367
+  CKD stage |         114           0         405
+  CKD stage |           6           0          24
+   Dialysis |          42           0          89
+  Transplan |          73           0         311
+  KRT uncle |          16           0          37
 ------------+------------------------------------
-      Total |   201.21103   91.726864       2,104
+      Total |    242.8249   127.43639       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         514           0        514        514
+overall_m1.. |      2,233         594           0        594        594
 
             | Summary of total_m1_gp_interactions
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         349           0       1,273
-  CKD stage |          81           0         416
-  CKD stage |           5           0          17
-   Dialysis |          25           0          82
-  Transplan |          78           0         278
-  KRT uncle |           3           0          38
+  Albuminur |         361           0       1,367
+  CKD stage |          79           0         405
+  CKD stage |           0           0          24
+   Dialysis |          20           0          89
+  Transplan |         125           0         311
+  KRT uncle |           5           0          37
 ------------+------------------------------------
-      Total |   238.54848   137.56338       2,104
+      Total |   253.61487   137.08537       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m1.. |      2,104         541           0        541        541
+overall_m1.. |      2,233         590           0        590        590
 
             | Summary of total_m2_gp_interactions
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         294           0       1,273
-  CKD stage |         105           0         416
-  CKD stage |           2           0          17
-   Dialysis |          15           0          82
-  Transplan |         100           0         278
-  KRT uncle |           2           0          38
+  Albuminur |         386           0       1,367
+  CKD stage |         114           0         405
+  CKD stage |          12           0          24
+   Dialysis |          36           0          89
+  Transplan |          97           0         311
+  KRT uncle |           7           0          37
 ------------+------------------------------------
-      Total |   212.49144   103.24501       2,104
+      Total |   272.16749   144.45847       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m2.. |      2,104         518           0        518        518
+overall_m2.. |      2,233         652           0        652        652
 
             | Summary of total_m3_gp_interactions
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |         316           0       1,273
-  CKD stage |         114           0         416
-  CKD stage |           0           0          17
-   Dialysis |          29           0          82
-  Transplan |          63           0         278
-  KRT uncle |          11           0          38
+  Albuminur |         398           0       1,367
+  CKD stage |          97           0         405
+  CKD stage |          21           0          24
+   Dialysis |          22           0          89
+  Transplan |          71           0         311
+  KRT uncle |           7           0          37
 ------------+------------------------------------
-      Total |   223.38498   116.83856       2,104
+      Total |   272.34796   158.88121       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_m3.. |      2,104         533           0        533        533
+overall_m3.. |      2,233         616           0        616        616
 
 . 
 . **Potential effect modifiers
@@ -1982,19 +1982,19 @@ overall_m3.. |      2,104         533           0        533        533
 (0 real changes made)
 
 . replace ethnicity=6 if ethnicity==2
-(97 real changes made)
+(80 real changes made)
 
 . replace ethnicity=2 if ethnicity==3
-(82 real changes made)
+(84 real changes made)
 
 . replace ethnicity=3 if ethnicity==4
-(68 real changes made)
+(76 real changes made)
 
 . replace ethnicity=4 if ethnicity==6
-(97 real changes made)
+(80 real changes made)
 
 . replace ethnicity=6 if ethnicity==.
-(511 real changes made)
+(578 real changes made)
 
 . label define ethnicity  1 "White"                                       ///
 >                                                 2 "South Asian"              
@@ -2021,31 +2021,31 @@ overall_m3.. |      2,104         533           0        533        533
 . rename region region_string
 
 . gen region = 1 if region_string=="East Midlands"
-(1,899 missing values generated)
+(1,997 missing values generated)
 
 . replace region = 2 if region_string=="East"
-(236 real changes made)
+(210 real changes made)
 
 . replace region = 3 if region_string=="London"
-(385 real changes made)
+(448 real changes made)
 
 . replace region = 4 if region_string=="North East"
-(228 real changes made)
+(238 real changes made)
 
 . replace region = 5 if region_string=="North West"
-(211 real changes made)
+(222 real changes made)
 
 . replace region = 6 if region_string=="South East"
-(206 real changes made)
+(242 real changes made)
 
 . replace region = 7 if region_string=="South West"
-(217 real changes made)
+(210 real changes made)
 
 . replace region = 8 if region_string=="West Midlands"
-(221 real changes made)
+(202 real changes made)
 
 . replace region = 9 if region_string=="Yorkshire and The Humber"
-(195 real changes made)
+(225 real changes made)
 
 . label define region     1 "East Midlands"                                    
 >    ///
@@ -2097,13 +2097,13 @@ overall_m3.. |      2,104         533           0        533        533
 . * Urban (binary)
 . * Urban = 1-4 + missing, Rural = 5-8
 . generate urban=.
-(2,104 missing values generated)
+(2,233 missing values generated)
 
 . replace urban=1 if rural_urban<=4|rural_urban==.
-(833 real changes made)
+(860 real changes made)
 
 . replace urban=0 if rural_urban>4 & rural_urban!=.
-(1,271 real changes made)
+(1,373 real changes made)
 
 . label var urban "Urban/rural"
 
@@ -2144,15 +2144,15 @@ file ./output/2019_ckd_complete.dta saved
 
     Result                           # of obs.
     -----------------------------------------
-    not matched                         2,602
-        from master                       499  (_merge==1)
-        from using                      2,103  (_merge==2)
+    not matched                         2,727
+        from master                       497  (_merge==1)
+        from using                      2,230  (_merge==2)
 
-    matched                                 1  (_merge==3)
+    matched                                 3  (_merge==3)
     -----------------------------------------
 
 . drop if _merge==1
-(499 observations deleted)
+(497 observations deleted)
 
 . foreach cost of varlist apcs_cost ec_cost opa_cost {
   2. sum `cost', d
@@ -2173,18 +2173,18 @@ no observations
             |     Summary of total_apcs_cost
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |           0           0       1,273
-  CKD stage |           0           0         416
-  CKD stage |           0           0          17
-   Dialysis |           0           0          82
-  Transplan |           0           0         278
-  KRT uncle |           0           0          38
+  Albuminur |           0           0       1,367
+  CKD stage |           0           0         405
+  CKD stage |           0           0          24
+   Dialysis |           0           0          89
+  Transplan |           0           0         311
+  KRT uncle |           0           0          37
 ------------+------------------------------------
-      Total |           0           0       2,104
+      Total |           0           0       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_ap~t |      2,104           0           0          0          0
+overall_ap~t |      2,233           0           0          0          0
 
                            ec_cost
 -------------------------------------------------------------
@@ -2193,49 +2193,38 @@ no observations
             |      Summary of total_ec_cost
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |           0           0       1,273
-  CKD stage |           0           0         416
-  CKD stage |           0           0          17
-   Dialysis |           0           0          82
-  Transplan |           0           0         278
-  KRT uncle |           0           0          38
+  Albuminur |           0           0       1,367
+  CKD stage |           0           0         405
+  CKD stage |           0           0          24
+   Dialysis |           0           0          89
+  Transplan |           0           0         311
+  KRT uncle |           0           0          37
 ------------+------------------------------------
-      Total |           0           0       2,104
+      Total |           0           0       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_ec~t |      2,104           0           0          0          0
+overall_ec~t |      2,233           0           0          0          0
 
                           opa_cost
 -------------------------------------------------------------
-      Percentiles      Smallest
- 1%       49.352         49.352
- 5%       49.352              .
-10%       49.352              .       Obs                   1
-25%       49.352              .       Sum of Wgt.           1
-
-50%       49.352                      Mean             49.352
-                        Largest       Std. Dev.             .
-75%       49.352              .
-90%       49.352              .       Variance              .
-95%       49.352              .       Skewness              .
-99%       49.352         49.352       Kurtosis              .
+no observations
 
             |      Summary of total_opa_cost
   CKD group |        Mean   Std. Dev.       Freq.
 ------------+------------------------------------
-  Albuminur |   49.352001           0       1,273
-  CKD stage |           0           0         416
-  CKD stage |           0           0          17
-   Dialysis |           0           0          82
-  Transplan |           0           0         278
-  KRT uncle |           0           0          38
+  Albuminur |           0           0       1,367
+  CKD stage |           0           0         405
+  CKD stage |           0           0          24
+   Dialysis |           0           0          89
+  Transplan |           0           0         311
+  KRT uncle |           0           0          37
 ------------+------------------------------------
-      Total |   29.859837   24.131092       2,104
+      Total |           0           0       2,233
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-overall_op~t |      2,104      49.352           0     49.352     49.352
+overall_op~t |      2,233           0           0          0          0
 
 . save "./output/`dataset'_ckd_complete.dta", replace
 file ./output/2019_ckd_complete.dta saved
@@ -2245,5 +2234,5 @@ file ./output/2019_ckd_complete.dta saved
       name:  <unnamed>
        log:  /workspace/logs/2019_ckd_complete.log
   log type:  text
- closed on:  12 Sep 2023, 14:35:34
+ closed on:  20 Sep 2023, 14:23:17
 -------------------------------------------------------------------------------

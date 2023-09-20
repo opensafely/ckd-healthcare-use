@@ -102,3 +102,10 @@ ethnicity_codes = codelist_from_csv(
     column="Code",
     category_column="Grouping_6",
 )
+
+#Cardiovascular admissions
+cardiovascular_codes = codelist_from_csv(
+    "codelists/user-viyaasan-cardiovascular-disease-icd-10.csv",
+    system="icd10",
+    column="code",
+)

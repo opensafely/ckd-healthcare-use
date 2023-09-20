@@ -1724,5 +1724,11 @@ def generate_variables_additional(index_date_variable):
         between = ["index_date + 334 days", "index_date + 364 days"],
         return_expectations={"incidence": 0.20},
     ),
+    cardiovascular=patients.admitted_to_hospital(
+        with_these_diagnoses=cardiovascular_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
     )
     return variables_additional

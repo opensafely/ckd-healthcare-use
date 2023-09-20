@@ -16,7 +16,8 @@ actions:
     needs: [2017]
     outputs:
       highly_sensitive:
-        analysis_dataset: output/2017_ckd.csv
+        ckd: output/2017_ckd.csv
+        nockd: output/2017_nockd.csv
       moderately_sensitive:
         log: logs/2017_ckd.log
   
@@ -47,7 +48,8 @@ actions:
     needs: [2018]
     outputs:
       highly_sensitive:
-        analysis_dataset: output/2018_ckd.csv
+        ckd: output/2018_ckd.csv
+        nockd: output/2018_nockd.csv
       moderately_sensitive:
         log: logs/2018_ckd.log
   
@@ -78,7 +80,8 @@ actions:
     needs: [2019]
     outputs:
       highly_sensitive:
-        analysis_dataset: output/2019_ckd.csv
+        ckd: output/2019_ckd.csv
+        nockd: output/2019_nockd.csv
       moderately_sensitive:
         log: logs/2019_ckd.log
   
@@ -109,7 +112,8 @@ actions:
     needs: [2020]
     outputs:
       highly_sensitive:
-        analysis_dataset: output/2020_ckd.csv
+        ckd: output/2020_ckd.csv
+        nockd: output/2020_nockd.csv
       moderately_sensitive:
         log: logs/2020_ckd.log
   
@@ -140,7 +144,8 @@ actions:
     needs: [2021]
     outputs:
       highly_sensitive:
-        analysis_dataset: output/2021_ckd.csv
+        ckd: output/2021_ckd.csv
+        nockd: output/2021_nockd.csv
       moderately_sensitive:
         log: logs/2021_ckd.log
   
@@ -171,7 +176,8 @@ actions:
     needs: [2022]
     outputs:
       highly_sensitive:
-        analysis_dataset: output/2022_ckd.csv
+        ckd: output/2022_ckd.csv
+        nockd: output/2022_nockd.csv
       moderately_sensitive:
         log: logs/2022_ckd.log
   
@@ -202,7 +208,8 @@ actions:
     needs: [2023]
     outputs:
       highly_sensitive:
-        analysis_dataset: output/2023_ckd.csv
+        ckd: output/2023_ckd.csv
+        nockd: output/2023_nockd.csv
       moderately_sensitive:
         log: logs/2023_ckd.log
   
@@ -224,7 +231,7 @@ actions:
 
   ckd_progression:
     run: stata-mp:latest analysis/ckd_progression.do
-    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_clean_nockd_complete, 2018_clean_nockd_complete, 2019_clean_nockd_complete, 2020_clean_nockd_complete, 2021_clean_nockd_complete, 2022_clean_nockd_complete]
     outputs:
       moderately_sensitive:
         log: logs/ckd_progression.log
@@ -525,3 +532,107 @@ actions:
       moderately_sensitive:
         log: logs/unit_costs_overall.log
         output: output/unit_costs_overall.csv
+
+  2017_nockd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2017_nockd_complete
+    needs: [2017, 2017_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2017_nockd_complete.csv
+
+  2018_nockd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2018_nockd_complete
+    needs: [2018, 2018_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2018_nockd_complete.csv
+
+  2019_nockd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2019_nockd_complete
+    needs: [2019, 2019_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2019_nockd_complete.csv
+
+  2020_nockd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2020_nockd_complete
+    needs: [2020, 2020_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2020_nockd_complete.csv
+
+  2021_nockd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2021_nockd_complete
+    needs: [2021, 2021_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2021_nockd_complete.csv
+
+  2022_nockd_complete:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_2022_nockd_complete
+    needs: [2022, 2022_ckd]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_2022_nockd_complete.csv
+
+  2017_clean_nockd_complete:
+    run: stata-mp:latest analysis/nockd_complete.do 2017
+    needs: [2017, 2017_ckd, 2017_nockd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2017_nockd_complete.dta
+      moderately_sensitive:
+        log: logs/2017_nockd_complete.log
+
+  2018_clean_nockd_complete:
+    run: stata-mp:latest analysis/nockd_complete.do 2018
+    needs: [2018, 2018_ckd, 2018_nockd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2018_nockd_complete.dta
+      moderately_sensitive:
+        log: logs/2018_nockd_complete.log
+
+  2019_clean_nockd_complete:
+    run: stata-mp:latest analysis/nockd_complete.do 2019
+    needs: [2019, 2019_ckd, 2019_nockd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2019_nockd_complete.dta
+      moderately_sensitive:
+        log: logs/2019_nockd_complete.log
+
+  2020_clean_nockd_complete:
+    run: stata-mp:latest analysis/nockd_complete.do 2020
+    needs: [2020, 2020_ckd, 2020_nockd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2020_nockd_complete.dta
+      moderately_sensitive:
+        log: logs/2020_nockd_complete.log
+
+  2021_clean_nockd_complete:
+    run: stata-mp:latest analysis/nockd_complete.do 2021
+    needs: [2021, 2021_ckd, 2021_nockd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2021_nockd_complete.dta
+      moderately_sensitive:
+        log: logs/2021_nockd_complete.log
+
+  2022_clean_nockd_complete:
+    run: stata-mp:latest analysis/nockd_complete.do 2022
+    needs: [2022, 2022_ckd, 2022_nockd_complete]
+    outputs:
+      highly_sensitive:
+        analysis_dataset: output/2022_nockd_complete.dta
+      moderately_sensitive:
+        log: logs/2022_nockd_complete.log
+
+  age_death:
+    run: stata-mp:latest analysis/age_death.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_clean_nockd_complete, 2018_clean_nockd_complete, 2019_clean_nockd_complete, 2020_clean_nockd_complete, 2021_clean_nockd_complete, 2022_clean_nockd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/age_death.log
+        output: output/age_death.csv

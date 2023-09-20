@@ -2,14 +2,18 @@
       name:  <unnamed>
        log:  /workspace/logs/2023_ckd.log
   log type:  text
- opened on:  17 Aug 2023, 10:01:15
+ opened on:  20 Sep 2023, 14:55:08
 
 . clear
 
 . 
 . import delimited ./output/input_`dataset'.csv, delimiter(comma) varnames(1) c
-> ase(preserve) 
+> ase(preserve)
 (18 vars, 50,000 obs)
+
+. save ./output/input_`dataset', replace
+(note: file ./output/input_2023.dta not found)
+file ./output/input_2023.dta saved
 
 . 
 . **Exclusions
@@ -357,9 +361,30 @@ egfr_statu |      albuminuria
 file ./output/2023_ckd.csv saved
 
 . 
+. *Create dataset of non-CKD
+. merge 1:1 patient_id using ./output/input_`dataset'
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                        28,979
+        from master                         0  (_merge==1)
+        from using                     28,979  (_merge==2)
+
+    matched                            21,021  (_merge==3)
+    -----------------------------------------
+
+. keep if _merge==2
+(21,021 observations deleted)
+
+. 
+. export delimited using "./output/`dataset'_nockd.csv", replace
+(note: file ./output/2023_nockd.csv not found)
+file ./output/2023_nockd.csv saved
+
+. 
 . log close
       name:  <unnamed>
        log:  /workspace/logs/2023_ckd.log
   log type:  text
- closed on:  17 Aug 2023, 10:01:18
+ closed on:  20 Sep 2023, 14:55:09
 -------------------------------------------------------------------------------
