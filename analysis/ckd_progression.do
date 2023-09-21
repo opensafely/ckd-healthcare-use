@@ -13,6 +13,7 @@ file write tablecontent ("stratum") _tab ("start_status") _tab ("end_status") _t
 local year "2017 2018 2019 2020 2021 2022"
 foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
+drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
 
 **Disclosure minimisation
@@ -240,6 +241,8 @@ file write tablecontent ("All") _tab ("Transplant") _tab ("Cardiovascular admiss
 forvalues i=1/6 {
 foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
+drop _merge
+merge 1:1 patient_id using ./output/`x'_nockd_complete
 local label`i': label ethnicity `i'
 drop if ethnicity!=`i'
 
@@ -468,6 +471,8 @@ file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Cardiovascular
 forvalues i=1/5 {
 foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
+drop _merge
+merge 1:1 patient_id using ./output/`x'_nockd_complete
 local label`i': label imd `i'
 drop if imd!=`i'
 
@@ -696,6 +701,8 @@ file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Cardiovascular
 forvalues i=1/9 {
 foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
+drop _merge
+merge 1:1 patient_id using ./output/`x'_nockd_complete
 local label`i': label region `i'
 drop if region!=`i'
 
@@ -924,6 +931,8 @@ file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Cardiovascular
 forvalues i=0/1 {
 foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
+drop _merge
+merge 1:1 patient_id using ./output/`x'_nockd_complete
 local label`i': label urban `i'
 drop if urban!=`i'
 
