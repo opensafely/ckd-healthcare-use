@@ -46,8 +46,10 @@ foreach var of varlist 	dialysis_outcome_primary_care	///
 	}
 
 *eGFR outcome classification based on updated mean eGFR over previous 18 months by the end of year
-drop sex
-rename male sex
+gen sex = 1 if male == "Male"
+replace sex = 0 if male == "Female"
+label define sex 0"Female" 1"Male"
+label values sex sex
 replace creatinine_outcome = . if !inrange(creatinine_outcome, 20, 3000)
 gen mgdl_creatinine_outcome = creatinine_outcome/88.4
 gen min_creatinine_outcome=.

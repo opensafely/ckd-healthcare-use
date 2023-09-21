@@ -31,6 +31,14 @@ tab imd
 drop if imd==0
 drop if imd==.
 
+* Code sex
+assert inlist(sex, "M", "F")
+gen male = (sex=="M")
+drop sex
+label define sexLab 1 "Male" 0 "Female"
+label values male sexLab
+label var male "Sex (0=F 1=M)"
+
 save ./output/input_`dataset', replace
 
 * eGFR>60 without albuminuria
@@ -40,12 +48,6 @@ replace albuminuria = 0 if acr_operator =="<"
 replace albuminuria = 0 if acr_operator =="<="
 label define albuminuria 0 "No albuminuria" 1 "Albuminuria"
 label values albuminuria albuminuria
-assert inlist(sex, "M", "F")
-gen male = (sex=="M")
-drop sex
-label define sexLab 1 "Male" 0 "Female"
-label values male sexLab
-label var male "Sex (0=F 1=M)"
 replace baseline_creatinine = . if !inrange(baseline_creatinine, 20, 3000)
 gen mgdl_baseline_creatinine = baseline_creatinine/88.4
 gen min_baseline_creatinine=.
