@@ -21,7 +21,7 @@ qui su age, d
 local `x'_q2 = r(p50)
 local `x'_q1 = r(p25)
 local `x'_q3 = r(p75)
-gen mode_age = mode(age), minmode
+egen mode_age = mode(age), minmode
 qui su mode_age
 local `x'_mode = r(mean)
 drop mode_age
@@ -60,7 +60,7 @@ qui su age, d
 local `x'_q2_`j' = r(p50)
 local `x'_q1_`j' = r(p25)
 local `x'_q3_`j' = r(p75)
-gen mode_age = mode(age), minmode
+egen mode_age = mode(age), minmode
 qui su mode_age
 local `x'_mode_`j' = r(mean)
 drop mode_age
@@ -97,7 +97,7 @@ qui su age, d
 local `x'_q2_`j' = r(p50)
 local `x'_q1_`j' = r(p25)
 local `x'_q3_`j' = r(p75)
-gen mode_age = mode(age), minmode
+egen mode_age = mode(age), minmode
 qui su mode_age
 local `x'_mode_`j' = r(mean)
 drop mode_age
@@ -134,7 +134,7 @@ qui su age, d
 local `x'_q2_`j' = r(p50)
 local `x'_q1_`j' = r(p25)
 local `x'_q3_`j' = r(p75)
-gen mode_age = mode(age), minmode
+egen mode_age = mode(age), minmode
 qui su mode_age
 local `x'_mode_`j' = r(mean)
 drop mode_age
@@ -171,7 +171,7 @@ qui su age, d
 local `x'_q2_`j' = r(p50)
 local `x'_q1_`j' = r(p25)
 local `x'_q3_`j' = r(p75)
-gen mode_age = mode(age), minmode
+egen mode_age = mode(age), minmode
 qui su mode_age
 local `x'_mode_`j' = r(mean)
 drop mode_age
