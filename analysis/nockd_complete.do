@@ -81,13 +81,14 @@ replace ckd_progression = 2 if egfr_end==3
 egen esrd_egfr_end = cut(egfr_outcome), at (0, 15, 5000)
 recode esrd_egfr_end 0=1 15=0
 tab esrd_egfr_end, m
+replace modality_outcome = "Unchanged" if modality_outcome_date==.
 gen dialysis_outcome = 0
 replace dialysis_outcome = 1 if modality_outcome=="Dialysis"
 replace dialysis_outcome = 1 if modality_outcome=="Modality unclear" & esrd_egfr_end==1
 gen kidney_transplant_outcome = 0
 replace kidney_transplant_outcome = 1 if modality_outcome=="Kidney transplant"
 replace kidney_transplant_outcome = 1 if modality_outcome=="Modality unclear" & esrd_egfr_end==0
-replace ckd_progression = 5 if modality_outcome=="Modality unclear"
+replace ckd_progression = 5 if modality_outcome=="Modality unclear" & modality_outcome_date!=.
 replace ckd_progression = 3 if dialysis_outcome==1
 replace ckd_progression = 4 if kidney_transplant_outcome==1
 replace ckd_progression = 6 if modality_outcome=="Deceased"
