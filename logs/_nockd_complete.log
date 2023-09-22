@@ -354,3 +354,469 @@ esrd_egfr_e |
 . 
 end of do-file
 
+. cd ..
+C:\Users\lsh1703468\Documents\repo
+
+.  cd ..
+C:\Users\lsh1703468\Documents
+
+. cd repos
+C:\Users\lsh1703468\Documents\repos
+
+. use ./output/analysis_2017.dta, clear
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD6f1c_000000.tmp"
+
+. stset exit_date_esrd, fail(esrd_date) origin(index_date_esrd) id(unique) scale(365.25)
+
+Survival-time data settings
+
+           ID variable: unique
+         Failure event: esrd_date!=0 & esrd_date<.
+Observed time interval: (exit_date_esrd[_n-1], exit_date_esrd]
+     Exit on or before: failure
+     Time for analysis: (time-origin)/365.25
+                Origin: time index_date_esrd
+
+--------------------------------------------------------------------------
+     25,703  total observations
+          0  exclusions
+--------------------------------------------------------------------------
+     25,703  observations remaining, representing
+     25,703  subjects
+      2,596  failures in single-failure-per-subject data
+ 43,458.272  total analysis time at risk and under observation
+                                                At risk from t =         0
+                                     Earliest observed entry t =         0
+                                          Last observed exit t =  2.847365
+
+. 
+end of do-file
+
+. stcox i.severity##i.agegroup i.ethnicity i.imd i.urban i.bmi i.smoking i.ckd_stage i.aki_baseline i.cardiovascular i.diabetes i.hypertension i.immunosuppressed i.non_haem_cancer i.gp_consults i.admissions, s
+> trata(set_id)
+variable severity not found
+r(111);
+
+. stcox i.covid_severity##i.agegroup i.ethnicity i.imd i.urban i.bmi i.smoking i.ckd_stage i.aki_baseline i.cardiovascular i.diabetes i.hypertension i.immunosuppressed i.non_haem_cancer i.gp_consults i.admissi
+> ons, strata(set_id)
+
+        Failure _d: esrd_date
+  Analysis time _t: (exit_date_esrd-origin)/365.25
+            Origin: time index_date_esrd
+       ID variable: unique
+
+note: 0.covid_severity#5.agegroup identifies no observations in the sample.
+note: 3.covid_severity#5.agegroup omitted because of collinearity.
+Iteration 0:   log likelihood = -49.279117
+Iteration 1:   log likelihood = -22.068571
+Iteration 2:   log likelihood = -13.997757
+Iteration 3:   log likelihood = -7.4750069
+Iteration 4:   log likelihood = -3.3720897
+Iteration 5:   log likelihood = -2.4249424
+Iteration 6:   log likelihood = -2.0940668
+Iteration 7:   log likelihood =  -2.084926  (backed up)
+Iteration 8:   log likelihood = -2.0826182  (backed up)
+Iteration 9:   log likelihood = -2.0817452  (backed up)
+Iteration 10:  log likelihood = -2.0809005  (backed up)
+Iteration 11:  log likelihood = -2.0810825  (backed up)
+Iteration 12:  log likelihood = -2.0808647  (backed up)
+Iteration 13:  log likelihood = -2.0807301  (backed up)
+Iteration 14:  log likelihood = -2.0806606  (backed up)
+Iteration 15:  log likelihood = -2.0806447  (backed up)
+Iteration 16:  log likelihood = -2.0806358  (backed up)
+Iteration 17:  log likelihood = -2.0809495  (backed up)
+Iteration 18:  log likelihood = -2.0808185  (backed up)
+Iteration 19:  log likelihood = -2.0807826  (backed up)
+Iteration 20:  log likelihood =  -2.080775  (backed up)
+flat region resulting in a missing likelihood
+r(430);
+
+. drop agegroup=6
+=exp not allowed
+r(101);
+
+. drop if agegroup==6
+(0 observations deleted)
+
+. stcox i.covid_severity##i.agegroup i.ethnicity i.imd i.urban i.bmi i.smoking i.ckd_stage i.aki_baseline i.cardiovascular i.diabetes i.hypertension i.immunosuppressed i.non_haem_cancer i.gp_consults i.admissi
+> ons, strata(set_id)
+
+        Failure _d: esrd_date
+  Analysis time _t: (exit_date_esrd-origin)/365.25
+            Origin: time index_date_esrd
+       ID variable: unique
+
+note: 0.covid_severity#5.agegroup identifies no observations in the sample.
+note: 3.covid_severity#5.agegroup omitted because of collinearity.
+Iteration 0:   log likelihood = -49.279117
+Iteration 1:   log likelihood = -22.068571
+Iteration 2:   log likelihood = -13.997757
+Iteration 3:   log likelihood = -7.4750069
+Iteration 4:   log likelihood = -3.3720897
+Iteration 5:   log likelihood = -2.4249424
+Iteration 6:   log likelihood = -2.0940668
+Iteration 7:   log likelihood =  -2.084926  (backed up)
+Iteration 8:   log likelihood = -2.0826182  (backed up)
+Iteration 9:   log likelihood = -2.0817452  (backed up)
+Iteration 10:  log likelihood = -2.0809005  (backed up)
+Iteration 11:  log likelihood = -2.0810825  (backed up)
+Iteration 12:  log likelihood = -2.0808647  (backed up)
+Iteration 13:  log likelihood = -2.0807301  (backed up)
+Iteration 14:  log likelihood = -2.0806606  (backed up)
+Iteration 15:  log likelihood = -2.0806447  (backed up)
+Iteration 16:  log likelihood = -2.0806358  (backed up)
+Iteration 17:  log likelihood = -2.0809495  (backed up)
+Iteration 18:  log likelihood = -2.0808185  (backed up)
+Iteration 19:  log likelihood = -2.0807826  (backed up)
+Iteration 20:  log likelihood =  -2.080775  (backed up)
+flat region resulting in a missing likelihood
+r(430);
+
+. use ./output/analysis_2017.dta, clear
+
+. stset exit_date_esrd, fail(esrd_date) origin(index_date_esrd) id(unique) scale(365.25)
+
+Survival-time data settings
+
+           ID variable: unique
+         Failure event: esrd_date!=0 & esrd_date<.
+Observed time interval: (exit_date_esrd[_n-1], exit_date_esrd]
+     Exit on or before: failure
+     Time for analysis: (time-origin)/365.25
+                Origin: time index_date_esrd
+
+--------------------------------------------------------------------------
+     25,703  total observations
+          0  exclusions
+--------------------------------------------------------------------------
+     25,703  observations remaining, representing
+     25,703  subjects
+      2,596  failures in single-failure-per-subject data
+ 43,458.272  total analysis time at risk and under observation
+                                                At risk from t =         0
+                                     Earliest observed entry t =         0
+                                          Last observed exit t =  2.847365
+
+. stcox i.case##i.sex i.ethnicity i.imd i.urban i.bmi i.smoking i.ckd_stage i.aki_baseline i.cardiovascular i.diabetes i.hypertension i.immunosuppressed i.non_haem_cancer i.gp_consults i.admissions, strata(set
+> _id)
+
+        Failure _d: esrd_date
+  Analysis time _t: (exit_date_esrd-origin)/365.25
+            Origin: time index_date_esrd
+       ID variable: unique
+
+Iteration 0:   log likelihood = -49.279117
+Iteration 1:   log likelihood =  -29.25301
+Iteration 2:   log likelihood = -24.310274
+Iteration 3:   log likelihood = -22.177465
+Iteration 4:   log likelihood =  -21.67077
+Iteration 5:   log likelihood = -21.570391
+Iteration 6:   log likelihood = -21.550888
+Iteration 7:   log likelihood = -21.544789
+Iteration 8:   log likelihood = -21.542561
+Iteration 9:   log likelihood = -21.541743
+Iteration 10:  log likelihood = -21.541458
+Iteration 11:  log likelihood = -21.541328
+Iteration 12:  log likelihood =  -21.54131
+Iteration 13:  log likelihood = -21.541139
+Iteration 14:  log likelihood =  -21.54114  (backed up)
+Refining estimates:
+Iteration 0:   log likelihood = -21.541294
+Iteration 1:   log likelihood =  -21.54128
+Iteration 2:   log likelihood = -21.541274
+Iteration 3:   log likelihood = -21.541272
+Iteration 4:   log likelihood = -21.541271
+Iteration 5:   log likelihood = -21.541271
+Iteration 6:   log likelihood = -21.541271
+Iteration 7:   log likelihood = -21.541271
+Iteration 8:   log likelihood = -21.541271
+Iteration 9:   log likelihood = -21.541271
+Iteration 10:  log likelihood = -21.541271
+Iteration 11:  log likelihood = -21.541271
+Iteration 12:  log likelihood = -21.541271
+Iteration 13:  log likelihood = -21.541271
+Iteration 14:  log likelihood = -21.541271
+Iteration 15:  log likelihood = -21.541271
+Iteration 16:  log likelihood = -21.541271
+Iteration 17:  log likelihood = -21.541271
+Iteration 18:  log likelihood = -21.541271
+Iteration 19:  log likelihood = -21.541271
+Iteration 20:  log likelihood = -21.541271
+Iteration 21:  log likelihood = -21.541271
+Iteration 22:  log likelihood = -21.541271
+
+Stratified Cox regression with no ties
+Strata variable: set_id
+
+No. of subjects =      3,084                            Number of obs =  3,084
+No. of failures =        300
+Time at risk    = 5,200.2108
+                                                        LR chi2(31)   =  55.48
+Log likelihood = -21.541271                             Prob > chi2   = 0.0044
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. ratio   Std. err.      z    P>|z|     [95% conf. interval]
+------------------------------+----------------------------------------------------------------
+                         case |
+                  SARS-CoV-2  |   1.755488   2.321221     0.43   0.670     .1314872    23.43755
+                              |
+                          sex |
+                        Male  |          1  (omitted)
+                              |
+                     case#sex |
+             SARS-CoV-2#Male  |   .4022401    .676005    -0.54   0.588     .0149264    10.83965
+                              |
+                    ethnicity |
+                 South Asian  |   10.96911   24.81567     1.06   0.290     .1301602      924.41
+                       Black  |   1.07e+17   3.60e+24     0.00   1.000            0           .
+                       Mixed  |   138.9495   518.5707     1.32   0.186     .0924922    208741.7
+                       Other  |   65.10389   128.7525     2.11   0.035     1.349679    3140.389
+                              |
+                          imd |
+                           2  |   91.74509   199.7502     2.08   0.038     1.286238    6544.017
+                           3  |   11.36477   14.44964     1.91   0.056     .9403885    137.3453
+                           4  |   65.98198   129.7633     2.13   0.033     1.397692    3114.863
+            5 Least deprived  |   23.23362   41.87243     1.75   0.081     .6792858      794.66
+                              |
+                        urban |
+                       Urban  |    .477757   .4668011    -0.76   0.450     .0703923    3.242567
+                              |
+                          bmi |
+          Normal (18.5-24.9)  |   3.191094   6.425238     0.58   0.564     .0616671      165.13
+        Overweight (25-29.9)  |   .6454408   1.267718    -0.22   0.824     .0137405    30.31874
+           Obese I (30-34.9)  |   2.088048   4.364766     0.35   0.725     .0347076    125.6192
+          Obese II (35-39.9)  |   8.672666   19.75889     0.95   0.343     .0997388    754.1213
+             Obese III (40+)  |   4.783103   11.03083     0.68   0.497     .0520789    439.2961
+                              |
+                      smoking |
+       Current/former smoker  |   .0326771   .0514888    -2.17   0.030     .0014894    .7169144
+                              |
+                    ckd_stage |
+                      CKD 3A  |   .0914944   .1396334    -1.57   0.117     .0045956    1.821583
+                      CKD 3B  |   2.219959   5.043801     0.35   0.726      .025846    190.6758
+                       CKD 4  |          1  (omitted)
+No baseline eGFR measurement  |   .2698509   .2948792    -1.20   0.231     .0316938    2.297594
+                              |
+               1.aki_baseline |   .8090913    1.42587    -0.12   0.904     .0255809    25.59049
+             1.cardiovascular |   57.93343   104.2576     2.26   0.024     1.702543    1971.334
+                   1.diabetes |   .0239914   .0430568    -2.08   0.038     .0007119     .808509
+               1.hypertension |   5.821672   7.254512     1.41   0.157      .506229    66.94967
+           1.immunosuppressed |   .6154829   .9920694    -0.30   0.763     .0261338    14.49538
+            1.non_haem_cancer |   2.62e+15   1.11e+23     0.00   1.000            0           .
+                              |
+                  gp_consults |
+                         1-2  |   3.115229   4.748426     0.75   0.456     .1570491    61.79372
+                         3-9  |   .0675614   .0958645    -1.90   0.058     .0041871    1.090157
+                          >9  |   1.98e-20   2.74e-13    -0.00   1.000            0           .
+                              |
+                   admissions |
+                           1  |   .4961088   .7436796    -0.47   0.640     .0262787      9.3659
+                          >1  |   1.184312   1.940792     0.10   0.918     .0477044    29.40177
+-----------------------------------------------------------------------------------------------
+
+. stcox i.covid_severity##i.sex i.ethnicity i.imd i.urban i.bmi i.smoking i.ckd_stage i.aki_baseline i.cardiovascular i.diabetes i.hypertension i.immunosuppressed i.non_haem_cancer i.gp_consults i.admissions, 
+> strata(set_id)
+
+        Failure _d: esrd_date
+  Analysis time _t: (exit_date_esrd-origin)/365.25
+            Origin: time index_date_esrd
+       ID variable: unique
+
+Iteration 0:   log likelihood = -49.279117
+Iteration 1:   log likelihood = -27.144973
+Iteration 2:   log likelihood = -22.118985
+Iteration 3:   log likelihood = -19.875055
+Iteration 4:   log likelihood = -19.118993
+Iteration 5:   log likelihood = -18.860932
+Iteration 6:   log likelihood =  -18.79465
+Iteration 7:   log likelihood = -18.779947
+Iteration 8:   log likelihood =  -18.77705
+Iteration 9:   log likelihood = -18.776027
+Iteration 10:  log likelihood = -18.775951
+Iteration 11:  log likelihood = -18.775119
+Iteration 12:  log likelihood = -18.774134
+Iteration 13:  log likelihood = -18.774139  (backed up)
+Iteration 14:  log likelihood = -18.774144  (backed up)
+Iteration 15:  log likelihood = -18.774149  (backed up)
+Iteration 16:  log likelihood = -18.774154  (backed up)
+Iteration 17:  log likelihood = -18.774159  (backed up)
+Iteration 18:  log likelihood = -18.774164  (backed up)
+Iteration 19:  log likelihood = -18.774169  (backed up)
+Iteration 20:  log likelihood = -18.774172  (backed up)
+Iteration 21:  log likelihood = -18.774177  (backed up)
+Iteration 22:  log likelihood = -18.774182  (backed up)
+Iteration 23:  log likelihood = -18.774187  (backed up)
+Iteration 24:  log likelihood = -18.774192  (backed up)
+Iteration 25:  log likelihood = -18.774197  (backed up)
+Iteration 26:  log likelihood = -18.774201  (backed up)
+Iteration 27:  log likelihood = -18.774206  (backed up)
+Iteration 28:  log likelihood = -18.774211  (backed up)
+Iteration 29:  log likelihood = -18.774216  (backed up)
+Iteration 30:  log likelihood = -18.774219  (backed up)
+Iteration 31:  log likelihood = -18.774224  (backed up)
+Iteration 32:  log likelihood = -18.774228  (backed up)
+Iteration 33:  log likelihood = -18.774233  (backed up)
+Iteration 34:  log likelihood = -18.774237  (backed up)
+Iteration 35:  log likelihood = -18.774242  (backed up)
+Iteration 36:  log likelihood = -18.774246  (backed up)
+Iteration 37:  log likelihood = -18.774251  (backed up)
+Iteration 38:  log likelihood = -18.774255  (backed up)
+Iteration 39:  log likelihood =  -18.77426  (backed up)
+Iteration 40:  log likelihood = -18.774263  (backed up)
+Iteration 41:  log likelihood = -18.774267  (backed up)
+Iteration 42:  log likelihood = -18.774271  (backed up)
+Iteration 43:  log likelihood = -18.774276  (backed up)
+Iteration 44:  log likelihood =  -18.77428  (backed up)
+Iteration 45:  log likelihood = -18.774284  (backed up)
+Iteration 46:  log likelihood = -18.774288  (backed up)
+Iteration 47:  log likelihood = -18.774293  (backed up)
+Iteration 48:  log likelihood = -18.774297  (backed up)
+Iteration 49:  log likelihood = -18.774301  (backed up)
+Iteration 50:  log likelihood = -18.774304  (backed up)
+Iteration 51:  log likelihood = -18.774308  (backed up)
+Iteration 52:  log likelihood = -18.774312  (backed up)
+Iteration 53:  log likelihood = -18.774316  (backed up)
+Iteration 54:  log likelihood =  -18.77432  (backed up)
+Iteration 55:  log likelihood = -18.774324  (backed up)
+Iteration 56:  log likelihood = -18.774328  (backed up)
+Iteration 57:  log likelihood = -18.774332  (backed up)
+Iteration 58:  log likelihood = -18.774336  (backed up)
+Iteration 59:  log likelihood =  -18.77434  (backed up)
+Iteration 60:  log likelihood = -18.774344  (backed up)
+Iteration 61:  log likelihood = -18.774348  (backed up)
+Iteration 62:  log likelihood = -18.774346
+Iteration 63:  log likelihood = -18.774199
+Iteration 64:  log likelihood =   -18.7742  (backed up)
+Refining estimates:
+Iteration 0:   log likelihood = -18.775453
+Iteration 1:   log likelihood = -18.775248
+Iteration 2:   log likelihood = -18.775178
+Iteration 3:   log likelihood = -18.775152
+Iteration 4:   log likelihood = -18.775143
+Iteration 5:   log likelihood = -18.775139
+Iteration 6:   log likelihood = -18.775138
+Iteration 7:   log likelihood = -18.775138
+Iteration 8:   log likelihood = -18.775138
+Iteration 9:   log likelihood = -18.775138
+Iteration 10:  log likelihood = -18.775137
+Iteration 11:  log likelihood = -18.775137
+Iteration 12:  log likelihood = -18.775137
+Iteration 13:  log likelihood = -18.775137
+Iteration 14:  log likelihood = -18.775137
+Iteration 15:  log likelihood = -18.775137
+Iteration 16:  log likelihood = -18.775137
+Iteration 17:  log likelihood = -18.775137
+Iteration 18:  log likelihood = -18.775137
+Iteration 19:  log likelihood = -18.775137
+Iteration 20:  log likelihood = -18.775137
+Iteration 21:  log likelihood = -18.775137
+Iteration 22:  log likelihood = -18.775137
+Iteration 23:  log likelihood = -18.775137
+Iteration 24:  log likelihood = -18.775137
+Iteration 25:  log likelihood = -18.775137
+
+Stratified Cox regression with no ties
+Strata variable: set_id
+
+No. of subjects =      3,084                            Number of obs =  3,084
+No. of failures =        300
+Time at risk    = 5,200.2108
+                                                        LR chi2(31)   =  61.01
+Log likelihood = -18.775137                             Prob > chi2   = 0.0010
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. ratio   Std. err.      z    P>|z|     [95% conf. interval]
+------------------------------+----------------------------------------------------------------
+               covid_severity |
+      Non-hospitalised COVID  |   1.213211   2.306145     0.10   0.919     .0292362    50.34452
+          Hospitalised COVID  |   6.61e+07   3.11e+08     3.82   0.000     6486.062    6.73e+11
+         Critical care COVID  |   2.46e-12   9.43e-12    -6.96   0.000     1.33e-15    4.55e-09
+                              |
+                          sex |
+                        Male  |          1  (omitted)
+                              |
+           covid_severity#sex |
+ Non-hospitalised COVID#Male  |    .960355   2.207595    -0.02   0.986     .0106109    86.91856
+     Hospitalised COVID#Male  |   6.19e-08          .        .       .            .           .
+    Critical care COVID#Male  |   6.31e+08          .        .       .            .           .
+                              |
+                    ethnicity |
+                 South Asian  |   6.183736    16.2615     0.69   0.488     .0357132    1070.713
+                       Black  |   9.26e+17          .        .       .            .           .
+                       Mixed  |   1164.325   7031.493     1.17   0.242     .0084251    1.61e+08
+                       Other  |   34.98116   71.58348     1.74   0.082     .6338454    1930.568
+                              |
+                          imd |
+                           2  |    274.486   1166.691     1.32   0.186     .0661493     1138978
+                           3  |   40.63334   81.93548     1.84   0.066     .7806729     2114.93
+                           4  |   155.6749   597.6616     1.31   0.189      .084007    288484.1
+            5 Least deprived  |   220.8446   858.5243     1.39   0.165     .1084115    449881.4
+                              |
+                        urban |
+                       Urban  |   .6489882   .9059047    -0.31   0.757     .0420793    10.00934
+                              |
+                          bmi |
+          Normal (18.5-24.9)  |   3.375412   7.601664     0.54   0.589      .040866    278.7995
+        Overweight (25-29.9)  |   .6486333   1.692903    -0.17   0.868     .0038941    108.0429
+           Obese I (30-34.9)  |   16.08956    44.7766     1.00   0.318     .0688151    3761.877
+          Obese II (35-39.9)  |   87.40871   285.5991     1.37   0.171      .144657    52816.54
+             Obese III (40+)  |   3.348191   11.42371     0.35   0.723     .0041744    2685.527
+                              |
+                      smoking |
+       Current/former smoker  |   .0064844   .0215726    -1.51   0.130     9.55e-06     4.40256
+                              |
+                    ckd_stage |
+                      CKD 3A  |   .1072348   .2195323    -1.09   0.275     .0019398    5.928227
+                      CKD 3B  |   51.31657   206.1114     0.98   0.327     .0195629    134611.5
+                       CKD 4  |          1  (omitted)
+No baseline eGFR measurement  |   .1494661   .2063353    -1.38   0.169     .0099879    2.236721
+                              |
+               1.aki_baseline |   6.941762    17.8519     0.75   0.451     .0449224    1072.697
+             1.cardiovascular |    44.2108   115.2402     1.45   0.146     .2671649    7316.061
+                   1.diabetes |    .007057   .0233659    -1.50   0.135     .0000107     4.64475
+               1.hypertension |   17.68477   47.41287     1.07   0.284     .0923693    3385.876
+           1.immunosuppressed |   .0694254   .1951845    -0.95   0.343     .0002808    17.16366
+            1.non_haem_cancer |   9.47e+13          .        .       .            .           .
+                              |
+                  gp_consults |
+                         1-2  |   1.556234   2.862771     0.24   0.810     .0422909    57.26678
+                         3-9  |     .06295   .2053166    -0.85   0.397     .0001054     37.6062
+                          >9  |   3.41e-22   5.30e-15    -0.00   1.000            0           .
+                              |
+                   admissions |
+                           1  |   2.295672   3.766134     0.51   0.612     .0921473    57.19226
+                          >1  |    1.06919   2.002642     0.04   0.972     .0272092    42.01404
+-----------------------------------------------------------------------------------------------
+
+. return list
+
+matrices:
+              r(table) :  9 x 58
+
+. lincom 1.case, eform
+variable case not found
+r(111);
+
+. lincom 1.covid_severity, eform
+
+ ( 1)  1.covid_severity = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.213211   2.306145     0.10   0.919     .0292362    50.34452
+------------------------------------------------------------------------------
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD6f1c_000000.tmp"
+
+. clear
+
+. sysdir set PLUS ./analysis/adofiles
+
+. sysdir set PERSONAL ./analysis/adofiles
+
+. pwd
+C:\Users\lsh1703468\Documents\repos
+
+. cap log close
