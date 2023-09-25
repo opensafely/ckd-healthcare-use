@@ -54,7 +54,8 @@ foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
-drop if ckd_progression!=6 & ethnicity!=`j'
+drop if ckd_progression!=6 
+drop if ethnicity!=`j'
 
 qui su age, d
 local `x'_q2_`j' = r(p50)
@@ -91,7 +92,8 @@ foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
-drop if ckd_progression!=6 & imd!=`j'
+drop if ckd_progression!=6 
+drop if imd!=`j'
 
 qui su age, d
 local `x'_q2_`j' = r(p50)
@@ -128,7 +130,8 @@ foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
-drop if ckd_progression!=6 & region!=`j'
+drop if ckd_progression!=6 
+drop if region!=`j'
 
 qui su age, d
 local `x'_q2_`j' = r(p50)
@@ -165,7 +168,8 @@ foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
-drop if ckd_progression!=6 & urban!=`j'
+drop if ckd_progression!=6 
+drop if urban!=`j'
 
 qui su age, d
 local `x'_q2_`j' = r(p50)
