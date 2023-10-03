@@ -636,3 +636,19 @@ actions:
       moderately_sensitive:
         log: logs/age_death.log
         output: output/age_death.csv
+
+  age_death_distribution:
+    run: stata-mp:latest analysis/age_death_distribution.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_clean_nockd_complete, 2018_clean_nockd_complete, 2019_clean_nockd_complete, 2020_clean_nockd_complete, 2021_clean_nockd_complete, 2022_clean_nockd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/age_death_distribution.log
+        output: output/age_death_distribution.csv
+
+  age_progression_distribution:
+    run: stata-mp:latest analysis/age_progression_distribution.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_clean_nockd_complete, 2018_clean_nockd_complete, 2019_clean_nockd_complete, 2020_clean_nockd_complete, 2021_clean_nockd_complete, 2022_clean_nockd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/age_progression_distribution.log
+        output: output/age_progression_distribution.csv
