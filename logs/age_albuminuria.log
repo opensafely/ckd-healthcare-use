@@ -1,13 +1,13 @@
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/age_death.log
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/age_albuminuria.log
   log type:  text
- opened on:  18 Nov 2023, 22:23:45
+ opened on:  18 Nov 2023, 22:24:58
 
 . 
 . cap file close tablecontent
 
-. file open tablecontent using ./output/age_death.csv, write text replace
+. file open tablecontent using ./output/age_albuminuria.csv, write text replace
 
 . 
 . file write tablecontent ("stratum") _tab ("start_status") _tab ("median_2017") _tab ("median_2018") _tab ("median_2019") _tab ("median_2020") _tab ("median_2021") _tab ("median_2022") _tab ("mode_2017") _tab ("mode_2018") _tab ("mode_2019") _tab ("mo
@@ -20,7 +20,7 @@
   2. use ./output/`x'_ckd_complete.dta, clear
   3. drop _merge
   4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
-  5. drop if ckd_progression!=6
+  5. drop if ckd_progression!=1
   6. 
 . qui su age, d
   7. local `x'_q2 = r(p50)
@@ -33,15 +33,13 @@
  14. 
 . bysort ckd_group: egen mode_age = mode(age), minmode
  15. 
-. forvalues i=0/5{
- 16. qui su age if ckd_group==`i', d
- 17. local `x'_q2_`i' = r(p50)
- 18. local `x'_q1_`i' = r(p25)
- 19. local `x'_q3_`i' = r(p75)
- 20. qui su mode_age if ckd_group==`i'
- 21. local `x'_mode_`i' = r(mean)
- 22. } 
- 23. }
+. qui su age if ckd_group==0, d
+ 16. local `x'_q2_0 = r(p50)
+ 17. local `x'_q1_0 = r(p25)
+ 18. local `x'_q3_0 = r(p75)
+ 19. qui su mode_age if ckd_group==0
+ 20. local `x'_mode_0 = r(mean)
+ 21. } 
 (note: variable region was str24 in the using data, but will be float now)
 
     Result                      Number of obs
@@ -52,7 +50,7 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,016 observations deleted)
+(3,076 observations deleted)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -68,7 +66,7 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,811 observations deleted)
+(2,988 observations deleted)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -84,7 +82,7 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,961 observations deleted)
+(3,133 observations deleted)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -100,7 +98,7 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,899 observations deleted)
+(3,078 observations deleted)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -116,7 +114,7 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,934 observations deleted)
+(3,146 observations deleted)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -132,38 +130,16 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,854 observations deleted)
+(3,004 observations deleted)
 
 . 
 . 
-. file write tablecontent ("All") _tab ("All") _tab (`2017_q2') (" (") (`2017_q1') ("-") (`2017_q3') (")") _tab (`2018_q2') (" (") (`2018_q1') ("-") (`2018_q3') (")") _tab (`2019_q2') (" (") (`2019_q1') ("-") (`2019_q3') (")") _tab (`2020_q2') (" (") (
-> `2020_q1') ("-") (`2020_q3') (")") _tab (`2021_q2') (" (") (`2021_q1') ("-") (`2021_q3') (")") _tab (`2022_q2') (" (") (`2022_q1') ("-") (`2022_q3') (")") _tab (`2017_mode') _tab (`2018_mode') _tab (`2019_mode') _tab (`2020_mode') _tab (`2021_mode') 
-> _tab (`2022_mode') _n
-
+. 
 . file write tablecontent ("All") _tab ("No CKD") _tab (`2017_q2_0') (" (") (`2017_q1_0') ("-") (`2017_q3_0') (")") _tab (`2018_q2_0') (" (") (`2018_q1_0') ("-") (`2018_q3_0') (")") _tab (`2019_q2_0') (" (") (`2019_q1_0') ("-") (`2019_q3_0') (")") _tab
 >  (`2020_q2_0') (" (") (`2020_q1_0') ("-") (`2020_q3_0') (")") _tab (`2021_q2_0') (" (") (`2021_q1_0') ("-") (`2021_q3_0') (")") _tab (`2022_q2_0') (" (") (`2022_q1_0') ("-") (`2022_q3_0') (")") _tab (`2017_mode_0') _tab (`2018_mode_0') _tab (`2019_mo
 > de_0') _tab (`2020_mode_0') _tab (`2021_mode_0') _tab (`2022_mode_0') _n
 
-. file write tablecontent ("All") _tab ("Albuminuria") _tab (`2017_q2_1') (" (") (`2017_q1_1') ("-") (`2017_q3_1') (")") _tab (`2018_q2_1') (" (") (`2018_q1_1') ("-") (`2018_q3_1') (")") _tab (`2019_q2_1') (" (") (`2019_q1_1') ("-") (`2019_q3_1') (")")
->  _tab (`2020_q2_1') (" (") (`2020_q1_1') ("-") (`2020_q3_1') (")") _tab (`2021_q2_1') (" (") (`2021_q1_1') ("-") (`2021_q3_1') (")") _tab (`2022_q2_1') (" (") (`2022_q1_1') ("-") (`2022_q3_1') (")") _tab (`2017_mode_1') _tab (`2018_mode_1') _tab (`20
-> 19_mode_1') _tab (`2020_mode_1') _tab (`2021_mode_1') _tab (`2022_mode_1') _n
-
-. file write tablecontent ("All") _tab ("CKD stage 3") _tab (`2017_q2_2') (" (") (`2017_q1_2') ("-") (`2017_q3_2') (")") _tab (`2018_q2_2') (" (") (`2018_q1_2') ("-") (`2018_q3_2') (")") _tab (`2019_q2_2') (" (") (`2019_q1_2') ("-") (`2019_q3_2') (")")
->  _tab (`2020_q2_2') (" (") (`2020_q1_2') ("-") (`2020_q3_2') (")") _tab (`2021_q2_2') (" (") (`2021_q1_2') ("-") (`2021_q3_2') (")") _tab (`2022_q2_2') (" (") (`2022_q1_2') ("-") (`2022_q3_2') (")") _tab (`2017_mode_2') _tab (`2018_mode_2') _tab (`20
-> 19_mode_2') _tab (`2020_mode_2') _tab (`2021_mode_2') _tab (`2022_mode_2') _n
-
-. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab (`2017_q2_3') (" (") (`2017_q1_3') ("-") (`2017_q3_3') (")") _tab (`2018_q2_3') (" (") (`2018_q1_3') ("-") (`2018_q3_3') (")") _tab (`2019_q2_3') (" (") (`2019_q1_3') ("-") (`2019_q3_3') (")
-> ") _tab (`2020_q2_3') (" (") (`2020_q1_3') ("-") (`2020_q3_3') (")") _tab (`2021_q2_3') (" (") (`2021_q1_3') ("-") (`2021_q3_3') (")") _tab (`2022_q2_3') (" (") (`2022_q1_3') ("-") (`2022_q3_3') (")") _tab (`2017_mode_3') _tab (`2018_mode_3') _tab (`
-> 2019_mode_3') _tab (`2020_mode_3') _tab (`2021_mode_3') _tab (`2022_mode_3') _n
-
-. file write tablecontent ("All") _tab ("Dialysis") _tab (`2017_q2_4') (" (") (`2017_q1_4') ("-") (`2017_q3_4') (")") _tab (`2018_q2_4') (" (") (`2018_q1_4') ("-") (`2018_q3_4') (")") _tab (`2019_q2_4') (" (") (`2019_q1_4') ("-") (`2019_q3_4') (")") _t
-> ab (`2020_q2_4') (" (") (`2020_q1_4') ("-") (`2020_q3_4') (")") _tab (`2021_q2_4') (" (") (`2021_q1_4') ("-") (`2021_q3_4') (")") _tab (`2022_q2_4') (" (") (`2022_q1_4') ("-") (`2022_q3_4') (")") _tab (`2017_mode_4') _tab (`2018_mode_4') _tab (`2019_
-> mode_4') _tab (`2020_mode_4') _tab (`2021_mode_4') _tab (`2022_mode_4') _n
-
-. file write tablecontent ("All") _tab ("Transplant") _tab (`2017_q2_5') (" (") (`2017_q1_5') ("-") (`2017_q3_5') (")") _tab (`2018_q2_5') (" (") (`2018_q1_5') ("-") (`2018_q3_5') (")") _tab (`2019_q2_5') (" (") (`2019_q1_5') ("-") (`2019_q3_5') (")") 
-> _tab (`2020_q2_5') (" (") (`2020_q1_5') ("-") (`2020_q3_5') (")") _tab (`2021_q2_5') (" (") (`2021_q1_5') ("-") (`2021_q3_5') (")") _tab (`2022_q2_5') (" (") (`2022_q1_5') ("-") (`2022_q3_5') (")") _tab (`2017_mode_5') _tab (`2018_mode_5') _tab (`201
-> 9_mode_5') _tab (`2020_mode_5') _tab (`2021_mode_5') _tab (`2022_mode_5') _n
-
+. 
 . 
 . *Ethnicity
 . forvalues j=1/6 {
@@ -172,7 +148,7 @@
   4. use ./output/`x'_ckd_complete.dta, clear
   5. drop _merge
   6. merge 1:1 patient_id using ./output/`x'_nockd_complete
-  7. drop if ckd_progression!=6 
+  7. drop if ckd_progression!=1 
   8. drop if ethnicity!=`j'
   9. 
 . qui su age, d
@@ -185,37 +161,36 @@
  16. drop mode_age
  17. 
 . bysort ckd_group: egen mode_age = mode(age), minmode
- 18. forvalues i=0/5{
- 19. qui su age if ckd_group==`i', d
- 20. local `x'_q2_`i'_`j' = r(p50)
- 21. local `x'_q1_`i'_`j' = r(p25)
- 22. local `x'_q3_`i'_`j' = r(p75)
- 23. qui su mode_age if ckd_group==`i'
- 24. local `x'_mode_`i'_`j' = r(mean)
- 25. }
- 26. }
- 27. file write tablecontent ("`label`j''") _tab ("All") _tab (`2017_q2_`j'') (" (") (`2017_q1_`j'') ("-") (`2017_q3_`j'') (")") _tab (`2018_q2_`j'') (" (") (`2018_q1_`j'') ("-") (`2018_q3_`j'') (")") _tab (`2019_q2_`j'') (" (") (`2019_q1_`j'') ("-") (
-> `2019_q3_`j'') (")") _tab (`2020_q2_`j'') (" (") (`2020_q1_`j'') ("-") (`2020_q3_`j'') (")") _tab (`2021_q2_`j'') (" (") (`2021_q1_`j'') ("-") (`2021_q3_`j'') (")") _tab (`2022_q2_`j'') (" (") (`2022_q1_`j'') ("-") (`2022_q3_`j'') (")") _tab (`2017_m
-> ode_`j'') _tab (`2018_mode_`j'') _tab (`2019_mode_`j'') _tab (`2020_mode_`j'') _tab (`2021_mode_`j'') _tab (`2022_mode_`j'') _n
- 28. file write tablecontent ("`label`j''") _tab ("No CKD") _tab (`2017_q2_0_`j'') (" (") (`2017_q1_0_`j'') ("-") (`2017_q3_0_`j'') (")") _tab (`2018_q2_0_`j'') (" (") (`2018_q1_0_`j'') ("-") (`2018_q3_0_`j'') (")") _tab (`2019_q2_0_`j'') (" (") (`2019
+ 18. qui su age if ckd_group==0, d
+ 19. local `x'_q2_0_`j' = r(p50)
+ 20. local `x'_q1_0_`j' = r(p25)
+ 21. local `x'_q3_0_`j' = r(p75)
+ 22. qui su mode_age if ckd_group==0
+ 23. local `x'_mode_0_`j' = r(mean)
+ 24. }
+ 25. 
+. file write tablecontent ("`label`j''") _tab ("All") _tab (`2017_q2_`j'') (" (") (`2017_q1_`j'') ("-") (`2017_q3_`j'') (")") _tab (`2018_q2_`j'') (" (") (`2018_q1_`j'') ("-") (`2018_q3_`j'') (")") _tab (`2019_q2_`j'') (" (") (`2019_q1_`j'') ("-") (`20
+> 19_q3_`j'') (")") _tab (`2020_q2_`j'') (" (") (`2020_q1_`j'') ("-") (`2020_q3_`j'') (")") _tab (`2021_q2_`j'') (" (") (`2021_q1_`j'') ("-") (`2021_q3_`j'') (")") _tab (`2022_q2_`j'') (" (") (`2022_q1_`j'') ("-") (`2022_q3_`j'') (")") _tab (`2017_mode
+> _`j'') _tab (`2018_mode_`j'') _tab (`2019_mode_`j'') _tab (`2020_mode_`j'') _tab (`2021_mode_`j'') _tab (`2022_mode_`j'') _n
+ 26. file write tablecontent ("`label`j''") _tab ("No CKD") _tab (`2017_q2_0_`j'') (" (") (`2017_q1_0_`j'') ("-") (`2017_q3_0_`j'') (")") _tab (`2018_q2_0_`j'') (" (") (`2018_q1_0_`j'') ("-") (`2018_q3_0_`j'') (")") _tab (`2019_q2_0_`j'') (" (") (`2019
 > _q1_0_`j'') ("-") (`2019_q3_0_`j'') (")") _tab (`2020_q2_0_`j'') (" (") (`2020_q1_0_`j'') ("-") (`2020_q3_0_`j'') (")") _tab (`2021_q2_0_`j'') (" (") (`2021_q1_0_`j'') ("-") (`2021_q3_0_`j'') (")") _tab (`2022_q2_0_`j'') (" (") (`2022_q1_0_`j'') ("-"
 > ) (`2022_q3_0_`j'') (")") _tab (`2017_mode_0_`j'') _tab (`2018_mode_0_`j'') _tab (`2019_mode_0_`j'') _tab (`2020_mode_0_`j'') _tab (`2021_mode_0_`j'') _tab (`2022_mode_0_`j'') _n
- 29. file write tablecontent ("`label`j''") _tab ("Albuminuria") _tab (`2017_q2_1_`j'') (" (") (`2017_q1_1_`j'') ("-") (`2017_q3_1_`j'') (")") _tab (`2018_q2_1_`j'') (" (") (`2018_q1_1_`j'') ("-") (`2018_q3_1_`j'') (")") _tab (`2019_q2_1_`j'') (" (") (
+ 27. file write tablecontent ("`label`j''") _tab ("Albuminuria") _tab (`2017_q2_1_`j'') (" (") (`2017_q1_1_`j'') ("-") (`2017_q3_1_`j'') (")") _tab (`2018_q2_1_`j'') (" (") (`2018_q1_1_`j'') ("-") (`2018_q3_1_`j'') (")") _tab (`2019_q2_1_`j'') (" (") (
 > `2019_q1_1_`j'') ("-") (`2019_q3_1_`j'') (")") _tab (`2020_q2_1_`j'') (" (") (`2020_q1_1_`j'') ("-") (`2020_q3_1_`j'') (")") _tab (`2021_q2_1_`j'') (" (") (`2021_q1_1_`j'') ("-") (`2021_q3_1_`j'') (")") _tab (`2022_q2_1_`j'') (" (") (`2022_q1_1_`j'')
 >  ("-") (`2022_q3_1_`j'') (")") _tab (`2017_mode_1_`j'') _tab (`2018_mode_1_`j'') _tab (`2019_mode_1_`j'') _tab (`2020_mode_1_`j'') _tab (`2021_mode_1_`j'') _tab (`2022_mode_1_`j'') _n
- 30. file write tablecontent ("`label`j''") _tab ("CKD stage 3") _tab (`2017_q2_2_`j'') (" (") (`2017_q1_2_`j'') ("-") (`2017_q3_2_`j'') (")") _tab (`2018_q2_2_`j'') (" (") (`2018_q1_2_`j'') ("-") (`2018_q3_2_`j'') (")") _tab (`2019_q2_2_`j'') (" (") (
+ 28. file write tablecontent ("`label`j''") _tab ("CKD stage 3") _tab (`2017_q2_2_`j'') (" (") (`2017_q1_2_`j'') ("-") (`2017_q3_2_`j'') (")") _tab (`2018_q2_2_`j'') (" (") (`2018_q1_2_`j'') ("-") (`2018_q3_2_`j'') (")") _tab (`2019_q2_2_`j'') (" (") (
 > `2019_q1_2_`j'') ("-") (`2019_q3_2_`j'') (")") _tab (`2020_q2_2_`j'') (" (") (`2020_q1_2_`j'') ("-") (`2020_q3_2_`j'') (")") _tab (`2021_q2_2_`j'') (" (") (`2021_q1_2_`j'') ("-") (`2021_q3_2_`j'') (")") _tab (`2022_q2_2_`j'') (" (") (`2022_q1_2_`j'')
 >  ("-") (`2022_q3_2_`j'') (")") _tab (`2017_mode_2_`j'') _tab (`2018_mode_2_`j'') _tab (`2019_mode_2_`j'') _tab (`2020_mode_2_`j'') _tab (`2021_mode_2_`j'') _tab (`2022_mode_2_`j'') _n
- 31. file write tablecontent ("`label`j''") _tab ("CKD stage 4/5") _tab (`2017_q2_3_`j'') (" (") (`2017_q1_3_`j'') ("-") (`2017_q3_3_`j'') (")") _tab (`2018_q2_3_`j'') (" (") (`2018_q1_3_`j'') ("-") (`2018_q3_3_`j'') (")") _tab (`2019_q2_3_`j'') (" (")
+ 29. file write tablecontent ("`label`j''") _tab ("CKD stage 4/5") _tab (`2017_q2_3_`j'') (" (") (`2017_q1_3_`j'') ("-") (`2017_q3_3_`j'') (")") _tab (`2018_q2_3_`j'') (" (") (`2018_q1_3_`j'') ("-") (`2018_q3_3_`j'') (")") _tab (`2019_q2_3_`j'') (" (")
 >  (`2019_q1_3_`j'') ("-") (`2019_q3_3_`j'') (")") _tab (`2020_q2_3_`j'') (" (") (`2020_q1_3_`j'') ("-") (`2020_q3_3_`j'') (")") _tab (`2021_q2_3_`j'') (" (") (`2021_q1_3_`j'') ("-") (`2021_q3_3_`j'') (")") _tab (`2022_q2_3_`j'') (" (") (`2022_q1_3_`j'
 > ') ("-") (`2022_q3_3_`j'') (")") _tab (`2017_mode_3_`j'') _tab (`2018_mode_3_`j'') _tab (`2019_mode_3_`j'') _tab (`2020_mode_3_`j'') _tab (`2021_mode_3_`j'') _tab (`2022_mode_3_`j'') _n
- 32. file write tablecontent ("`label`j''") _tab ("Dialysis") _tab (`2017_q2_4_`j'') (" (") (`2017_q1_4_`j'') ("-") (`2017_q3_4_`j'') (")") _tab (`2018_q2_4_`j'') (" (") (`2018_q1_4_`j'') ("-") (`2018_q3_4_`j'') (")") _tab (`2019_q2_4_`j'') (" (") (`20
+ 30. file write tablecontent ("`label`j''") _tab ("Dialysis") _tab (`2017_q2_4_`j'') (" (") (`2017_q1_4_`j'') ("-") (`2017_q3_4_`j'') (")") _tab (`2018_q2_4_`j'') (" (") (`2018_q1_4_`j'') ("-") (`2018_q3_4_`j'') (")") _tab (`2019_q2_4_`j'') (" (") (`20
 > 19_q1_4_`j'') ("-") (`2019_q3_4_`j'') (")") _tab (`2020_q2_4_`j'') (" (") (`2020_q1_4_`j'') ("-") (`2020_q3_4_`j'') (")") _tab (`2021_q2_4_`j'') (" (") (`2021_q1_4_`j'') ("-") (`2021_q3_4_`j'') (")") _tab (`2022_q2_4_`j'') (" (") (`2022_q1_4_`j'') ("
 > -") (`2022_q3_4_`j'') (")") _tab (`2017_mode_4_`j'') _tab (`2018_mode_4_`j'') _tab (`2019_mode_4_`j'') _tab (`2020_mode_4_`j'') _tab (`2021_mode_4_`j'') _tab (`2022_mode_4_`j'') _n
- 33. file write tablecontent ("`label`j''") _tab ("Transplant") _tab (`2017_q2_5_`j'') (" (") (`2017_q1_5_`j'') ("-") (`2017_q3_5_`j'') (")") _tab (`2018_q2_5_`j'') (" (") (`2018_q1_5_`j'') ("-") (`2018_q3_5_`j'') (")") _tab (`2019_q2_5_`j'') (" (") (`
+ 31. file write tablecontent ("`label`j''") _tab ("Transplant") _tab (`2017_q2_5_`j'') (" (") (`2017_q1_5_`j'') ("-") (`2017_q3_5_`j'') (")") _tab (`2018_q2_5_`j'') (" (") (`2018_q1_5_`j'') ("-") (`2018_q3_5_`j'') (")") _tab (`2019_q2_5_`j'') (" (") (`
 > 2019_q1_5_`j'') ("-") (`2019_q3_5_`j'') (")") _tab (`2020_q2_5_`j'') (" (") (`2020_q1_5_`j'') ("-") (`2020_q3_5_`j'') (")") _tab (`2021_q2_5_`j'') (" (") (`2021_q1_5_`j'') ("-") (`2021_q3_5_`j'') (")") _tab (`2022_q2_5_`j'') (" (") (`2022_q1_5_`j'') 
 > ("-") (`2022_q3_5_`j'') (")") _tab (`2017_mode_5_`j'') _tab (`2018_mode_5_`j'') _tab (`2019_mode_5_`j'') _tab (`2020_mode_5_`j'') _tab (`2021_mode_5_`j'') _tab (`2022_mode_5_`j'') _n
- 34. }
+ 32. }
 variable region is float in master but str24 in using data
     You could specify merge's force option to ignore this numeric/string mismatch.  The using variable would then be treated as if it contained numeric missing value.
 r(106);
@@ -224,13 +199,22 @@ end of do-file
 
 r(106);
 
-. do "C:\Users\LSH170~1\AppData\Local\Temp\STD569c_000000.tmp"
+. cd ..
+C:\Users\lsh1703468\Documents\repo
+
+. cd ..
+C:\Users\lsh1703468\Documents
+
+. cd repos
+C:\Users\lsh1703468\Documents\repos
+
+. do "C:\Users\lsh1703468\Documents\Repos\analysis\crude_rates_esrd_2017.do"
 
 . sysdir set PLUS ./analysis/adofiles
 
 . sysdir set PERSONAL ./analysis/adofiles
 
 . pwd
-C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use
+C:\Users\lsh1703468\Documents\repos
 
 . cap log close
