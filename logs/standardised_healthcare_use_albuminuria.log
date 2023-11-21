@@ -1,0 +1,301 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/standardised_healthcare_use_albuminuria.log
+  log type:  text
+ opened on:  21 Nov 2023, 18:55:40
+
+. cap file close tablecontent
+
+. **Creates output file for each year (`dataset')
+. file open tablecontent using ./output/standardised_healthcare_use_albuminuria.csv, write text replace
+
+. **Column headings
+. *Ratios are per 100 patients
+. file write tablecontent ("Date") _tab ("stratum") _tab ("ip") _tab ("ip_ll") _tab ("ip_ul") _tab ("icu") _tab ("icu_ll") _tab ("icu_ul") _tab ("ed") _tab ("ed_ll") _tab ("ed_ul") _tab ("opd") _tab ("opd_ll") _tab ("opd_ul") _tab ("neph") _tab ("neph_
+> ll") _tab ("neph_ul") _tab ("gp") _tab ("gp_ll") _tab ("gp_ul") _tab ("bp") _tab ("bp_ll") _tab ("bp_ul") _tab ("uacr") _tab ("uacr_ll") _tab ("uacr_ul") _tab ("scr") _tab ("scr_ll") _tab ("scr_ul") _n
+
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. 
+. foreach x of local year {
+  2. file write tablecontent ("01/04/`x'") _tab ("all") _tab
+  3. use ./output/`x'_ckd_complete.dta, clear
+  4. drop if ckd_group!=1
+  5. qui safecount
+  6. local denom = round(r(N),5)
+  7. 
+. foreach outcome of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions blood_pressure albuminuria creatinine {
+  8. qui su std_`outcome'
+  9. local `x'_`outcome' = (r(mean)/`denom')*10000
+ 10. local `x'_`outcome'_ef = exp(1.96 * sqrt(1 / ``x'_`outcome''))
+ 11. local `x'_`outcome'_ul = ``x'_`outcome'' * ``x'_`outcome'_ef'
+ 12. local `x'_`outcome'_ll = ``x'_`outcome'' / ``x'_`outcome'_ef'
+ 13. }
+ 14. 
+. file write tablecontent %10.2f (``x'_hospital_days') _tab %10.2f (``x'_hospital_days_ll') _tab %10.2f (``x'_hospital_days_ul') _tab %10.2f (``x'_critical_care_days') _tab %10.2f (``x'_critical_care_days_ll') _tab %10.2f (``x'_critical_care_days_ul') 
+> _tab %10.2f (``x'_emergency_days') _tab %10.2f (``x'_emergency_days_ll') _tab %10.2f (``x'_emergency_days_ul') _tab %10.2f (``x'_op_appts') _tab %10.2f (``x'_op_appts_ll') _tab %10.2f (``x'_op_appts_ul') _tab %10.2f (``x'_neph_appts') _tab %10.2f (``
+> x'_neph_appts_ll') _tab %10.2f (``x'_neph_appts_ul') _tab %10.2f (``x'_gp_interactions') _tab %10.2f (``x'_gp_interactions_ll') _tab %10.2f (``x'_gp_interactions_ul') _tab %10.2f (``x'_blood_pressure') _tab %10.2f (``x'_blood_pressure_ll') _tab %10.2
+> f (``x'_blood_pressure_ul') _tab %10.2f (``x'_albuminuria') _tab %10.2f (``x'_albuminuria_ll') _tab %10.2f (``x'_albuminuria_ul') _tab %10.2f (``x'_creatinine') _tab %10.2f (``x'_creatinine_ll') _tab %10.2f (``x'_creatinine_ul') _n
+ 15. }
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+
+. 
+. forvalues i=1/6 {
+  2. local label`i': label ethnicity `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. drop if ckd_group!=1
+  7. qui safecount if ethnicity==`i'
+  8. local denom = round(r(N),5)
+  9. 
+. foreach outcome of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions blood_pressure albuminuria creatinine {
+ 10. qui su ethnicity_`outcome'_ckd if ethnicity==`i' 
+ 11. local `x'_`outcome' = (r(mean)/`denom')*10000
+ 12. local `x'_`outcome'_ef = exp(1.96 * sqrt(1 / ``x'_`outcome''))
+ 13. local `x'_`outcome'_ul = ``x'_`outcome'' * ``x'_`outcome'_ef'
+ 14. local `x'_`outcome'_ll = ``x'_`outcome'' / ``x'_`outcome'_ef'
+ 15. }
+ 16. 
+. file write tablecontent %10.2f (``x'_hospital_days') _tab %10.2f (``x'_hospital_days_ll') _tab %10.2f (``x'_hospital_days_ul') _tab %10.2f (``x'_critical_care_days') _tab %10.2f (``x'_critical_care_days_ll') _tab %10.2f (``x'_critical_care_days_ul') 
+> _tab %10.2f (``x'_emergency_days') _tab %10.2f (``x'_emergency_days_ll') _tab %10.2f (``x'_emergency_days_ul') _tab %10.2f (``x'_op_appts') _tab %10.2f (``x'_op_appts_ll') _tab %10.2f (``x'_op_appts_ul') _tab %10.2f (``x'_neph_appts') _tab %10.2f (``
+> x'_neph_appts_ll') _tab %10.2f (``x'_neph_appts_ul') _tab %10.2f (``x'_gp_interactions') _tab %10.2f (``x'_gp_interactions_ll') _tab %10.2f (``x'_gp_interactions_ul') _tab %10.2f (``x'_blood_pressure') _tab %10.2f (``x'_blood_pressure_ll') _tab %10.2
+> f (``x'_blood_pressure_ul') _tab %10.2f (``x'_albuminuria') _tab %10.2f (``x'_albuminuria_ll') _tab %10.2f (``x'_albuminuria_ul') _tab %10.2f (``x'_creatinine') _tab %10.2f (``x'_creatinine_ll') _tab %10.2f (``x'_creatinine_ul') _n
+ 17. }
+ 18. }
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+
+. 
+. forvalues i=1/5 {
+  2. local label`i': label imd `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. drop if ckd_group!=1
+  7. qui safecount if imd==`i'
+  8. local denom = round(r(N),5)
+  9. 
+. foreach outcome of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions blood_pressure albuminuria creatinine {
+ 10. qui su imd_`outcome'_ckd if imd==`i' 
+ 11. local `x'_`outcome' = (r(mean)/`denom')*10000
+ 12. local `x'_`outcome'_ef = exp(1.96 * sqrt(1 / ``x'_`outcome''))
+ 13. local `x'_`outcome'_ul = ``x'_`outcome'' * ``x'_`outcome'_ef'
+ 14. local `x'_`outcome'_ll = ``x'_`outcome'' / ``x'_`outcome'_ef'
+ 15. }
+ 16. 
+. file write tablecontent %10.2f (``x'_hospital_days') _tab %10.2f (``x'_hospital_days_ll') _tab %10.2f (``x'_hospital_days_ul') _tab %10.2f (``x'_critical_care_days') _tab %10.2f (``x'_critical_care_days_ll') _tab %10.2f (``x'_critical_care_days_ul') 
+> _tab %10.2f (``x'_emergency_days') _tab %10.2f (``x'_emergency_days_ll') _tab %10.2f (``x'_emergency_days_ul') _tab %10.2f (``x'_op_appts') _tab %10.2f (``x'_op_appts_ll') _tab %10.2f (``x'_op_appts_ul') _tab %10.2f (``x'_neph_appts') _tab %10.2f (``
+> x'_neph_appts_ll') _tab %10.2f (``x'_neph_appts_ul') _tab %10.2f (``x'_gp_interactions') _tab %10.2f (``x'_gp_interactions_ll') _tab %10.2f (``x'_gp_interactions_ul') _tab %10.2f (``x'_blood_pressure') _tab %10.2f (``x'_blood_pressure_ll') _tab %10.2
+> f (``x'_blood_pressure_ul') _tab %10.2f (``x'_albuminuria') _tab %10.2f (``x'_albuminuria_ll') _tab %10.2f (``x'_albuminuria_ul') _tab %10.2f (``x'_creatinine') _tab %10.2f (``x'_creatinine_ll') _tab %10.2f (``x'_creatinine_ul') _n
+ 17. }
+ 18. }
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+
+. 
+. 
+. forvalues i=1/9 {
+  2. local label`i': label region `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. drop if ckd_group!=1
+  7. qui safecount if region==`i'
+  8. local denom = round(r(N),5)
+  9. 
+. foreach outcome of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions blood_pressure albuminuria creatinine {
+ 10. qui su region_`outcome'_ckd if region==`i'
+ 11. local `x'_`outcome' = (r(mean)/`denom')*10000
+ 12. local `x'_`outcome'_ef = exp(1.96 * sqrt(1 / ``x'_`outcome''))
+ 13. local `x'_`outcome'_ul = ``x'_`outcome'' * ``x'_`outcome'_ef'
+ 14. local `x'_`outcome'_ll = ``x'_`outcome'' / ``x'_`outcome'_ef'
+ 15. }
+ 16. 
+. file write tablecontent %10.2f (``x'_hospital_days') _tab %10.2f (``x'_hospital_days_ll') _tab %10.2f (``x'_hospital_days_ul') _tab %10.2f (``x'_critical_care_days') _tab %10.2f (``x'_critical_care_days_ll') _tab %10.2f (``x'_critical_care_days_ul') 
+> _tab %10.2f (``x'_emergency_days') _tab %10.2f (``x'_emergency_days_ll') _tab %10.2f (``x'_emergency_days_ul') _tab %10.2f (``x'_op_appts') _tab %10.2f (``x'_op_appts_ll') _tab %10.2f (``x'_op_appts_ul') _tab %10.2f (``x'_neph_appts') _tab %10.2f (``
+> x'_neph_appts_ll') _tab %10.2f (``x'_neph_appts_ul') _tab %10.2f (``x'_gp_interactions') _tab %10.2f (``x'_gp_interactions_ll') _tab %10.2f (``x'_gp_interactions_ul') _tab %10.2f (``x'_blood_pressure') _tab %10.2f (``x'_blood_pressure_ll') _tab %10.2
+> f (``x'_blood_pressure_ul') _tab %10.2f (``x'_albuminuria') _tab %10.2f (``x'_albuminuria_ll') _tab %10.2f (``x'_albuminuria_ul') _tab %10.2f (``x'_creatinine') _tab %10.2f (``x'_creatinine_ll') _tab %10.2f (``x'_creatinine_ul') _n
+ 17. }
+ 18. }
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+
+. 
+. 
+. forvalues i=0/1 {
+  2. local label`i': label urban `i'
+  3. foreach x of local year {
+  4. file write tablecontent ("01/04/`x'") _tab ("`label`i''") _tab
+  5. use ./output/`x'_ckd_complete.dta, clear
+  6. drop if ckd_group!=1
+  7. qui safecount if urban==`i'
+  8. local denom = round(r(N),5)
+  9. 
+. foreach outcome of varlist hospital_days critical_care_days emergency_days op_appts neph_appts gp_interactions blood_pressure albuminuria creatinine {
+ 10. qui su urban_`outcome'_ckd if urban==`i'
+ 11. local `x'_`outcome' = (r(mean)/`denom')*10000
+ 12. local `x'_`outcome'_ef = exp(1.96 * sqrt(1 / ``x'_`outcome''))
+ 13. local `x'_`outcome'_ul = ``x'_`outcome'' * ``x'_`outcome'_ef'
+ 14. local `x'_`outcome'_ll = ``x'_`outcome'' / ``x'_`outcome'_ef'
+ 15. }
+ 16. 
+. file write tablecontent %10.2f (``x'_hospital_days') _tab %10.2f (``x'_hospital_days_ll') _tab %10.2f (``x'_hospital_days_ul') _tab %10.2f (``x'_critical_care_days') _tab %10.2f (``x'_critical_care_days_ll') _tab %10.2f (``x'_critical_care_days_ul') 
+> _tab %10.2f (``x'_emergency_days') _tab %10.2f (``x'_emergency_days_ll') _tab %10.2f (``x'_emergency_days_ul') _tab %10.2f (``x'_op_appts') _tab %10.2f (``x'_op_appts_ll') _tab %10.2f (``x'_op_appts_ul') _tab %10.2f (``x'_neph_appts') _tab %10.2f (``
+> x'_neph_appts_ll') _tab %10.2f (``x'_neph_appts_ul') _tab %10.2f (``x'_gp_interactions') _tab %10.2f (``x'_gp_interactions_ll') _tab %10.2f (``x'_gp_interactions_ul') _tab %10.2f (``x'_blood_pressure') _tab %10.2f (``x'_blood_pressure_ll') _tab %10.2
+> f (``x'_blood_pressure_ul') _tab %10.2f (``x'_albuminuria') _tab %10.2f (``x'_albuminuria_ll') _tab %10.2f (``x'_albuminuria_ul') _tab %10.2f (``x'_creatinine') _tab %10.2f (``x'_creatinine_ll') _tab %10.2f (``x'_creatinine_ul') _n
+ 17. }
+ 18. }
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+(832 observations deleted)
+(807 observations deleted)
+(754 observations deleted)
+(820 observations deleted)
+(788 observations deleted)
+(858 observations deleted)
+
+. 
+. file close tablecontent
+
+. 
+end of do-file
+
+. do "C:\Users\lsh1703468\Documents\Repo\ckd-healthcare-use\analysis\standardised_healthcare_use_ckd3.do"
+
+. sysdir set PLUS ./analysis/adofiles
+
+. sysdir set PERSONAL ./analysis/adofiles
+
+. pwd
+C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use
+
+. **Loops through datasets for each year 2017-2018 to 2022-2023
+. * `dataset' specifies year from project.yaml script
+. local dataset `1'
+
+. cap log close

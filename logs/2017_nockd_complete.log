@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/logs/2017_nockd_complete.log
   log type:  text
- opened on:  21 Sep 2023, 23:05:12
+ opened on:  21 Nov 2023, 18:23:33
 
 . clear
 
@@ -184,10 +184,13 @@ esrd_egfr_e |
 ------------+-----------------------------------
       Total |      1,087      100.00
 
+. replace modality_outcome = "Unchanged" if modality_outcome_date==.
+(150 real changes made)
+
 . gen dialysis_outcome = 0
 
 . replace dialysis_outcome = 1 if modality_outcome=="Dialysis"
-(45 real changes made)
+(12 real changes made)
 
 . replace dialysis_outcome = 1 if modality_outcome=="Modality unclear" & esrd_e
 > gfr_end==1
@@ -197,23 +200,24 @@ esrd_egfr_e |
 
 . replace kidney_transplant_outcome = 1 if modality_outcome=="Kidney transplant
 > "
-(47 real changes made)
+(20 real changes made)
 
 . replace kidney_transplant_outcome = 1 if modality_outcome=="Modality unclear"
 >  & esrd_egfr_end==0
-(7 real changes made)
+(2 real changes made)
 
-. replace ckd_progression = 5 if modality_outcome=="Modality unclear"
-(11 real changes made)
+. replace ckd_progression = 5 if modality_outcome=="Modality unclear" & modalit
+> y_outcome_date!=.
+(2 real changes made)
 
 . replace ckd_progression = 3 if dialysis_outcome==1
-(45 real changes made)
+(12 real changes made)
 
 . replace ckd_progression = 4 if kidney_transplant_outcome==1
-(54 real changes made)
+(22 real changes made)
 
 . replace ckd_progression = 6 if modality_outcome=="Deceased"
-(103 real changes made)
+(22 real changes made)
 
 . label define ckd_progression 0 "No progression" 1 "CKD 3" 2 "CKD 4/5 pre-KRT"
 >  3 "Dialysis" 4 "Kidney transplant" 5 "KRT unclear modality" 6 "Deceased"
@@ -226,13 +230,12 @@ esrd_egfr_e |
 
      CKD progression |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      No progression |        770       70.84       70.84
-               CKD 3 |        105        9.66       80.50
-     CKD 4/5 pre-KRT |          6        0.55       81.05
-            Dialysis |         45        4.14       85.19
-   Kidney transplant |         54        4.97       90.16
-KRT unclear modality |          4        0.37       90.52
-            Deceased |        103        9.48      100.00
+      No progression |        905       83.26       83.26
+               CKD 3 |        119       10.95       94.20
+     CKD 4/5 pre-KRT |          7        0.64       94.85
+            Dialysis |         12        1.10       95.95
+   Kidney transplant |         22        2.02       97.98
+            Deceased |         22        2.02      100.00
 ---------------------+-----------------------------------
                Total |      1,087      100.00
 
@@ -385,6 +388,67 @@ KRT unclear modality |          4        0.37       90.52
 . drop rural_urban
 
 . 
+. *Age bands for standardisation
+. egen agecat = cut(age), at(0,18,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,
+> 200)
+
+. drop if agecat==0
+(0 observations deleted)
+
+. 
+. *Age-standardisation weights (European Standard Population 2013)
+. gen weight = .
+(1,087 missing values generated)
+
+. replace weight = 0.027261 if agecat==18
+(24 real changes made)
+
+. replace weight = 0.074349 if agecat==20
+(109 real changes made)
+
+. replace weight = 0.074349 if agecat==25
+(87 real changes made)
+
+. replace weight = 0.080545 if agecat==30
+(84 real changes made)
+
+. replace weight = 0.086741 if agecat==35
+(108 real changes made)
+
+. replace weight = 0.086741 if agecat==40
+(87 real changes made)
+
+. replace weight = 0.086741 if agecat==45
+(90 real changes made)
+
+. replace weight = 0.086741 if agecat==50
+(89 real changes made)
+
+. replace weight = 0.080545 if agecat==55
+(101 real changes made)
+
+. replace weight = 0.074349 if agecat==60
+(71 real changes made)
+
+. replace weight = 0.068154 if agecat==65
+(84 real changes made)
+
+. replace weight = 0.061958 if agecat==70
+(61 real changes made)
+
+. replace weight = 0.049566 if agecat==75
+(41 real changes made)
+
+. replace weight = 0.030979 if agecat==80
+(24 real changes made)
+
+. replace weight = 0.018587 if agecat==85
+(14 real changes made)
+
+. replace weight = 0.012392 if agecat==90
+(13 real changes made)
+
+. 
 . save "./output/`dataset'_nockd_complete.dta", replace
 (note: file ./output/2017_nockd_complete.dta not found)
 file ./output/2017_nockd_complete.dta saved
@@ -394,5 +458,5 @@ file ./output/2017_nockd_complete.dta saved
       name:  <unnamed>
        log:  /workspace/logs/2017_nockd_complete.log
   log type:  text
- closed on:  21 Sep 2023, 23:05:17
+ closed on:  21 Nov 2023, 18:23:37
 -------------------------------------------------------------------------------

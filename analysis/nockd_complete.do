@@ -81,14 +81,14 @@ replace ckd_progression = 2 if egfr_end==3
 egen esrd_egfr_end = cut(egfr_outcome), at (0, 15, 5000)
 recode esrd_egfr_end 0=1 15=0
 tab esrd_egfr_end, m
-replace modality_outcome = "Unchanged" if modality_outcome_date==""
+replace modality_outcome = "Unchanged" if modality_outcome_date==.
 gen dialysis_outcome = 0
 replace dialysis_outcome = 1 if modality_outcome=="Dialysis"
 replace dialysis_outcome = 1 if modality_outcome=="Modality unclear" & esrd_egfr_end==1
 gen kidney_transplant_outcome = 0
 replace kidney_transplant_outcome = 1 if modality_outcome=="Kidney transplant"
 replace kidney_transplant_outcome = 1 if modality_outcome=="Modality unclear" & esrd_egfr_end==0
-replace ckd_progression = 5 if modality_outcome=="Modality unclear" & modality_outcome_date!=""
+replace ckd_progression = 5 if modality_outcome=="Modality unclear" & modality_outcome_date!=.
 replace ckd_progression = 3 if dialysis_outcome==1
 replace ckd_progression = 4 if kidney_transplant_outcome==1
 replace ckd_progression = 6 if modality_outcome=="Deceased"
@@ -168,6 +168,29 @@ label var urban "Urban/rural"
 label define urban 0 "Rural" 1 "Urban"
 label values urban urban
 drop rural_urban
+
+*Age bands for standardisation
+egen agecat = cut(age), at(0,18,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,200)
+drop if agecat==0
+
+*Age-standardisation weights (European Standard Population 2013)
+gen weight = .
+replace weight = 0.027261 if agecat==18
+replace weight = 0.074349 if agecat==20
+replace weight = 0.074349 if agecat==25
+replace weight = 0.080545 if agecat==30
+replace weight = 0.086741 if agecat==35
+replace weight = 0.086741 if agecat==40
+replace weight = 0.086741 if agecat==45
+replace weight = 0.086741 if agecat==50
+replace weight = 0.080545 if agecat==55
+replace weight = 0.074349 if agecat==60
+replace weight = 0.068154 if agecat==65
+replace weight = 0.061958 if agecat==70
+replace weight = 0.049566 if agecat==75
+replace weight = 0.030979 if agecat==80
+replace weight = 0.018587 if agecat==85
+replace weight = 0.012392 if agecat==90
 
 save "./output/`dataset'_nockd_complete.dta", replace
 

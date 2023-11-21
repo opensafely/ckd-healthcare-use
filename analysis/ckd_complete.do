@@ -151,13 +151,15 @@ replace access_egfr=3 if access_egfr==.
 label define access_egfr 0 "Dialysis" 1 "eGFR 0-14" 2 "eGFR >= 15" 3 "Unknown"
 label values access_egfr access_egfr
 
-*Totals for non-binary healthcare resource outcomes
+*Totals for non-binary healthcare resource outcomes (including by month)
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions m4_hospital_days m5_hospital_days m6_hospital_days m7_hospital_days m8_hospital_days m9_hospital_days m10_hospital_days m11_hospital_days m12_hospital_days m1_hospital_days m2_hospital_days m3_hospital_days m4_critical_care_days m5_critical_care_days m6_critical_care_days m7_critical_care_days m8_critical_care_days m9_critical_care_days m10_critical_care_days m11_critical_care_days m12_critical_care_days m1_critical_care_days m2_critical_care_days m3_critical_care_days m4_emergency_days m5_emergency_days m6_emergency_days m7_emergency_days m8_emergency_days m9_emergency_days m10_emergency_days m11_emergency_days m12_emergency_days m1_emergency_days m2_emergency_days m3_emergency_days m4_op_appts m5_op_appts m6_op_appts m7_op_appts m8_op_appts m9_op_appts m10_op_appts m11_op_appts m12_op_appts m1_op_appts m2_op_appts m3_op_appts m4_neph_appts m5_neph_appts m6_neph_appts m7_neph_appts m8_neph_appts m9_neph_appts m10_neph_appts m11_neph_appts m12_neph_appts m1_neph_appts m2_neph_appts m3_neph_appts m4_tx_appts m5_tx_appts m6_tx_appts m7_tx_appts m8_tx_appts m9_tx_appts m10_tx_appts m11_tx_appts m12_tx_appts m1_tx_appts m2_tx_appts m3_tx_appts m4_gp_interactions m5_gp_interactions m6_gp_interactions m7_gp_interactions m8_gp_interactions m9_gp_interactions m10_gp_interactions m11_gp_interactions m12_gp_interactions m1_gp_interactions m2_gp_interactions m3_gp_interactions {
 bysort ckd_group: egen total_`aggregate' = total(`aggregate')
 egen overall_`aggregate' = total(`aggregate')
 tab ckd_group, sum(total_`aggregate')
 sum overall_`aggregate'
 }
+
+
 
 **Potential effect modifiers
 * Ethnicity
@@ -230,13 +232,54 @@ label define urban 0 "Rural" 1 "Urban"
 label values urban urban
 drop rural_urban
 
-* Create variable for total # of each aggregated outcome
-* `var'_`aggregate' = total # of each aggregated outcome overall stratified by ethnicity/imd/region/urban
-* `var'_`aggregate'_ckd = total # of each aggregated outcome in each CKD group stratified by ethnicity/imd/region/urban
+*Age bands for standardisation
+egen agecat = cut(age), at(0,18,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,200)
+drop if agecat==0
+
+*Age-standardisation weights (European Standard Population 2013)
+gen weight = .
+replace weight = 0.027261 if agecat==18
+replace weight = 0.074349 if agecat==20
+replace weight = 0.074349 if agecat==25
+replace weight = 0.080545 if agecat==30
+replace weight = 0.086741 if agecat==35
+replace weight = 0.086741 if agecat==40
+replace weight = 0.086741 if agecat==45
+replace weight = 0.086741 if agecat==50
+replace weight = 0.080545 if agecat==55
+replace weight = 0.074349 if agecat==60
+replace weight = 0.068154 if agecat==65
+replace weight = 0.061958 if agecat==70
+replace weight = 0.049566 if agecat==75
+replace weight = 0.030979 if agecat==80
+replace weight = 0.018587 if agecat==85
+replace weight = 0.012392 if agecat==90
+
+
+*Age standardised counts for each non-binary healthcare resource outcomes
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
+replace `aggregate' = `aggregate' * weight
+}
+
+* Create variable for age-standardised total # of each aggregated outcome
+* `var'_`aggregate' = age-standardised total # of each aggregated outcome overall stratified by ethnicity/imd/region/urban
+* `var'_`aggregate'_ckd = age-standardised total # of each aggregated outcome in each CKD group stratified by ethnicity/imd/region/urban
+foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions {
+egen overall_std_`aggregate' = total(`aggregate')
+bysort ckd_group: egen std_`aggregate' = total(`aggregate')
 foreach var of varlist ethnicity imd region urban {
 bysort `var': egen `var'_`aggregate' = total(`aggregate')
 bysort `var' ckd_group: egen `var'_`aggregate'_ckd = total(`aggregate')
+}
+}
+
+foreach binary of varlist fistula_formation pd_insertion blood_pressure albuminuria creatinine {
+gen esp_`binary' = `binary' * weight
+egen overall_std_`binary' = total(esp_`binary')
+bysort ckd_group: egen std_`binary' = total(esp_`binary')
+foreach var of varlist ethnicity imd region urban {
+bysort `var': egen `var'_`binary' = total(esp_`binary')
+bysort `var' ckd_group: egen `var'_`binary'_ckd = total(esp_`binary')
 }
 }
 

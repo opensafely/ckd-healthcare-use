@@ -14,7 +14,7 @@ local year "2017 2018 2019 2020 2021 2022"
 foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop _merge
-merge 1:1 patient_id using ./output/`x'_nockd_complete
+merge 1:1 patient_id using ./output/`x'_nockd_complete, force
 drop if ckd_progression!=6
 
 qui su age, d
