@@ -685,6 +685,14 @@ actions:
         log: logs/age_transplant.log
         output: output/age_transplant.csv
 
+  age_cardiovascular:
+    run: stata-mp:latest analysis/age_cardiovascular.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_clean_nockd_complete, 2018_clean_nockd_complete, 2019_clean_nockd_complete, 2020_clean_nockd_complete, 2021_clean_nockd_complete, 2022_clean_nockd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/age_cardiovascular.log
+        output: output/age_cardiovascular.csv
+
   standardised_healthcare_use_overall:
     run: stata-mp:latest analysis/standardised_healthcare_use_overall.do
     needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete]
