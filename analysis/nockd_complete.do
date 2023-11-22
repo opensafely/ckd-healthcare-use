@@ -81,7 +81,8 @@ replace ckd_progression = 2 if egfr_end==3
 egen esrd_egfr_end = cut(egfr_outcome), at (0, 15, 5000)
 recode esrd_egfr_end 0=1 15=0
 tab esrd_egfr_end, m
-replace modality_outcome = "Unchanged" if modality_outcome_date==.
+*NB - might need to change "" to . with dummy data
+replace modality_outcome = "Unchanged" if modality_outcome_date==""
 gen dialysis_outcome = 0
 replace dialysis_outcome = 1 if modality_outcome=="Dialysis"
 replace dialysis_outcome = 1 if modality_outcome=="Modality unclear" & esrd_egfr_end==1
