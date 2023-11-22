@@ -1,13 +1,14 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/age_death.log
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/age_cardiovascular.log
   log type:  text
- opened on:  22 Nov 2023, 13:36:46
+ opened on:  22 Nov 2023, 13:47:28
 
 . 
 . cap file close tablecontent
 
-. file open tablecontent using ./output/age_death.csv, write text replace
+. file open tablecontent using ./output/age_cardiovascular.csv, write text replace
+(file ./output/age_cardiovascular.csv not found)
 
 . 
 . file write tablecontent ("stratum") _tab ("start_status") _tab ("median_2017") _tab ("median_2018") _tab ("median_2019") _tab ("median_2020") _tab ("median_2021") _tab ("median_2022") _tab ("mode_2017") _tab ("mod
@@ -20,7 +21,7 @@
   2. use ./output/`x'_ckd_complete.dta, clear
   3. drop _merge
   4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
-  5. drop if ckd_progression!=6
+  5. drop if cardiovascular!=1
   6. 
 . qui su age, d
   7. local `x'_q2 = r(p50)
@@ -58,7 +59,7 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
+(3,105 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -75,7 +76,7 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
+(3,027 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -92,7 +93,7 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
+(2,924 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -109,7 +110,7 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
+(3,053 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -126,7 +127,7 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
+(3,003 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -143,7 +144,7 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
+(3,102 observations deleted)
 
 . 
 . 
@@ -176,73 +177,64 @@
 > ) (`2022_q3_5') (")") _tab (`2017_mode_5') _tab (`2018_mode_5') _tab (`2019_mode_5') _tab (`2020_mode_5') _tab (`2021_mode_5') _tab (`2022_mode_5') _n
 
 . 
-. local label1 "White"
-
-. local label2 "Non-white"
-
-. local label3 "Unknown"
-
 . 
 . *Ethnicity
-. forvalues j=1/3 {
-  2. foreach x of local year {
-  3. use ./output/`x'_ckd_complete.dta, clear
-  4. drop _merge
-  5. merge 1:1 patient_id using ./output/`x'_nockd_complete
-  6. drop if ckd_progression!=6 
-  7. replace ethnicity=2 if ethnicity==3
-  8. replace ethnicity=2 if ethnicity==4
-  9. replace ethnicity=2 if ethnicity==5
- 10. replace ethnicity=3 if ethnicity==6
- 11. drop if ethnicity!=`j'
- 12. 
+. forvalues j=1/6 {
+  2. local label`j': label ethnicity `j'
+  3. foreach x of local year {
+  4. use ./output/`x'_ckd_complete.dta, clear
+  5. drop _merge
+  6. merge 1:1 patient_id using ./output/`x'_nockd_complete
+  7. drop if cardiovascular!=1 
+  8. drop if ethnicity!=`j'
+  9. 
 . qui su age, d
- 13. local `x'_q2_`j' = r(p50)
- 14. local `x'_q1_`j' = r(p25)
- 15. local `x'_q3_`j' = r(p75)
- 16. egen mode_age = mode(age), minmode
- 17. qui su mode_age
- 18. local `x'_mode_`j' = r(mean)
- 19. drop mode_age
- 20. 
+ 10. local `x'_q2_`j' = r(p50)
+ 11. local `x'_q1_`j' = r(p25)
+ 12. local `x'_q3_`j' = r(p75)
+ 13. egen mode_age = mode(age), minmode
+ 14. qui su mode_age
+ 15. local `x'_mode_`j' = r(mean)
+ 16. drop mode_age
+ 17. 
 . bysort ckd_group: egen mode_age = mode(age), minmode
- 21. forvalues i=0/5{
- 22. qui su age if ckd_group==`i', d
- 23. local `x'_q2_`i'_`j' = r(p50)
- 24. local `x'_q1_`i'_`j' = r(p25)
- 25. local `x'_q3_`i'_`j' = r(p75)
- 26. qui su mode_age if ckd_group==`i'
- 27. local `x'_mode_`i'_`j' = r(mean)
- 28. }
- 29. }
- 30. file write tablecontent ("`label`j''") _tab ("All") _tab (`2017_q2_`j'') (" (") (`2017_q1_`j'') ("-") (`2017_q3_`j'') (")") _tab (`2018_q2_`j'') (" (") (`2018_q1_`j'') ("-") (`2018_q3_`j'') (")") _tab (`2019_q2
+ 18. forvalues i=0/5{
+ 19. qui su age if ckd_group==`i', d
+ 20. local `x'_q2_`i'_`j' = r(p50)
+ 21. local `x'_q1_`i'_`j' = r(p25)
+ 22. local `x'_q3_`i'_`j' = r(p75)
+ 23. qui su mode_age if ckd_group==`i'
+ 24. local `x'_mode_`i'_`j' = r(mean)
+ 25. }
+ 26. }
+ 27. file write tablecontent ("`label`j''") _tab ("All") _tab (`2017_q2_`j'') (" (") (`2017_q1_`j'') ("-") (`2017_q3_`j'') (")") _tab (`2018_q2_`j'') (" (") (`2018_q1_`j'') ("-") (`2018_q3_`j'') (")") _tab (`2019_q2
 > _`j'') (" (") (`2019_q1_`j'') ("-") (`2019_q3_`j'') (")") _tab (`2020_q2_`j'') (" (") (`2020_q1_`j'') ("-") (`2020_q3_`j'') (")") _tab (`2021_q2_`j'') (" (") (`2021_q1_`j'') ("-") (`2021_q3_`j'') (")") _tab (`2022
 > _q2_`j'') (" (") (`2022_q1_`j'') ("-") (`2022_q3_`j'') (")") _tab (`2017_mode_`j'') _tab (`2018_mode_`j'') _tab (`2019_mode_`j'') _tab (`2020_mode_`j'') _tab (`2021_mode_`j'') _tab (`2022_mode_`j'') _n
- 31. file write tablecontent ("`label`j''") _tab ("No CKD") _tab (`2017_q2_0_`j'') (" (") (`2017_q1_0_`j'') ("-") (`2017_q3_0_`j'') (")") _tab (`2018_q2_0_`j'') (" (") (`2018_q1_0_`j'') ("-") (`2018_q3_0_`j'') (")")
+ 28. file write tablecontent ("`label`j''") _tab ("No CKD") _tab (`2017_q2_0_`j'') (" (") (`2017_q1_0_`j'') ("-") (`2017_q3_0_`j'') (")") _tab (`2018_q2_0_`j'') (" (") (`2018_q1_0_`j'') ("-") (`2018_q3_0_`j'') (")")
 >  _tab (`2019_q2_0_`j'') (" (") (`2019_q1_0_`j'') ("-") (`2019_q3_0_`j'') (")") _tab (`2020_q2_0_`j'') (" (") (`2020_q1_0_`j'') ("-") (`2020_q3_0_`j'') (")") _tab (`2021_q2_0_`j'') (" (") (`2021_q1_0_`j'') ("-") (`
 > 2021_q3_0_`j'') (")") _tab (`2022_q2_0_`j'') (" (") (`2022_q1_0_`j'') ("-") (`2022_q3_0_`j'') (")") _tab (`2017_mode_0_`j'') _tab (`2018_mode_0_`j'') _tab (`2019_mode_0_`j'') _tab (`2020_mode_0_`j'') _tab (`2021_m
 > ode_0_`j'') _tab (`2022_mode_0_`j'') _n
- 32. file write tablecontent ("`label`j''") _tab ("Albuminuria") _tab (`2017_q2_1_`j'') (" (") (`2017_q1_1_`j'') ("-") (`2017_q3_1_`j'') (")") _tab (`2018_q2_1_`j'') (" (") (`2018_q1_1_`j'') ("-") (`2018_q3_1_`j'') 
+ 29. file write tablecontent ("`label`j''") _tab ("Albuminuria") _tab (`2017_q2_1_`j'') (" (") (`2017_q1_1_`j'') ("-") (`2017_q3_1_`j'') (")") _tab (`2018_q2_1_`j'') (" (") (`2018_q1_1_`j'') ("-") (`2018_q3_1_`j'') 
 > (")") _tab (`2019_q2_1_`j'') (" (") (`2019_q1_1_`j'') ("-") (`2019_q3_1_`j'') (")") _tab (`2020_q2_1_`j'') (" (") (`2020_q1_1_`j'') ("-") (`2020_q3_1_`j'') (")") _tab (`2021_q2_1_`j'') (" (") (`2021_q1_1_`j'') ("-
 > ") (`2021_q3_1_`j'') (")") _tab (`2022_q2_1_`j'') (" (") (`2022_q1_1_`j'') ("-") (`2022_q3_1_`j'') (")") _tab (`2017_mode_1_`j'') _tab (`2018_mode_1_`j'') _tab (`2019_mode_1_`j'') _tab (`2020_mode_1_`j'') _tab (`2
 > 021_mode_1_`j'') _tab (`2022_mode_1_`j'') _n
- 33. file write tablecontent ("`label`j''") _tab ("CKD stage 3") _tab (`2017_q2_2_`j'') (" (") (`2017_q1_2_`j'') ("-") (`2017_q3_2_`j'') (")") _tab (`2018_q2_2_`j'') (" (") (`2018_q1_2_`j'') ("-") (`2018_q3_2_`j'') 
+ 30. file write tablecontent ("`label`j''") _tab ("CKD stage 3") _tab (`2017_q2_2_`j'') (" (") (`2017_q1_2_`j'') ("-") (`2017_q3_2_`j'') (")") _tab (`2018_q2_2_`j'') (" (") (`2018_q1_2_`j'') ("-") (`2018_q3_2_`j'') 
 > (")") _tab (`2019_q2_2_`j'') (" (") (`2019_q1_2_`j'') ("-") (`2019_q3_2_`j'') (")") _tab (`2020_q2_2_`j'') (" (") (`2020_q1_2_`j'') ("-") (`2020_q3_2_`j'') (")") _tab (`2021_q2_2_`j'') (" (") (`2021_q1_2_`j'') ("-
 > ") (`2021_q3_2_`j'') (")") _tab (`2022_q2_2_`j'') (" (") (`2022_q1_2_`j'') ("-") (`2022_q3_2_`j'') (")") _tab (`2017_mode_2_`j'') _tab (`2018_mode_2_`j'') _tab (`2019_mode_2_`j'') _tab (`2020_mode_2_`j'') _tab (`2
 > 021_mode_2_`j'') _tab (`2022_mode_2_`j'') _n
- 34. file write tablecontent ("`label`j''") _tab ("CKD stage 4/5") _tab (`2017_q2_3_`j'') (" (") (`2017_q1_3_`j'') ("-") (`2017_q3_3_`j'') (")") _tab (`2018_q2_3_`j'') (" (") (`2018_q1_3_`j'') ("-") (`2018_q3_3_`j''
+ 31. file write tablecontent ("`label`j''") _tab ("CKD stage 4/5") _tab (`2017_q2_3_`j'') (" (") (`2017_q1_3_`j'') ("-") (`2017_q3_3_`j'') (")") _tab (`2018_q2_3_`j'') (" (") (`2018_q1_3_`j'') ("-") (`2018_q3_3_`j''
 > ) (")") _tab (`2019_q2_3_`j'') (" (") (`2019_q1_3_`j'') ("-") (`2019_q3_3_`j'') (")") _tab (`2020_q2_3_`j'') (" (") (`2020_q1_3_`j'') ("-") (`2020_q3_3_`j'') (")") _tab (`2021_q2_3_`j'') (" (") (`2021_q1_3_`j'') (
 > "-") (`2021_q3_3_`j'') (")") _tab (`2022_q2_3_`j'') (" (") (`2022_q1_3_`j'') ("-") (`2022_q3_3_`j'') (")") _tab (`2017_mode_3_`j'') _tab (`2018_mode_3_`j'') _tab (`2019_mode_3_`j'') _tab (`2020_mode_3_`j'') _tab (
 > `2021_mode_3_`j'') _tab (`2022_mode_3_`j'') _n
- 35. file write tablecontent ("`label`j''") _tab ("Dialysis") _tab (`2017_q2_4_`j'') (" (") (`2017_q1_4_`j'') ("-") (`2017_q3_4_`j'') (")") _tab (`2018_q2_4_`j'') (" (") (`2018_q1_4_`j'') ("-") (`2018_q3_4_`j'') (")
+ 32. file write tablecontent ("`label`j''") _tab ("Dialysis") _tab (`2017_q2_4_`j'') (" (") (`2017_q1_4_`j'') ("-") (`2017_q3_4_`j'') (")") _tab (`2018_q2_4_`j'') (" (") (`2018_q1_4_`j'') ("-") (`2018_q3_4_`j'') (")
 > ") _tab (`2019_q2_4_`j'') (" (") (`2019_q1_4_`j'') ("-") (`2019_q3_4_`j'') (")") _tab (`2020_q2_4_`j'') (" (") (`2020_q1_4_`j'') ("-") (`2020_q3_4_`j'') (")") _tab (`2021_q2_4_`j'') (" (") (`2021_q1_4_`j'') ("-") 
 > (`2021_q3_4_`j'') (")") _tab (`2022_q2_4_`j'') (" (") (`2022_q1_4_`j'') ("-") (`2022_q3_4_`j'') (")") _tab (`2017_mode_4_`j'') _tab (`2018_mode_4_`j'') _tab (`2019_mode_4_`j'') _tab (`2020_mode_4_`j'') _tab (`2021
 > _mode_4_`j'') _tab (`2022_mode_4_`j'') _n
- 36. file write tablecontent ("`label`j''") _tab ("Transplant") _tab (`2017_q2_5_`j'') (" (") (`2017_q1_5_`j'') ("-") (`2017_q3_5_`j'') (")") _tab (`2018_q2_5_`j'') (" (") (`2018_q1_5_`j'') ("-") (`2018_q3_5_`j'') (
+ 33. file write tablecontent ("`label`j''") _tab ("Transplant") _tab (`2017_q2_5_`j'') (" (") (`2017_q1_5_`j'') ("-") (`2017_q3_5_`j'') (")") _tab (`2018_q2_5_`j'') (" (") (`2018_q1_5_`j'') ("-") (`2018_q3_5_`j'') (
 > ")") _tab (`2019_q2_5_`j'') (" (") (`2019_q1_5_`j'') ("-") (`2019_q3_5_`j'') (")") _tab (`2020_q2_5_`j'') (" (") (`2020_q1_5_`j'') ("-") (`2020_q3_5_`j'') (")") _tab (`2021_q2_5_`j'') (" (") (`2021_q1_5_`j'') ("-"
 > ) (`2021_q3_5_`j'') (")") _tab (`2022_q2_5_`j'') (" (") (`2022_q1_5_`j'') ("-") (`2022_q3_5_`j'') (")") _tab (`2017_mode_5_`j'') _tab (`2018_mode_5_`j'') _tab (`2019_mode_5_`j'') _tab (`2020_mode_5_`j'') _tab (`20
 > 21_mode_5_`j'') _tab (`2022_mode_5_`j'') _n
- 37. }
+ 34. }
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -259,12 +251,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(10 real changes made)
-(13 real changes made)
-(7 real changes made)
-(66 real changes made)
-(106 observations deleted)
+(3,105 observations deleted)
+(59 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -281,12 +269,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(10 real changes made)
-(6 real changes made)
-(7 real changes made)
-(55 real changes made)
-(89 observations deleted)
+(3,027 observations deleted)
+(61 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -303,12 +287,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(13 real changes made)
-(6 real changes made)
-(11 real changes made)
-(49 real changes made)
-(89 observations deleted)
+(2,924 observations deleted)
+(52 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -325,12 +305,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(5 real changes made)
-(11 real changes made)
-(11 real changes made)
-(54 real changes made)
-(95 observations deleted)
+(3,053 observations deleted)
+(58 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -347,12 +323,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(8 real changes made)
-(8 real changes made)
-(5 real changes made)
-(66 real changes made)
-(94 observations deleted)
+(3,003 observations deleted)
+(63 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -369,11 +341,493 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(7 real changes made)
-(8 real changes made)
-(7 real changes made)
-(60 real changes made)
+(3,102 observations deleted)
+(65 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,260
+        from master                     2,163  (_merge==1)
+        from using                      1,097  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,105 observations deleted)
+(152 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,184
+        from master                     2,085  (_merge==1)
+        from using                      1,099  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,027 observations deleted)
+(152 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,042
+        from master                     1,971  (_merge==1)
+        from using                      1,071  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,924 observations deleted)
+(113 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,202
+        from master                     2,092  (_merge==1)
+        from using                      1,110  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,053 observations deleted)
+(140 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,166
+        from master                     2,095  (_merge==1)
+        from using                      1,071  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,003 observations deleted)
+(156 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,273
+        from master                     2,145  (_merge==1)
+        from using                      1,128  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,102 observations deleted)
+(167 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,260
+        from master                     2,163  (_merge==1)
+        from using                      1,097  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,105 observations deleted)
+(146 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,184
+        from master                     2,085  (_merge==1)
+        from using                      1,099  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,027 observations deleted)
+(152 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,042
+        from master                     1,971  (_merge==1)
+        from using                      1,071  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,924 observations deleted)
+(113 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,202
+        from master                     2,092  (_merge==1)
+        from using                      1,110  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,053 observations deleted)
+(144 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,166
+        from master                     2,095  (_merge==1)
+        from using                      1,071  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,003 observations deleted)
+(157 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,273
+        from master                     2,145  (_merge==1)
+        from using                      1,128  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,102 observations deleted)
+(166 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,260
+        from master                     2,163  (_merge==1)
+        from using                      1,097  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,105 observations deleted)
+(142 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,184
+        from master                     2,085  (_merge==1)
+        from using                      1,099  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,027 observations deleted)
+(154 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,042
+        from master                     1,971  (_merge==1)
+        from using                      1,071  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,924 observations deleted)
+(113 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,202
+        from master                     2,092  (_merge==1)
+        from using                      1,110  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,053 observations deleted)
+(143 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,166
+        from master                     2,095  (_merge==1)
+        from using                      1,071  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,003 observations deleted)
+(161 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,273
+        from master                     2,145  (_merge==1)
+        from using                      1,128  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,102 observations deleted)
+(161 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,260
+        from master                     2,163  (_merge==1)
+        from using                      1,097  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,105 observations deleted)
+(152 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,184
+        from master                     2,085  (_merge==1)
+        from using                      1,099  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,027 observations deleted)
+(152 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,042
+        from master                     1,971  (_merge==1)
+        from using                      1,071  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,924 observations deleted)
+(112 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,202
+        from master                     2,092  (_merge==1)
+        from using                      1,110  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,053 observations deleted)
+(145 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,166
+        from master                     2,095  (_merge==1)
+        from using                      1,071  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,003 observations deleted)
+(158 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,273
+        from master                     2,145  (_merge==1)
+        from using                      1,128  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,102 observations deleted)
+(164 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,260
+        from master                     2,163  (_merge==1)
+        from using                      1,097  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,105 observations deleted)
+(124 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,184
+        from master                     2,085  (_merge==1)
+        from using                      1,099  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,027 observations deleted)
+(114 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,042
+        from master                     1,971  (_merge==1)
+        from using                      1,071  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,924 observations deleted)
 (87 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
@@ -385,84 +839,14 @@
 
     Result                      Number of obs
     -----------------------------------------
-    Not matched                         3,260
-        from master                     2,163  (_merge==1)
-        from using                      1,097  (_merge==2)
-
-    Matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,034 observations deleted)
-(10 real changes made)
-(13 real changes made)
-(7 real changes made)
-(66 real changes made)
-(186 observations deleted)
-(label sex already defined)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                      Number of obs
-    -----------------------------------------
-    Not matched                         3,184
-        from master                     2,085  (_merge==1)
-        from using                      1,099  (_merge==2)
-
-    Matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,942 observations deleted)
-(10 real changes made)
-(6 real changes made)
-(7 real changes made)
-(55 real changes made)
-(208 observations deleted)
-(label sex already defined)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                      Number of obs
-    -----------------------------------------
-    Not matched                         3,042
-        from master                     1,971  (_merge==1)
-        from using                      1,071  (_merge==2)
-
-    Matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,815 observations deleted)
-(13 real changes made)
-(6 real changes made)
-(11 real changes made)
-(49 real changes made)
-(187 observations deleted)
-(label sex already defined)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                      Number of obs
-    -----------------------------------------
     Not matched                         3,202
         from master                     2,092  (_merge==1)
         from using                      1,110  (_merge==2)
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(5 real changes made)
-(11 real changes made)
-(11 real changes made)
-(54 real changes made)
-(205 observations deleted)
+(3,053 observations deleted)
+(115 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -479,12 +863,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(8 real changes made)
-(8 real changes made)
-(5 real changes made)
-(66 real changes made)
-(200 observations deleted)
+(3,003 observations deleted)
+(120 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -501,144 +881,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(7 real changes made)
-(8 real changes made)
-(7 real changes made)
-(60 real changes made)
-(207 observations deleted)
-(label sex already defined)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                      Number of obs
-    -----------------------------------------
-    Not matched                         3,260
-        from master                     2,163  (_merge==1)
-        from using                      1,097  (_merge==2)
-
-    Matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,034 observations deleted)
-(10 real changes made)
-(13 real changes made)
-(7 real changes made)
-(66 real changes made)
-(160 observations deleted)
-(label sex already defined)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                      Number of obs
-    -----------------------------------------
-    Not matched                         3,184
-        from master                     2,085  (_merge==1)
-        from using                      1,099  (_merge==2)
-
-    Matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,942 observations deleted)
-(10 real changes made)
-(6 real changes made)
-(7 real changes made)
-(55 real changes made)
-(187 observations deleted)
-(label sex already defined)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                      Number of obs
-    -----------------------------------------
-    Not matched                         3,042
-        from master                     1,971  (_merge==1)
-        from using                      1,071  (_merge==2)
-
-    Matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,815 observations deleted)
-(13 real changes made)
-(6 real changes made)
-(11 real changes made)
-(49 real changes made)
-(178 observations deleted)
-(label sex already defined)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                      Number of obs
-    -----------------------------------------
-    Not matched                         3,202
-        from master                     2,092  (_merge==1)
-        from using                      1,110  (_merge==2)
-
-    Matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,956 observations deleted)
-(5 real changes made)
-(11 real changes made)
-(11 real changes made)
-(54 real changes made)
-(192 observations deleted)
-(label sex already defined)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                      Number of obs
-    -----------------------------------------
-    Not matched                         3,166
-        from master                     2,095  (_merge==1)
-        from using                      1,071  (_merge==2)
-
-    Matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,938 observations deleted)
-(8 real changes made)
-(8 real changes made)
-(5 real changes made)
-(66 real changes made)
-(162 observations deleted)
-(label sex already defined)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                      Number of obs
-    -----------------------------------------
-    Not matched                         3,273
-        from master                     2,145  (_merge==1)
-        from using                      1,128  (_merge==2)
-
-    Matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,039 observations deleted)
-(7 real changes made)
-(8 real changes made)
-(7 real changes made)
-(60 real changes made)
-(174 observations deleted)
+(3,102 observations deleted)
+(132 observations deleted)
 
 . 
 . *IMD
@@ -648,7 +892,7 @@
   4. use ./output/`x'_ckd_complete.dta, clear
   5. drop _merge
   6. merge 1:1 patient_id using ./output/`x'_nockd_complete
-  7. drop if ckd_progression!=6 
+  7. drop if cardiovascular!=1
   8. drop if imd!=`j'
   9. 
 . qui su age, d
@@ -714,8 +958,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(184 observations deleted)
+(3,105 observations deleted)
+(130 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -732,8 +976,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(191 observations deleted)
+(3,027 observations deleted)
+(126 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -750,8 +994,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(174 observations deleted)
+(2,924 observations deleted)
+(96 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -768,8 +1012,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(207 observations deleted)
+(3,053 observations deleted)
+(126 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -786,8 +1030,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(185 observations deleted)
+(3,003 observations deleted)
+(132 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -804,8 +1048,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(194 observations deleted)
+(3,102 observations deleted)
+(140 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -822,8 +1066,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(186 observations deleted)
+(3,105 observations deleted)
+(126 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -840,8 +1084,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(195 observations deleted)
+(3,027 observations deleted)
+(126 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -858,8 +1102,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(180 observations deleted)
+(2,924 observations deleted)
+(92 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -876,8 +1120,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(204 observations deleted)
+(3,053 observations deleted)
+(126 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -894,8 +1138,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(193 observations deleted)
+(3,003 observations deleted)
+(127 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -912,8 +1156,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(181 observations deleted)
+(3,102 observations deleted)
+(139 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -930,8 +1174,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(167 observations deleted)
+(3,105 observations deleted)
+(124 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -948,8 +1192,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(193 observations deleted)
+(3,027 observations deleted)
+(133 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -966,8 +1210,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(187 observations deleted)
+(2,924 observations deleted)
+(103 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -984,8 +1228,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(190 observations deleted)
+(3,053 observations deleted)
+(108 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1002,8 +1246,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(178 observations deleted)
+(3,003 observations deleted)
+(130 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1020,8 +1264,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(177 observations deleted)
+(3,102 observations deleted)
+(132 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1038,8 +1282,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(181 observations deleted)
+(3,105 observations deleted)
+(119 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1056,8 +1300,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(196 observations deleted)
+(3,027 observations deleted)
+(113 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1074,8 +1318,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(189 observations deleted)
+(2,924 observations deleted)
+(94 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1092,8 +1336,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(185 observations deleted)
+(3,053 observations deleted)
+(117 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1110,8 +1354,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(171 observations deleted)
+(3,003 observations deleted)
+(131 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1128,8 +1372,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(193 observations deleted)
+(3,102 observations deleted)
+(138 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1146,8 +1390,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(186 observations deleted)
+(3,105 observations deleted)
+(121 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1164,8 +1408,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(193 observations deleted)
+(3,027 observations deleted)
+(130 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1182,8 +1426,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(178 observations deleted)
+(2,924 observations deleted)
+(87 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1200,8 +1444,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(198 observations deleted)
+(3,053 observations deleted)
+(119 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1218,8 +1462,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(185 observations deleted)
+(3,003 observations deleted)
+(132 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1236,8 +1480,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(191 observations deleted)
+(3,102 observations deleted)
+(135 observations deleted)
 
 . 
 . *Region
@@ -1247,7 +1491,7 @@
   4. use ./output/`x'_ckd_complete.dta, clear
   5. drop _merge
   6. merge 1:1 patient_id using ./output/`x'_nockd_complete
-  7. drop if ckd_progression!=6 
+  7. drop if cardiovascular!=1
   8. drop if region!=`j'
   9. 
 . qui su age, d
@@ -1313,8 +1557,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(198 observations deleted)
+(3,105 observations deleted)
+(136 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1331,8 +1575,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(225 observations deleted)
+(3,027 observations deleted)
+(138 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1349,8 +1593,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(201 observations deleted)
+(2,924 observations deleted)
+(105 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1367,8 +1611,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(216 observations deleted)
+(3,053 observations deleted)
+(134 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1385,8 +1629,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(203 observations deleted)
+(3,003 observations deleted)
+(145 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1403,8 +1647,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(208 observations deleted)
+(3,102 observations deleted)
+(157 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1421,8 +1665,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(204 observations deleted)
+(3,105 observations deleted)
+(149 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1439,8 +1683,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(214 observations deleted)
+(3,027 observations deleted)
+(142 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1457,8 +1701,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(208 observations deleted)
+(2,924 observations deleted)
+(105 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1475,8 +1719,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(219 observations deleted)
+(3,053 observations deleted)
+(135 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1493,8 +1737,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(209 observations deleted)
+(3,003 observations deleted)
+(146 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1511,8 +1755,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(211 observations deleted)
+(3,102 observations deleted)
+(150 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1529,8 +1773,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(180 observations deleted)
+(3,105 observations deleted)
+(122 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1547,8 +1791,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(188 observations deleted)
+(3,027 observations deleted)
+(125 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1565,8 +1809,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(186 observations deleted)
+(2,924 observations deleted)
+(103 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1583,8 +1827,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(198 observations deleted)
+(3,053 observations deleted)
+(123 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1601,8 +1845,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(185 observations deleted)
+(3,003 observations deleted)
+(138 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1619,8 +1863,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(175 observations deleted)
+(3,102 observations deleted)
+(135 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1637,8 +1881,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(202 observations deleted)
+(3,105 observations deleted)
+(138 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1655,8 +1899,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(218 observations deleted)
+(3,027 observations deleted)
+(148 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1673,8 +1917,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(200 observations deleted)
+(2,924 observations deleted)
+(106 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1691,8 +1935,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(213 observations deleted)
+(3,053 observations deleted)
+(128 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1709,8 +1953,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(203 observations deleted)
+(3,003 observations deleted)
+(154 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1727,8 +1971,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(209 observations deleted)
+(3,102 observations deleted)
+(156 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1745,8 +1989,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(200 observations deleted)
+(3,105 observations deleted)
+(133 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1763,8 +2007,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(223 observations deleted)
+(3,027 observations deleted)
+(139 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1781,8 +2025,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(199 observations deleted)
+(2,924 observations deleted)
+(104 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1799,8 +2043,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(231 observations deleted)
+(3,053 observations deleted)
+(129 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1817,8 +2061,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(203 observations deleted)
+(3,003 observations deleted)
+(145 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1835,8 +2079,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(216 observations deleted)
+(3,102 observations deleted)
+(155 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1853,8 +2097,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(208 observations deleted)
+(3,105 observations deleted)
+(141 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1871,8 +2115,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(218 observations deleted)
+(3,027 observations deleted)
+(141 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1889,8 +2133,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(203 observations deleted)
+(2,924 observations deleted)
+(101 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1907,8 +2151,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(227 observations deleted)
+(3,053 observations deleted)
+(134 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1925,8 +2169,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(211 observations deleted)
+(3,003 observations deleted)
+(141 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1943,8 +2187,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(211 observations deleted)
+(3,102 observations deleted)
+(153 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1961,8 +2205,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(202 observations deleted)
+(3,105 observations deleted)
+(135 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1979,8 +2223,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(218 observations deleted)
+(3,027 observations deleted)
+(142 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -1997,8 +2241,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(212 observations deleted)
+(2,924 observations deleted)
+(104 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2015,8 +2259,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(226 observations deleted)
+(3,053 observations deleted)
+(139 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2033,8 +2277,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(206 observations deleted)
+(3,003 observations deleted)
+(144 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2051,8 +2295,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(214 observations deleted)
+(3,102 observations deleted)
+(161 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2069,8 +2313,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(204 observations deleted)
+(3,105 observations deleted)
+(144 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2087,8 +2331,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(218 observations deleted)
+(3,027 observations deleted)
+(138 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2105,8 +2349,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(207 observations deleted)
+(2,924 observations deleted)
+(111 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2123,8 +2367,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(216 observations deleted)
+(3,053 observations deleted)
+(135 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2141,8 +2385,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(204 observations deleted)
+(3,003 observations deleted)
+(151 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2159,8 +2403,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(215 observations deleted)
+(3,102 observations deleted)
+(154 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2177,8 +2421,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(210 observations deleted)
+(3,105 observations deleted)
+(142 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2195,8 +2439,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(214 observations deleted)
+(3,027 observations deleted)
+(143 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2213,8 +2457,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(200 observations deleted)
+(2,924 observations deleted)
+(105 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2231,8 +2475,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(222 observations deleted)
+(3,053 observations deleted)
+(135 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2249,8 +2493,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(200 observations deleted)
+(3,003 observations deleted)
+(140 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2267,8 +2511,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(213 observations deleted)
+(3,102 observations deleted)
+(147 observations deleted)
 
 . 
 . *Rural/urban
@@ -2278,7 +2522,7 @@
   4. use ./output/`x'_ckd_complete.dta, clear
   5. drop _merge
   6. merge 1:1 patient_id using ./output/`x'_nockd_complete
-  7. drop if ckd_progression!=6 
+  7. drop if cardiovascular!=1
   8. drop if urban!=`j'
   9. 
 . qui su age, d
@@ -2344,8 +2588,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(96 observations deleted)
+(3,105 observations deleted)
+(62 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2362,8 +2606,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(90 observations deleted)
+(3,027 observations deleted)
+(56 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2380,8 +2624,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(96 observations deleted)
+(2,924 observations deleted)
+(49 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2398,8 +2642,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(107 observations deleted)
+(3,053 observations deleted)
+(67 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2416,8 +2660,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(100 observations deleted)
+(3,003 observations deleted)
+(72 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2434,8 +2678,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(87 observations deleted)
+(3,102 observations deleted)
+(74 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2452,8 +2696,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,034 observations deleted)
-(130 observations deleted)
+(3,105 observations deleted)
+(93 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2470,8 +2714,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,942 observations deleted)
-(152 observations deleted)
+(3,027 observations deleted)
+(101 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2488,8 +2732,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,815 observations deleted)
-(131 observations deleted)
+(2,924 observations deleted)
+(69 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2506,8 +2750,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,956 observations deleted)
-(139 observations deleted)
+(3,053 observations deleted)
+(82 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2524,8 +2768,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,938 observations deleted)
-(128 observations deleted)
+(3,003 observations deleted)
+(91 observations deleted)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -2542,8 +2786,8 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
-(3,039 observations deleted)
-(147 observations deleted)
+(3,102 observations deleted)
+(97 observations deleted)
 
 . 
 . file close tablecontent
@@ -2551,13 +2795,3 @@
 . 
 end of do-file
 
-. do "C:\Users\LSH170~1\AppData\Local\Temp\STD569c_000000.tmp"
-
-. sysdir set PLUS ./analysis/adofiles
-
-. sysdir set PERSONAL ./analysis/adofiles
-
-. pwd
-C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use
-
-. cap log close

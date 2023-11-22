@@ -3,10 +3,10 @@ sysdir set PERSONAL ./analysis/adofiles
 pwd
 cap log close
 macro drop hr
-log using ./logs/age_death.log, replace t
+log using ./logs/age_cardiovascular.log, replace t
 
 cap file close tablecontent
-file open tablecontent using ./output/age_death.csv, write text replace
+file open tablecontent using ./output/age_cardiovascular.csv, write text replace
 
 file write tablecontent ("stratum") _tab ("start_status") _tab ("median_2017") _tab ("median_2018") _tab ("median_2019") _tab ("median_2020") _tab ("median_2021") _tab ("median_2022") _tab ("mode_2017") _tab ("mode_2018") _tab ("mode_2019") _tab ("mode_2020") _tab ("mode_2021") _tab ("mode_2022") _n
 
@@ -15,7 +15,7 @@ foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete, force
-drop if ckd_progression!=6
+drop if cardiovascular!=1
 
 qui su age, d
 local `x'_q2 = r(p50)
@@ -47,21 +47,15 @@ file write tablecontent ("All") _tab ("CKD stage 4/5") _tab (`2017_q2_3') (" (")
 file write tablecontent ("All") _tab ("Dialysis") _tab (`2017_q2_4') (" (") (`2017_q1_4') ("-") (`2017_q3_4') (")") _tab (`2018_q2_4') (" (") (`2018_q1_4') ("-") (`2018_q3_4') (")") _tab (`2019_q2_4') (" (") (`2019_q1_4') ("-") (`2019_q3_4') (")") _tab (`2020_q2_4') (" (") (`2020_q1_4') ("-") (`2020_q3_4') (")") _tab (`2021_q2_4') (" (") (`2021_q1_4') ("-") (`2021_q3_4') (")") _tab (`2022_q2_4') (" (") (`2022_q1_4') ("-") (`2022_q3_4') (")") _tab (`2017_mode_4') _tab (`2018_mode_4') _tab (`2019_mode_4') _tab (`2020_mode_4') _tab (`2021_mode_4') _tab (`2022_mode_4') _n
 file write tablecontent ("All") _tab ("Transplant") _tab (`2017_q2_5') (" (") (`2017_q1_5') ("-") (`2017_q3_5') (")") _tab (`2018_q2_5') (" (") (`2018_q1_5') ("-") (`2018_q3_5') (")") _tab (`2019_q2_5') (" (") (`2019_q1_5') ("-") (`2019_q3_5') (")") _tab (`2020_q2_5') (" (") (`2020_q1_5') ("-") (`2020_q3_5') (")") _tab (`2021_q2_5') (" (") (`2021_q1_5') ("-") (`2021_q3_5') (")") _tab (`2022_q2_5') (" (") (`2022_q1_5') ("-") (`2022_q3_5') (")") _tab (`2017_mode_5') _tab (`2018_mode_5') _tab (`2019_mode_5') _tab (`2020_mode_5') _tab (`2021_mode_5') _tab (`2022_mode_5') _n
 
-local label1 "White"
-local label2 "Non-white"
-local label3 "Unknown"
 
 *Ethnicity
-forvalues j=1/3 {
+forvalues j=1/6 {
+local label`j': label ethnicity `j'
 foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
-drop if ckd_progression!=6 
-replace ethnicity=2 if ethnicity==3
-replace ethnicity=2 if ethnicity==4
-replace ethnicity=2 if ethnicity==5
-replace ethnicity=3 if ethnicity==6
+drop if cardiovascular!=1 
 drop if ethnicity!=`j'
 
 qui su age, d
@@ -99,7 +93,7 @@ foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
-drop if ckd_progression!=6 
+drop if cardiovascular!=1
 drop if imd!=`j'
 
 qui su age, d
@@ -137,7 +131,7 @@ foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
-drop if ckd_progression!=6 
+drop if cardiovascular!=1
 drop if region!=`j'
 
 qui su age, d
@@ -175,7 +169,7 @@ foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
-drop if ckd_progression!=6 
+drop if cardiovascular!=1
 drop if urban!=`j'
 
 qui su age, d

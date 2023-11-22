@@ -1,36 +1,24 @@
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /workspace/logs/age_death_distribution.log
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/age_death_distribution.log
   log type:  text
- opened on:   3 Oct 2023, 00:06:08
+ opened on:  22 Nov 2023, 13:29:03
 
 . 
 . cap file close tablecontent
 
-. file open tablecontent using ./output/age_death_distribution.csv, write text 
-> replace
-(note: file ./output/age_death_distribution.csv not found)
+. file open tablecontent using ./output/age_death_distribution.csv, write text replace
 
 . 
-. file write tablecontent ("stratum") _tab ("start_status") _tab ("agecat") _ta
-> b ("count_2017") _tab ("count_2018") _tab ("count_2019") _tab ("count_2020") 
-> _tab ("count_2021") _tab ("count_2022") _n
+. file write tablecontent ("start_status") _tab ("agecat") _tab ("count_2017") _tab ("count_2018") _tab ("count_2019") _tab ("count_2020") _tab ("count_2021") _tab ("count_2022") _n
 
 . 
 . local year "2017 2018 2019 2020 2021 2022"
 
-. local age "18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95"
+. local age "18 45 50 55 60 65 70 75 80 85"
 
 . 
-. local lab18 "18-24"
-
-. local lab25 "25-29"
-
-. local lab30 "30-34"
-
-. local lab35 "35-39"
-
-. local lab40 "40-44"
+. local lab18 "18-44"
 
 . local lab45 "45-49"
 
@@ -48,11 +36,7 @@
 
 . local lab80 "80-84"
 
-. local lab85 "85-89"
-
-. local lab90 "90-94"
-
-. local lab95 "95+"
+. local lab85 "85+"
 
 . 
 . local ckd0 "No CKD"
@@ -73,27 +57,16 @@
   2. use ./output/`x'_ckd_complete.dta, clear
   3. drop _merge
   4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
-  5. drop if ckd_progression!=6
-  6. egen agecat = cut(age), at(0,18,25,30,35,40,45,50,55,60,65,70,75,80,85,90,
-> 95,200)
-  7. drop if agecat==0
-  8. foreach y of local age {
-  9. qui count if agecat==`y'
- 10. local age_`y'_`x' = round(r(N),5)
- 11. }
+  5. drop agecat
+  6. drop if ckd_progression!=6
+  7. egen agecat = cut(age), at(0,18,45,50,55,60,65,70,75,80,85,200)
+  8. drop if agecat==0
+  9. foreach y of local age {
+ 10. qui count if agecat==`y'
+ 11. local age_`y'_`x' = round(r(N),5)
  12. }
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(0 observations deleted)
+ 13. }
+(label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -101,16 +74,17 @@
 (label region already defined)
 (label urban already defined)
 
-    Result                           # of obs.
+    Result                      Number of obs
     -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
+    Not matched                         3,260
+        from master                     2,163  (_merge==1)
+        from using                      1,097  (_merge==2)
 
-    matched                                 0  (_merge==3)
+    Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,811 observations deleted)
+(3,034 observations deleted)
 (0 observations deleted)
+(label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -118,16 +92,17 @@
 (label region already defined)
 (label urban already defined)
 
-    Result                           # of obs.
+    Result                      Number of obs
     -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
+    Not matched                         3,184
+        from master                     2,085  (_merge==1)
+        from using                      1,099  (_merge==2)
 
-    matched                                 0  (_merge==3)
+    Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,961 observations deleted)
+(2,942 observations deleted)
 (0 observations deleted)
+(label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -135,16 +110,17 @@
 (label region already defined)
 (label urban already defined)
 
-    Result                           # of obs.
+    Result                      Number of obs
     -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
+    Not matched                         3,042
+        from master                     1,971  (_merge==1)
+        from using                      1,071  (_merge==2)
 
-    matched                                 0  (_merge==3)
+    Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,899 observations deleted)
+(2,815 observations deleted)
 (0 observations deleted)
+(label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -152,16 +128,17 @@
 (label region already defined)
 (label urban already defined)
 
-    Result                           # of obs.
+    Result                      Number of obs
     -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
+    Not matched                         3,202
+        from master                     2,092  (_merge==1)
+        from using                      1,110  (_merge==2)
 
-    matched                                 0  (_merge==3)
+    Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,934 observations deleted)
+(2,956 observations deleted)
 (0 observations deleted)
+(label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -169,21 +146,39 @@
 (label region already defined)
 (label urban already defined)
 
-    Result                           # of obs.
+    Result                      Number of obs
     -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
+    Not matched                         3,166
+        from master                     2,095  (_merge==1)
+        from using                      1,071  (_merge==2)
 
-    matched                                 0  (_merge==3)
+    Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,854 observations deleted)
+(2,938 observations deleted)
+(0 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,273
+        from master                     2,145  (_merge==1)
+        from using                      1,128  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,039 observations deleted)
 (0 observations deleted)
 
 . foreach y of local age {
-  2. file write tablecontent ("All") _tab ("All") _tab ("`lab`y''") _tab
+  2. file write tablecontent ("All") _tab ("`lab`y''")
   3. foreach x of local year {
-  4. file write tablecontent (`age_`y'_`x'') _tab
+  4. file write tablecontent _tab (`age_`y'_`x'')
   5. }
   6. file write tablecontent _n
   7. }
@@ -194,29 +189,18 @@
   2. use ./output/`x'_ckd_complete.dta, clear
   3. drop _merge
   4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
-  5. drop if ckd_progression!=6
-  6. egen agecat = cut(age), at(0,18,25,30,35,40,45,50,55,60,65,70,75,80,85,90,
-> 95,200)
-  7. drop if agecat==0
-  8. forvalues i = 0/5 {
-  9. foreach y of local age {
- 10. qui count if agecat==`y' & ckd_group==`i'
- 11. local age_`y'_`x'_`i' = round(r(N),5)
- 12. }
+  5. drop agecat
+  6. drop if ckd_progression!=6
+  7. egen agecat = cut(age), at(0,18,45,50,55,60,65,70,75,80,85,200)
+  8. drop if agecat==0
+  9. forvalues i = 0/5 {
+ 10. foreach y of local age {
+ 11. qui count if agecat==`y' & ckd_group==`i'
+ 12. local age_`y'_`x'_`i' = round(r(N),5)
  13. }
  14. }
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(0 observations deleted)
+ 15. }
+(label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -224,16 +208,17 @@
 (label region already defined)
 (label urban already defined)
 
-    Result                           # of obs.
+    Result                      Number of obs
     -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
+    Not matched                         3,260
+        from master                     2,163  (_merge==1)
+        from using                      1,097  (_merge==2)
 
-    matched                                 0  (_merge==3)
+    Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,811 observations deleted)
+(3,034 observations deleted)
 (0 observations deleted)
+(label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -241,16 +226,17 @@
 (label region already defined)
 (label urban already defined)
 
-    Result                           # of obs.
+    Result                      Number of obs
     -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
+    Not matched                         3,184
+        from master                     2,085  (_merge==1)
+        from using                      1,099  (_merge==2)
 
-    matched                                 0  (_merge==3)
+    Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,961 observations deleted)
+(2,942 observations deleted)
 (0 observations deleted)
+(label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -258,16 +244,17 @@
 (label region already defined)
 (label urban already defined)
 
-    Result                           # of obs.
+    Result                      Number of obs
     -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
+    Not matched                         3,042
+        from master                     1,971  (_merge==1)
+        from using                      1,071  (_merge==2)
 
-    matched                                 0  (_merge==3)
+    Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,899 observations deleted)
+(2,815 observations deleted)
 (0 observations deleted)
+(label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -275,16 +262,17 @@
 (label region already defined)
 (label urban already defined)
 
-    Result                           # of obs.
+    Result                      Number of obs
     -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
+    Not matched                         3,202
+        from master                     2,092  (_merge==1)
+        from using                      1,110  (_merge==2)
 
-    matched                                 0  (_merge==3)
+    Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,934 observations deleted)
+(2,956 observations deleted)
 (0 observations deleted)
+(label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
 (label ethnicity already defined)
@@ -292,2523 +280,81 @@
 (label region already defined)
 (label urban already defined)
 
-    Result                           # of obs.
+    Result                      Number of obs
     -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
+    Not matched                         3,166
+        from master                     2,095  (_merge==1)
+        from using                      1,071  (_merge==2)
 
-    matched                                 0  (_merge==3)
+    Matched                                 0  (_merge==3)
     -----------------------------------------
-(2,854 observations deleted)
+(2,938 observations deleted)
+(0 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,273
+        from master                     2,145  (_merge==1)
+        from using                      1,128  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,039 observations deleted)
 (0 observations deleted)
 
 . 
 . forvalues i=0/5 {
   2. foreach y of local age {
-  3. file write tablecontent ("All") _tab ("`ckd`i''") _tab ("`lab`y''") _tab
+  3. file write tablecontent ("`ckd`i''") _tab ("`lab`y''")
   4. foreach x of local year {
-  5. file write tablecontent (`age_`y'_`x'_`i'') _tab
+  5. file write tablecontent _tab (`age_`y'_`x'_`i'')
   6. }
   7. file write tablecontent _n
   8. }
   9. }
 
 . 
-. *Ethnicity
-. forvalues j=1/6 {
-  2. local stratum`j': label ethnicity `j'
-  3. foreach x of local year {
-  4. use ./output/`x'_ckd_complete.dta, clear
-  5. drop _merge
-  6. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
-  7. drop if ckd_progression!=6
-  8. drop if ethnicity!=`j'
-  9. egen agecat = cut(age), at(0,18,25,30,35,40,45,50,55,60,65,70,75,80,85,90,
-> 95,200)
- 10. drop if agecat==0
- 11. foreach y of local age {
- 12. qui count if agecat==`y'
- 13. local age_`y'_`x'_`j' = round(r(N),5)
- 14. forvalues i = 0/5 {
- 15. foreach y of local age {
- 16. qui count if agecat==`y' & ckd_group==`i'
- 17. local age_`y'_`x'_`j'_`i' = round(r(N),5)
- 18. }
- 19. }
- 20. }
- 21. }
- 22. }
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(84 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(128 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(136 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(134 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(135 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(118 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(183 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(307 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(318 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(318 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(338 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(286 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(189 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(311 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(322 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(316 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(331 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(286 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(183 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(318 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(315 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(321 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(328 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(284 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(185 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(313 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(326 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(321 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(337 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(288 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(146 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(253 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(243 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(250 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(261 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(228 observations deleted)
-(0 observations deleted)
-
-. 
-. forvalues j=1/6 {
-  2. foreach y of local age {
-  3. file write tablecontent ("`stratum`j''") _tab ("All") _tab ("`lab`y''") _t
-> ab
-  4. foreach x of local year {
-  5. file write tablecontent (`age_`y'_`x'_`j'') _tab
-  6. }
-  7. file write tablecontent _n
-  8. }
-  9. forvalues i=0/5 {
- 10. foreach y of local age {
- 11. file write tablecontent ("`stratum`j''") _tab ("`ckd`i''") _tab ("`lab`y''
-> ") _tab
- 12. foreach x of local year {
- 13. file write tablecontent (`age_`y'_`x'_`j'_`i'') _tab
- 14. }
- 15. file write tablecontent _n
- 16. }
- 17. }
- 18. }
-
-. 
-. *IMD
-. forvalues j=1/5 {
-  2. local stratum`j': label imd `j'
-  3. foreach x of local year {
-  4. use ./output/`x'_ckd_complete.dta, clear
-  5. drop _merge
-  6. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
-  7. drop if ckd_progression!=6
-  8. drop if imd!=`j'
-  9. egen agecat = cut(age), at(0,18,25,30,35,40,45,50,55,60,65,70,75,80,85,90,
-> 95,200)
- 10. drop if agecat==0
- 11. foreach y of local age {
- 12. qui count if agecat==`y'
- 13. local age_`y'_`x'_`j' = round(r(N),5)
- 14. forvalues i = 0/5 {
- 15. foreach y of local age {
- 16. qui count if agecat==`y' & ckd_group==`i'
- 17. local age_`y'_`x'_`j'_`i' = round(r(N),5)
- 18. }
- 19. }
- 20. }
- 21. }
- 22. }
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(157 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(256 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(281 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(268 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(279 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(235 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(153 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(259 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(260 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(263 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(263 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(231 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(158 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(275 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(260 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(273 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(285 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(241 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(150 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(246 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(269 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(251 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(289 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(237 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(158 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(268 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(258 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(273 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(268 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(248 observations deleted)
-(0 observations deleted)
-
-. 
-. forvalues j=1/5 {
-  2. foreach y of local age {
-  3. file write tablecontent ("`stratum`j''") _tab ("All") _tab ("`lab`y''") _t
-> ab
-  4. foreach x of local year {
-  5. file write tablecontent (`age_`y'_`x'_`j'') _tab
-  6. }
-  7. file write tablecontent _n
-  8. }
-  9. forvalues i=0/5 {
- 10. foreach y of local age {
- 11. file write tablecontent ("`stratum`j''") _tab ("`ckd`i''") _tab ("`lab`y''
-> ") _tab
- 12. foreach x of local year {
- 13. file write tablecontent (`age_`y'_`x'_`j'_`i'') _tab
- 14. }
- 15. file write tablecontent _n
- 16. }
- 17. }
- 18. }
-
-. 
-. *Region
-. forvalues j=1/9 {
-  2. local stratum`j': label region `j'
-  3. foreach x of local year {
-  4. use ./output/`x'_ckd_complete.dta, clear
-  5. drop _merge
-  6. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
-  7. drop if ckd_progression!=6
-  8. drop if region!=`j'
-  9. egen agecat = cut(age), at(0,18,25,30,35,40,45,50,55,60,65,70,75,80,85,90,
-> 95,200)
- 10. drop if agecat==0
- 11. foreach y of local age {
- 12. qui count if agecat==`y'
- 13. local age_`y'_`x'_`j' = round(r(N),5)
- 14. forvalues i = 0/5 {
- 15. foreach y of local age {
- 16. qui count if agecat==`y' & ckd_group==`i'
- 17. local age_`y'_`x'_`j'_`i' = round(r(N),5)
- 18. }
- 19. }
- 20. }
- 21. }
- 22. }
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(182 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(287 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(303 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(300 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(313 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(266 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(180 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(290 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(301 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(302 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(314 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(262 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(158 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(270 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(254 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(256 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(268 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(248 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(175 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(296 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(303 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(298 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(308 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(265 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(172 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(302 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(298 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(295 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(306 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(262 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(175 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(288 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(305 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(299 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(306 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(271 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(170 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(287 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(283 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(289 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(315 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(271 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(170 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(294 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(300 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(309 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(325 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(271 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(170 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(294 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(309 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(308 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(313 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(268 observations deleted)
-(0 observations deleted)
-
-. 
-. forvalues j=1/9 {
-  2. foreach y of local age {
-  3. file write tablecontent ("`stratum`j''") _tab ("All") _tab ("`lab`y''") _t
-> ab
-  4. foreach x of local year {
-  5. file write tablecontent (`age_`y'_`x'_`j'') _tab
-  6. }
-  7. file write tablecontent _n
-  8. }
-  9. forvalues i=0/5 {
- 10. foreach y of local age {
- 11. file write tablecontent ("`stratum`j''") _tab ("`ckd`i''") _tab ("`lab`y''
-> ") _tab
- 12. foreach x of local year {
- 13. file write tablecontent (`age_`y'_`x'_`j'_`i'') _tab
- 14. }
- 15. file write tablecontent _n
- 16. }
- 17. }
- 18. }
-
-. 
-. *Urban/rural
-. forvalues j=0/1 {
-  2. local stratum`j': label urban `j'
-  3. foreach x of local year {
-  4. use ./output/`x'_ckd_complete.dta, clear
-  5. drop _merge
-  6. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
-  7. drop if ckd_progression!=6
-  8. drop if urban!=`j'
-  9. egen agecat = cut(age), at(0,18,25,30,35,40,45,50,55,60,65,70,75,80,85,90,
-> 95,200)
- 10. drop if agecat==0
- 11. foreach y of local age {
- 12. qui count if agecat==`y'
- 13. local age_`y'_`x'_`j' = round(r(N),5)
- 14. forvalues i = 0/5 {
- 15. foreach y of local age {
- 16. qui count if agecat==`y' & ckd_group==`i'
- 17. local age_`y'_`x'_`j'_`i' = round(r(N),5)
- 18. }
- 19. }
- 20. }
- 21. }
- 22. }
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(68 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(137 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(124 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(129 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(143 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(129 observations deleted)
-(0 observations deleted)
-(note: variable region was str24 in the using data, but will be float now)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,210
-        from master                     2,123  (_merge==1)
-        from using                      1,087  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(3,016 observations deleted)
-(126 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,137
-        from master                     2,049  (_merge==1)
-        from using                      1,088  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,811 observations deleted)
-(189 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,293
-        from master                     2,233  (_merge==1)
-        from using                      1,060  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,961 observations deleted)
-(208 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,231
-        from master                     2,125  (_merge==1)
-        from using                      1,106  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,899 observations deleted)
-(203 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,280
-        from master                     2,139  (_merge==1)
-        from using                      1,141  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,934 observations deleted)
-(203 observations deleted)
-(0 observations deleted)
-(label egfr_end already defined)
-(label ckd_progression already defined)
-(label ethnicity already defined)
-(label imd already defined)
-(label region already defined)
-(label urban already defined)
-
-    Result                           # of obs.
-    -----------------------------------------
-    not matched                         3,152
-        from master                     2,054  (_merge==1)
-        from using                      1,098  (_merge==2)
-
-    matched                                 0  (_merge==3)
-    -----------------------------------------
-(2,854 observations deleted)
-(169 observations deleted)
-(0 observations deleted)
-
-. 
-. forvalues j=0/1 {
-  2. foreach y of local age {
-  3. file write tablecontent ("`stratum`j''") _tab ("All") _tab ("`lab`y''") _t
-> ab
-  4. foreach x of local year {
-  5. file write tablecontent (`age_`y'_`x'_`j'') _tab
-  6. }
-  7. file write tablecontent _n
-  8. }
-  9. forvalues i=0/5 {
- 10. foreach y of local age {
- 11. file write tablecontent ("`stratum`j''") _tab ("`ckd`i''") _tab ("`lab`y''
-> ") _tab
- 12. foreach x of local year {
- 13. file write tablecontent (`age_`y'_`x'_`j'_`i'') _tab
- 14. }
- 15. file write tablecontent _n
- 16. }
- 17. }
- 18. }
-
-. 
 . file close tablecontent
 
 . 
 . import delimited ./output/age_death_distribution.csv, clear
-(10 vars, 2,576 obs)
+(encoding automatically selected: ISO-8859-1)
+(8 vars, 70 obs)
 
-. local columns ""count_2017" "count_2018" "count_2019" "count_2020" "count_202
-> 1" "count_2022""
+. local columns ""count_2017" "count_2018" "count_2019" "count_2020" "count_2021" "count_2022""
 
 . foreach col of local columns {
   2.     replace `col' = . if `col' <= 5
   3. }
-(2,533 real changes made, 2,533 to missing)
-(2,483 real changes made, 2,483 to missing)
-(2,485 real changes made, 2,485 to missing)
-(2,484 real changes made, 2,484 to missing)
-(2,472 real changes made, 2,472 to missing)
-(2,502 real changes made, 2,502 to missing)
+(56 real changes made, 56 to missing)
+(52 real changes made, 52 to missing)
+(54 real changes made, 54 to missing)
+(53 real changes made, 53 to missing)
+(54 real changes made, 54 to missing)
+(54 real changes made, 54 to missing)
 
 . 
 . 
 . export delimited "./output/age_death_distribution.csv", replace
-(note: file ./output/age_death_distribution.csv not found)
 file ./output/age_death_distribution.csv saved
 
 . 
 end of do-file
 
-. . file open output using "/tmp/age_death_distribution.do.j9ld.out", write tex
-> t replace
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD569c_000000.tmp"
 
-. . file write output "success" 
+. sysdir set PLUS ./analysis/adofiles
 
-. . file close output
+. sysdir set PERSONAL ./analysis/adofiles
 
-. 
-end of do-file
+. pwd
+C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use
 
-
+. cap log close
