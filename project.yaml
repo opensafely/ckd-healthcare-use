@@ -732,3 +732,27 @@ actions:
       moderately_sensitive:
         log: logs/standardised_healthcare_use_transplant.log
         output: output/standardised_healthcare_use_transplant.csv
+
+  smr:
+    run: stata-mp:latest analysis/smr.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_clean_nockd_complete, 2018_clean_nockd_complete, 2019_clean_nockd_complete, 2020_clean_nockd_complete, 2021_clean_nockd_complete, 2022_clean_nockd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/smr.log
+        output: output/smr.csv
+
+  sdr:
+    run: stata-mp:latest analysis/sdr.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_clean_nockd_complete, 2018_clean_nockd_complete, 2019_clean_nockd_complete, 2020_clean_nockd_complete, 2021_clean_nockd_complete, 2022_clean_nockd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/sdr.log
+        output: output/sdr.csv
+
+  str:
+    run: stata-mp:latest analysis/str.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_clean_nockd_complete, 2018_clean_nockd_complete, 2019_clean_nockd_complete, 2020_clean_nockd_complete, 2021_clean_nockd_complete, 2022_clean_nockd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/str.log
+        output: output/str.csv

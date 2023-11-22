@@ -1,0 +1,233 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/str.log
+  log type:  text
+ opened on:  22 Nov 2023, 00:48:38
+
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./output/str.csv, write text replace
+
+. 
+. file write tablecontent ("stratum") _tab ("str_2017") _tab ("str_2018") _tab ("str_2019") _tab ("str_2020") _tab ("str_2021") _tab ("str_2022")  _n
+
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2. use ./output/`x'_ckd_complete.dta, clear
+  3. drop _merge
+  4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
+  5. gen transplant = 0
+  6. replace transplant = weight if ckd_progression==5
+  7. egen overall_weight = total(weight)
+  8. egen overall_str = total(transplant)
+  9. bysort ckd_group: egen ckd_weight = total(weight)
+ 10. bysort ckd_group: egen ckd_str = total(transplant)
+ 11. foreach var of varlist ethnicity imd region urban {
+ 12. bysort `var': egen `var'_weight = total(weight)
+ 13. bysort `var' ckd_group: egen `var'_weight_ckd = total(weight)
+ 14. bysort `var': egen `var'_str = total(transplant)
+ 15. bysort `var' ckd_group: egen `var'_str_ckd = total(transplant)
+ 16. }
+ 17. 
+. qui su overall_weight
+ 18. local overall_weight = r(mean)
+ 19. qui su overall_str
+ 20. local `x'_str_overall = (r(mean)/`overall_weight')*100000
+ 21. local `x'_str_overall_ef = exp(1.96 * sqrt(1 / ``x'_str_overall'))
+ 22. local `x'_str_overall_ul = ``x'_str_overall' * ``x'_str_overall_ef'
+ 23. local `x'_str_overall_ll = ``x'_str_overall' / ``x'_str_overall_ef'
+ 24. 
+. forvalues j=1/6 {
+ 25. local ethlabel`j': label ethnicity `j'
+ 26. qui su ethnicity_weight if ethnicity==`j'
+ 27. local ethnicity_weight = r(mean)
+ 28. qui su ethnicity_str if ethnicity==`j'
+ 29. local `x'_str_ethnicity_`j' = (r(mean)/`ethnicity_weight')*100000
+ 30. local `x'_str_ethnicity_`j'_ef = exp(1.96 * sqrt(1 / ``x'_str_ethnicity_`j''))
+ 31. local `x'_str_ethnicity_`j'_ul = ``x'_str_ethnicity_`j'' * ``x'_str_ethnicity_`j'_ef'
+ 32. local `x'_str_ethnicity_`j'_ll = ``x'_str_ethnicity_`j'' / ``x'_str_ethnicity_`j'_ef'
+ 33. }
+ 34. 
+. forvalues j=1/5 {
+ 35. local imdlabel`j': label imd `j'
+ 36. qui su imd_weight if imd==`j'
+ 37. local imd_weight = r(mean)
+ 38. qui su imd_str if imd==`j'
+ 39. local `x'_str_imd_`j' = (r(mean)/`imd_weight')*100000
+ 40. local `x'_str_imd_`j'_ef = exp(1.96 * sqrt(1 / ``x'_str_imd_`j''))
+ 41. local `x'_str_imd_`j'_ul = ``x'_str_imd_`j'' * ``x'_str_imd_`j'_ef'
+ 42. local `x'_str_imd_`j'_ll = ``x'_str_imd_`j'' / ``x'_str_imd_`j'_ef'
+ 43. }
+ 44. 
+. forvalues j=1/9 {
+ 45. local reglabel`j': label region `j'
+ 46. qui su region_weight if region==`j'
+ 47. local region_weight = r(mean)
+ 48. qui su region_str if region==`j'
+ 49. local `x'_str_region_`j' = (r(mean)/`region_weight')*100000
+ 50. local `x'_str_region_`j'_ef = exp(1.96 * sqrt(1 / ``x'_str_region_`j''))
+ 51. local `x'_str_region_`j'_ul = ``x'_str_region_`j'' * ``x'_str_region_`j'_ef'
+ 52. local `x'_str_region_`j'_ll = ``x'_str_region_`j'' / ``x'_str_region_`j'_ef'
+ 53. }
+ 54. 
+. forvalues j=0/1 {
+ 55. local urblabel`j': label urban `j'
+ 56. qui su urban_weight if urban==`j'
+ 57. local urban_weight = r(mean)
+ 58. qui su urban_str if urban==`j'
+ 59. local `x'_str_urban_`j' = (r(mean)/`urban_weight')*100000
+ 60. local `x'_str_urban_`j'_ef = exp(1.96 * sqrt(1 / ``x'_str_urban_`j''))
+ 61. local `x'_str_urban_`j'_ul = ``x'_str_urban_`j'' * ``x'_str_urban_`j'_ef'
+ 62. local `x'_str_urban_`j'_ll = ``x'_str_urban_`j'' / ``x'_str_urban_`j'_ef'
+ 63. }
+ 64. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,260
+        from master                     2,163  (_merge==1)
+        from using                      1,097  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(8 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,184
+        from master                     2,085  (_merge==1)
+        from using                      1,099  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(15 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,042
+        from master                     1,971  (_merge==1)
+        from using                      1,071  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(15 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,202
+        from master                     2,092  (_merge==1)
+        from using                      1,110  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(7 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,166
+        from master                     2,095  (_merge==1)
+        from using                      1,071  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(14 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,273
+        from master                     2,145  (_merge==1)
+        from using                      1,128  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(7 real changes made)
+
+. 
+. 
+. *Overall
+. file write tablecontent ("All")
+
+. foreach x of local year {
+  2. file write tablecontent _tab %6.2f (``x'_str_overall') (" (") %6.2f (``x'_str_overall_ll') ("-") %6.2f (``x'_str_overall_ul') (")")
+  3. }
+
+. forvalues j=1/6 {
+  2. file write tablecontent _n ("`ethlabel`j''")
+  3. foreach x of local year {
+  4. file write tablecontent _tab %6.2f (``x'_str_ethnicity_`j'') (" (") %6.2f (``x'_str_ethnicity_`j'_ll') ("-") %6.2f (``x'_str_ethnicity_`j'_ul') (")")
+  5. }
+  6. }
+
+. 
+. forvalues j=1/5 {
+  2. file write tablecontent _n ("`imdlabel`j''")
+  3. foreach x of local year {
+  4. file write tablecontent _tab %6.2f (``x'_str_imd_`j'') (" (") %6.2f (``x'_str_imd_`j'_ll') ("-") %6.2f (``x'_str_imd_`j'_ul') (")")
+  5. }
+  6. }
+
+. forvalues j=1/9 {
+  2. file write tablecontent _n ("`reglabel`j''")
+  3. foreach x of local year {
+  4. file write tablecontent _tab %6.2f (``x'_str_region_`j'') (" (") %6.2f (``x'_str_region_`j'_ll') ("-") %6.2f (``x'_str_region_`j'_ul') (")")
+  5. }
+  6. }
+
+. forvalues j=0/1 {
+  2. file write tablecontent _n ("`urblabel`j''")
+  3. foreach x of local year {
+  4. file write tablecontent _tab %6.2f (``x'_str_urban_`j'') (" (") %6.2f (``x'_str_urban_`j'_ll') ("-") %6.2f (``x'_str_urban_`j'_ul') (")")
+  5. }
+  6. }
+
+. 
+. file close tablecontent
+
+. 
+end of do-file
+

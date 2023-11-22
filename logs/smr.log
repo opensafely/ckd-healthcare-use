@@ -1,0 +1,335 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/smr.log
+  log type:  text
+ opened on:  22 Nov 2023, 00:42:39
+
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./output/smr.csv, write text replace
+
+. 
+. file write tablecontent ("stratum") _tab ("start_status") _tab ("smr_2017") _tab ("smr_2018") _tab ("smr_2019") _tab ("smr_2020") _tab ("smr_2021") _tab ("smr_2022")  _n
+
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. foreach x of local year {
+  2. use ./output/`x'_ckd_complete.dta, clear
+  3. drop _merge
+  4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
+  5. label drop ckd_group
+  6. label define ckd_group 0 "No CKD" 1 "Albuminuria" 2 "CKD stage 3" 3 "CKD stage 4/5" 4 "Dialysis" 5 "Transplant" 6 "KRT unclear modality"
+  7. label values ckd_group ckd_group
+  8. gen died = 0
+  9. replace died = weight if ckd_progression==6
+ 10. egen overall_weight = total(weight)
+ 11. egen overall_smr = total(died)
+ 12. bysort ckd_group: egen ckd_weight = total(weight)
+ 13. bysort ckd_group: egen ckd_smr = total(died)
+ 14. foreach var of varlist ethnicity imd region urban {
+ 15. bysort `var': egen `var'_weight = total(weight)
+ 16. bysort `var' ckd_group: egen `var'_weight_ckd = total(weight)
+ 17. bysort `var': egen `var'_smr = total(died)
+ 18. bysort `var' ckd_group: egen `var'_smr_ckd = total(died)
+ 19. }
+ 20. 
+. qui su overall_weight
+ 21. local overall_weight = r(mean)
+ 22. qui su overall_smr
+ 23. local `x'_smr_overall = (r(mean)/`overall_weight')*100000
+ 24. local `x'_smr_overall_ef = exp(1.96 * sqrt(1 / ``x'_smr_overall'))
+ 25. local `x'_smr_overall_ul = ``x'_smr_overall' * ``x'_smr_overall_ef'
+ 26. local `x'_smr_overall_ll = ``x'_smr_overall' / ``x'_smr_overall_ef'
+ 27. 
+. forvalues i=0/6 {
+ 28. local ckdlabel`i': label ckd_group `i'
+ 29. qui su ckd_weight if ckd_group==`i'
+ 30. local ckd_weight = r(mean)
+ 31. qui su ckd_smr if ckd_group==`i'
+ 32. local `x'_smr_ckd_`i' = (r(mean)/`ckd_weight')*100000
+ 33. local `x'_smr_ckd_`i'_ef = exp(1.96 * sqrt(1 / ``x'_smr_ckd_`i''))
+ 34. local `x'_smr_ckd_`i'_ul = ``x'_smr_ckd_`i'' * ``x'_smr_ckd_`i'_ef'
+ 35. local `x'_smr_ckd_`i'_ll = ``x'_smr_ckd_`i'' / ``x'_smr_ckd_`i'_ef'
+ 36. }
+ 37. 
+. 
+. forvalues j=1/6 {
+ 38. local ethlabel`j': label ethnicity `j'
+ 39. qui su ethnicity_weight if ethnicity==`j'
+ 40. local ethnicity_weight = r(mean)
+ 41. qui su ethnicity_smr if ethnicity==`j'
+ 42. local `x'_smr_ethnicity_`j' = (r(mean)/`ethnicity_weight')*100000
+ 43. local `x'_smr_ethnicity_`j'_ef = exp(1.96 * sqrt(1 / ``x'_smr_ethnicity_`j''))
+ 44. local `x'_smr_ethnicity_`j'_ul = ``x'_smr_ethnicity_`j'' * ``x'_smr_ethnicity_`j'_ef'
+ 45. local `x'_smr_ethnicity_`j'_ll = ``x'_smr_ethnicity_`j'' / ``x'_smr_ethnicity_`j'_ef'
+ 46. 
+. 
+. forvalues i=0/6 {
+ 47. qui su ethnicity_weight_ckd if ckd_group==`i' & ethnicity==`j'
+ 48. local ethnicity_weight = r(mean)
+ 49. qui su ethnicity_smr_ckd if ckd_group==`i' & ethnicity==`j'
+ 50. local `x'_ethnicity_`j'_smr_ckd_`i' = (r(mean)/`ethnicity_weight')*100000
+ 51. local `x'_ethnicity_`j'_smr_ckd_`i'_ef = exp(1.96 * sqrt(1 / ``x'_ethnicity_`j'_smr_ckd_`i''))
+ 52. local `x'_ethnicity_`j'_smr_ckd_`i'_ul = ``x'_ethnicity_`j'_smr_ckd_`i'' * ``x'_ethnicity_`j'_smr_ckd_`i'_ef'
+ 53. local `x'_ethnicity_`j'_smr_ckd_`i'_ll = ``x'_ethnicity_`j'_smr_ckd_`i'' / ``x'_ethnicity_`j'_smr_ckd_`i'_ef'
+ 54. }
+ 55. }
+ 56. 
+. 
+. 
+. forvalues j=1/5 {
+ 57. local imdlabel`j': label imd `j'
+ 58. qui su imd_weight if imd==`j'
+ 59. local imd_weight = r(mean)
+ 60. qui su imd_smr if imd==`j'
+ 61. local `x'_smr_imd_`j' = (r(mean)/`imd_weight')*100000
+ 62. local `x'_smr_imd_`j'_ef = exp(1.96 * sqrt(1 / ``x'_smr_imd_`j''))
+ 63. local `x'_smr_imd_`j'_ul = ``x'_smr_imd_`j'' * ``x'_smr_imd_`j'_ef'
+ 64. local `x'_smr_imd_`j'_ll = ``x'_smr_imd_`j'' / ``x'_smr_imd_`j'_ef'
+ 65. 
+. 
+. forvalues i=0/6 {
+ 66. qui su imd_weight_ckd if ckd_group==`i' & imd==`j'
+ 67. local imd_weight = r(mean)
+ 68. qui su imd_smr_ckd if ckd_group==`i' & imd==`j'
+ 69. local `x'_imd_`j'_smr_ckd_`i' = (r(mean)/`imd_weight')*100000
+ 70. local `x'_imd_`j'_smr_ckd_`i'_ef = exp(1.96 * sqrt(1 / ``x'_imd_`j'_smr_ckd_`i''))
+ 71. local `x'_imd_`j'_smr_ckd_`i'_ul = ``x'_imd_`j'_smr_ckd_`i'' * ``x'_imd_`j'_smr_ckd_`i'_ef'
+ 72. local `x'_imd_`j'_smr_ckd_`i'_ll = ``x'_imd_`j'_smr_ckd_`i'' / ``x'_imd_`j'_smr_ckd_`i'_ef'
+ 73. }
+ 74. }
+ 75. 
+. 
+. 
+. forvalues j=1/9 {
+ 76. local reglabel`j': label region `j'
+ 77. qui su region_weight if region==`j'
+ 78. local region_weight = r(mean)
+ 79. qui su region_smr if region==`j'
+ 80. local `x'_smr_region_`j' = (r(mean)/`region_weight')*100000
+ 81. local `x'_smr_region_`j'_ef = exp(1.96 * sqrt(1 / ``x'_smr_region_`j''))
+ 82. local `x'_smr_region_`j'_ul = ``x'_smr_region_`j'' * ``x'_smr_region_`j'_ef'
+ 83. local `x'_smr_region_`j'_ll = ``x'_smr_region_`j'' / ``x'_smr_region_`j'_ef'
+ 84. forvalues i=0/6 {
+ 85. qui su region_weight_ckd if ckd_group==`i' & region==`j'
+ 86. local region_weight = r(mean)
+ 87. qui su region_smr_ckd if ckd_group==`i' & region==`j'
+ 88. local `x'_region_`j'_smr_ckd_`i' = (r(mean)/`region_weight')*100000
+ 89. local `x'_region_`j'_smr_ckd_`i'_ef = exp(1.96 * sqrt(1 / ``x'_region_`j'_smr_ckd_`i''))
+ 90. local `x'_region_`j'_smr_ckd_`i'_ul = ``x'_region_`j'_smr_ckd_`i'' * ``x'_region_`j'_smr_ckd_`i'_ef'
+ 91. local `x'_region_`j'_smr_ckd_`i'_ll = ``x'_region_`j'_smr_ckd_`i'' / ``x'_region_`j'_smr_ckd_`i'_ef'
+ 92. }
+ 93. 
+. 
+. forvalues j=0/1 {
+ 94. local urblabel`j': label urban `j'
+ 95. qui su urban_weight if urban==`j'
+ 96. local urban_weight = r(mean)
+ 97. qui su urban_smr if urban==`j'
+ 98. local `x'_smr_urban_`j' = (r(mean)/`urban_weight')*100000
+ 99. local `x'_smr_urban_`j'_ef = exp(1.96 * sqrt(1 / ``x'_smr_urban_`j''))
+100. local `x'_smr_urban_`j'_ul = ``x'_smr_urban_`j'' * ``x'_smr_urban_`j'_ef'
+101. local `x'_smr_urban_`j'_ll = ``x'_smr_urban_`j'' / ``x'_smr_urban_`j'_ef'
+102. forvalues i=0/6 {
+103. qui su urban_weight_ckd if ckd_group==`i' & urban==`j'
+104. local urban_weight = r(mean)
+105. qui su urban_smr_ckd if ckd_group==`i' & urban==`j'
+106. local `x'_urban_`j'_smr_ckd_`i' = (r(mean)/`urban_weight')*100000
+107. local `x'_urban_`j'_smr_ckd_`i'_ef = exp(1.96 * sqrt(1 / ``x'_urban_`j'_smr_ckd_`i''))
+108. local `x'_urban_`j'_smr_ckd_`i'_ul = ``x'_urban_`j'_smr_ckd_`i'' * ``x'_urban_`j'_smr_ckd_`i'_ef'
+109. local `x'_urban_`j'_smr_ckd_`i'_ll = ``x'_urban_`j'_smr_ckd_`i'' / ``x'_urban_`j'_smr_ckd_`i'_ef'
+110. }
+111. }
+112. }
+113. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,260
+        from master                     2,163  (_merge==1)
+        from using                      1,097  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(226 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,184
+        from master                     2,085  (_merge==1)
+        from using                      1,099  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(242 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,042
+        from master                     1,971  (_merge==1)
+        from using                      1,071  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(227 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,202
+        from master                     2,092  (_merge==1)
+        from using                      1,110  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(246 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,166
+        from master                     2,095  (_merge==1)
+        from using                      1,071  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(228 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,273
+        from master                     2,145  (_merge==1)
+        from using                      1,128  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(234 real changes made)
+
+. 
+. *Overall
+. file write tablecontent ("All") _tab ("All")
+
+. foreach x of local year {
+  2. file write tablecontent _tab %6.2f (``x'_smr_overall') (" (") %6.2f (``x'_smr_overall_ll') ("-") %6.2f (``x'_smr_overall_ul') (")")
+  3. }
+
+. forvalues j=1/6 {
+  2. file write tablecontent _n ("`ethlabel`j''") _tab ("All")
+  3. foreach x of local year {
+  4. file write tablecontent _tab %6.2f (``x'_smr_ethnicity_`j'') (" (") %6.2f (``x'_smr_ethnicity_`j'_ll') ("-") %6.2f (``x'_smr_ethnicity_`j'_ul') (")")
+  5. }
+  6. }
+
+. 
+. forvalues j=1/5 {
+  2. file write tablecontent _n ("`imdlabel`j''") _tab ("All")
+  3. foreach x of local year {
+  4. file write tablecontent _tab %6.2f (``x'_smr_imd_`j'') (" (") %6.2f (``x'_smr_imd_`j'_ll') ("-") %6.2f (``x'_smr_imd_`j'_ul') (")")
+  5. }
+  6. }
+
+. forvalues j=1/9 {
+  2. file write tablecontent _n ("`reglabel`j''") _tab ("All")
+  3. foreach x of local year {
+  4. file write tablecontent _tab %6.2f (``x'_smr_region_`j'') (" (") %6.2f (``x'_smr_region_`j'_ll') ("-") %6.2f (``x'_smr_region_`j'_ul') (")")
+  5. }
+  6. }
+
+. forvalues j=0/1 {
+  2. file write tablecontent _n ("`urblabel`j''") _tab ("All")
+  3. foreach x of local year {
+  4. file write tablecontent _tab %6.2f (``x'_smr_urban_`j'') (" (") %6.2f (``x'_smr_urban_`j'_ll') ("-") %6.2f (``x'_smr_urban_`j'_ul') (")")
+  5. }
+  6. }
+
+. 
+. *By CKD status
+. forvalues i=0/5 {
+  2. file write tablecontent _n ("All") _tab ("`ckdlabel`i''")
+  3. foreach x of local year {
+  4. file write tablecontent _tab %6.2f (``x'_smr_ckd_`i'') (" (") %6.2f (``x'_smr_ckd_`i'_ll') ("-") %6.2f (``x'_smr_ckd_`i'_ul') (")")
+  5. }
+  6. forvalues j=1/6 {
+  7. file write tablecontent _n ("`ethlabel`j''") _tab ("`ckdlabel`i''")
+  8. foreach x of local year {
+  9. file write tablecontent _tab %6.2f (``x'_ethnicity_`j'_smr_ckd_`i'') (" (") %6.2f (``x'_ethnicity_`j'_smr_ckd_`i'_ll') ("-") %6.2f (``x'_ethnicity_`j'_smr_ckd_`i'_ul') (")")
+ 10. }
+ 11. }
+ 12. forvalues j=1/5 {
+ 13. file write tablecontent _n ("`imdlabel`j''") _tab ("`ckdlabel`i''")
+ 14. foreach x of local year {
+ 15. file write tablecontent _tab %6.2f (``x'_imd_`j'_smr_ckd_`i'') (" (") %6.2f (``x'_imd_`j'_smr_ckd_`i'_ll') ("-") %6.2f (``x'_imd_`j'_smr_ckd_`i'_ul') (")")
+ 16. }
+ 17. }
+ 18. forvalues j=1/9 {
+ 19. file write tablecontent _n ("`reglabel`j''") _tab ("`ckdlabel`i''")
+ 20. foreach x of local year {
+ 21. file write tablecontent _tab %6.2f (``x'_region_`j'_smr_ckd_`i'') (" (") %6.2f (``x'_region_`j'_smr_ckd_`i'_ll') ("-") %6.2f (``x'_region_`j'_smr_ckd_`i'_ul') (")")
+ 22. }
+ 23. }
+ 24. forvalues j=0/1 {
+ 25. file write tablecontent _n ("`urblabel`j''") _tab ("`ckdlabel`i''")
+ 26. foreach x of local year {
+ 27. file write tablecontent _tab %6.2f (``x'_urban_`j'_smr_ckd_`i'') (" (") %6.2f (``x'_urban_`j'_smr_ckd_`i'_ll') ("-") %6.2f (``x'_urban_`j'_smr_ckd_`i'_ul') (")")
+ 28. }
+ 29. }
+ 30. }
+
+. 
+. file close tablecontent
+
+. 
+end of do-file
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD569c_000000.tmp"
+
+. sysdir set PLUS ./analysis/adofiles
+
+. sysdir set PERSONAL ./analysis/adofiles
+
+. pwd
+C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use
+
+. cap log close

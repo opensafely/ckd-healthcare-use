@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/logs/2020_ckd.log
   log type:  text
- opened on:  20 Sep 2023, 15:49:21
+ opened on:  21 Nov 2023, 19:38:27
 
 . clear
 
@@ -74,6 +74,20 @@ Yorkshire and The Humber |      3,281        9.76      100.00
 (0 observations deleted)
 
 . 
+. * Code sex
+. assert inlist(sex, "M", "F")
+
+. gen male = (sex=="M")
+
+. drop sex
+
+. label define sexLab 1 "Male" 0 "Female"
+
+. label values male sexLab
+
+. label var male "Sex (0=F 1=M)"
+
+. 
 . save ./output/input_`dataset', replace
 (note: file ./output/input_2020.dta not found)
 file ./output/input_2020.dta saved
@@ -94,18 +108,6 @@ file ./output/input_2020.dta saved
 . label define albuminuria 0 "No albuminuria" 1 "Albuminuria"
 
 . label values albuminuria albuminuria
-
-. assert inlist(sex, "M", "F")
-
-. gen male = (sex=="M")
-
-. drop sex
-
-. label define sexLab 1 "Male" 0 "Female"
-
-. label values male sexLab
-
-. label var male "Sex (0=F 1=M)"
 
 . replace baseline_creatinine = . if !inrange(baseline_creatinine, 20, 3000)
 (14,091 real changes made, 14,091 to missing)
@@ -364,6 +366,7 @@ file ./output/2020_ckd.csv saved
 . 
 . *Create dataset of non-CKD
 . merge 1:1 patient_id using ./output/input_`dataset'
+(label sexLab already defined)
 
     Result                           # of obs.
     -----------------------------------------
@@ -389,5 +392,5 @@ file ./output/2020_nockd.csv saved
       name:  <unnamed>
        log:  /workspace/logs/2020_ckd.log
   log type:  text
- closed on:  20 Sep 2023, 15:49:22
+ closed on:  21 Nov 2023, 19:38:30
 -------------------------------------------------------------------------------

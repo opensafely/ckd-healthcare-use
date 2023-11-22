@@ -2,20 +2,20 @@
       name:  <unnamed>
        log:  /workspace/logs/2019_nockd_complete.log
   log type:  text
- opened on:  20 Sep 2023, 16:55:52
+ opened on:  21 Nov 2023, 19:42:24
 
 . clear
 
 . 
 . *Merge `dataset'_nockd with `dataset'_nockd_complete
 . capture noisily import delimited ./output/`dataset'_nockd.csv, clear
-(17 vars, 10,955 obs)
+(16 vars, 10,955 obs)
 
 . tempfile `dataset'_nockd
 
 . save ``dataset'_nockd', replace
-(note: file /tmp/St00016.000001 not found)
-file /tmp/St00016.000001 saved
+(note: file /tmp/St00015.000001 not found)
+file /tmp/St00015.000001 saved
 
 . capture noisily import delimited ./output/input_`dataset'_nockd_complete.csv,
 >  clear
@@ -25,23 +25,23 @@ file /tmp/St00016.000001 saved
 
     Result                           # of obs.
     -----------------------------------------
-    not matched                        58,835
-        from master                    48,940  (_merge==1)
-        from using                      9,895  (_merge==2)
+    not matched                        58,813
+        from master                    48,929  (_merge==1)
+        from using                      9,884  (_merge==2)
 
-    matched                             1,060  (_merge==3)
+    matched                             1,071  (_merge==3)
     -----------------------------------------
 
 . keep if _merge==3
-(58,835 observations deleted)
+(58,813 observations deleted)
 
 . drop _merge
 
 . tempfile `dataset'_nockd_complete
 
 . save ``dataset'_nockd_complete', replace
-(note: file /tmp/St00016.000002 not found)
-file /tmp/St00016.000002 saved
+(note: file /tmp/St00015.000002 not found)
+file /tmp/St00015.000002 saved
 
 . 
 . /*Generate dummy data
@@ -82,57 +82,63 @@ file /tmp/St00016.000002 saved
 . 
 . *eGFR outcome classification based on updated mean eGFR over previous 18 mont
 > hs by the end of year
-. drop sex
+. gen sex = 1 if male == "Male"
+(516 missing values generated)
 
-. rename male sex
+. replace sex = 0 if male == "Female"
+(516 real changes made)
+
+. label define sex 0"Female" 1"Male"
+
+. label values sex sex
 
 . replace creatinine_outcome = . if !inrange(creatinine_outcome, 20, 3000)
-(502 real changes made, 502 to missing)
+(462 real changes made, 462 to missing)
 
 . gen mgdl_creatinine_outcome = creatinine_outcome/88.4
-(502 missing values generated)
+(462 missing values generated)
 
 . gen min_creatinine_outcome=.
-(1,060 missing values generated)
+(1,071 missing values generated)
 
 . replace min_creatinine_outcome = mgdl_creatinine_outcome/0.7 if sex==0
-(0 real changes made)
+(306 real changes made)
 
 . replace min_creatinine_outcome = mgdl_creatinine_outcome/0.9 if sex==1
-(0 real changes made)
+(303 real changes made)
 
 . replace min_creatinine_outcome = min_creatinine_outcome^-0.329  if sex==0
-(0 real changes made)
+(306 real changes made)
 
 . replace min_creatinine_outcome = min_creatinine_outcome^-0.411  if sex==1
-(0 real changes made)
+(303 real changes made)
 
 . replace min_creatinine_outcome = 1 if min_creatinine_outcome<1
-(0 real changes made)
+(376 real changes made)
 
 . gen max_creatinine_outcome=.
-(1,060 missing values generated)
+(1,071 missing values generated)
 
 . replace max_creatinine_outcome = mgdl_creatinine_outcome/0.7 if sex==0
-(0 real changes made)
+(306 real changes made)
 
 . replace max_creatinine_outcome = mgdl_creatinine_outcome/0.9 if sex==1
-(0 real changes made)
+(303 real changes made)
 
 . replace max_creatinine_outcome = max_creatinine_outcome^-1.209
-(0 real changes made)
+(609 real changes made)
 
 . replace max_creatinine_outcome = 1 if max_creatinine_outcome>1
-(1,060 real changes made)
+(695 real changes made)
 
 . gen egfr_outcome = min_creatinine_outcome*max_creatinine_outcome*141
-(1,060 missing values generated)
+(462 missing values generated)
 
 . replace egfr_outcome = egfr_outcome*(0.993^age)
-(0 real changes made)
+(609 real changes made)
 
 . replace egfr_outcome = egfr_outcome*1.018 if sex==0
-(0 real changes made)
+(306 real changes made)
 
 . drop creatinine_outcome
 
@@ -143,10 +149,10 @@ file /tmp/St00016.000002 saved
 . drop max_creatinine_outcome
 
 . egen egfr_end = cut(egfr_outcome), at(0, 30, 60, 5000)
-(1060 missing values generated)
+(462 missing values generated)
 
 . recode egfr_end 0=3 30=2 60=1
-(egfr_end: 0 changes made)
+(egfr_end: 609 changes made)
 
 . label define egfr_end 1 "≥60" 2 "30-59" 3 "<30"
 
@@ -157,30 +163,34 @@ file /tmp/St00016.000002 saved
 . gen ckd_progression = 0
 
 . replace ckd_progression = 1 if egfr_end==2
-(0 real changes made)
+(136 real changes made)
 
 . replace ckd_progression = 2 if egfr_end==3
-(0 real changes made)
+(11 real changes made)
 
 . egen esrd_egfr_end = cut(egfr_outcome), at (0, 15, 5000)
-(1060 missing values generated)
+(462 missing values generated)
 
 . recode esrd_egfr_end 0=1 15=0
-(esrd_egfr_end: 0 changes made)
+(esrd_egfr_end: 609 changes made)
 
 . tab esrd_egfr_end, m
 
 esrd_egfr_e |
          nd |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          . |      1,060      100.00      100.00
+          0 |        609       56.86       56.86
+          . |        462       43.14      100.00
 ------------+-----------------------------------
-      Total |      1,060      100.00
+      Total |      1,071      100.00
+
+. replace modality_outcome = "Unchanged" if modality_outcome_date==.
+(179 real changes made)
 
 . gen dialysis_outcome = 0
 
 . replace dialysis_outcome = 1 if modality_outcome=="Dialysis"
-(62 real changes made)
+(15 real changes made)
 
 . replace dialysis_outcome = 1 if modality_outcome=="Modality unclear" & esrd_e
 > gfr_end==1
@@ -190,23 +200,24 @@ esrd_egfr_e |
 
 . replace kidney_transplant_outcome = 1 if modality_outcome=="Kidney transplant
 > "
-(41 real changes made)
+(8 real changes made)
 
 . replace kidney_transplant_outcome = 1 if modality_outcome=="Modality unclear"
 >  & esrd_egfr_end==0
-(0 real changes made)
+(1 real change made)
 
-. replace ckd_progression = 5 if modality_outcome=="Modality unclear"
-(15 real changes made)
+. replace ckd_progression = 5 if modality_outcome=="Modality unclear" & modalit
+> y_outcome_date!=.
+(3 real changes made)
 
 . replace ckd_progression = 3 if dialysis_outcome==1
-(62 real changes made)
+(15 real changes made)
 
 . replace ckd_progression = 4 if kidney_transplant_outcome==1
-(41 real changes made)
+(9 real changes made)
 
 . replace ckd_progression = 6 if modality_outcome=="Deceased"
-(108 real changes made)
+(37 real changes made)
 
 . label define ckd_progression 0 "No progression" 1 "CKD 3" 2 "CKD 4/5 pre-KRT"
 >  3 "Dialysis" 4 "Kidney transplant" 5 "KRT unclear modality" 6 "Deceased"
@@ -219,13 +230,15 @@ esrd_egfr_e |
 
      CKD progression |      Freq.     Percent        Cum.
 ---------------------+-----------------------------------
-      No progression |        834       78.68       78.68
-            Dialysis |         62        5.85       84.53
-   Kidney transplant |         41        3.87       88.40
-KRT unclear modality |         15        1.42       89.81
-            Deceased |        108       10.19      100.00
+      No progression |        871       81.33       81.33
+               CKD 3 |        127       11.86       93.18
+     CKD 4/5 pre-KRT |         10        0.93       94.12
+            Dialysis |         15        1.40       95.52
+   Kidney transplant |          9        0.84       96.36
+KRT unclear modality |          2        0.19       96.55
+            Deceased |         37        3.45      100.00
 ---------------------+-----------------------------------
-               Total |      1,060      100.00
+               Total |      1,071      100.00
 
 . gen ckd_group = 0
 
@@ -244,19 +257,19 @@ KRT unclear modality |         15        1.42       89.81
 (0 real changes made)
 
 . replace ethnicity=6 if ethnicity==2
-(34 real changes made)
+(47 real changes made)
 
 . replace ethnicity=2 if ethnicity==3
-(43 real changes made)
+(35 real changes made)
 
 . replace ethnicity=3 if ethnicity==4
-(36 real changes made)
+(44 real changes made)
 
 . replace ethnicity=4 if ethnicity==6
-(34 real changes made)
+(47 real changes made)
 
 . replace ethnicity=6 if ethnicity==.
-(271 real changes made)
+(268 real changes made)
 
 . label define ethnicity  1 "White"                                       ///
 >                                                 2 "South Asian"              
@@ -283,31 +296,31 @@ KRT unclear modality |         15        1.42       89.81
 . rename region region_string
 
 . gen region = 1 if region_string=="East Midlands"
-(953 missing values generated)
+(958 missing values generated)
 
 . replace region = 2 if region_string=="East"
-(110 real changes made)
+(129 real changes made)
 
 . replace region = 3 if region_string=="London"
-(216 real changes made)
+(207 real changes made)
 
 . replace region = 4 if region_string=="North East"
-(97 real changes made)
+(106 real changes made)
 
 . replace region = 5 if region_string=="North West"
-(111 real changes made)
+(107 real changes made)
 
 . replace region = 6 if region_string=="South East"
-(104 real changes made)
-
-. replace region = 7 if region_string=="South West"
 (110 real changes made)
 
+. replace region = 7 if region_string=="South West"
+(106 real changes made)
+
 . replace region = 8 if region_string=="West Midlands"
-(96 real changes made)
+(78 real changes made)
 
 . replace region = 9 if region_string=="Yorkshire and The Humber"
-(109 real changes made)
+(115 real changes made)
 
 . label define region     1 "East Midlands"                                    
 >    ///
@@ -359,13 +372,13 @@ KRT unclear modality |         15        1.42       89.81
 . * Urban (binary)
 . * Urban = 1-4 + missing, Rural = 5-8
 . generate urban=.
-(1,060 missing values generated)
+(1,071 missing values generated)
 
 . replace urban=1 if rural_urban<=4|rural_urban==.
-(439 real changes made)
+(446 real changes made)
 
 . replace urban=0 if rural_urban>4 & rural_urban!=.
-(621 real changes made)
+(625 real changes made)
 
 . label var urban "Urban/rural"
 
@@ -374,6 +387,67 @@ KRT unclear modality |         15        1.42       89.81
 . label values urban urban
 
 . drop rural_urban
+
+. 
+. *Age bands for standardisation
+. egen agecat = cut(age), at(0,18,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,
+> 200)
+
+. drop if agecat==0
+(0 observations deleted)
+
+. 
+. *Age-standardisation weights (European Standard Population 2013)
+. gen weight = .
+(1,071 missing values generated)
+
+. replace weight = 0.027261 if agecat==18
+(35 real changes made)
+
+. replace weight = 0.074349 if agecat==20
+(78 real changes made)
+
+. replace weight = 0.074349 if agecat==25
+(103 real changes made)
+
+. replace weight = 0.080545 if agecat==30
+(99 real changes made)
+
+. replace weight = 0.086741 if agecat==35
+(119 real changes made)
+
+. replace weight = 0.086741 if agecat==40
+(77 real changes made)
+
+. replace weight = 0.086741 if agecat==45
+(83 real changes made)
+
+. replace weight = 0.086741 if agecat==50
+(97 real changes made)
+
+. replace weight = 0.080545 if agecat==55
+(78 real changes made)
+
+. replace weight = 0.074349 if agecat==60
+(65 real changes made)
+
+. replace weight = 0.068154 if agecat==65
+(64 real changes made)
+
+. replace weight = 0.061958 if agecat==70
+(70 real changes made)
+
+. replace weight = 0.049566 if agecat==75
+(34 real changes made)
+
+. replace weight = 0.030979 if agecat==80
+(41 real changes made)
+
+. replace weight = 0.018587 if agecat==85
+(18 real changes made)
+
+. replace weight = 0.012392 if agecat==90
+(10 real changes made)
 
 . 
 . save "./output/`dataset'_nockd_complete.dta", replace
@@ -385,5 +459,5 @@ file ./output/2019_nockd_complete.dta saved
       name:  <unnamed>
        log:  /workspace/logs/2019_nockd_complete.log
   log type:  text
- closed on:  20 Sep 2023, 16:55:54
+ closed on:  21 Nov 2023, 19:42:25
 -------------------------------------------------------------------------------
