@@ -1,0 +1,2052 @@
+---
+title: "Relative healthcare use (all CKD groups combined)"
+output: html_document
+output_dir: "C:/Users/lsh1703468/Documents/Repo/ckd-healthcare-use/results"
+output_file: "standardised_healthcare_use_overall.html"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+
+## Import libraries
+library('tidyverse')
+library('kableExtra')
+library('cowplot')
+library('scales')
+```
+
+```{r}
+setwd("C:/Users/lsh1703468/Dropbox/PhD/health economics/figures")
+### Annual healthcare use (restricted to OPD, ED & GP)
+palette <- c("#3B9AB2", "#EBCC2A", "#E1AF00", "#B40F20", "#5DBB63", "#FF5733", "#FFC300", "#FF8C00", "#CD5C5C", "#FF1493", "#9370DB", "#6A5ACD")
+
+# Read in data
+d <- read.csv("standardised_healthcare_use_overall.csv", sep = "\t", na.strings = "N/A")
+d$Date <- as.Date(d$Date, format = "%d/%m/%Y")
+
+# Create stacked dataframe with 1 row per data point
+d1 <- rbind(
+  d %>% mutate(count = ip, outcome = "Inpatient days", rate = ip, ll = ip_ll, ul = ip_ul),
+  d %>% mutate(count = icu, outcome = "ICU days", rate = icu, ll = icu_ll, ul = icu_ul),
+  d %>% mutate(count = ed, outcome = "ED presentations", rate = ed, ll = ed_ll, ul = ed_ul),
+  d %>% mutate(count = avf, outcome = "AVF formations", rate = avf, ll = avf_ll, ul = avf_ul),
+  d %>% mutate(count = pd, outcome = "PD insertions", rate = pd, ll = pd_ll, ul = pd_ul),
+  d %>% mutate(count = opd, outcome = "Outpatient appointments", rate = opd, ll = opd_ll, ul = opd_ul),
+  d %>% mutate(count = neph, outcome = "Nephrology appointments", rate = neph, ll = neph_ll, ul = neph_ul),
+  d %>% mutate(count = tx, outcome = "Transplant appointments", rate = tx, ll = tx_ll, ul = tx_ul),
+  d %>% mutate(count = gp, outcome = "GP interactions", rate = gp, ll = gp_ll, ul = gp_ul),
+  d %>% mutate(count = bp, outcome = "Blood pressure measurements", rate = bp, ll = bp_ll, ul = bp_ul),
+  d %>% mutate(count = uacr, outcome = "uACR measurements", rate = uacr, ll = uacr_ll, ul = uacr_ul),
+  d %>% mutate(count = scr, outcome = "SCr measurements", rate = scr, ll = scr_ll, ul = scr_ul)
+) %>%
+  # select variables of interest
+  select(Date, stratum, outcome, rate, ll, ul)
+
+# Change date coding
+d1$Date_factor <- factor(d1$Date)
+d1$Date_factor <- recode_factor(d1$Date_factor, "2017-04-01" = "2016/17", "2018-04-01" = "2017/18", "2019-04-01" = "2018/19", "2020-04-01" = "2019/20", "2021-04-01" = "2020/21", "2022-04-01" = "2021/22") 
+```
+
+<b>[Inpatient days]{style="font-size: 20px;"}</b>
+
+[Inpatient days (overall)]{style="font-size: 16px;"}
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Filter the data for "Inpatient days"
+d2_ip <- d1 %>%
+  filter(outcome == "Inpatient days")
+
+d2_ip$stratum <- factor(d2_ip$stratum, levels = c("all"))
+
+# Generate plot
+ggplot(d2_ip, aes(x = Date, y = rate)) + 
+  geom_smooth(size = 0.8) + 
+  ylab("Inpatient days/100 patients") + 
+  xlab("Year") +
+  geom_smooth(aes(ymin = ll, ymax = ul), alpha = 0.2) +
+  labs(colour = "Inpatient days") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 2500) +
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+Inpatient days by ethnicity
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_ip <- d1 %>%
+  filter(outcome == "Inpatient days")
+
+d2_ip$stratum <- factor(d2_ip$stratum, levels = c("White", "South Asian", "Black", "Mixed", "Other", "Unknown"))
+
+# Generate plot
+ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Inpatient days/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Inpatient days") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 2500) +
+  labs(color = "Ethnicity") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Inpatient days by IMD
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_ip <- d1 %>%
+  filter(outcome == "Inpatient days")
+
+d2_ip$stratum <- factor(d2_ip$stratum, levels = c("1 Most deprived", "2", "3", "4", "5 Least deprived"))
+
+# Generate plot
+ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Inpatient days/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Inpatient days") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 2500) +
+  labs(color = "IMD") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Inpatient days by region
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_ip <- d1 %>%
+  filter(outcome == "Inpatient days")
+
+d2_ip$stratum <- factor(d2_ip$stratum, levels = c("East Midlands", "East", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"))
+
+# Generate plot
+ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Inpatient days/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Inpatient days") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 2500) +
+  labs(color = "Region") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Inpatient days by rural/urban
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_ip <- d1 %>%
+  filter(outcome == "Inpatient days")
+
+d2_ip$stratum <- factor(d2_ip$stratum, levels = c("Rural", "Urban"))
+
+# Generate plot
+ggplot(d2_ip %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Inpatient days/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Inpatient days") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 2500) +
+  labs(color = "Rural/urban") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+<b>[ICU days]{style="font-size: 20px;"}</b>
+
+[ICU days (overall)]{style="font-size: 16px;"}
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Filter the data for "ICU days"
+d2_icu <- d1 %>%
+  filter(outcome == "ICU days")
+
+d2_icu$stratum <- factor(d2_icu$stratum, levels = c("all"))
+
+# Generate plot
+ggplot(d2_icu, aes(x = Date, y = rate)) + 
+  geom_smooth(size = 0.8) + 
+  ylab("ICU days/100 patients") + 
+  xlab("Year") +
+  geom_smooth(aes(ymin = ll, ymax = ul), alpha = 0.2) +
+  labs(colour = "ICU days") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 130) +
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+ICU days by ethnicity
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_icu <- d1 %>%
+  filter(outcome == "ICU days")
+
+d2_icu$stratum <- factor(d2_icu$stratum, levels = c("White", "South Asian", "Black", "Mixed", "Other", "Unknown"))
+
+# Generate plot
+ggplot(d2_icu %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("ICU days/100 patients") + 
+  xlab("Year") +
+  labs(colour = "ICU days") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 130) +
+  labs(color = "Ethnicity") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+ICU days by IMD
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_icu <- d1 %>%
+  filter(outcome == "ICU days")
+
+d2_icu$stratum <- factor(d2_icu$stratum, levels = c("1 Most deprived", "2", "3", "4", "5 Least deprived"))
+
+# Generate plot
+ggplot(d2_icu %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("ICU days/100 patients") + 
+  xlab("Year") +
+  labs(colour = "ICU days") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 130) +
+  labs(color = "IMD") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+ICU days by region
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_icu <- d1 %>%
+  filter(outcome == "ICU days")
+
+d2_icu$stratum <- factor(d2_icu$stratum, levels = c("East Midlands", "East", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"))
+
+# Generate plot
+ggplot(d2_icu %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("ICU days/100 patients") + 
+  xlab("Year") +
+  labs(colour = "ICU days") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 130) +
+  labs(color = "Region") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+ICU days by rural/urban
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_icu <- d1 %>%
+  filter(outcome == "ICU days")
+
+d2_icu$stratum <- factor(d2_icu$stratum, levels = c("Rural", "Urban"))
+
+# Generate plot
+ggplot(d2_icu %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("ICU days/100 patients") + 
+  xlab("Year") +
+  labs(colour = "ICU days") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 120) +
+  labs(color = "Rural/urban") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+<b>[ED presentations]{style="font-size: 20px;"}</b>
+
+[ED presentations (overall)]{style="font-size: 16px;"}
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+# Filter the data for "ED presentations" and Date not equal to the specified date
+d2_ed <- d1 %>%
+  filter(outcome == "ED presentations", !Date == as.Date("2017-04-01"))
+
+d2_ed$stratum <- factor(d2_ed$stratum, levels = c("all"))
+
+# Generate plot
+ggplot(d2_ed, aes(x = Date, y = rate)) + 
+  geom_smooth(size = 0.8) + 
+  ylab("ED presentations/100 patients") + 
+  xlab("Year") +
+  geom_smooth(aes(ymin = ll, ymax = ul), alpha = 0.2) +
+  labs(colour = "ED presentations") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 70) +
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+ED presentations by ethnicity
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_ed <- d1 %>%
+  filter(outcome == "ED presentations", !Date == as.Date("2017-04-01"))
+
+d2_ed$stratum <- factor(d2_ed$stratum, levels = c("White", "South Asian", "Black", "Mixed", "Other", "Unknown"))
+
+# Generate plot
+ggplot(d2_ed %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("ED presentations/100 patients") + 
+  xlab("Year") +
+  labs(colour = "ED presentations") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 70) +
+  labs(color = "Ethnicity") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+ED presentations by IMD
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_ed <- d1 %>%
+  filter(outcome == "ED presentations", !Date == as.Date("2017-04-01"))
+
+d2_ed$stratum <- factor(d2_ed$stratum, levels = c("1 Most deprived", "2", "3", "4", "5 Least deprived"))
+
+# Generate plot
+ggplot(d2_ed %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("ED presentations/100 patients") + 
+  xlab("Year") +
+  labs(colour = "ED presentations") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 70) +
+  labs(color = "IMD") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+ED presentations by region
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_ed <- d1 %>%
+  filter(outcome == "ED presentations", !Date == as.Date("2017-04-01"))
+
+d2_ed$stratum <- factor(d2_ed$stratum, levels = c("East Midlands", "East", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"))
+
+# Generate plot
+ggplot(d2_ed %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("ED presentations/100 patients") + 
+  xlab("Year") +
+  labs(colour = "ED presentations") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 70) +
+  labs(color = "Region") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+ED presentations by rural/urban
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_ed <- d1 %>%
+  filter(outcome == "ED presentations", !Date == as.Date("2017-04-01"))
+
+d2_ed$stratum <- factor(d2_ed$stratum, levels = c("Rural", "Urban"))
+
+# Generate plot
+ggplot(d2_ed %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("ED presentations/100 patients") + 
+  xlab("Year") +
+  labs(colour = "ED presentations") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 70) +
+  labs(color = "Rural/urban") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+<b>[Outpatient appointments]{style="font-size: 20px;"}</b>
+
+[Outpatient appointments (overall)]{style="font-size: 16px;"}
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+# Filter the data for "Outpatient appointments" and Date not equal to the specified date
+d2_opd <- d1 %>%
+  filter(outcome == "Outpatient appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_opd$stratum <- factor(d2_opd$stratum, levels = c("all"))
+
+# Generate plot
+ggplot(d2_opd, aes(x = Date, y = rate)) + 
+  geom_smooth(size = 0.8) + 
+  ylab("Outpatient appointments/100 patients") + 
+  xlab("Year") +
+  geom_smooth(aes(ymin = ll, ymax = ul), alpha = 0.2) +
+  labs(colour = "Outpatient appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2018-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 800) +
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+Outpatient appointments by ethnicity
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_opd <- d1 %>%
+  filter(outcome == "Outpatient appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_opd$stratum <- factor(d2_opd$stratum, levels = c("White", "South Asian", "Black", "Mixed", "Other", "Unknown"))
+
+# Generate plot
+ggplot(d2_opd %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Outpatient appointments/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Outpatient appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 800) +
+  labs(color = "Ethnicity") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Outpatient appointments by IMD
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_opd <- d1 %>%
+  filter(outcome == "Outpatient appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_opd$stratum <- factor(d2_opd$stratum, levels = c("1 Most deprived", "2", "3", "4", "5 Least deprived"))
+
+# Generate plot
+ggplot(d2_opd %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Outpatient appointments/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Outpatient appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 800) +
+  labs(color = "IMD") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Outpatient appointments by region
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_opd <- d1 %>%
+  filter(outcome == "Outpatient appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_opd$stratum <- factor(d2_opd$stratum, levels = c("East Midlands", "East", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"))
+
+# Generate plot
+ggplot(d2_opd %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Outpatient appointments/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Outpatient appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 800) +
+  labs(color = "Region") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Outpatient appointments by rural/urban
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_opd <- d1 %>%
+  filter(outcome == "Outpatient appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_opd$stratum <- factor(d2_opd$stratum, levels = c("Rural", "Urban"))
+
+# Generate plot
+ggplot(d2_opd %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Outpatient appointments/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Outpatient appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 800) +
+  labs(color = "Rural/urban") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+<b>[Nephrology appointments]{style="font-size: 20px;"}</b>
+
+[Nephrology appointments (overall)]{style="font-size: 16px;"}
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+# Filter the data for "Nephrology appointments" and Date not equal to the specified date
+d2_neph <- d1 %>%
+  filter(outcome == "Nephrology appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_neph$stratum <- factor(d2_neph$stratum, levels = c("all"))
+
+# Generate plot
+ggplot(d2_neph, aes(x = Date, y = rate)) + 
+  geom_smooth(size = 0.8) + 
+  ylab("Nephrology appointments/100 patients") + 
+  xlab("Year") +
+  geom_smooth(aes(ymin = ll, ymax = ul), alpha = 0.2) +
+  labs(colour = "Nephrology appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2018-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 100) +
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+Nephrology appointments by ethnicity
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_neph <- d1 %>%
+  filter(outcome == "Nephrology appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_neph$stratum <- factor(d2_neph$stratum, levels = c("White", "South Asian", "Black", "Mixed", "Other", "Unknown"))
+
+# Generate plot
+ggplot(d2_neph %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Nephrology appointments/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Nephrology appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 100) +
+  labs(color = "Ethnicity") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Nephrology appointments by IMD
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_neph <- d1 %>%
+  filter(outcome == "Nephrology appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_neph$stratum <- factor(d2_neph$stratum, levels = c("1 Most deprived", "2", "3", "4", "5 Least deprived"))
+
+# Generate plot
+ggplot(d2_neph %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Nephrology appointments/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Nephrology appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 100) +
+  labs(color = "IMD") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Nephrology appointments by region
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_neph <- d1 %>%
+  filter(outcome == "Nephrology appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_neph$stratum <- factor(d2_neph$stratum, levels = c("East Midlands", "East", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"))
+
+# Generate plot
+ggplot(d2_neph %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Nephrology appointments/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Nephrology appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 100) +
+  labs(color = "Region") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Nephrology appointments by rural/urban
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_neph <- d1 %>%
+  filter(outcome == "Nephrology appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_neph$stratum <- factor(d2_neph$stratum, levels = c("Rural", "Urban"))
+
+# Generate plot
+ggplot(d2_neph %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Nephrology appointments/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Nephrology appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 100) +
+  labs(color = "Rural/urban") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+<b>[Transplant appointments]{style="font-size: 20px;"}</b>
+
+[Transplant appointments (overall)]{style="font-size: 16px;"}
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+# Filter the data for "Transplant appointments" and Date not equal to the specified date
+d2_tx <- d1 %>%
+  filter(outcome == "Transplant appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_tx$stratum <- factor(d2_tx$stratum, levels = c("all"))
+
+# Generate plot
+ggplot(d2_tx, aes(x = Date, y = rate)) + 
+  geom_smooth(size = 0.8) + 
+  ylab("Transplant appointments/100 patients") + 
+  xlab("Year") +
+  geom_smooth(aes(ymin = ll, ymax = ul), alpha = 0.2) +
+  labs(colour = "Transplant appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2018-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 10) +
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+Transplant appointments by ethnicity
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_tx <- d1 %>%
+  filter(outcome == "Transplant appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_tx$stratum <- factor(d2_tx$stratum, levels = c("White", "South Asian", "Black", "Mixed", "Other", "Unknown"))
+
+# Generate plot
+ggplot(d2_tx %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Transplant appointments/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Transplant appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 10) +
+  labs(color = "Ethnicity") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Transplant appointments by IMD
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_tx <- d1 %>%
+  filter(outcome == "Transplant appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_tx$stratum <- factor(d2_tx$stratum, levels = c("1 Most deprived", "2", "3", "4", "5 Least deprived"))
+
+# Generate plot
+ggplot(d2_tx %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Transplant appointments/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Transplant appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 10) +
+  labs(color = "IMD") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Transplant appointments by region
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_tx <- d1 %>%
+  filter(outcome == "Transplant appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_tx$stratum <- factor(d2_tx$stratum, levels = c("East Midlands", "East", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"))
+
+# Generate plot
+ggplot(d2_tx %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Transplant appointments/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Transplant appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 10) +
+  labs(color = "Region") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Transplant appointments by rural/urban
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Convert the "Date" column to a Date object
+d1$Date <- as.Date(d1$Date, format = "%Y_%m_%d")
+
+d2_tx <- d1 %>%
+  filter(outcome == "Transplant appointments", !Date == as.Date("2017-04-01"), !Date == as.Date("2018-04-01"))
+
+d2_tx$stratum <- factor(d2_tx$stratum, levels = c("Rural", "Urban"))
+
+# Generate plot
+ggplot(d2_tx %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Transplant appointments/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Transplant appointments") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_continuous(
+    breaks = seq(as.Date("2017-04-01"), as.Date("2022-04-01"), by = "1 year"),  # Specify breaks
+    labels = date_format("%Y")  # Format labels as years
+  ) +
+  theme_bw() + 
+  ylim(0, 10) +
+  labs(color = "Rural/urban") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+<b>[GP interactions]{style="font-size: 20px;"}</b>
+
+[GP interactions (overall)]{style="font-size: 16px;"}
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Filter the data for "GP interactions"
+d2_gp <- d1 %>%
+  filter(outcome == "GP interactions")
+
+d2_gp$stratum <- factor(d2_gp$stratum, levels = c("all"))
+
+# Generate plot
+ggplot(d2_gp, aes(x = Date, y = rate)) + 
+  geom_smooth(size = 0.8) + 
+  ylab("GP interactions/100 patients") + 
+  xlab("Year") +
+  geom_smooth(aes(ymin = ll, ymax = ul), alpha = 0.2) +
+  labs(colour = "GP interactions") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 1600) +
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+GP interactions by ethnicity
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_gp <- d1 %>%
+  filter(outcome == "GP interactions")
+
+d2_gp$stratum <- factor(d2_gp$stratum, levels = c("White", "South Asian", "Black", "Mixed", "Other", "Unknown"))
+
+# Generate plot
+ggplot(d2_gp %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("GP interactions/100 patients") + 
+  xlab("Year") +
+  labs(colour = "GP interactions") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 1600) +
+  labs(color = "Ethnicity") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+GP interactions by IMD
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_gp <- d1 %>%
+  filter(outcome == "GP interactions")
+
+d2_gp$stratum <- factor(d2_gp$stratum, levels = c("1 Most deprived", "2", "3", "4", "5 Least deprived"))
+
+# Generate plot
+ggplot(d2_gp %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("GP interactions/100 patients") + 
+  xlab("Year") +
+  labs(colour = "GP interactions") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 1600) +
+  labs(color = "IMD") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+GP interactions by region
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_gp <- d1 %>%
+  filter(outcome == "GP interactions")
+
+d2_gp$stratum <- factor(d2_gp$stratum, levels = c("East Midlands", "East", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"))
+
+# Generate plot
+ggplot(d2_gp %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("GP interactions/100 patients") + 
+  xlab("Year") +
+  labs(colour = "GP interactions") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 1600) +
+  labs(color = "Region") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+GP interactions by rural/urban
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_gp <- d1 %>%
+  filter(outcome == "GP interactions")
+
+d2_gp$stratum <- factor(d2_gp$stratum, levels = c("Rural", "Urban"))
+
+# Generate plot
+ggplot(d2_gp %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("GP interactions/100 patients") + 
+  xlab("Year") +
+  labs(colour = "GP interactions") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 1600) +
+  labs(color = "Rural/urban") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+<b>[Blood pressure measurements]{style="font-size: 20px;"}</b>
+
+[Blood pressure measurements (overall)]{style="font-size: 16px;"}
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Filter the data for "Blood pressure measurements"
+d2_bp <- d1 %>%
+  filter(outcome == "Blood pressure measurements")
+
+d2_bp$stratum <- factor(d2_bp$stratum, levels = c("all"))
+
+# Generate plot
+ggplot(d2_bp, aes(x = Date, y = rate)) + 
+  geom_smooth(size = 0.8) + 
+  ylab("Blood pressure measurements/100 patients") + 
+  xlab("Year") +
+  geom_smooth(aes(ymin = ll, ymax = ul), alpha = 0.2) +
+  labs(colour = "Blood pressure measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 100) +
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+Blood pressure measurements by ethnicity
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_bp <- d1 %>%
+  filter(outcome == "Blood pressure measurements")
+
+d2_bp$stratum <- factor(d2_bp$stratum, levels = c("White", "South Asian", "Black", "Mixed", "Other", "Unknown"))
+
+# Generate plot
+ggplot(d2_bp %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Blood pressure measurements/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Blood pressure measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 100) +
+  labs(color = "Ethnicity") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Blood pressure measurements by IMD
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_bp <- d1 %>%
+  filter(outcome == "Blood pressure measurements")
+
+d2_bp$stratum <- factor(d2_bp$stratum, levels = c("1 Most deprived", "2", "3", "4", "5 Least deprived"))
+
+# Generate plot
+ggplot(d2_bp %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Blood pressure measurements/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Blood pressure measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 100) +
+  labs(color = "IMD") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Blood pressure measurements by region
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_bp <- d1 %>%
+  filter(outcome == "Blood pressure measurements")
+
+d2_bp$stratum <- factor(d2_bp$stratum, levels = c("East Midlands", "East", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"))
+
+# Generate plot
+ggplot(d2_bp %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Blood pressure measurements/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Blood pressure measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 100) +
+  labs(color = "Region") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+Blood pressure measurements by rural/urban
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_bp <- d1 %>%
+  filter(outcome == "Blood pressure measurements")
+
+d2_bp$stratum <- factor(d2_bp$stratum, levels = c("Rural", "Urban"))
+
+# Generate plot
+ggplot(d2_bp %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("Blood pressure measurements/100 patients") + 
+  xlab("Year") +
+  labs(colour = "Blood pressure measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 100) +
+  labs(color = "Rural/urban") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+<b>[uACR measurements]{style="font-size: 20px;"}</b>
+
+[uACR measurements (overall)]{style="font-size: 16px;"}
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Filter the data for "uACR measurements"
+d2_uacr <- d1 %>%
+  filter(outcome == "uACR measurements")
+
+d2_uacr$stratum <- factor(d2_uacr$stratum, levels = c("all"))
+
+# Generate plot
+ggplot(d2_uacr, aes(x = Date, y = rate)) + 
+  geom_smooth(size = 0.8) + 
+  ylab("uACR measurements/100 patients") + 
+  xlab("Year") +
+  geom_smooth(aes(ymin = ll, ymax = ul), alpha = 0.2) +
+  labs(colour = "uACR measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 60) +
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+uACR measurements by ethnicity
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_uacr <- d1 %>%
+  filter(outcome == "uACR measurements")
+
+d2_uacr$stratum <- factor(d2_uacr$stratum, levels = c("White", "South Asian", "Black", "Mixed", "Other", "Unknown"))
+
+# Generate plot
+ggplot(d2_uacr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("uACR measurements/100 patients") + 
+  xlab("Year") +
+  labs(colour = "uACR measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 60) +
+  labs(color = "Ethnicity") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+uACR measurements by IMD
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_uacr <- d1 %>%
+  filter(outcome == "uACR measurements")
+
+d2_uacr$stratum <- factor(d2_uacr$stratum, levels = c("1 Most deprived", "2", "3", "4", "5 Least deprived"))
+
+# Generate plot
+ggplot(d2_uacr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("uACR measurements/100 patients") + 
+  xlab("Year") +
+  labs(colour = "uACR measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 60) +
+  labs(color = "IMD") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+uACR measurements by region
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_uacr <- d1 %>%
+  filter(outcome == "uACR measurements")
+
+d2_uacr$stratum <- factor(d2_uacr$stratum, levels = c("East Midlands", "East", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"))
+
+# Generate plot
+ggplot(d2_uacr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("uACR measurements/100 patients") + 
+  xlab("Year") +
+  labs(colour = "uACR measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 60) +
+  labs(color = "Region") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+uACR measurements by rural/urban
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_uacr <- d1 %>%
+  filter(outcome == "uACR measurements")
+
+d2_uacr$stratum <- factor(d2_uacr$stratum, levels = c("Rural", "Urban"))
+
+# Generate plot
+ggplot(d2_uacr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("uACR measurements/100 patients") + 
+  xlab("Year") +
+  labs(colour = "uACR measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 60) +
+  labs(color = "Rural/urban") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+<b>[SCr measurements]{style="font-size: 20px;"}</b>
+
+[SCr measurements (overall)]{style="font-size: 16px;"}
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Filter the data for "SCr measurements"
+d2_scr <- d1 %>%
+  filter(outcome == "SCr measurements")
+
+d2_scr$stratum <- factor(d2_scr$stratum, levels = c("all"))
+
+# Generate plot
+ggplot(d2_scr, aes(x = Date, y = rate)) + 
+  geom_smooth(size = 0.8) + 
+  ylab("SCr measurements/100 patients") + 
+  xlab("Year") +
+  geom_smooth(aes(ymin = ll, ymax = ul), alpha = 0.2) +
+  labs(colour = "SCr measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 100) +
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+SCr measurements by ethnicity
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_scr <- d1 %>%
+  filter(outcome == "SCr measurements")
+
+d2_scr$stratum <- factor(d2_scr$stratum, levels = c("White", "South Asian", "Black", "Mixed", "Other", "Unknown"))
+
+# Generate plot
+ggplot(d2_scr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("SCr measurements/100 patients") + 
+  xlab("Year") +
+  labs(colour = "SCr measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 100) +
+  labs(color = "Ethnicity") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+SCr measurements by IMD
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_scr <- d1 %>%
+  filter(outcome == "SCr measurements")
+
+d2_scr$stratum <- factor(d2_scr$stratum, levels = c("1 Most deprived", "2", "3", "4", "5 Least deprived"))
+
+# Generate plot
+ggplot(d2_scr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("SCr measurements/100 patients") + 
+  xlab("Year") +
+  labs(colour = "SCr measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 100) +
+  labs(color = "IMD") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+SCr measurements by region
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_scr <- d1 %>%
+  filter(outcome == "SCr measurements")
+
+d2_scr$stratum <- factor(d2_scr$stratum, levels = c("East Midlands", "East", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"))
+
+# Generate plot
+ggplot(d2_scr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("SCr measurements/100 patients") + 
+  xlab("Year") +
+  labs(colour = "SCr measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 100) +
+  labs(color = "Region") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+SCr measurements by rural/urban
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_scr <- d1 %>%
+  filter(outcome == "SCr measurements")
+
+d2_scr$stratum <- factor(d2_scr$stratum, levels = c("Rural", "Urban"))
+
+# Generate plot
+ggplot(d2_scr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("SCr measurements/100 patients") + 
+  xlab("Year") +
+  labs(colour = "SCr measurements") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 100) +
+  labs(color = "Rural/urban") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+<b>[AVF formations]{style="font-size: 20px;"}</b>
+
+[AVF formations (overall)]{style="font-size: 16px;"}
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Filter the data for "AVF formations"
+d2_avr <- d1 %>%
+  filter(outcome == "AVF formations")
+
+d2_avr$stratum <- factor(d2_avr$stratum, levels = c("all"))
+
+# Generate plot
+ggplot(d2_avr, aes(x = Date, y = rate)) + 
+  geom_smooth(size = 0.8) + 
+  ylab("AVF formations/100 patients") + 
+  xlab("Year") +
+  geom_smooth(aes(ymin = ll, ymax = ul), alpha = 0.2) +
+  labs(colour = "AVF formations") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 1) +
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+AVF formations by ethnicity
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_avr <- d1 %>%
+  filter(outcome == "AVF formations")
+
+d2_avr$stratum <- factor(d2_avr$stratum, levels = c("White", "South Asian", "Black", "Mixed", "Other", "Unknown"))
+
+# Generate plot
+ggplot(d2_avr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("AVF formations/100 patients") + 
+  xlab("Year") +
+  labs(colour = "AVF formations") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 1) +
+  labs(color = "Ethnicity") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+AVF formations by IMD
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_avr <- d1 %>%
+  filter(outcome == "AVF formations")
+
+d2_avr$stratum <- factor(d2_avr$stratum, levels = c("1 Most deprived", "2", "3", "4", "5 Least deprived"))
+
+# Generate plot
+ggplot(d2_avr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("AVF formations/100 patients") + 
+  xlab("Year") +
+  labs(colour = "AVF formations") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 1) +
+  labs(color = "IMD") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+AVF formations by region
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_avr <- d1 %>%
+  filter(outcome == "AVF formations")
+
+d2_avr$stratum <- factor(d2_avr$stratum, levels = c("East Midlands", "East", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"))
+
+# Generate plot
+ggplot(d2_avr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("AVF formations/100 patients") + 
+  xlab("Year") +
+  labs(colour = "AVF formations") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 1) +
+  labs(color = "Region") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+AVF formations by rural/urban
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_avr <- d1 %>%
+  filter(outcome == "AVF formations")
+
+d2_avr$stratum <- factor(d2_avr$stratum, levels = c("Rural", "Urban"))
+
+# Generate plot
+ggplot(d2_avr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("AVF formations/100 patients") + 
+  xlab("Year") +
+  labs(colour = "AVF formations") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 1) +
+  labs(color = "Rural/urban") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+<b>[PD insertions]{style="font-size: 20px;"}</b>
+
+[PD insertions (overall)]{style="font-size: 16px;"}
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+# Filter the data for "PD insertions"
+d2_avr <- d1 %>%
+  filter(outcome == "PD insertions")
+
+d2_avr$stratum <- factor(d2_avr$stratum, levels = c("all"))
+
+# Generate plot
+ggplot(d2_avr, aes(x = Date, y = rate)) + 
+  geom_smooth(size = 0.8) + 
+  ylab("PD insertions/100 patients") + 
+  xlab("Year") +
+  geom_smooth(aes(ymin = ll, ymax = ul), alpha = 0.2) +
+  labs(colour = "PD insertions") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 0.15) +
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = 0),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+```
+
+PD insertions by ethnicity
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_avr <- d1 %>%
+  filter(outcome == "PD insertions")
+
+d2_avr$stratum <- factor(d2_avr$stratum, levels = c("White", "South Asian", "Black"))
+
+# Generate plot
+ggplot(d2_avr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("PD insertions/100 patients") + 
+  xlab("Year") +
+  labs(colour = "PD insertions") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 0.15) +
+  labs(color = "Ethnicity") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+PD insertions by IMD
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_avr <- d1 %>%
+  filter(outcome == "PD insertions")
+
+d2_avr$stratum <- factor(d2_avr$stratum, levels = c("1 Most deprived", "2", "3", "4", "5 Least deprived"))
+
+# Generate plot
+ggplot(d2_avr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("PD insertions/100 patients") + 
+  xlab("Year") +
+  labs(colour = "PD insertions") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 0.15) +
+  labs(color = "IMD") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+PD insertions by region
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_avr <- d1 %>%
+  filter(outcome == "PD insertions")
+
+d2_avr$stratum <- factor(d2_avr$stratum, levels = c("East Midlands", "East", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"))
+
+# Generate plot
+ggplot(d2_avr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("PD insertions/100 patients") + 
+  xlab("Year") +
+  labs(colour = "PD insertions") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 0.15) +
+  labs(color = "Region") +  # Set the legend title to "Ethnicity"
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
+
+PD insertions by rural/urban
+
+```{r, fig.width=8, fig.height=3, message=FALSE}
+d2_avr <- d1 %>%
+  filter(outcome == "PD insertions")
+
+d2_avr$stratum <- factor(d2_avr$stratum, levels = c("Rural", "Urban"))
+
+# Generate plot
+ggplot(d2_avr %>% filter(!is.na(stratum)), aes(x = Date, y = rate, group = stratum, color = stratum)) + 
+  geom_line(size = 0.8) + 
+  ylab("PD insertions/100 patients") + 
+  xlab("Year") +
+  labs(colour = "PD insertions") +
+  scale_colour_manual(values = palette) +
+  scale_fill_manual(values = palette, guide = FALSE) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Specify date breaks and format
+  theme_bw() + 
+  ylim(0, 0.15) +
+  labs(color = "Rural/urban") + 
+  theme(legend.position = "right", 
+        axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10), 
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 10, hjust = -0.5),  # Center x-axis labels
+        axis.ticks.x = element_blank()  # Remove x-axis ticks
+  )
+
+```
