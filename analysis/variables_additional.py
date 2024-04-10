@@ -1730,5 +1730,335 @@ def generate_variables_additional(index_date_variable):
         between = ["index_date", "index_date + 364 days"],
         return_expectations={"incidence": 0.05},
     ),
+    icd1=patients.admitted_to_hospital(
+        with_these_diagnoses=icd1_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd2=patients.admitted_to_hospital(
+        with_these_diagnoses=icd2_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd3=patients.admitted_to_hospital(
+        with_these_diagnoses=icd3_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd4=patients.admitted_to_hospital(
+        with_these_diagnoses=icd4_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd5=patients.admitted_to_hospital(
+        with_these_diagnoses=icd5_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd6=patients.admitted_to_hospital(
+        with_these_diagnoses=icd6_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd7=patients.admitted_to_hospital(
+        with_these_diagnoses=icd7_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd8=patients.admitted_to_hospital(
+        with_these_diagnoses=icd8_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd9=patients.admitted_to_hospital(
+        with_these_diagnoses=icd9_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd10=patients.admitted_to_hospital(
+        with_these_diagnoses=icd10_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd11=patients.admitted_to_hospital(
+        with_these_diagnoses=icd11_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd12=patients.admitted_to_hospital(
+        with_these_diagnoses=icd12_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd13=patients.admitted_to_hospital(
+        with_these_diagnoses=icd13_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd14=patients.admitted_to_hospital(
+        with_these_diagnoses=icd14_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd15=patients.admitted_to_hospital(
+        with_these_diagnoses=icd15_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd16=patients.admitted_to_hospital(
+        with_these_diagnoses=icd16_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd17=patients.admitted_to_hospital(
+        with_these_diagnoses=icd17_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd18=patients.admitted_to_hospital(
+        with_these_diagnoses=icd18_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd19=patients.admitted_to_hospital(
+        with_these_diagnoses=icd19_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd20=patients.admitted_to_hospital(
+        with_these_diagnoses=icd20_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd21=patients.admitted_to_hospital(
+        with_these_diagnoses=icd21_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd22=patients.admitted_to_hospital(
+        with_these_diagnoses=icd22_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    icd1_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd1_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd2_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd2_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd3_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd3_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd4_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd4_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd5_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd5_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd6_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd6_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd7_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd7_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd8_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd8_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd9_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd9_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd10_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd10_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd11_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd11_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd12_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd12_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd13_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd13_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd14_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd14_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd15_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd15_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd16_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd16_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd17_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd17_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd18_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd18_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd19_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd19_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd20_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd20_codes,
+          returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd21_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd21_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    icd22_days=patients.admitted_to_hospital(
+        with_these_diagnoses=icd22_codes,
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
     )
     return variables_additional

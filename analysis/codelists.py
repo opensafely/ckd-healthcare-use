@@ -109,3 +109,135 @@ cardiovascular_codes = codelist_from_csv(
     system="icd10",
     column="code",
 )
+
+icd1_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-i.csv",
+    system="icd10",
+    column="code",
+)
+
+icd2_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-ii.csv",
+    system="icd10",
+    column="code",
+)
+
+icd3_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-iii.csv",
+    system="icd10",
+    column="code",
+)
+
+icd4_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-iv.csv",
+    system="icd10",
+    column="code",
+)
+
+icd5_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-v.csv",
+    system="icd10",
+    column="code",
+)
+
+icd6_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-vi.csv",
+    system="icd10",
+    column="code",
+)
+
+icd7_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-vii.csv",
+    system="icd10",
+    column="code",
+)
+
+icd8_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-viii.csv",
+    system="icd10",
+    column="code",
+)
+
+icd9_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-ix.csv",
+    system="icd10",
+    column="code",
+)
+
+icd10_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-x.csv",
+    system="icd10",
+    column="code",
+)
+
+icd11_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-xi.csv",
+    system="icd10",
+    column="code",
+)
+
+icd12_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-xii.csv",
+    system="icd10",
+    column="code",
+)
+
+icd13_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-xiii.csv",
+    system="icd10",
+    column="code",
+)
+
+icd14_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-xiv.csv",
+    system="icd10",
+    column="code",
+)
+
+icd15_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-xv.csv",
+    system="icd10",
+    column="code",
+)
+
+icd16_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-xvi.csv",
+    system="icd10",
+    column="code",
+)
+
+icd17_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-xvii.csv",
+    system="icd10",
+    column="code",
+)
+
+icd18_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-xviii.csv",
+    system="icd10",
+    column="code",
+)
+
+icd19_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-xix.csv",
+    system="icd10",
+    column="code",
+)
+
+icd20_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-xx.csv",
+    system="icd10",
+    column="code",
+)
+
+icd21_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-xxi.csv",
+    system="icd10",
+    column="code",
+)
+
+icd22_codes = codelist_from_csv(
+    "codelists/opensafely-icd-10-chapter-xxii.csv",
+    system="icd10",
+    column="code",
+)
