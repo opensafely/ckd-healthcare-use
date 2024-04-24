@@ -1,0 +1,71 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/dummy_only_create_multiple_stps_2020.log
+  log type:  text
+ opened on:  24 Apr 2024, 11:56:36
+
+. 
+. *program for replacing stps that is called below
+. program drop _all
+
+. program replaceSTPs
+  1.         local low=0
+  2.         *divide total dataset by number of stps (=31)
+.         local increase=int(_N/31)
+  3.         *replace stps 5-9
+.         foreach i of numlist 5/9 {
+  4.                 local high=`low'+`increase'
+  5.                 replace stp="E5400000`i'" if _n>`low'& _n<`high'
+  6.                 local low=`low'+ `increase'
+  7.         }
+  8.         count
+  9.         *replace all other stps
+.         *reset lower limit to take account that 5/9 have been done already
+.         local low=`increase'*5 
+ 10.         foreach i of numlist 10 12/17 20/27 29 33 35/37 40/44 49 {
+ 11.                 local high=`low'+`increase'
+ 12.                 replace stp="E540000`i'" if _n>`low'& _n<`high'
+ 13.                 local low=`low'+ `increase'
+ 14.         }
+ 15.         count
+ 16.         *tidy up remainder
+.         replace stp="E54000005" if stp=="STP1"
+ 17. end
+
+. 
+. 
+. *(1)=========Create separate stps for cases============
+. import delimited ./output/covid_matching_2020.csv, clear
+file ./output/covid_matching_2020.csv not found
+r(601);
+
+end of do-file
+
+r(601);
+
+. cd..
+cd.. is not a valid command name
+r(199);
+
+. cd ..
+C:\Users\lsh1703468\Documents\repo
+
+. cd ..
+C:\Users\lsh1703468\Documents
+
+. cd repos
+C:\Users\lsh1703468\Documents\repos
+
+. do "C:\Users\lsh1703468\Documents\Repos\analysis\dummy_only_create_multiple_stps_2020.do"
+
+. sysdir set PLUS ./analysis/adofiles
+
+. sysdir set PERSONAL ./analysis/adofiles
+
+. pwd
+C:\Users\lsh1703468\Documents\repos
+
+. 
+. 
+. * Open a log file
+. cap log close

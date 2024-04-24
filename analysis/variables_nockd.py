@@ -198,6 +198,134 @@ def generate_variables_nockd(index_date_variable):
             },
         },
     ),
+    hospital_days=patients.admitted_to_hospital(
+        returning="total_bed_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    admitted_patients=patients.admitted_to_hospital(
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    fistula_formation=patients.admitted_to_hospital(
+        with_these_procedures=avf_formation_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    pd_insertion=patients.admitted_to_hospital(
+        with_these_procedures=pd_insertion_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.02},
+    ),
+    critical_care_days=patients.admitted_to_hospital(
+        returning="total_critical_care_days_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    critical_care_patients=patients.admitted_to_hospital(
+        with_at_least_one_day_in_critical_care=True,
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    emergency_days=patients.attended_emergency_care(
+        returning="number_of_matches_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    emergency_patients=patients.attended_emergency_care(
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    op_appts=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    op_patients=patients.outpatient_appointment_date(
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    neph_appts=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="number_of_matches_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    neph_patients=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="361",
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    tx_appts=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="102",
+        returning="number_of_matches_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    tx_patients=patients.outpatient_appointment_date(
+        with_these_treatment_function_codes="102",
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.10},
+    ),
+    gp_interactions=patients.with_gp_consultations(
+        returning="number_of_matches_in_period",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
+            "incidence": 0.10,
+        }
+    ),
+    gp_patients=patients.with_gp_consultations(
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.90},
+    ),
+    blood_pressure=patients.with_these_clinical_events(
+        blood_pressure_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.30},
+    ),
+    albuminuria=patients.with_these_clinical_events(
+        albuminuria_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.05},
+    ),
+    creatinine=patients.with_these_clinical_events(
+        creatinine_codes,
+        returning="binary_flag",
+        between = ["index_date", "index_date + 364 days"],
+        return_expectations={"incidence": 0.20},
+    ),
     cardiovascular=patients.admitted_to_hospital(
         with_these_diagnoses=cardiovascular_codes,
         returning="binary_flag",
