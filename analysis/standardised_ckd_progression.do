@@ -1,3 +1,11 @@
+
+/****Can use this code to obtain standardised population counts
+total weight
+local baseline_ckd_2020 = r(table)[1,1]
+local baseline_ckd_2020_ll = r(table)[5,1]
+local baseline_ckd_2020_ul = r(table)[6,1]
+*/
+
 sysdir set PLUS ./analysis/adofiles
 sysdir set PERSONAL ./analysis/adofiles
 pwd

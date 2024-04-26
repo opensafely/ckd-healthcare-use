@@ -194,6 +194,51 @@ replace weight = 0.030979 if agecat==80
 replace weight = 0.018587 if agecat==85
 replace weight = 0.012392 if agecat==90
 
+*Age standardised counts for each non-binary healthcare resource outcomes
+foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions icd1_days icd2_days icd3_days icd4_days icd5_days icd6_days icd7_days icd8_days icd9_days icd10_days icd11_days icd12_days icd13_days icd14_days icd15_days icd16_days icd17_days icd18_days icd19_days icd20_days icd21_days icd22_days {
+replace `aggregate' = `aggregate' * weight
+}
+
+* Create variable for age-standardised total # of each aggregated outcome
+* `var'_`aggregate' = age-standardised total # of each aggregated outcome overall stratified by ethnicity/imd/region/urban
+* `var'_`aggregate'_ckd = age-standardised total # of each aggregated outcome in each CKD group stratified by ethnicity/imd/region/urban
+foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions icd1_days icd2_days icd3_days icd4_days icd5_days icd6_days icd7_days icd8_days icd9_days icd10_days icd11_days icd12_days icd13_days icd14_days icd15_days icd16_days icd17_days icd18_days icd19_days icd20_days icd21_days icd22_days {
+egen overall_std_`aggregate' = total(`aggregate')
+bysort ckd_group: egen std_`aggregate' = total(`aggregate')
+foreach var of varlist ethnicity imd region urban {
+bysort `var': egen `var'_`aggregate' = total(`aggregate')
+bysort `var' ckd_group: egen `var'_`aggregate'_ckd = total(`aggregate')
+}
+}
+
+foreach binary of varlist fistula_formation pd_insertion blood_pressure albuminuria creatinine icd1 icd2 icd3 icd4 icd5 icd6 icd7 icd8 icd9 icd10 icd11 icd12 icd13 icd14 icd15 icd16 icd17 icd18 icd19 icd20 icd21 icd22 {
+gen esp_`binary' = `binary' * weight
+egen overall_std_`binary' = total(esp_`binary')
+bysort ckd_group: egen std_`binary' = total(esp_`binary')
+foreach var of varlist ethnicity imd region urban {
+bysort `var': egen `var'_`binary' = total(esp_`binary')
+bysort `var' ckd_group: egen `var'_`binary'_ckd = total(esp_`binary')
+}
+}
+
+*Merge cost data
+save "./output/`dataset'_ckd_complete.dta", replace
+capture noisily import delimited ./output/costs_`dataset'.csv, clear
+keep patient_id apcs_cost ec_cost opa_cost
+merge 1:1 patient_id using ./output/`dataset'_ckd_complete
+drop if _merge==1
+foreach cost of varlist apcs_cost ec_cost opa_cost {
+sum `cost', d
+bysort ckd_group: egen total_`cost' = total(`cost')
+egen overall_`cost' = total(`cost')
+tab ckd_group, sum(total_`cost')
+sum overall_`cost'
+foreach var of varlist ethnicity imd region urban {
+bysort `var': egen `var'_`cost' = total(`cost')
+bysort `var' ckd_group: egen `var'_`cost'_ckd = total(`cost')
+}
+}
+
 save "./output/`dataset'_nockd_complete.dta", replace
 
 log close
