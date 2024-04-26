@@ -764,3 +764,11 @@ actions:
       moderately_sensitive:
         log: logs/str.log
         output: output/str.csv
+
+  standardised_ckd_progression:
+    run: stata-mp:latest analysis/standardised_ckd_progression.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_clean_nockd_complete, 2018_clean_nockd_complete, 2019_clean_nockd_complete, 2020_clean_nockd_complete, 2021_clean_nockd_complete, 2022_clean_nockd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/standardised_ckd_progression.log
+        output: output/standardised_ckd_progression.csv
