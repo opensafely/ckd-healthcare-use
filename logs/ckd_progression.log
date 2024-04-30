@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/ckd_progression.log
   log type:  text
- opened on:  26 Apr 2024, 15:56:20
+ opened on:  29 Apr 2024, 16:14:06
 
 . 
 . cap file close tablecontent
@@ -10,7 +10,8 @@
 . file open tablecontent using ./output/ckd_progression.csv, write text replace
 
 . 
-. file write tablecontent ("stratum") _tab ("start_status") _tab ("end_status") _tab ("count_2017") _tab ("count_2018") _tab ("count_2019") _tab ("count_2020") _tab ("count_2021") _tab ("count_2022") _n
+. file write tablecontent ("stratum") _tab ("start_status") _tab ("end_status") _tab ("2017") _tab ("2017_ll") _tab ("2017_ul") _tab ("count_2018") _tab ("2018_ll") _tab ("2018_ul")  _tab ("count_2019") _tab ("2019_ll") _tab ("2019_ul") _tab ("count_20
+> 20") _tab ("2020_ll") _tab ("2020_ul") _tab ("count_2021") _tab ("2021_ll") _tab ("2021_ul") _tab ("count_2022") _tab ("2022_ll") _tab ("2022_ul") _n
 
 . 
 . local year "2017 2018 2019 2020 2021 2022"
@@ -20,164 +21,171 @@
   3. drop _merge
   4. merge 1:1 patient_id using ./output/`x'_nockd_complete
   5. 
-. **Disclosure minimisation
-. *safecount provides a count with any counts <=5 returned at "<=5"
-. *r(table)[1,1] rounds counts to the nearest 5 with any counts <=5 returned as "."
-. 
 . **Overall
 . qui total weight
   6. local baseline_ckd_`x' = r(table)[1,1]
-  7. *Total number of people in group who do not progress by the end of the year
+  7. local baseline_ckd_`x'_ll = r(table)[5,1]
+  8. local baseline_ckd_`x'_ul = r(table)[6,1]
+  9. 
 . qui total weight if ckd_progression==0
-  8. local none_ckd_`x' = r(table)[1,1]
-  9. *Total number of people in group who progress to CKD stage 3 by the end of the year
+ 10. local none_ckd_`x' = r(table)[1,1]
+ 11. local none_ckd_`x'_ll = r(table)[5,1]
+ 12. local none_ckd_`x'_ul = r(table)[6,1]
+ 13. 
 . qui total weight if ckd_progression==1
- 10. local ckd3_ckd_`x' = r(table)[1,1]
- 11. *Total number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+ 14. local ckd3_ckd_`x' = r(table)[1,1]
+ 15. local ckd3_ckd_`x'_ll = r(table)[5,1]
+ 16. local ckd3_ckd_`x'_ul = r(table)[6,1]
+ 17. 
 . qui total weight if ckd_progression==2
- 12. local ckd4_ckd_`x' = r(table)[1,1]
- 13. *Total number of people in group who progress to dialysis by the end of the year
-. qui total weight if ckd_progression==3
- 14. local dialysis_ckd_`x' = r(table)[1,1]
- 15. *Total number of people in group who progress to kidney transplant by the end of the year
-. qui total weight if ckd_progression==4
- 16. local kt_ckd_`x' = r(table)[1,1]
- 17. *Total number of people in group who die by the end of the year
-. qui total weight if ckd_progression==6
- 18. local deceased_ckd_`x' = r(table)[1,1]
- 19. *Total number of people in groupw with cardiovascular admission each year
-. qui total weight if cardiovascular==1
- 20. local cardio_ckd_`x' = r(table)[1,1]
+ 18. local ckd4_ckd_`x' = r(table)[1,1]
+ 19. local ckd4_ckd_`x'_ll = r(table)[5,1]
+ 20. local ckd4_ckd_`x'_ul = r(table)[6,1]
  21. 
-. **No CKD
-. *Number of people without CKD at the beginning of each year
-. qui total weight if ckd_group==0
- 22. local baseline_nockd_`x' = r(table)[1,1]
- 23. *Number of people in group who do not progress by the end of the year
-. qui total weight if ckd_group==0 & ckd_progression==0
- 24. local none_nockd_`x' = r(table)[1,1]
- 25. *Number of people in group who progress to CKD stage 3 by the end of the year
-. qui total weight if ckd_group==0 & ckd_progression==1
- 26. local ckd3_nockd_`x' = r(table)[1,1]
- 27. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
-. qui total weight if ckd_group==0 & ckd_progression==2
- 28. local ckd4_nockd_`x' = r(table)[1,1]
- 29. *Number of people in group who progress to dialysis by the end of the year
-. qui total weight if ckd_group==0 & ckd_progression==3
- 30. local dialysis_nockd_`x' = r(table)[1,1]
- 31. *Number of people in group who progress to kidney transplant by the end of the year
-. qui total weight if ckd_group==0 & ckd_progression==4
- 32. local kt_nockd_`x' = r(table)[1,1]
- 33. *Number of people in group who die by the end of the year
-. qui total weight if ckd_group==0 & ckd_progression==6
- 34. local deceased_nockd_`x' = r(table)[1,1]
- 35. *Total number of people in groupw with cardiovascular admission each year
-. qui total weight if cardiovascular==1 & ckd_group==0
- 36. local cardio_nockd_`x' = r(table)[1,1]
+. qui total weight if ckd_progression==3
+ 22. local dialysis_ckd_`x' = r(table)[1,1]
+ 23. local dialysis_ckd_`x'_ll = r(table)[5,1]
+ 24. local dialysis_ckd_`x'_ul = r(table)[6,1]
+ 25. 
+. qui total weight if ckd_progression==4
+ 26. local kt_ckd_`x' = r(table)[1,1]
+ 27. local kt_ckd_`x'_ll = r(table)[5,1]
+ 28. local kt_ckd_`x'_ul = r(table)[6,1]
+ 29. 
+. qui total weight if ckd_progression==6
+ 30. local deceased_ckd_`x' = r(table)[1,1]
+ 31. local deceased_ckd_`x'_ll = r(table)[5,1]
+ 32. local deceased_ckd_`x'_ul = r(table)[6,1]
+ 33. 
+. qui total weight if cardiovascular==1
+ 34. local cardio_ckd_`x' = r(table)[1,1]
+ 35. local cardio_ckd_`x'_ll = r(table)[5,1]
+ 36. local cardio_ckd_`x'_ul = r(table)[6,1]
  37. 
-. **eGFR >60 with albuminuria
-. *Number of people in group (baseline_ckd2_`x') at the beginning of each year
-. qui total weight if ckd_group==1
- 38. local baseline_ckd2_`x' = r(table)[1,1]
- 39. *Number of people in group who do not progress by the end of the year
-. qui total weight if ckd_group==1 & ckd_progression==0
- 40. local none_ckd2_`x' = r(table)[1,1]
- 41. *Number of people in group who progress to CKD stage 3 by the end of the year
-. qui total weight if ckd_group==1 & ckd_progression==1
- 42. local ckd3_ckd2_`x' = r(table)[1,1]
- 43. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
-. qui total weight if ckd_group==1 & ckd_progression==2
- 44. local ckd4_ckd2_`x' = r(table)[1,1]
- 45. *Number of people in group who progress to dialysis by the end of the year
-. qui total weight if ckd_group==1 & ckd_progression==3
- 46. local dialysis_ckd2_`x' = r(table)[1,1]
- 47. *Number of people in group who progress to kidney transplant by the end of the year
-. qui total weight if ckd_group==1 & ckd_progression==4
- 48. local kt_ckd2_`x' = r(table)[1,1]
- 49. *Number of people in group who die by the end of the year
-. qui total weight if ckd_group==1 & ckd_progression==6
- 50. local deceased_ckd2_`x' = r(table)[1,1]
- 51. *Total number of people in groupw with cardiovascular admission each year
-. qui total weight if cardiovascular==1 & ckd_group==1
- 52. local cardio_ckd2_`x' = r(table)[1,1]
+. **No CKD
+. qui total weight if ckd_group==0
+ 38. local baseline_nockd_`x' = r(table)[1,1]
+ 39. local baseline_nockd_`x'_ll = r(table)[5,1]
+ 40. local baseline_nockd_`x'_ul = r(table)[6,1]
+ 41. 
+. qui total weight if ckd_group==0 & ckd_progression==0
+ 42. local none_nockd_`x' = r(table)[1,1]
+ 43. local none_nockd_`x'_ll = r(table)[5,1]
+ 44. local none_nockd_`x'_ul = r(table)[6,1]
+ 45. 
+. qui total weight if ckd_group==0 & ckd_progression==1
+ 46. local ckd3_nockd_`x' = r(table)[1,1]
+ 47. local ckd3_nockd_`x'_ll = r(table)[5,1]
+ 48. local ckd3_nockd_`x'_ul = r(table)[6,1]
+ 49. 
+. qui total weight if ckd_group==0 & ckd_progression==2
+ 50. local ckd4_nockd_`x' = r(table)[1,1]
+ 51. local ckd4_nockd_`x'_ll = r(table)[5,1]
+ 52. local ckd4_nockd_`x'_ul = r(table)[6,1]
  53. 
-. **CKD stage 3
-. *Number of people in group (baseline_ckd3_`x') at the beginning of each year
-. qui total weight if ckd_group==2
- 54. local baseline_ckd3_`x' = r(table)[1,1]
- 55. *Number of people in group who do not progress by the end of the year
-. qui total weight if ckd_group==2 & ckd_progression==0
- 56. local none_ckd3_`x' = r(table)[1,1]
- 57. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
-. qui total weight if ckd_group==2 & ckd_progression==2
- 58. local ckd4_ckd3_`x' = r(table)[1,1]
- 59. *Number of people in group who progress to dialysis by the end of the year
-. qui total weight if ckd_group==2 & ckd_progression==3
- 60. local dialysis_ckd3_`x' = r(table)[1,1]
- 61. *Number of people in group who progress to kidney transplant by the end of the year
-. qui total weight if ckd_group==2 & ckd_progression==4
- 62. local kt_ckd3_`x' = r(table)[1,1]
- 63. *Number of people in group who die by the end of the year
-. qui total weight if ckd_group==2 & ckd_progression==6
- 64. local deceased_ckd3_`x' = r(table)[1,1]
- 65. *Total number of people in groupw with cardiovascular admission each year
-. qui total weight if cardiovascular==1 & ckd_group==2
- 66. local cardio_ckd3_`x' = r(table)[1,1]
- 67. 
-. **CKD stage 4/5 without KRT
-. *Number of people in group (baseline_ckd4_`x') at the beginning of each year
-. qui total weight if ckd_group==3
- 68. local baseline_ckd4_`x' = r(table)[1,1]
- 69. *Number of people in group who do not progress by the end of the year
-. qui total weight if ckd_group==3 & ckd_progression==0
- 70. local none_ckd4_`x' = r(table)[1,1]
- 71. *Number of people in group who progress to dialysis by the end of the year
-. qui total weight if ckd_group==3 & ckd_progression==3
- 72. local dialysis_ckd4_`x' = r(table)[1,1]
- 73. *Number of people in group who progress to kidney transplant by the end of the year
-. qui total weight if ckd_group==3 & ckd_progression==4
- 74. local kt_ckd4_`x' = r(table)[1,1]
- 75. *Number of people in group who die by the end of the year
-. qui total weight if ckd_group==3 & ckd_progression==6
- 76. local deceased_ckd4_`x' = r(table)[1,1]
- 77. *Total number of people in groupw with cardiovascular admission each year
-. qui total weight if cardiovascular==1 & ckd_group==3
- 78. local cardio_ckd4_`x' = r(table)[1,1]
- 79. 
-. **Dialysis
-. *Number of people in group (baseline_dialysis_`x') at the beginning of each year
-. qui total weight if ckd_group==4
- 80. local baseline_dialysis_`x' = r(table)[1,1]
- 81. *Number of people in group remaining on dialysis by the end of the year
-. qui total weight if ckd_group==4 & ckd_progression==0
- 82. local none_dialysis_`x' = r(table)[1,1]
- 83. *Number of people in group with kidney transplant by the end of the year
-. qui total weight if ckd_group==4 & ckd_progression==4
- 84. local kt_dialysis_`x' = r(table)[1,1]
- 85. *Number of people in group who die by the end of the year
-. qui total weight if ckd_group==4 & ckd_progression==6
- 86. local deceased_dialysis_`x' = r(table)[1,1]
- 87. *Total number of people in groupw with cardiovascular admission each year
-. qui total weight if cardiovascular==1 & ckd_group==4
- 88. local cardio_dialysis_`x' = r(table)[1,1]
+. qui total weight if ckd_group==0 & ckd_progression==3
+ 54. local dialysis_nockd_`x' = r(table)[1,1]
+ 55. local dialysis_nockd_`x'_ll = r(table)[5,1]
+ 56. local dialysis_nockd_`x'_ul = r(table)[6,1]
+ 57. 
+. qui total weight if ckd_group==0 & ckd_progression==4
+ 58. local kt_nockd_`x' = r(table)[1,1]
+ 59. local kt_nockd_`x'_ll = r(table)[5,1]
+ 60. local kt_nockd_`x'_ul = r(table)[6,1]
+ 61. 
+. qui total weight if ckd_group==0 & ckd_progression==6
+ 62. local deceased_nockd_`x' = r(table)[1,1]
+ 63. local deceased_nockd_`x'_ll = r(table)[5,1]
+ 64. local deceased_nockd_`x'_ul = r(table)[6,1]
+ 65. 
+. qui total weight if cardiovascular==1 & ckd_group==0
+ 66. local cardio_nockd_`x' = r(table)[1,1]
+ 67. local cardio_nockd_`x'_ll = r(table)[5,1]
+ 68. local cardio_nockd_`x'_ul = r(table)[6,1]
+ 69. 
+. **eGFR >60 with albuminuria
+. qui total weight if ckd_group==1
+ 70. local baseline_ckd2_`x' = r(table)[1,1]
+ 71. local baseline_ckd2_`x'_ll = r(table)[5,1]
+ 72. local baseline_ckd2_`x'_ul = r(table)[6,1]
+ 73. 
+. qui total weight if ckd_group==1 & ckd_progression==0
+ 74. local none_ckd2_`x' = r(table)[1,1]
+ 75. local none_ckd2_`x'_ll = r(table)[5,1]
+ 76. local none_ckd2_`x'_ul = r(table)[6,1]
+ 77. 
+. qui total weight if ckd_group==1 & ckd_progression==1
+ 78. local ckd3_ckd2_`x' = r(table)[1,1]
+ 79. local ckd3_ckd2_`x'_ll = r(table)[5,1]
+ 80. local ckd3_ckd2_`x'_ul = r(table)[6,1]
+ 81. 
+. qui total weight if ckd_group==1 & ckd_progression==2
+ 82. local ckd4_ckd2_`x' = r(table)[1,1]
+ 83. local ckd4_ckd2_`x'_ll = r(table)[5,1]
+ 84. local ckd4_ckd2_`x'_ul = r(table)[6,1]
+ 85. 
+. qui total weight if ckd_group==1 & ckd_progression==3
+ 86. local dialysis_ckd2_`x' = r(table)[1,1]
+ 87. local dialysis_ckd2_`x'_ll = r(table)[5,1]
+ 88. local dialysis_ckd2_`x'_ul = r(table)[6,1]
  89. 
-. **Kidney transplant
-. *Number of people in group (baseline_kt_`x') at the beginning of each year
-. qui total weight if ckd_group==5
- 90. local baseline_kt_`x' = r(table)[1,1]
- 91. *Number of people in group remaining with kidney transplant by the end of the year
-. qui total weight if ckd_group==5 & ckd_progression==0
- 92. local none_kt_`x' = r(table)[1,1]
- 93. *Number of people in group on dialysis by the end of the year
-. qui total weight if ckd_group==5 & ckd_progression==3
- 94. local dialysis_kt_`x' = r(table)[1,1]
- 95. *Number of people in group who die by the end of the year
-. qui total weight if ckd_group==5 & ckd_progression==6
- 96. local deceased_kt_`x' = r(table)[1,1]
- 97. *Total number of people in groupw with cardiovascular admission each year
-. qui total weight if cardiovascular==1 & ckd_group==5
- 98. local cardio_kt_`x' = r(table)[1,1]
- 99. }
+. qui total weight if ckd_group==1 & ckd_progression==4
+ 90. local kt_ckd2_`x' = r(table)[1,1]
+ 91. local kt_ckd2_`x'_ll = r(table)[5,1]
+ 92. local kt_ckd2_`x'_ul = r(table)[6,1]
+ 93. 
+. qui total weight if ckd_group==1 & ckd_progression==6
+ 94. local deceased_ckd2_`x' = r(table)[1,1]
+ 95. local deceased_ckd2_`x'_ll = r(table)[5,1]
+ 96. local deceased_ckd2_`x'_ul = r(table)[6,1]
+ 97. 
+. qui total weight if cardiovascular==1 & ckd_group==1
+ 98. local cardio_ckd2_`x' = r(table)[1,1]
+ 99. local cardio_ckd2_`x'_ll = r(table)[5,1]
+100. local cardio_ckd2_`x'_ul = r(table)[6,1]
+101. 
+. **CKD stage 3
+. qui total weight if ckd_group==2
+102. local baseline_ckd3_`x' = r(table)[1,1]
+103. local baseline_ckd3_`x'_ll = r(table)[5,1]
+104. local baseline_ckd3_`x'_ul = r(table)[6,1]
+105. 
+. qui total weight if ckd_group==2 & ckd_progression==0
+106. local none_ckd3_`x' = r(table)[1,1]
+107. local none_ckd3_`x'_ll = r(table)[5,1]
+108. local none_ckd3_`x'_ul = r(table)[6,1]
+109. 
+. qui total weight if ckd_group==2 & ckd_progression==2
+110. local ckd4_ckd3_`x' = r(table)[1,1]
+111. local ckd4_ckd3_`x'_ll = r(table)[5,1]
+112. local ckd4_ckd3_`x'_ul = r(table)[6,1]
+113. 
+. qui total weight if ckd_group==2 & ckd_progression==3
+114. local dialysis_ckd3_`x' = r(table)[1,1]
+115. local dialysis_ckd3_`x'_ll = r(table)[5,1]
+116. local dialysis_ckd3_`x'_ul = r(table)[6,1]
+117. 
+. qui total weight if ckd_group==2 & ckd_progression==4
+118. local kt_ckd3_`x' = r(table)[1,1]
+119. local kt_ckd3_`x'_ll = r(table)[5,1]
+120. local kt_ckd3_`x'_ul = r(table)[6,1]
+121. 
+. qui total weight if ckd_group==2 & ckd_progression==6
+122. local deceased_ckd3_`x' = r(table)[1,1]
+123. local deceased_ckd3_`x'_ll = r(table)[5,1]
+124. local deceased_ckd3_`x'_ul = r(table)[6,1]
+125. 
+. qui total weight if cardiovascular==1 & ckd_group==2
+126. local cardio_ckd3_`x' = r(table)[1,1]
+127. local cardio_ckd3_`x'_ll = r(table)[5,1]
+128. local cardio_ckd3_`x'_ul = r(table)[6,1]
+129. 
+. **CKD stage 4/5
+. qui total weight if ckd_group==3
+130. local baseline_ckd4_`x' = r(table)[1,1]
+131. local baseline_ckd4_`x'_ll = r(table)[5,1]
+132. local baseline_ckd4_`x'_ul = r(table)[6,1]
+133. }
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -188,12 +196,112 @@
 
     Result                      Number of obs
     -----------------------------------------
-    Not matched                         3,260
-        from master                     2,163  (_merge==1)
-        from using                      1,097  (_merge==2)
+    Not matched                         3,209
+        from master                     2,125  (_merge==1)
+        from using                      1,084  (_merge==2)
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,239
+        from master                     2,138  (_merge==1)
+        from using                      1,101  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,163
+        from master                     2,086  (_merge==1)
+        from using                      1,077  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,273
+        from master                     2,144  (_merge==1)
+        from using                      1,129  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,179
+        from master                     2,089  (_merge==1)
+        from using                      1,090  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+
+. qui total weight if ckd_group==3 & ckd_progression==0
+
+. local none_ckd4_`x' = r(table)[1,1]
+
+. local none_ckd4_`x'_ll = r(table)[5,1]
+
+. local none_ckd4_`x'_ul = r(table)[6,1]
+
+. 
+. qui total weight if ckd_group==3 & ckd_progression==3
+
+. local dialysis_ckd4_`x' = r(table)[1,1]
+
+. local dialysis_ckd4_`x'_ll = r(table)[5,1]
+
+. local dialysis_ckd4_`x'_ul = r(table)[6,1]
+
+. 
+. qui total weight if ckd_group==3 & ckd_progression==4
 no observations
 r(2000);
 
@@ -201,27 +309,19 @@ end of do-file
 
 r(2000);
 
+. cou if ckd_group==3 & ckd_progression==4
+  0
+
+. cou if ckd_group==4 & ckd_progression==4
+  6
+
 . do "C:\Users\LSH170~1\AppData\Local\Temp\STD3fa8_000000.tmp"
 
-. qui total weight
+. sysdir set PLUS ./analysis/adofiles
 
-. local baseline_ckd_`x' = r(table)[1,1]
+. sysdir set PERSONAL ./analysis/adofiles
 
-. 
-end of do-file
+. pwd
+C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use
 
-. di `baseline_ckd_2017'
-
-
-. browse
-
-. qui total weight
-
-. local baseline_ckd_2017 = r(table)[1,1]
-
-. di `baseline_ckd_2017'
-237.23125
-
-. di %10.2f `baseline_ckd_2017'
-    237.23
-
+. cap log close
