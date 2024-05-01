@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/standardised_ckd_progression.log
   log type:  text
- opened on:  30 Apr 2024, 18:24:19
+ opened on:   1 May 2024, 11:11:32
 
 . 
 . cap file close tablecontent
@@ -2585,108 +2585,140 @@ Total estimation                            Number of obs = 11
 163. local cardio_kt_`x'_ll = r(table)[5,1]
 164. local cardio_kt_`x'_ul = r(table)[6,1]
 165. }
-166. **Populate table with redacted counts
-. *Overall
-. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("N/A") _tab %10.2f (`baseline_ckd_2017') _tab %10.2f (`baseline_ckd_2018') _tab %10.2f (`baseline_ckd_2019') _tab %10.2f (`baseline_ckd_2020') _tab %10.2f (`baseline_ckd_2021') _tab %10.2f
->  (`baseline_ckd_2022') _n
-167. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("No progression") _tab %10.2f (`none_ckd_2017') _tab %10.2f (`none_ckd_2018') _tab %10.2f (`none_ckd_2019') _tab %10.2f (`none_ckd_2020') _tab %10.2f (`none_ckd_2021') _tab %10.2f (`non
-> e_ckd_2022') _n
-168. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("CKD stage 3") _tab %10.2f (`ckd3_ckd_2017') _tab %10.2f (`ckd3_ckd_2018') _tab %10.2f (`ckd3_ckd_2019') _tab %10.2f (`ckd3_ckd_2020') _tab %10.2f (`ckd3_ckd_2021') _tab %10.2f (`ckd3_c
-> kd_2022') _n
-169. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("CKD stage 4/5") _tab %10.2f (`ckd4_ckd_2017') _tab %10.2f (`ckd4_ckd_2018') _tab %10.2f (`ckd4_ckd_2019') _tab %10.2f (`ckd4_ckd_2020') _tab %10.2f (`ckd4_ckd_2021') _tab %10.2f (`ckd4
-> _ckd_2022') _n
-170. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Dialysis") _tab %10.2f (`dialysis_ckd_2017') _tab %10.2f (`dialysis_ckd_2018') _tab %10.2f (`dialysis_ckd_2019') _tab %10.2f (`dialysis_ckd_2020') _tab %10.2f (`dialysis_ckd_2021') _ta
-> b %10.2f (`dialysis_ckd_2022') _n
-171. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Transplant") _tab %10.2f (`kt_ckd_2017') _tab %10.2f (`kt_ckd_2018') _tab %10.2f (`kt_ckd_2019') _tab %10.2f (`kt_ckd_2020') _tab %10.2f (`kt_ckd_2021') _tab %10.2f (`kt_ckd_2022') _n
-172. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Deceased") _tab %10.2f (`deceased_ckd_2017') _tab %10.2f (`deceased_ckd_2018') _tab %10.2f (`deceased_ckd_2019') _tab %10.2f (`deceased_ckd_2020') _tab %10.2f (`deceased_ckd_2021') _ta
-> b %10.2f (`deceased_ckd_2022') _n
-173. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_ckd_2017') _tab %10.2f (`cardio_ckd_2018') _tab %10.2f (`cardio_ckd_2019') _tab %10.2f (`cardio_ckd_2020') _tab %10.2f (`cardio_ckd_2021
-> ') _tab %10.2f (`cardio_ckd_2022') _n
+166. *Overall
+. file write tablecontent ("All") _tab ("Overall") _tab ("N/A") _tab %10.2f (`baseline_ckd_2017') _tab %10.2f (`baseline_ckd_2017_ll') _tab %10.2f (`baseline_ckd_2017_ul') _tab %10.2f (`baseline_ckd_2018') _tab %10.2f (`baseline_ckd_2018_ll') _tab %10.
+> 2f (`baseline_ckd_2018_ul') _tab %10.2f (`baseline_ckd_2019') _tab %10.2f (`baseline_ckd_2019_ll') _tab %10.2f (`baseline_ckd_2019_ul') _tab %10.2f (`baseline_ckd_2020') _tab %10.2f (`baseline_ckd_2020_ll') _tab %10.2f (`baseline_ckd_2020_ul') _tab %
+> 10.2f (`baseline_ckd_2021') _tab %10.2f (`baseline_ckd_2021_ll') _tab %10.2f (`baseline_ckd_2021_ul') _tab %10.2f (`baseline_ckd_2022') _tab %10.2f (`baseline_ckd_2022_ll') _tab %10.2f (`baseline_ckd_2022_ul') _n
+167. file write tablecontent ("All") _tab ("Overall") _tab ("No progression") _tab %10.2f (`none_ckd_2017') _tab %10.2f (`none_ckd_2017_ll') _tab %10.2f (`none_ckd_2017_ul') _tab %10.2f (`none_ckd_2018') _tab %10.2f (`none_ckd_2018_ll') _tab %10.2f (`n
+> one_ckd_2018_ul') _tab %10.2f (`none_ckd_2019') _tab %10.2f (`none_ckd_2019_ll') _tab %10.2f (`none_ckd_2019_ul') _tab %10.2f (`none_ckd_2020') _tab %10.2f (`none_ckd_2020_ll') _tab %10.2f (`none_ckd_2020_ul') _tab %10.2f (`none_ckd_2021') _tab %10.2
+> f (`none_ckd_2021_ll') _tab %10.2f (`none_ckd_2021_ul') _tab %10.2f (`none_ckd_2022') _tab %10.2f (`none_ckd_2022_ll') _tab %10.2f (`none_ckd_2022_ul') _n
+168. file write tablecontent ("All") _tab ("Overall") _tab ("CKD stage 3") _tab %10.2f (`ckd3_ckd_2017') _tab %10.2f (`ckd3_ckd_2017_ll') _tab %10.2f (`ckd3_ckd_2017_ul') _tab %10.2f (`ckd3_ckd_2018') _tab %10.2f (`ckd3_ckd_2018_ll') _tab %10.2f (`ckd3
+> _ckd_2018_ul') _tab %10.2f (`ckd3_ckd_2019') _tab %10.2f (`ckd3_ckd_2019_ll') _tab %10.2f (`ckd3_ckd_2019_ul') _tab %10.2f (`ckd3_ckd_2020') _tab %10.2f (`ckd3_ckd_2020_ll') _tab %10.2f (`ckd3_ckd_2020_ul') _tab %10.2f (`ckd3_ckd_2021') _tab %10.2f (
+> `ckd3_ckd_2021_ll') _tab %10.2f (`ckd3_ckd_2021_ul') _tab %10.2f (`ckd3_ckd_2022') _tab %10.2f (`ckd3_ckd_2022_ll') _tab %10.2f (`ckd3_ckd_2022_ul') _n
+169. file write tablecontent ("All") _tab ("Overall") _tab ("CKD stage 4/5") _tab %10.2f (`ckd4_ckd_2017') _tab %10.2f (`ckd4_ckd_2017_ll') _tab %10.2f (`ckd4_ckd_2017_ul') _tab %10.2f (`ckd4_ckd_2018') _tab %10.2f (`ckd4_ckd_2018_ll') _tab %10.2f (`ck
+> d4_ckd_2018_ul') _tab %10.2f (`ckd4_ckd_2019') _tab %10.2f (`ckd4_ckd_2019_ll') _tab %10.2f (`ckd4_ckd_2019_ul') _tab %10.2f (`ckd4_ckd_2020') _tab %10.2f (`ckd4_ckd_2020_ll') _tab %10.2f (`ckd4_ckd_2020_ul') _tab %10.2f (`ckd4_ckd_2021') _tab %10.2f
+>  (`ckd4_ckd_2021_ll') _tab %10.2f (`ckd4_ckd_2021_ul') _tab %10.2f (`ckd4_ckd_2022') _tab %10.2f (`ckd4_ckd_2022_ll') _tab %10.2f (`ckd4_ckd_2022_ul') _n
+170. file write tablecontent ("All") _tab ("Overall") _tab ("Dialysis") _tab %10.2f (`dialysis_ckd_2017') _tab %10.2f (`dialysis_ckd_2017_ll') _tab %10.2f (`dialysis_ckd_2017_ul') _tab %10.2f (`dialysis_ckd_2018') _tab %10.2f (`dialysis_ckd_2018_ll') _
+> tab %10.2f (`dialysis_ckd_2018_ul') _tab %10.2f (`dialysis_ckd_2019') _tab %10.2f (`dialysis_ckd_2019_ll') _tab %10.2f (`dialysis_ckd_2019_ul') _tab %10.2f (`dialysis_ckd_2020') _tab %10.2f (`dialysis_ckd_2020_ll') _tab %10.2f (`dialysis_ckd_2020_ul'
+> ) _tab %10.2f (`dialysis_ckd_2021') _tab %10.2f (`dialysis_ckd_2021_ll') _tab %10.2f (`dialysis_ckd_2021_ul') _tab %10.2f (`dialysis_ckd_2022') _tab %10.2f (`dialysis_ckd_2022_ll') _tab %10.2f (`dialysis_ckd_2022_ul') _n
+171. file write tablecontent ("All") _tab ("Overall") _tab ("Transplant") _tab %10.2f (`kt_ckd_2017') _tab %10.2f (`kt_ckd_2017_ll') _tab %10.2f (`kt_ckd_2017_ul') _tab %10.2f (`kt_ckd_2018') _tab %10.2f (`kt_ckd_2018_ll') _tab %10.2f (`kt_ckd_2018_ul'
+> ) _tab %10.2f (`kt_ckd_2019') _tab %10.2f (`kt_ckd_2019_ll') _tab %10.2f (`kt_ckd_2019_ul') _tab %10.2f (`kt_ckd_2020') _tab %10.2f (`kt_ckd_2020_ll') _tab %10.2f (`kt_ckd_2020_ul') _tab %10.2f (`kt_ckd_2021') _tab %10.2f (`kt_ckd_2021_ll') _tab %10.
+> 2f (`kt_ckd_2021_ul') _tab %10.2f (`kt_ckd_2022') _tab %10.2f (`kt_ckd_2022_ll') _tab %10.2f (`kt_ckd_2022_ul') _n
+172. file write tablecontent ("All") _tab ("Overall") _tab ("Deceased") _tab %10.2f (`deceased_ckd_2017') _tab %10.2f (`deceased_ckd_2017_ll') _tab %10.2f (`deceased_ckd_2017_ul') _tab %10.2f (`deceased_ckd_2018') _tab %10.2f (`deceased_ckd_2018_ll') _
+> tab %10.2f (`deceased_ckd_2018_ul') _tab %10.2f (`deceased_ckd_2019') _tab %10.2f (`deceased_ckd_2019_ll') _tab %10.2f (`deceased_ckd_2019_ul') _tab %10.2f (`deceased_ckd_2020') _tab %10.2f (`deceased_ckd_2020_ll') _tab %10.2f (`deceased_ckd_2020_ul'
+> ) _tab %10.2f (`deceased_ckd_2021') _tab %10.2f (`deceased_ckd_2021_ll') _tab %10.2f (`deceased_ckd_2021_ul') _tab %10.2f (`deceased_ckd_2022') _tab %10.2f (`deceased_ckd_2022_ll') _tab %10.2f (`deceased_ckd_2022_ul') _n
+173. file write tablecontent ("All") _tab ("Overall") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_ckd_2017') _tab %10.2f (`cardio_ckd_2017_ll') _tab %10.2f (`cardio_ckd_2017_ul') _tab %10.2f (`cardio_ckd_2018') _tab %10.2f (`cardio_ckd_2018_
+> ll') _tab %10.2f (`cardio_ckd_2018_ul') _tab %10.2f (`cardio_ckd_2019') _tab %10.2f (`cardio_ckd_2019_ll') _tab %10.2f (`cardio_ckd_2019_ul') _tab %10.2f (`cardio_ckd_2020') _tab %10.2f (`cardio_ckd_2020_ll') _tab %10.2f (`cardio_ckd_2020_ul') _tab %
+> 10.2f (`cardio_ckd_2021') _tab %10.2f (`cardio_ckd_2021_ll') _tab %10.2f (`cardio_ckd_2021_ul') _tab %10.2f (`cardio_ckd_2022') _tab %10.2f (`cardio_ckd_2022_ll') _tab %10.2f (`cardio_ckd_2022_ul') _n
 174. 
 . *No CKD
-. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("N/A") _tab %10.2f (`baseline_nockd_2017') _tab %10.2f (`baseline_nockd_2018') _tab %10.2f (`baseline_nockd_2019') _tab %10.2f (`baseline_nockd_2020') _tab %10.2f (`baseline_nockd_2021') _t
-> ab %10.2f (`baseline_nockd_2022') _n
-175. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("No progression") _tab %10.2f (`none_nockd_2017') _tab %10.2f (`none_nockd_2018') _tab %10.2f (`none_nockd_2019') _tab %10.2f (`none_nockd_2020') _tab %10.2f (`none_nockd_2021') _tab %10
-> .2f (`none_nockd_2022') _n
-176. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("CKD stage 3") _tab %10.2f (`ckd3_nockd_2017') _tab %10.2f (`ckd3_nockd_2018') _tab %10.2f (`ckd3_nockd_2019') _tab %10.2f (`ckd3_nockd_2020') _tab %10.2f (`ckd3_nockd_2021') _tab %10.2f
->  (`ckd3_nockd_2022') _n
-177. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("CKD stage 4/5") _tab %10.2f (`ckd4_nockd_2017') _tab %10.2f (`ckd4_nockd_2018') _tab %10.2f (`ckd4_nockd_2019') _tab %10.2f (`ckd4_nockd_2020') _tab %10.2f (`ckd4_nockd_2021') _tab %10.
-> 2f (`ckd4_nockd_2022') _n
-178. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Dialysis") _tab %10.2f (`dialysis_nockd_2017') _tab %10.2f (`dialysis_nockd_2018') _tab %10.2f (`dialysis_nockd_2019') _tab %10.2f (`dialysis_nockd_2020') _tab %10.2f (`dialysis_nockd_2
-> 021') _tab %10.2f (`dialysis_nockd_2022') _n
-179. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Deceased") _tab %10.2f (`deceased_nockd_2017') _tab %10.2f (`deceased_nockd_2018') _tab %10.2f (`deceased_nockd_2019') _tab %10.2f (`deceased_nockd_2020') _tab %10.2f (`deceased_nockd_2
-> 021') _tab %10.2f (`deceased_nockd_2022') _n
-180. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_nockd_2017') _tab %10.2f (`cardio_nockd_2018') _tab %10.2f (`cardio_nockd_2019') _tab %10.2f (`cardio_nockd_2020') _tab %10.2f (`cardio_n
-> ockd_2021') _tab %10.2f (`cardio_nockd_2022') _n
-181. 
-. *eGFR >60 with albuminuria
-. file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("N/A") _tab %10.2f (`baseline_ckd2_2017') _tab %10.2f (`baseline_ckd2_2018') _tab %10.2f (`baseline_ckd2_2019') _tab %10.2f (`baseline_ckd2_2020') _tab %10.2f (`baseline_ckd2_2021') _t
-> ab %10.2f (`baseline_ckd2_2022') _n
-182. file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("No progression") _tab %10.2f (`none_ckd2_2017') _tab %10.2f (`none_ckd2_2018') _tab %10.2f (`none_ckd2_2019') _tab %10.2f (`none_ckd2_2020') _tab %10.2f (`none_ckd2_2021') _tab %10
-> .2f (`none_ckd2_2022') _n
-183. file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("CKD stage 3") _tab %10.2f (`ckd3_ckd2_2017') _tab %10.2f (`ckd3_ckd2_2018') _tab %10.2f (`ckd3_ckd2_2019') _tab %10.2f (`ckd3_ckd2_2020') _tab %10.2f (`ckd3_ckd2_2021') _tab %10.2f
->  (`ckd3_ckd2_2022') _n
-184. file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("CKD stage 4/5") _tab %10.2f (`ckd4_ckd2_2017') _tab %10.2f (`ckd4_ckd2_2018') _tab %10.2f (`ckd4_ckd2_2019') _tab %10.2f (`ckd4_ckd2_2020') _tab %10.2f (`ckd4_ckd2_2021') _tab %10.
-> 2f (`ckd4_ckd2_2022') _n
-185. file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Dialysis") _tab %10.2f (`dialysis_ckd2_2017') _tab %10.2f (`dialysis_ckd2_2018') _tab %10.2f (`dialysis_ckd2_2019') _tab %10.2f (`dialysis_ckd2_2020') _tab %10.2f (`dialysis_ckd2_2
-> 021') _tab %10.2f (`dialysis_ckd2_2022') _n
-186. file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Deceased") _tab %10.2f (`deceased_ckd2_2017') _tab %10.2f (`deceased_ckd2_2018') _tab %10.2f (`deceased_ckd2_2019') _tab %10.2f (`deceased_ckd2_2020') _tab %10.2f (`deceased_ckd2_2
-> 021') _tab %10.2f (`deceased_ckd2_2022') _n
-187. file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_ckd2_2017') _tab %10.2f (`cardio_ckd2_2018') _tab %10.2f (`cardio_ckd2_2019') _tab %10.2f (`cardio_ckd2_2020') _tab %10.2f (`cardio_
-> ckd2_2021') _tab %10.2f (`cardio_ckd2_2022') _n
-188. 
+. file write tablecontent ("All") _tab ("No CKD") _tab ("N/A") _tab %10.2f (`baseline_nockd_2017') _tab %10.2f (`baseline_nockd_2017_ll') _tab %10.2f (`baseline_nockd_2017_ul') _tab %10.2f (`baseline_nockd_2018') _tab %10.2f (`baseline_nockd_2018_ll') 
+> _tab %10.2f (`baseline_nockd_2018_ul') _tab %10.2f (`baseline_nockd_2019') _tab %10.2f (`baseline_nockd_2019_ll') _tab %10.2f (`baseline_nockd_2019_ul') _tab %10.2f (`baseline_nockd_2020') _tab %10.2f (`baseline_nockd_2020_ll') _tab %10.2f (`baseline
+> _nockd_2020_ul') _tab %10.2f (`baseline_nockd_2021') _tab %10.2f (`baseline_nockd_2021_ll') _tab %10.2f (`baseline_nockd_2021_ul') _tab %10.2f (`baseline_nockd_2022') _tab %10.2f (`baseline_nockd_2022_ll') _tab %10.2f (`baseline_nockd_2022_ul') _n
+175. file write tablecontent ("All") _tab ("No CKD") _tab ("No progression") _tab %10.2f (`none_nockd_2017') _tab %10.2f (`none_nockd_2017_ll') _tab %10.2f (`none_nockd_2017_ul') _tab %10.2f (`none_nockd_2018') _tab %10.2f (`none_nockd_2018_ll') _tab %
+> 10.2f (`none_nockd_2018_ul') _tab %10.2f (`none_nockd_2019') _tab %10.2f (`none_nockd_2019_ll') _tab %10.2f (`none_nockd_2019_ul') _tab %10.2f (`none_nockd_2020') _tab %10.2f (`none_nockd_2020_ll') _tab %10.2f (`none_nockd_2020_ul') _tab %10.2f (`non
+> e_nockd_2021') _tab %10.2f (`none_nockd_2021_ll') _tab %10.2f (`none_nockd_2021_ul') _tab %10.2f (`none_nockd_2022') _tab %10.2f (`none_nockd_2022_ll') _tab %10.2f (`none_nockd_2022_ul') _n
+176. file write tablecontent ("All") _tab ("No CKD") _tab ("CKD stage 3") _tab %10.2f (`ckd3_nockd_2017') _tab %10.2f (`ckd3_nockd_2017_ll') _tab %10.2f (`ckd3_nockd_2017_ul') _tab %10.2f (`ckd3_nockd_2018') _tab %10.2f (`ckd3_nockd_2018_ll') _tab %10.
+> 2f (`ckd3_nockd_2018_ul') _tab %10.2f (`ckd3_nockd_2019') _tab %10.2f (`ckd3_nockd_2019_ll') _tab %10.2f (`ckd3_nockd_2019_ul') _tab %10.2f (`ckd3_nockd_2020') _tab %10.2f (`ckd3_nockd_2020_ll') _tab %10.2f (`ckd3_nockd_2020_ul') _tab %10.2f (`ckd3_n
+> ockd_2021') _tab %10.2f (`ckd3_nockd_2021_ll') _tab %10.2f (`ckd3_nockd_2021_ul') _tab %10.2f (`ckd3_nockd_2022') _tab %10.2f (`ckd3_nockd_2022_ll') _tab %10.2f (`ckd3_nockd_2022_ul') _n
+177. file write tablecontent ("All") _tab ("No CKD") _tab ("CKD stage 4/5") _tab %10.2f (`ckd4_nockd_2017') _tab %10.2f (`ckd4_nockd_2017_ll') _tab %10.2f (`ckd4_nockd_2017_ul') _tab %10.2f (`ckd4_nockd_2018') _tab %10.2f (`ckd4_nockd_2018_ll') _tab %1
+> 0.2f (`ckd4_nockd_2018_ul') _tab %10.2f (`ckd4_nockd_2019') _tab %10.2f (`ckd4_nockd_2019_ll') _tab %10.2f (`ckd4_nockd_2019_ul') _tab %10.2f (`ckd4_nockd_2020') _tab %10.2f (`ckd4_nockd_2020_ll') _tab %10.2f (`ckd4_nockd_2020_ul') _tab %10.2f (`ckd4
+> _nockd_2021') _tab %10.2f (`ckd4_nockd_2021_ll') _tab %10.2f (`ckd4_nockd_2021_ul') _tab %10.2f (`ckd4_nockd_2022') _tab %10.2f (`ckd4_nockd_2022_ll') _tab %10.2f (`ckd4_nockd_2022_ul') _n
+178. file write tablecontent ("All") _tab ("No CKD") _tab ("Dialysis") _tab %10.2f (`dialysis_nockd_2017') _tab %10.2f (`dialysis_nockd_2017_ll') _tab %10.2f (`dialysis_nockd_2017_ul') _tab %10.2f (`dialysis_nockd_2018') _tab %10.2f (`dialysis_nockd_20
+> 18_ll') _tab %10.2f (`dialysis_nockd_2018_ul') _tab %10.2f (`dialysis_nockd_2019') _tab %10.2f (`dialysis_nockd_2019_ll') _tab %10.2f (`dialysis_nockd_2019_ul') _tab %10.2f (`dialysis_nockd_2020') _tab %10.2f (`dialysis_nockd_2020_ll') _tab %10.2f (`
+> dialysis_nockd_2020_ul') _tab %10.2f (`dialysis_nockd_2021') _tab %10.2f (`dialysis_nockd_2021_ll') _tab %10.2f (`dialysis_nockd_2021_ul') _tab %10.2f (`dialysis_nockd_2022') _tab %10.2f (`dialysis_nockd_2022_ll') _tab %10.2f (`dialysis_nockd_2022_ul
+> ') _n
+179. file write tablecontent ("All") _tab ("No CKD") _tab ("Transplant") _tab %10.2f (`kt_nockd_2017') _tab %10.2f (`kt_nockd_2017_ll') _tab %10.2f (`kt_nockd_2017_ul') _tab %10.2f (`kt_nockd_2018') _tab %10.2f (`kt_nockd_2018_ll') _tab %10.2f (`kt_noc
+> kd_2018_ul') _tab %10.2f (`kt_nockd_2019') _tab %10.2f (`kt_nockd_2019_ll') _tab %10.2f (`kt_nockd_2019_ul') _tab %10.2f (`kt_nockd_2020') _tab %10.2f (`kt_nockd_2020_ll') _tab %10.2f (`kt_nockd_2020_ul') _tab %10.2f (`kt_nockd_2021') _tab %10.2f (`k
+> t_nockd_2021_ll') _tab %10.2f (`kt_nockd_2021_ul') _tab %10.2f (`kt_nockd_2022') _tab %10.2f (`kt_nockd_2022_ll') _tab %10.2f (`kt_nockd_2022_ul') _n
+180. file write tablecontent ("All") _tab ("No CKD") _tab ("Deceased") _tab %10.2f (`deceased_nockd_2017') _tab %10.2f (`deceased_nockd_2017_ll') _tab %10.2f (`deceased_nockd_2017_ul') _tab %10.2f (`deceased_nockd_2018') _tab %10.2f (`deceased_nockd_20
+> 18_ll') _tab %10.2f (`deceased_nockd_2018_ul') _tab %10.2f (`deceased_nockd_2019') _tab %10.2f (`deceased_nockd_2019_ll') _tab %10.2f (`deceased_nockd_2019_ul') _tab %10.2f (`deceased_nockd_2020') _tab %10.2f (`deceased_nockd_2020_ll') _tab %10.2f (`
+> deceased_nockd_2020_ul') _tab %10.2f (`deceased_nockd_2021') _tab %10.2f (`deceased_nockd_2021_ll') _tab %10.2f (`deceased_nockd_2021_ul') _tab %10.2f (`deceased_nockd_2022') _tab %10.2f (`deceased_nockd_2022_ll') _tab %10.2f (`deceased_nockd_2022_ul
+> ') _n
+181. file write tablecontent ("All") _tab ("No CKD") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_nockd_2017') _tab %10.2f (`cardio_nockd_2017_ll') _tab %10.2f (`cardio_nockd_2017_ul') _tab %10.2f (`cardio_nockd_2018') _tab %10.2f (`cardio_no
+> ckd_2018_ll') _tab %10.2f (`cardio_nockd_2018_ul') _tab %10.2f (`cardio_nockd_2019') _tab %10.2f (`cardio_nockd_2019_ll') _tab %10.2f (`cardio_nockd_2019_ul') _tab %10.2f (`cardio_nockd_2020') _tab %10.2f (`cardio_nockd_2020_ll') _tab %10.2f (`cardio
+> _nockd_2020_ul') _tab %10.2f (`cardio_nockd_2021') _tab %10.2f (`cardio_nockd_2021_ll') _tab %10.2f (`cardio_nockd_2021_ul') _tab %10.2f (`cardio_nockd_2022') _tab %10.2f (`cardio_nockd_2022_ll') _tab %10.2f (`cardio_nockd_2022_ul') _n
+182. 
 . *CKD stage 3
-. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("N/A") _tab %10.2f (`baseline_ckd3_2017') _tab %10.2f (`baseline_ckd3_2018') _tab %10.2f (`baseline_ckd3_2019') _tab %10.2f (`baseline_ckd3_2020') _tab %10.2f (`baseline_ckd3_2021') _t
-> ab %10.2f (`baseline_ckd3_2022') _n
-189. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("No progression") _tab %10.2f (`none_ckd3_2017') _tab %10.2f (`none_ckd3_2018') _tab %10.2f (`none_ckd3_2019') _tab %10.2f (`none_ckd3_2020') _tab %10.2f (`none_ckd3_2021') _tab %10
-> .2f (`none_ckd3_2022') _n
-190. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("CKD stage 4/5") _tab %10.2f (`ckd4_ckd3_2017') _tab %10.2f (`ckd4_ckd3_2018') _tab %10.2f (`ckd4_ckd3_2019') _tab %10.2f (`ckd4_ckd3_2020') _tab %10.2f (`ckd4_ckd3_2021') _tab %10.
-> 2f (`ckd4_ckd3_2022') _n
-191. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Dialysis") _tab %10.2f (`dialysis_ckd3_2017') _tab %10.2f (`dialysis_ckd3_2018') _tab %10.2f (`dialysis_ckd3_2019') _tab %10.2f (`dialysis_ckd3_2020') _tab %10.2f (`dialysis_ckd3_2
-> 021') _tab %10.2f (`dialysis_ckd3_2022') _n
-192. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Deceased") _tab %10.2f (`deceased_ckd3_2017') _tab %10.2f (`deceased_ckd3_2018') _tab %10.2f (`deceased_ckd3_2019') _tab %10.2f (`deceased_ckd3_2020') _tab %10.2f (`deceased_ckd3_2
-> 021') _tab %10.2f (`deceased_ckd3_2022') _n
-193. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_ckd3_2017') _tab %10.2f (`cardio_ckd3_2018') _tab %10.2f (`cardio_ckd3_2019') _tab %10.2f (`cardio_ckd3_2020') _tab %10.2f (`cardio_
-> ckd3_2021') _tab %10.2f (`cardio_ckd3_2022') _n
-194. 
-. *CKD stage 4/5 without KRT
-. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("N/A") _tab %10.2f (`baseline_ckd4_2017') _tab %10.2f (`baseline_ckd4_2018') _tab %10.2f (`baseline_ckd4_2019') _tab %10.2f (`baseline_ckd4_2020') _tab %10.2f (`baseline_ckd4_2021') 
-> _tab %10.2f (`baseline_ckd4_2022') _n
-195. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("No progression") _tab %10.2f (`none_ckd4_2017') _tab %10.2f (`none_ckd4_2018') _tab %10.2f (`none_ckd4_2019') _tab %10.2f (`none_ckd4_2020') _tab %10.2f (`none_ckd4_2021') _tab %
-> 10.2f (`none_ckd4_2022') _n
-196. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Dialysis") _tab %10.2f (`dialysis_ckd4_2017') _tab %10.2f (`dialysis_ckd4_2018') _tab %10.2f (`dialysis_ckd4_2019') _tab %10.2f (`dialysis_ckd4_2020') _tab %10.2f (`dialysis_ckd4
-> _2021') _tab %10.2f (`dialysis_ckd4_2022') _n
-197. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Transplant") _tab %10.2f (`kt_ckd4_2017') _tab %10.2f (`kt_ckd4_2018') _tab %10.2f (`kt_ckd4_2019') _tab %10.2f (`kt_ckd4_2020') _tab %10.2f (`kt_ckd4_2021') _tab %10.2f (`kt_ckd
-> 4_2022') _n
-198. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Deceased") _tab %10.2f (`deceased_ckd4_2017') _tab %10.2f (`deceased_ckd4_2018') _tab %10.2f (`deceased_ckd4_2019') _tab %10.2f (`deceased_ckd4_2020') _tab %10.2f (`deceased_ckd4
-> _2021') _tab %10.2f (`deceased_ckd4_2022') _n
-199. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_ckd4_2017') _tab %10.2f (`cardio_ckd4_2018') _tab %10.2f (`cardio_ckd4_2019') _tab %10.2f (`cardio_ckd4_2020') _tab %10.2f (`cardi
-> o_ckd4_2021') _tab %10.2f (`cardio_ckd4_2022') _n
-200. 
+. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("N/A") _tab %10.2f (`baseline_ckd3_2017') _tab %10.2f (`baseline_ckd3_2017_ll') _tab %10.2f (`baseline_ckd3_2017_ul') _tab %10.2f (`baseline_ckd3_2018') _tab %10.2f (`baseline_ckd3_2018_ll') 
+> _tab %10.2f (`baseline_ckd3_2018_ul') _tab %10.2f (`baseline_ckd3_2019') _tab %10.2f (`baseline_ckd3_2019_ll') _tab %10.2f (`baseline_ckd3_2019_ul') _tab %10.2f (`baseline_ckd3_2020') _tab %10.2f (`baseline_ckd3_2020_ll') _tab %10.2f (`baseline_ckd3_
+> 2020_ul') _tab %10.2f (`baseline_ckd3_2021') _tab %10.2f (`baseline_ckd3_2021_ll') _tab %10.2f (`baseline_ckd3_2021_ul') _tab %10.2f (`baseline_ckd3_2022') _tab %10.2f (`baseline_ckd3_2022_ll') _tab %10.2f (`baseline_ckd3_2022_ul') _n
+183. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("No progression") _tab %10.2f (`none_ckd3_2017') _tab %10.2f (`none_ckd3_2017_ll') _tab %10.2f (`none_ckd3_2017_ul') _tab %10.2f (`none_ckd3_2018') _tab %10.2f (`none_ckd3_2018_ll') _tab %
+> 10.2f (`none_ckd3_2018_ul') _tab %10.2f (`none_ckd3_2019') _tab %10.2f (`none_ckd3_2019_ll') _tab %10.2f (`none_ckd3_2019_ul') _tab %10.2f (`none_ckd3_2020') _tab %10.2f (`none_ckd3_2020_ll') _tab %10.2f (`none_ckd3_2020_ul') _tab %10.2f (`none_ckd3_
+> 2021') _tab %10.2f (`none_ckd3_2021_ll') _tab %10.2f (`none_ckd3_2021_ul') _tab %10.2f (`none_ckd3_2022') _tab %10.2f (`none_ckd3_2022_ll') _tab %10.2f (`none_ckd3_2022_ul') _n
+184. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("CKD stage 4/5") _tab %10.2f (`ckd4_ckd3_2017') _tab %10.2f (`ckd4_ckd3_2017_ll') _tab %10.2f (`ckd4_ckd3_2017_ul') _tab %10.2f (`ckd4_ckd3_2018') _tab %10.2f (`ckd4_ckd3_2018_ll') _tab %1
+> 0.2f (`ckd4_ckd3_2018_ul') _tab %10.2f (`ckd4_ckd3_2019') _tab %10.2f (`ckd4_ckd3_2019_ll') _tab %10.2f (`ckd4_ckd3_2019_ul') _tab %10.2f (`ckd4_ckd3_2020') _tab %10.2f (`ckd4_ckd3_2020_ll') _tab %10.2f (`ckd4_ckd3_2020_ul') _tab %10.2f (`ckd4_ckd3_2
+> 021') _tab %10.2f (`ckd4_ckd3_2021_ll') _tab %10.2f (`ckd4_ckd3_2021_ul') _tab %10.2f (`ckd4_ckd3_2022') _tab %10.2f (`ckd4_ckd3_2022_ll') _tab %10.2f (`ckd4_ckd3_2022_ul') _n
+185. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("Dialysis") _tab %10.2f (`dialysis_ckd3_2017') _tab %10.2f (`dialysis_ckd3_2017_ll') _tab %10.2f (`dialysis_ckd3_2017_ul') _tab %10.2f (`dialysis_ckd3_2018') _tab %10.2f (`dialysis_ckd3_20
+> 18_ll') _tab %10.2f (`dialysis_ckd3_2018_ul') _tab %10.2f (`dialysis_ckd3_2019') _tab %10.2f (`dialysis_ckd3_2019_ll') _tab %10.2f (`dialysis_ckd3_2019_ul') _tab %10.2f (`dialysis_ckd3_2020') _tab %10.2f (`dialysis_ckd3_2020_ll') _tab %10.2f (`dialys
+> is_ckd3_2020_ul') _tab %10.2f (`dialysis_ckd3_2021') _tab %10.2f (`dialysis_ckd3_2021_ll') _tab %10.2f (`dialysis_ckd3_2021_ul') _tab %10.2f (`dialysis_ckd3_2022') _tab %10.2f (`dialysis_ckd3_2022_ll') _tab %10.2f (`dialysis_ckd3_2022_ul') _n
+186. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("Transplant") _tab %10.2f (`kt_ckd3_2017') _tab %10.2f (`kt_ckd3_2017_ll') _tab %10.2f (`kt_ckd3_2017_ul') _tab %10.2f (`kt_ckd3_2018') _tab %10.2f (`kt_ckd3_2018_ll') _tab %10.2f (`kt_ckd
+> 3_2018_ul') _tab %10.2f (`kt_ckd3_2019') _tab %10.2f (`kt_ckd3_2019_ll') _tab %10.2f (`kt_ckd3_2019_ul') _tab %10.2f (`kt_ckd3_2020') _tab %10.2f (`kt_ckd3_2020_ll') _tab %10.2f (`kt_ckd3_2020_ul') _tab %10.2f (`kt_ckd3_2021') _tab %10.2f (`kt_ckd3_2
+> 021_ll') _tab %10.2f (`kt_ckd3_2021_ul') _tab %10.2f (`kt_ckd3_2022') _tab %10.2f (`kt_ckd3_2022_ll') _tab %10.2f (`kt_ckd3_2022_ul') _n
+187. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("Deceased") _tab %10.2f (`deceased_ckd3_2017') _tab %10.2f (`deceased_ckd3_2017_ll') _tab %10.2f (`deceased_ckd3_2017_ul') _tab %10.2f (`deceased_ckd3_2018') _tab %10.2f (`deceased_ckd3_20
+> 18_ll') _tab %10.2f (`deceased_ckd3_2018_ul') _tab %10.2f (`deceased_ckd3_2019') _tab %10.2f (`deceased_ckd3_2019_ll') _tab %10.2f (`deceased_ckd3_2019_ul') _tab %10.2f (`deceased_ckd3_2020') _tab %10.2f (`deceased_ckd3_2020_ll') _tab %10.2f (`deceas
+> ed_ckd3_2020_ul') _tab %10.2f (`deceased_ckd3_2021') _tab %10.2f (`deceased_ckd3_2021_ll') _tab %10.2f (`deceased_ckd3_2021_ul') _tab %10.2f (`deceased_ckd3_2022') _tab %10.2f (`deceased_ckd3_2022_ll') _tab %10.2f (`deceased_ckd3_2022_ul') _n
+188. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_ckd3_2017') _tab %10.2f (`cardio_ckd3_2017_ll') _tab %10.2f (`cardio_ckd3_2017_ul') _tab %10.2f (`cardio_ckd3_2018') _tab %10.2f (`cardio_c
+> kd3_2018_ll') _tab %10.2f (`cardio_ckd3_2018_ul') _tab %10.2f (`cardio_ckd3_2019') _tab %10.2f (`cardio_ckd3_2019_ll') _tab %10.2f (`cardio_ckd3_2019_ul') _tab %10.2f (`cardio_ckd3_2020') _tab %10.2f (`cardio_ckd3_2020_ll') _tab %10.2f (`cardio_ckd3_
+> 2020_ul') _tab %10.2f (`cardio_ckd3_2021') _tab %10.2f (`cardio_ckd3_2021_ll') _tab %10.2f (`cardio_ckd3_2021_ul') _tab %10.2f (`cardio_ckd3_2022') _tab %10.2f (`cardio_ckd3_2022_ll') _tab %10.2f (`cardio_ckd3_2022_ul') _n
+189. 
+. *CKD stage 4/5 without RRT
+. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab ("N/A") _tab %10.2f (`baseline_ckd4_2017') _tab %10.2f (`baseline_ckd4_2017_ll') _tab %10.2f (`baseline_ckd4_2017_ul') _tab %10.2f (`baseline_ckd4_2018') _tab %10.2f (`baseline_ckd4_2018_ll'
+> ) _tab %10.2f (`baseline_ckd4_2018_ul') _tab %10.2f (`baseline_ckd4_2019') _tab %10.2f (`baseline_ckd4_2019_ll') _tab %10.2f (`baseline_ckd4_2019_ul') _tab %10.2f (`baseline_ckd4_2020') _tab %10.2f (`baseline_ckd4_2020_ll') _tab %10.2f (`baseline_ckd
+> 4_2020_ul') _tab %10.2f (`baseline_ckd4_2021') _tab %10.2f (`baseline_ckd4_2021_ll') _tab %10.2f (`baseline_ckd4_2021_ul') _tab %10.2f (`baseline_ckd4_2022') _tab %10.2f (`baseline_ckd4_2022_ll') _tab %10.2f (`baseline_ckd4_2022_ul') _n
+190. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab ("No progression") _tab %10.2f (`none_ckd4_2017') _tab %10.2f (`none_ckd4_2017_ll') _tab %10.2f (`none_ckd4_2017_ul') _tab %10.2f (`none_ckd4_2018') _tab %10.2f (`none_ckd4_2018_ll') _tab
+>  %10.2f (`none_ckd4_2018_ul') _tab %10.2f (`none_ckd4_2019') _tab %10.2f (`none_ckd4_2019_ll') _tab %10.2f (`none_ckd4_2019_ul') _tab %10.2f (`none_ckd4_2020') _tab %10.2f (`none_ckd4_2020_ll') _tab %10.2f (`none_ckd4_2020_ul') _tab %10.2f (`none_ckd
+> 4_2021') _tab %10.2f (`none_ckd4_2021_ll') _tab %10.2f (`none_ckd4_2021_ul') _tab %10.2f (`none_ckd4_2022') _tab %10.2f (`none_ckd4_2022_ll') _tab %10.2f (`none_ckd4_2022_ul') _n
+191. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab ("Dialysis") _tab %10.2f (`dialysis_ckd4_2017') _tab %10.2f (`dialysis_ckd4_2017_ll') _tab %10.2f (`dialysis_ckd4_2017_ul') _tab %10.2f (`dialysis_ckd4_2018') _tab %10.2f (`dialysis_ckd4_
+> 2018_ll') _tab %10.2f (`dialysis_ckd4_2018_ul') _tab %10.2f (`dialysis_ckd4_2019') _tab %10.2f (`dialysis_ckd4_2019_ll') _tab %10.2f (`dialysis_ckd4_2019_ul') _tab %10.2f (`dialysis_ckd4_2020') _tab %10.2f (`dialysis_ckd4_2020_ll') _tab %10.2f (`dial
+> ysis_ckd4_2020_ul') _tab %10.2f (`dialysis_ckd4_2021') _tab %10.2f (`dialysis_ckd4_2021_ll') _tab %10.2f (`dialysis_ckd4_2021_ul') _tab %10.2f (`dialysis_ckd4_2022') _tab %10.2f (`dialysis_ckd4_2022_ll') _tab %10.2f (`dialysis_ckd4_2022_ul') _n
+192. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab ("Transplant") _tab %10.2f (`kt_ckd4_2017') _tab %10.2f (`kt_ckd4_2017_ll') _tab %10.2f (`kt_ckd4_2017_ul') _tab %10.2f (`kt_ckd4_2018') _tab %10.2f (`kt_ckd4_2018_ll') _tab %10.2f (`kt_c
+> kd4_2018_ul') _tab %10.2f (`kt_ckd4_2019') _tab %10.2f (`kt_ckd4_2019_ll') _tab %10.2f (`kt_ckd4_2019_ul') _tab %10.2f (`kt_ckd4_2020') _tab %10.2f (`kt_ckd4_2020_ll') _tab %10.2f (`kt_ckd4_2020_ul') _tab %10.2f (`kt_ckd4_2021') _tab %10.2f (`kt_ckd4
+> _2021_ll') _tab %10.2f (`kt_ckd4_2021_ul') _tab %10.2f (`kt_ckd4_2022') _tab %10.2f (`kt_ckd4_2022_ll') _tab %10.2f (`kt_ckd4_2022_ul') _n
+193. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab ("Deceased") _tab %10.2f (`deceased_ckd4_2017') _tab %10.2f (`deceased_ckd4_2017_ll') _tab %10.2f (`deceased_ckd4_2017_ul') _tab %10.2f (`deceased_ckd4_2018') _tab %10.2f (`deceased_ckd4_
+> 2018_ll') _tab %10.2f (`deceased_ckd4_2018_ul') _tab %10.2f (`deceased_ckd4_2019') _tab %10.2f (`deceased_ckd4_2019_ll') _tab %10.2f (`deceased_ckd4_2019_ul') _tab %10.2f (`deceased_ckd4_2020') _tab %10.2f (`deceased_ckd4_2020_ll') _tab %10.2f (`dece
+> ased_ckd4_2020_ul') _tab %10.2f (`deceased_ckd4_2021') _tab %10.2f (`deceased_ckd4_2021_ll') _tab %10.2f (`deceased_ckd4_2021_ul') _tab %10.2f (`deceased_ckd4_2022') _tab %10.2f (`deceased_ckd4_2022_ll') _tab %10.2f (`deceased_ckd4_2022_ul') _n
+194. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_ckd4_2017') _tab %10.2f (`cardio_ckd4_2017_ll') _tab %10.2f (`cardio_ckd4_2017_ul') _tab %10.2f (`cardio_ckd4_2018') _tab %10.2f (`cardio
+> _ckd4_2018_ll') _tab %10.2f (`cardio_ckd4_2018_ul') _tab %10.2f (`cardio_ckd4_2019') _tab %10.2f (`cardio_ckd4_2019_ll') _tab %10.2f (`cardio_ckd4_2019_ul') _tab %10.2f (`cardio_ckd4_2020') _tab %10.2f (`cardio_ckd4_2020_ll') _tab %10.2f (`cardio_ckd
+> 4_2020_ul') _tab %10.2f (`cardio_ckd4_2021') _tab %10.2f (`cardio_ckd4_2021_ll') _tab %10.2f (`cardio_ckd4_2021_ul') _tab %10.2f (`cardio_ckd4_2022') _tab %10.2f (`cardio_ckd4_2022_ll') _tab %10.2f (`cardio_ckd4_2022_ul') _n
+195. 
 . *Dialysis
-. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("N/A") _tab %10.2f (`baseline_dialysis_2017') _tab %10.2f (`baseline_dialysis_2018') _tab %10.2f (`baseline_dialysis_2019') _tab %10.2f (`baseline_dialysis_2020') _tab %10.2f (`baseline_d
-> ialysis_2021') _tab %10.2f (`baseline_dialysis_2022') _n
-201. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("No progression") _tab %10.2f (`none_dialysis_2017') _tab %10.2f (`none_dialysis_2018') _tab %10.2f (`none_dialysis_2019') _tab %10.2f (`none_dialysis_2020') _tab %10.2f (`none_dialysi
-> s_2021') _tab %10.2f (`none_dialysis_2022') _n
-202. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Transplant") _tab %10.2f (`kt_dialysis_2017') _tab %10.2f (`kt_dialysis_2018') _tab %10.2f (`kt_dialysis_2019') _tab %10.2f (`kt_dialysis_2020') _tab %10.2f (`kt_dialysis_2021') _tab 
-> %10.2f (`kt_dialysis_2022') _n
-203. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Deceased") _tab %10.2f (`deceased_dialysis_2017') _tab %10.2f (`deceased_dialysis_2018') _tab %10.2f (`deceased_dialysis_2019') _tab %10.2f (`deceased_dialysis_2020') _tab %10.2f (`de
-> ceased_dialysis_2021') _tab %10.2f (`deceased_dialysis_2022') _n
-204. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_dialysis_2017') _tab %10.2f (`cardio_dialysis_2018') _tab %10.2f (`cardio_dialysis_2019') _tab %10.2f (`cardio_dialysis_2020') _tab %10
-> .2f (`cardio_dialysis_2021') _tab %10.2f (`cardio_dialysis_2022') _n
-205. 
-. *Kidney Transplant
-. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("N/A") _tab %10.2f (`baseline_kt_2017') _tab %10.2f (`baseline_kt_2018') _tab %10.2f (`baseline_kt_2019') _tab %10.2f (`baseline_kt_2020') _tab %10.2f (`baseline_kt_2021') _tab %10.2f (
-> `baseline_kt_2022') _n
-206. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("No progression") _tab %10.2f (`none_kt_2017') _tab %10.2f (`none_kt_2018') _tab %10.2f (`none_kt_2019') _tab %10.2f (`none_kt_2020') _tab %10.2f (`none_kt_2021') _tab %10.2f (`none_
-> kt_2022') _n
-207. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Dialysis") _tab %10.2f (`dialysis_kt_2017') _tab %10.2f (`dialysis_kt_2018') _tab %10.2f (`dialysis_kt_2019') _tab %10.2f (`dialysis_kt_2020') _tab %10.2f (`dialysis_kt_2021') _tab 
-> %10.2f (`dialysis_kt_2022') _n
-208. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Deceased") _tab %10.2f (`deceased_kt_2017') _tab %10.2f (`deceased_kt_2018') _tab %10.2f (`deceased_kt_2019') _tab %10.2f (`deceased_kt_2020') _tab %10.2f (`deceased_kt_2021') _tab 
-> %10.2f (`deceased_kt_2022') _n
-209. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_kt_2017') _tab %10.2f (`cardio_kt_2018') _tab %10.2f (`cardio_kt_2019') _tab %10.2f (`cardio_kt_2020') _tab %10.2f (`cardio_kt_2021')
->  _tab %10.2f (`cardio_kt_2022') _n
-210. }
+. file write tablecontent ("All") _tab ("Dialysis") _tab ("N/A") _tab %10.2f (`baseline_dialysis_2017') _tab %10.2f (`baseline_dialysis_2017_ll') _tab %10.2f (`baseline_dialysis_2017_ul') _tab %10.2f (`baseline_dialysis_2018') _tab %10.2f (`baseline_di
+> alysis_2018_ll') _tab %10.2f (`baseline_dialysis_2018_ul') _tab %10.2f (`baseline_dialysis_2019') _tab %10.2f (`baseline_dialysis_2019_ll') _tab %10.2f (`baseline_dialysis_2019_ul') _tab %10.2f (`baseline_dialysis_2020') _tab %10.2f (`baseline_dialys
+> is_2020_ll') _tab %10.2f (`baseline_dialysis_2020_ul') _tab %10.2f (`baseline_dialysis_2021') _tab %10.2f (`baseline_dialysis_2021_ll') _tab %10.2f (`baseline_dialysis_2021_ul') _tab %10.2f (`baseline_dialysis_2022') _tab %10.2f (`baseline_dialysis_2
+> 022_ll') _tab %10.2f (`baseline_dialysis_2022_ul') _n
+196. file write tablecontent ("All") _tab ("Dialysis") _tab ("No progression") _tab %10.2f (`none_dialysis_2017') _tab %10.2f (`none_dialysis_2017_ll') _tab %10.2f (`none_dialysis_2017_ul') _tab %10.2f (`none_dialysis_2018') _tab %10.2f (`none_dialysis
+> _2018_ll') _tab %10.2f (`none_dialysis_2018_ul') _tab %10.2f (`none_dialysis_2019') _tab %10.2f (`none_dialysis_2019_ll') _tab %10.2f (`none_dialysis_2019_ul') _tab %10.2f (`none_dialysis_2020') _tab %10.2f (`none_dialysis_2020_ll') _tab %10.2f (`non
+> e_dialysis_2020_ul') _tab %10.2f (`none_dialysis_2021') _tab %10.2f (`none_dialysis_2021_ll') _tab %10.2f (`none_dialysis_2021_ul') _tab %10.2f (`none_dialysis_2022') _tab %10.2f (`none_dialysis_2022_ll') _tab %10.2f (`none_dialysis_2022_ul') _n
+197. file write tablecontent ("All") _tab ("Dialysis") _tab ("Transplant") _tab %10.2f (`kt_dialysis_2017') _tab %10.2f (`kt_dialysis_2017_ll') _tab %10.2f (`kt_dialysis_2017_ul') _tab %10.2f (`kt_dialysis_2018') _tab %10.2f (`kt_dialysis_2018_ll') _ta
+> b %10.2f (`kt_dialysis_2018_ul') _tab %10.2f (`kt_dialysis_2019') _tab %10.2f (`kt_dialysis_2019_ll') _tab %10.2f (`kt_dialysis_2019_ul') _tab %10.2f (`kt_dialysis_2020') _tab %10.2f (`kt_dialysis_2020_ll') _tab %10.2f (`kt_dialysis_2020_ul') _tab %1
+> 0.2f (`kt_dialysis_2021') _tab %10.2f (`kt_dialysis_2021_ll') _tab %10.2f (`kt_dialysis_2021_ul') _tab %10.2f (`kt_dialysis_2022') _tab %10.2f (`kt_dialysis_2022_ll') _tab %10.2f (`kt_dialysis_2022_ul') _n
+198. file write tablecontent ("All") _tab ("Dialysis") _tab ("Deceased") _tab %10.2f (`deceased_dialysis_2017') _tab %10.2f (`deceased_dialysis_2017_ll') _tab %10.2f (`deceased_dialysis_2017_ul') _tab %10.2f (`deceased_dialysis_2018') _tab %10.2f (`dec
+> eased_dialysis_2018_ll') _tab %10.2f (`deceased_dialysis_2018_ul') _tab %10.2f (`deceased_dialysis_2019') _tab %10.2f (`deceased_dialysis_2019_ll') _tab %10.2f (`deceased_dialysis_2019_ul') _tab %10.2f (`deceased_dialysis_2020') _tab %10.2f (`decease
+> d_dialysis_2020_ll') _tab %10.2f (`deceased_dialysis_2020_ul') _tab %10.2f (`deceased_dialysis_2021') _tab %10.2f (`deceased_dialysis_2021_ll') _tab %10.2f (`deceased_dialysis_2021_ul') _tab %10.2f (`deceased_dialysis_2022') _tab %10.2f (`deceased_di
+> alysis_2022_ll') _tab %10.2f (`deceased_dialysis_2022_ul') _n
+199. file write tablecontent ("All") _tab ("Dialysis") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_dialysis_2017') _tab %10.2f (`cardio_dialysis_2017_ll') _tab %10.2f (`cardio_dialysis_2017_ul') _tab %10.2f (`cardio_dialysis_2018') _tab %10.
+> 2f (`cardio_dialysis_2018_ll') _tab %10.2f (`cardio_dialysis_2018_ul') _tab %10.2f (`cardio_dialysis_2019') _tab %10.2f (`cardio_dialysis_2019_ll') _tab %10.2f (`cardio_dialysis_2019_ul') _tab %10.2f (`cardio_dialysis_2020') _tab %10.2f (`cardio_dial
+> ysis_2020_ll') _tab %10.2f (`cardio_dialysis_2020_ul') _tab %10.2f (`cardio_dialysis_2021') _tab %10.2f (`cardio_dialysis_2021_ll') _tab %10.2f (`cardio_dialysis_2021_ul') _tab %10.2f (`cardio_dialysis_2022') _tab %10.2f (`cardio_dialysis_2022_ll') _
+> tab %10.2f (`cardio_dialysis_2022_ul') _n
+200. 
+. *Kidney transplant
+. file write tablecontent ("All") _tab ("Transplant") _tab ("N/A") _tab %10.2f (`baseline_kt_2017') _tab %10.2f (`baseline_kt_2017_ll') _tab %10.2f (`baseline_kt_2017_ul') _tab %10.2f (`baseline_kt_2018') _tab %10.2f (`baseline_kt_2018_ll') _tab %10.2f
+>  (`baseline_kt_2018_ul') _tab %10.2f (`baseline_kt_2019') _tab %10.2f (`baseline_kt_2019_ll') _tab %10.2f (`baseline_kt_2019_ul') _tab %10.2f (`baseline_kt_2020') _tab %10.2f (`baseline_kt_2020_ll') _tab %10.2f (`baseline_kt_2020_ul') _tab %10.2f (`b
+> aseline_kt_2021') _tab %10.2f (`baseline_kt_2021_ll') _tab %10.2f (`baseline_kt_2021_ul') _tab %10.2f (`baseline_kt_2022') _tab %10.2f (`baseline_kt_2022_ll') _tab %10.2f (`baseline_kt_2022_ul') _n
+201. file write tablecontent ("All") _tab ("Transplant") _tab ("No progression") _tab %10.2f (`none_kt_2017') _tab %10.2f (`none_kt_2017_ll') _tab %10.2f (`none_kt_2017_ul') _tab %10.2f (`none_kt_2018') _tab %10.2f (`none_kt_2018_ll') _tab %10.2f (`non
+> e_kt_2018_ul') _tab %10.2f (`none_kt_2019') _tab %10.2f (`none_kt_2019_ll') _tab %10.2f (`none_kt_2019_ul') _tab %10.2f (`none_kt_2020') _tab %10.2f (`none_kt_2020_ll') _tab %10.2f (`none_kt_2020_ul') _tab %10.2f (`none_kt_2021') _tab %10.2f (`none_k
+> t_2021_ll') _tab %10.2f (`none_kt_2021_ul') _tab %10.2f (`none_kt_2022') _tab %10.2f (`none_kt_2022_ll') _tab %10.2f (`none_kt_2022_ul') _n
+202. file write tablecontent ("All") _tab ("Transplant") _tab ("Dialysis") _tab %10.2f (`dialysis_kt_2017') _tab %10.2f (`dialysis_kt_2017_ll') _tab %10.2f (`dialysis_kt_2017_ul') _tab %10.2f (`dialysis_kt_2018') _tab %10.2f (`dialysis_kt_2018_ll') _ta
+> b %10.2f (`dialysis_kt_2018_ul') _tab %10.2f (`dialysis_kt_2019') _tab %10.2f (`dialysis_kt_2019_ll') _tab %10.2f (`dialysis_kt_2019_ul') _tab %10.2f (`dialysis_kt_2020') _tab %10.2f (`dialysis_kt_2020_ll') _tab %10.2f (`dialysis_kt_2020_ul') _tab %1
+> 0.2f (`dialysis_kt_2021') _tab %10.2f (`dialysis_kt_2021_ll') _tab %10.2f (`dialysis_kt_2021_ul') _tab %10.2f (`dialysis_kt_2022') _tab %10.2f (`dialysis_kt_2022_ll') _tab %10.2f (`dialysis_kt_2022_ul') _n
+203. file write tablecontent ("All") _tab ("Transplant") _tab ("Deceased") _tab %10.2f (`deceased_kt_2017') _tab %10.2f (`deceased_kt_2017_ll') _tab %10.2f (`deceased_kt_2017_ul') _tab %10.2f (`deceased_kt_2018') _tab %10.2f (`deceased_kt_2018_ll') _ta
+> b %10.2f (`deceased_kt_2018_ul') _tab %10.2f (`deceased_kt_2019') _tab %10.2f (`deceased_kt_2019_ll') _tab %10.2f (`deceased_kt_2019_ul') _tab %10.2f (`deceased_kt_2020') _tab %10.2f (`deceased_kt_2020_ll') _tab %10.2f (`deceased_kt_2020_ul') _tab %1
+> 0.2f (`deceased_kt_2021') _tab %10.2f (`deceased_kt_2021_ll') _tab %10.2f (`deceased_kt_2021_ul') _tab %10.2f (`deceased_kt_2022') _tab %10.2f (`deceased_kt_2022_ll') _tab %10.2f (`deceased_kt_2022_ul') _n
+204. file write tablecontent ("All") _tab ("Transplant") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_kt_2017') _tab %10.2f (`cardio_kt_2017_ll') _tab %10.2f (`cardio_kt_2017_ul') _tab %10.2f (`cardio_kt_2018') _tab %10.2f (`cardio_kt_2018_ll
+> ') _tab %10.2f (`cardio_kt_2018_ul') _tab %10.2f (`cardio_kt_2019') _tab %10.2f (`cardio_kt_2019_ll') _tab %10.2f (`cardio_kt_2019_ul') _tab %10.2f (`cardio_kt_2020') _tab %10.2f (`cardio_kt_2020_ll') _tab %10.2f (`cardio_kt_2020_ul') _tab %10.2f (`c
+> ardio_kt_2021') _tab %10.2f (`cardio_kt_2021_ll') _tab %10.2f (`cardio_kt_2021_ul') _tab %10.2f (`cardio_kt_2022') _tab %10.2f (`cardio_kt_2022_ll') _tab %10.2f (`cardio_kt_2022_ul') _n
+205. }
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
