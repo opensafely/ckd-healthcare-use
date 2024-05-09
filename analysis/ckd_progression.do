@@ -15,6 +15,7 @@ foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
+replace ckd_group = 0 if ckd_group==1
 
 **Disclosure minimisation
 *safecount provides a count with any counts <=5 returned at "<=5"
@@ -70,32 +71,6 @@ local deceased_nockd_`x' = round(r(N),5)
 *Total number of people in groupw with cardiovascular admission each year
 qui safecount if cardiovascular==1 & ckd_group==0
 local cardio_nockd_`x' = round(r(N),5)
-
-**eGFR >60 with albuminuria
-*Number of people in group (baseline_ckd2_`x') at the beginning of each year
-qui safecount if ckd_group==1
-local baseline_ckd2_`x' = round(r(N),5)
-*Number of people in group who do not progress by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==0
-local none_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to CKD stage 3 by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==1
-local ckd3_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==2
-local ckd4_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to dialysis by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==3
-local dialysis_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to kidney transplant by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==4
-local kt_ckd2_`x' = round(r(N),5)
-*Number of people in group who die by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==6
-local deceased_ckd2_`x' = round(r(N),5)
-*Total number of people in groupw with cardiovascular admission each year
-qui safecount if cardiovascular==1 & ckd_group==1
-local cardio_ckd2_`x' = round(r(N),5)
 
 **CKD stage 3
 *Number of people in group (baseline_ckd3_`x') at the beginning of each year
@@ -196,16 +171,6 @@ file write tablecontent ("All") _tab ("No CKD") _tab ("Transplant") _tab (`kt_no
 file write tablecontent ("All") _tab ("No CKD") _tab ("Deceased") _tab (`deceased_nockd_2017') _tab (`deceased_nockd_2018') _tab (`deceased_nockd_2019') _tab (`deceased_nockd_2020') _tab (`deceased_nockd_2021') _tab (`deceased_nockd_2022') _n
 file write tablecontent ("All") _tab ("No CKD") _tab ("Cardiovascular admission") _tab (`cardio_nockd_2017') _tab (`cardio_nockd_2018') _tab (`cardio_nockd_2019') _tab (`cardio_nockd_2020') _tab (`cardio_nockd_2021') _tab (`cardio_nockd_2022') _n
 
-*eGFR >60 with albuminuria
-file write tablecontent ("All") _tab ("Albuminuria") _tab ("N/A") _tab (`baseline_ckd2_2017') _tab (`baseline_ckd2_2018') _tab (`baseline_ckd2_2019') _tab (`baseline_ckd2_2020') _tab (`baseline_ckd2_2021') _tab (`baseline_ckd2_2022') _n
-file write tablecontent ("All") _tab ("Albuminuria") _tab ("No progression") _tab (`none_ckd2_2017') _tab (`none_ckd2_2018') _tab (`none_ckd2_2019') _tab (`none_ckd2_2020') _tab (`none_ckd2_2021') _tab (`none_ckd2_2022') _n
-file write tablecontent ("All") _tab ("Albuminuria") _tab ("CKD stage 3") _tab (`ckd3_ckd2_2017') _tab (`ckd3_ckd2_2018') _tab (`ckd3_ckd2_2019') _tab (`ckd3_ckd2_2020') _tab (`ckd3_ckd2_2021') _tab (`ckd3_ckd2_2022') _n
-file write tablecontent ("All") _tab ("Albuminuria") _tab ("CKD stage 4/5") _tab (`ckd4_ckd2_2017') _tab (`ckd4_ckd2_2018') _tab (`ckd4_ckd2_2019') _tab (`ckd4_ckd2_2020') _tab (`ckd4_ckd2_2021') _tab (`ckd4_ckd2_2022') _n
-file write tablecontent ("All") _tab ("Albuminuria") _tab ("Dialysis") _tab (`dialysis_ckd2_2017') _tab (`dialysis_ckd2_2018') _tab (`dialysis_ckd2_2019') _tab (`dialysis_ckd2_2020') _tab (`dialysis_ckd2_2021') _tab (`dialysis_ckd2_2022') _n
-file write tablecontent ("All") _tab ("Albuminuria") _tab ("Transplant") _tab (`kt_ckd2_2017') _tab (`kt_ckd2_2018') _tab (`kt_ckd2_2019') _tab (`kt_ckd2_2020') _tab (`kt_ckd2_2021') _tab (`kt_ckd2_2022') _n
-file write tablecontent ("All") _tab ("Albuminuria") _tab ("Deceased") _tab (`deceased_ckd2_2017') _tab (`deceased_ckd2_2018') _tab (`deceased_ckd2_2019') _tab (`deceased_ckd2_2020') _tab (`deceased_ckd2_2021') _tab (`deceased_ckd2_2022') _n
-file write tablecontent ("All") _tab ("Albuminuria") _tab ("Cardiovascular admission") _tab (`cardio_ckd2_2017') _tab (`cardio_ckd2_2018') _tab (`cardio_ckd2_2019') _tab (`cardio_ckd2_2020') _tab (`cardio_ckd2_2021') _tab (`cardio_ckd2_2022') _n
-
 *CKD stage 3
 file write tablecontent ("All") _tab ("CKD stage 3") _tab ("N/A") _tab (`baseline_ckd3_2017') _tab (`baseline_ckd3_2018') _tab (`baseline_ckd3_2019') _tab (`baseline_ckd3_2020') _tab (`baseline_ckd3_2021') _tab (`baseline_ckd3_2022') _n
 file write tablecontent ("All") _tab ("CKD stage 3") _tab ("No progression") _tab (`none_ckd3_2017') _tab (`none_ckd3_2018') _tab (`none_ckd3_2019') _tab (`none_ckd3_2020') _tab (`none_ckd3_2021') _tab (`none_ckd3_2022') _n
@@ -245,6 +210,7 @@ drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
 local label`i': label ethnicity `i'
 drop if ethnicity!=`i'
+replace ckd_group = 0 if ckd_group==1
 
 **Disclosure minimisation
 *safecount provides a count with any counts <=5 returned at "<=5"
@@ -300,32 +266,6 @@ local deceased_nockd_`x' = round(r(N),5)
 *Total number of people in groupw with cardiovascular admission each year
 qui safecount if cardiovascular==1 & ckd_group==0
 local cardio_nockd_`x' = round(r(N),5)
-
-**eGFR >60 with albuminuria
-*Number of people in group (baseline_ckd2_`x') at the beginning of each year
-qui safecount if ckd_group==1
-local baseline_ckd2_`x' = round(r(N),5)
-*Number of people in group who do not progress by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==0
-local none_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to CKD stage 3 by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==1
-local ckd3_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==2
-local ckd4_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to dialysis by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==3
-local dialysis_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to kidney transplant by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==4
-local kt_ckd2_`x' = round(r(N),5)
-*Number of people in group who die by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==6
-local deceased_ckd2_`x' = round(r(N),5)
-*Total number of people in groupw with cardiovascular admission each year
-qui safecount if cardiovascular==1 & ckd_group==1
-local cardio_ckd2_`x' = round(r(N),5)
 
 **CKD stage 3
 *Number of people in group (baseline_ckd3_`x') at the beginning of each year
@@ -425,16 +365,6 @@ file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Dialysis") _tab (`
 file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Transplant") _tab (`kt_nockd_2017') _tab (`kt_nockd_2018') _tab (`kt_nockd_2019') _tab (`kt_nockd_2020') _tab (`kt_nockd_2021') _tab (`kt_nockd_2022') _n
 file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Deceased") _tab (`deceased_nockd_2017') _tab (`deceased_nockd_2018') _tab (`deceased_nockd_2019') _tab (`deceased_nockd_2020') _tab (`deceased_nockd_2021') _tab (`deceased_nockd_2022') _n
 file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Cardiovascular admission") _tab (`cardio_nockd_2017') _tab (`cardio_nockd_2018') _tab (`cardio_nockd_2019') _tab (`cardio_nockd_2020') _tab (`cardio_nockd_2021') _tab (`cardio_nockd_2022') _n
-
-*eGFR >60 with albuminuria
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("N/A") _tab (`baseline_ckd2_2017') _tab (`baseline_ckd2_2018') _tab (`baseline_ckd2_2019') _tab (`baseline_ckd2_2020') _tab (`baseline_ckd2_2021') _tab (`baseline_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("No progression") _tab (`none_ckd2_2017') _tab (`none_ckd2_2018') _tab (`none_ckd2_2019') _tab (`none_ckd2_2020') _tab (`none_ckd2_2021') _tab (`none_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("CKD stage 3") _tab (`ckd3_ckd2_2017') _tab (`ckd3_ckd2_2018') _tab (`ckd3_ckd2_2019') _tab (`ckd3_ckd2_2020') _tab (`ckd3_ckd2_2021') _tab (`ckd3_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("CKD stage 4/5") _tab (`ckd4_ckd2_2017') _tab (`ckd4_ckd2_2018') _tab (`ckd4_ckd2_2019') _tab (`ckd4_ckd2_2020') _tab (`ckd4_ckd2_2021') _tab (`ckd4_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Dialysis") _tab (`dialysis_ckd2_2017') _tab (`dialysis_ckd2_2018') _tab (`dialysis_ckd2_2019') _tab (`dialysis_ckd2_2020') _tab (`dialysis_ckd2_2021') _tab (`dialysis_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Transplant") _tab (`kt_ckd2_2017') _tab (`kt_ckd2_2018') _tab (`kt_ckd2_2019') _tab (`kt_ckd2_2020') _tab (`kt_ckd2_2021') _tab (`kt_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Deceased") _tab (`deceased_ckd2_2017') _tab (`deceased_ckd2_2018') _tab (`deceased_ckd2_2019') _tab (`deceased_ckd2_2020') _tab (`deceased_ckd2_2021') _tab (`deceased_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Cardiovascular admission") _tab (`cardio_ckd2_2017') _tab (`cardio_ckd2_2018') _tab (`cardio_ckd2_2019') _tab (`cardio_ckd2_2020') _tab (`cardio_ckd2_2021') _tab (`cardio_ckd2_2022') _n
 
 *CKD stage 3
 file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("N/A") _tab (`baseline_ckd3_2017') _tab (`baseline_ckd3_2018') _tab (`baseline_ckd3_2019') _tab (`baseline_ckd3_2020') _tab (`baseline_ckd3_2021') _tab (`baseline_ckd3_2022') _n
@@ -475,6 +405,7 @@ drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
 local label`i': label imd `i'
 drop if imd!=`i'
+replace ckd_group = 0 if ckd_group==1
 
 **Disclosure minimisation
 *safecount provides a count with any counts <=5 returned at "<=5"
@@ -530,32 +461,6 @@ local deceased_nockd_`x' = round(r(N),5)
 *Total number of people in groupw with cardiovascular admission each year
 qui safecount if cardiovascular==1 & ckd_group==0
 local cardio_nockd_`x' = round(r(N),5)
-
-**eGFR >60 with albuminuria
-*Number of people in group (baseline_ckd2_`x') at the beginning of each year
-qui safecount if ckd_group==1
-local baseline_ckd2_`x' = round(r(N),5)
-*Number of people in group who do not progress by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==0
-local none_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to CKD stage 3 by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==1
-local ckd3_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==2
-local ckd4_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to dialysis by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==3
-local dialysis_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to kidney transplant by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==4
-local kt_ckd2_`x' = round(r(N),5)
-*Number of people in group who die by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==6
-local deceased_ckd2_`x' = round(r(N),5)
-*Total number of people in groupw with cardiovascular admission each year
-qui safecount if cardiovascular==1 & ckd_group==1
-local cardio_ckd2_`x' = round(r(N),5)
 
 **CKD stage 3
 *Number of people in group (baseline_ckd3_`x') at the beginning of each year
@@ -655,16 +560,6 @@ file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Dialysis") _tab (`
 file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Transplant") _tab (`kt_nockd_2017') _tab (`kt_nockd_2018') _tab (`kt_nockd_2019') _tab (`kt_nockd_2020') _tab (`kt_nockd_2021') _tab (`kt_nockd_2022') _n
 file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Deceased") _tab (`deceased_nockd_2017') _tab (`deceased_nockd_2018') _tab (`deceased_nockd_2019') _tab (`deceased_nockd_2020') _tab (`deceased_nockd_2021') _tab (`deceased_nockd_2022') _n
 file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Cardiovascular admission") _tab (`cardio_nockd_2017') _tab (`cardio_nockd_2018') _tab (`cardio_nockd_2019') _tab (`cardio_nockd_2020') _tab (`cardio_nockd_2021') _tab (`cardio_nockd_2022') _n
-
-*eGFR >60 with albuminuria
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("N/A") _tab (`baseline_ckd2_2017') _tab (`baseline_ckd2_2018') _tab (`baseline_ckd2_2019') _tab (`baseline_ckd2_2020') _tab (`baseline_ckd2_2021') _tab (`baseline_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("No progression") _tab (`none_ckd2_2017') _tab (`none_ckd2_2018') _tab (`none_ckd2_2019') _tab (`none_ckd2_2020') _tab (`none_ckd2_2021') _tab (`none_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("CKD stage 3") _tab (`ckd3_ckd2_2017') _tab (`ckd3_ckd2_2018') _tab (`ckd3_ckd2_2019') _tab (`ckd3_ckd2_2020') _tab (`ckd3_ckd2_2021') _tab (`ckd3_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("CKD stage 4/5") _tab (`ckd4_ckd2_2017') _tab (`ckd4_ckd2_2018') _tab (`ckd4_ckd2_2019') _tab (`ckd4_ckd2_2020') _tab (`ckd4_ckd2_2021') _tab (`ckd4_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Dialysis") _tab (`dialysis_ckd2_2017') _tab (`dialysis_ckd2_2018') _tab (`dialysis_ckd2_2019') _tab (`dialysis_ckd2_2020') _tab (`dialysis_ckd2_2021') _tab (`dialysis_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Transplant") _tab (`kt_ckd2_2017') _tab (`kt_ckd2_2018') _tab (`kt_ckd2_2019') _tab (`kt_ckd2_2020') _tab (`kt_ckd2_2021') _tab (`kt_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Deceased") _tab (`deceased_ckd2_2017') _tab (`deceased_ckd2_2018') _tab (`deceased_ckd2_2019') _tab (`deceased_ckd2_2020') _tab (`deceased_ckd2_2021') _tab (`deceased_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Cardiovascular admission") _tab (`cardio_ckd2_2017') _tab (`cardio_ckd2_2018') _tab (`cardio_ckd2_2019') _tab (`cardio_ckd2_2020') _tab (`cardio_ckd2_2021') _tab (`cardio_ckd2_2022') _n
 
 *CKD stage 3
 file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("N/A") _tab (`baseline_ckd3_2017') _tab (`baseline_ckd3_2018') _tab (`baseline_ckd3_2019') _tab (`baseline_ckd3_2020') _tab (`baseline_ckd3_2021') _tab (`baseline_ckd3_2022') _n
@@ -705,6 +600,7 @@ drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
 local label`i': label region `i'
 drop if region!=`i'
+replace ckd_group = 0 if ckd_group==1
 
 **Disclosure minimisation
 *safecount provides a count with any counts <=5 returned at "<=5"
@@ -760,32 +656,6 @@ local deceased_nockd_`x' = round(r(N),5)
 *Total number of people in groupw with cardiovascular admission each year
 qui safecount if cardiovascular==1 & ckd_group==0
 local cardio_nockd_`x' = round(r(N),5)
-
-**eGFR >60 with albuminuria
-*Number of people in group (baseline_ckd2_`x') at the beginning of each year
-qui safecount if ckd_group==1
-local baseline_ckd2_`x' = round(r(N),5)
-*Number of people in group who do not progress by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==0
-local none_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to CKD stage 3 by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==1
-local ckd3_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==2
-local ckd4_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to dialysis by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==3
-local dialysis_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to kidney transplant by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==4
-local kt_ckd2_`x' = round(r(N),5)
-*Number of people in group who die by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==6
-local deceased_ckd2_`x' = round(r(N),5)
-*Total number of people in groupw with cardiovascular admission each year
-qui safecount if cardiovascular==1 & ckd_group==1
-local cardio_ckd2_`x' = round(r(N),5)
 
 **CKD stage 3
 *Number of people in group (baseline_ckd3_`x') at the beginning of each year
@@ -885,16 +755,6 @@ file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Dialysis") _tab (`
 file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Transplant") _tab (`kt_nockd_2017') _tab (`kt_nockd_2018') _tab (`kt_nockd_2019') _tab (`kt_nockd_2020') _tab (`kt_nockd_2021') _tab (`kt_nockd_2022') _n
 file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Deceased") _tab (`deceased_nockd_2017') _tab (`deceased_nockd_2018') _tab (`deceased_nockd_2019') _tab (`deceased_nockd_2020') _tab (`deceased_nockd_2021') _tab (`deceased_nockd_2022') _n
 file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Cardiovascular admission") _tab (`cardio_nockd_2017') _tab (`cardio_nockd_2018') _tab (`cardio_nockd_2019') _tab (`cardio_nockd_2020') _tab (`cardio_nockd_2021') _tab (`cardio_nockd_2022') _n
-
-*eGFR >60 with albuminuria
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("N/A") _tab (`baseline_ckd2_2017') _tab (`baseline_ckd2_2018') _tab (`baseline_ckd2_2019') _tab (`baseline_ckd2_2020') _tab (`baseline_ckd2_2021') _tab (`baseline_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("No progression") _tab (`none_ckd2_2017') _tab (`none_ckd2_2018') _tab (`none_ckd2_2019') _tab (`none_ckd2_2020') _tab (`none_ckd2_2021') _tab (`none_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("CKD stage 3") _tab (`ckd3_ckd2_2017') _tab (`ckd3_ckd2_2018') _tab (`ckd3_ckd2_2019') _tab (`ckd3_ckd2_2020') _tab (`ckd3_ckd2_2021') _tab (`ckd3_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("CKD stage 4/5") _tab (`ckd4_ckd2_2017') _tab (`ckd4_ckd2_2018') _tab (`ckd4_ckd2_2019') _tab (`ckd4_ckd2_2020') _tab (`ckd4_ckd2_2021') _tab (`ckd4_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Dialysis") _tab (`dialysis_ckd2_2017') _tab (`dialysis_ckd2_2018') _tab (`dialysis_ckd2_2019') _tab (`dialysis_ckd2_2020') _tab (`dialysis_ckd2_2021') _tab (`dialysis_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Transplant") _tab (`kt_ckd2_2017') _tab (`kt_ckd2_2018') _tab (`kt_ckd2_2019') _tab (`kt_ckd2_2020') _tab (`kt_ckd2_2021') _tab (`kt_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Deceased") _tab (`deceased_ckd2_2017') _tab (`deceased_ckd2_2018') _tab (`deceased_ckd2_2019') _tab (`deceased_ckd2_2020') _tab (`deceased_ckd2_2021') _tab (`deceased_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Cardiovascular admission") _tab (`cardio_ckd2_2017') _tab (`cardio_ckd2_2018') _tab (`cardio_ckd2_2019') _tab (`cardio_ckd2_2020') _tab (`cardio_ckd2_2021') _tab (`cardio_ckd2_2022') _n
 
 *CKD stage 3
 file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("N/A") _tab (`baseline_ckd3_2017') _tab (`baseline_ckd3_2018') _tab (`baseline_ckd3_2019') _tab (`baseline_ckd3_2020') _tab (`baseline_ckd3_2021') _tab (`baseline_ckd3_2022') _n
@@ -935,6 +795,7 @@ drop _merge
 merge 1:1 patient_id using ./output/`x'_nockd_complete
 local label`i': label urban `i'
 drop if urban!=`i'
+replace ckd_group = 0 if ckd_group==1
 
 **Disclosure minimisation
 *safecount provides a count with any counts <=5 returned at "<=5"
@@ -990,32 +851,6 @@ local deceased_nockd_`x' = round(r(N),5)
 *Total number of people in groupw with cardiovascular admission each year
 qui safecount if cardiovascular==1 & ckd_group==0
 local cardio_nockd_`x' = round(r(N),5)
-
-**eGFR >60 with albuminuria
-*Number of people in group (baseline_ckd2_`x') at the beginning of each year
-qui safecount if ckd_group==1
-local baseline_ckd2_`x' = round(r(N),5)
-*Number of people in group who do not progress by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==0
-local none_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to CKD stage 3 by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==1
-local ckd3_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==2
-local ckd4_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to dialysis by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==3
-local dialysis_ckd2_`x' = round(r(N),5)
-*Number of people in group who progress to kidney transplant by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==4
-local kt_ckd2_`x' = round(r(N),5)
-*Number of people in group who die by the end of the year
-qui safecount if ckd_group==1 & ckd_progression==6
-local deceased_ckd2_`x' = round(r(N),5)
-*Total number of people in groupw with cardiovascular admission each year
-qui safecount if cardiovascular==1 & ckd_group==1
-local cardio_ckd2_`x' = round(r(N),5)
 
 **CKD stage 3
 *Number of people in group (baseline_ckd3_`x') at the beginning of each year
@@ -1115,16 +950,6 @@ file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Dialysis") _tab (`
 file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Transplant") _tab (`kt_nockd_2017') _tab (`kt_nockd_2018') _tab (`kt_nockd_2019') _tab (`kt_nockd_2020') _tab (`kt_nockd_2021') _tab (`kt_nockd_2022') _n
 file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Deceased") _tab (`deceased_nockd_2017') _tab (`deceased_nockd_2018') _tab (`deceased_nockd_2019') _tab (`deceased_nockd_2020') _tab (`deceased_nockd_2021') _tab (`deceased_nockd_2022') _n
 file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Cardiovascular admission") _tab (`cardio_nockd_2017') _tab (`cardio_nockd_2018') _tab (`cardio_nockd_2019') _tab (`cardio_nockd_2020') _tab (`cardio_nockd_2021') _tab (`cardio_nockd_2022') _n
-
-*eGFR >60 with albuminuria
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("N/A") _tab (`baseline_ckd2_2017') _tab (`baseline_ckd2_2018') _tab (`baseline_ckd2_2019') _tab (`baseline_ckd2_2020') _tab (`baseline_ckd2_2021') _tab (`baseline_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("No progression") _tab (`none_ckd2_2017') _tab (`none_ckd2_2018') _tab (`none_ckd2_2019') _tab (`none_ckd2_2020') _tab (`none_ckd2_2021') _tab (`none_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("CKD stage 3") _tab (`ckd3_ckd2_2017') _tab (`ckd3_ckd2_2018') _tab (`ckd3_ckd2_2019') _tab (`ckd3_ckd2_2020') _tab (`ckd3_ckd2_2021') _tab (`ckd3_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("CKD stage 4/5") _tab (`ckd4_ckd2_2017') _tab (`ckd4_ckd2_2018') _tab (`ckd4_ckd2_2019') _tab (`ckd4_ckd2_2020') _tab (`ckd4_ckd2_2021') _tab (`ckd4_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Dialysis") _tab (`dialysis_ckd2_2017') _tab (`dialysis_ckd2_2018') _tab (`dialysis_ckd2_2019') _tab (`dialysis_ckd2_2020') _tab (`dialysis_ckd2_2021') _tab (`dialysis_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Transplant") _tab (`kt_ckd2_2017') _tab (`kt_ckd2_2018') _tab (`kt_ckd2_2019') _tab (`kt_ckd2_2020') _tab (`kt_ckd2_2021') _tab (`kt_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Deceased") _tab (`deceased_ckd2_2017') _tab (`deceased_ckd2_2018') _tab (`deceased_ckd2_2019') _tab (`deceased_ckd2_2020') _tab (`deceased_ckd2_2021') _tab (`deceased_ckd2_2022') _n
-file write tablecontent ("`label`i''") _tab ("Albuminuria") _tab ("Cardiovascular admission") _tab (`cardio_ckd2_2017') _tab (`cardio_ckd2_2018') _tab (`cardio_ckd2_2019') _tab (`cardio_ckd2_2020') _tab (`cardio_ckd2_2021') _tab (`cardio_ckd2_2022') _n
 
 *CKD stage 3
 file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("N/A") _tab (`baseline_ckd3_2017') _tab (`baseline_ckd3_2018') _tab (`baseline_ckd3_2019') _tab (`baseline_ckd3_2020') _tab (`baseline_ckd3_2021') _tab (`baseline_ckd3_2022') _n

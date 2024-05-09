@@ -82,7 +82,7 @@ egen esrd_egfr_end = cut(egfr_outcome), at (0, 15, 5000)
 recode esrd_egfr_end 0=1 15=0
 tab esrd_egfr_end, m
 *NB - might need to change "" to . with dummy data
-replace modality_outcome = "Unchanged" if modality_outcome_date==.
+replace modality_outcome = "Unchanged" if modality_outcome_date==""
 gen dialysis_outcome = 0
 replace dialysis_outcome = 1 if modality_outcome=="Dialysis"
 replace dialysis_outcome = 1 if modality_outcome=="Modality unclear" & esrd_egfr_end==1
@@ -90,7 +90,7 @@ gen kidney_transplant_outcome = 0
 replace kidney_transplant_outcome = 1 if modality_outcome=="Kidney transplant"
 replace kidney_transplant_outcome = 1 if modality_outcome=="Modality unclear" & esrd_egfr_end==0
 *NB - might need to change "" to . with dummy data
-replace ckd_progression = 5 if modality_outcome=="Modality unclear" & modality_outcome_date!=.
+replace ckd_progression = 5 if modality_outcome=="Modality unclear" & modality_outcome_date!=""
 replace ckd_progression = 3 if dialysis_outcome==1
 replace ckd_progression = 4 if kidney_transplant_outcome==1
 replace ckd_progression = 6 if modality_outcome=="Deceased"
@@ -237,7 +237,7 @@ foreach var of varlist ethnicity imd region urban {
 bysort `var': egen `var'_`cost' = total(`cost')
 bysort `var' ckd_group: egen `var'_`cost'_ckd = total(`cost')
 }
-}*/
+}/*
 
 save "./output/`dataset'_nockd_complete.dta", replace
 

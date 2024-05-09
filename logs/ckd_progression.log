@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/ckd_progression.log
   log type:  text
- opened on:  29 Apr 2024, 16:14:06
+ opened on:   9 May 2024, 13:49:24
 
 . 
 . cap file close tablecontent
@@ -10,8 +10,7 @@
 . file open tablecontent using ./output/ckd_progression.csv, write text replace
 
 . 
-. file write tablecontent ("stratum") _tab ("start_status") _tab ("end_status") _tab ("2017") _tab ("2017_ll") _tab ("2017_ul") _tab ("count_2018") _tab ("2018_ll") _tab ("2018_ul")  _tab ("count_2019") _tab ("2019_ll") _tab ("2019_ul") _tab ("count_20
-> 20") _tab ("2020_ll") _tab ("2020_ul") _tab ("count_2021") _tab ("2021_ll") _tab ("2021_ul") _tab ("count_2022") _tab ("2022_ll") _tab ("2022_ul") _n
+. file write tablecontent ("stratum") _tab ("start_status") _tab ("end_status") _tab ("count_2017") _tab ("count_2018") _tab ("count_2019") _tab ("count_2020") _tab ("count_2021") _tab ("count_2022") _n
 
 . 
 . local year "2017 2018 2019 2020 2021 2022"
@@ -20,172 +19,140 @@
   2. use ./output/`x'_ckd_complete.dta, clear
   3. drop _merge
   4. merge 1:1 patient_id using ./output/`x'_nockd_complete
-  5. 
+  5. replace ckd_group = 0 if ckd_group==1
+  6. 
+. **Disclosure minimisation
+. *safecount provides a count with any counts <=5 returned at "<=5"
+. *round(r(N),5) rounds counts to the nearest 5 with any counts <=5 returned as "."
+. 
 . **Overall
-. qui total weight
-  6. local baseline_ckd_`x' = r(table)[1,1]
-  7. local baseline_ckd_`x'_ll = r(table)[5,1]
-  8. local baseline_ckd_`x'_ul = r(table)[6,1]
-  9. 
-. qui total weight if ckd_progression==0
- 10. local none_ckd_`x' = r(table)[1,1]
- 11. local none_ckd_`x'_ll = r(table)[5,1]
- 12. local none_ckd_`x'_ul = r(table)[6,1]
- 13. 
-. qui total weight if ckd_progression==1
- 14. local ckd3_ckd_`x' = r(table)[1,1]
- 15. local ckd3_ckd_`x'_ll = r(table)[5,1]
- 16. local ckd3_ckd_`x'_ul = r(table)[6,1]
- 17. 
-. qui total weight if ckd_progression==2
- 18. local ckd4_ckd_`x' = r(table)[1,1]
- 19. local ckd4_ckd_`x'_ll = r(table)[5,1]
- 20. local ckd4_ckd_`x'_ul = r(table)[6,1]
- 21. 
-. qui total weight if ckd_progression==3
- 22. local dialysis_ckd_`x' = r(table)[1,1]
- 23. local dialysis_ckd_`x'_ll = r(table)[5,1]
- 24. local dialysis_ckd_`x'_ul = r(table)[6,1]
- 25. 
-. qui total weight if ckd_progression==4
- 26. local kt_ckd_`x' = r(table)[1,1]
- 27. local kt_ckd_`x'_ll = r(table)[5,1]
- 28. local kt_ckd_`x'_ul = r(table)[6,1]
- 29. 
-. qui total weight if ckd_progression==6
- 30. local deceased_ckd_`x' = r(table)[1,1]
- 31. local deceased_ckd_`x'_ll = r(table)[5,1]
- 32. local deceased_ckd_`x'_ul = r(table)[6,1]
- 33. 
-. qui total weight if cardiovascular==1
- 34. local cardio_ckd_`x' = r(table)[1,1]
- 35. local cardio_ckd_`x'_ll = r(table)[5,1]
- 36. local cardio_ckd_`x'_ul = r(table)[6,1]
- 37. 
+. qui safecount
+  7. local baseline_ckd_`x' = round(r(N),5)
+  8. *Total number of people in group who do not progress by the end of the year
+. qui safecount if ckd_progression==0
+  9. local none_ckd_`x' = round(r(N),5)
+ 10. *Total number of people in group who progress to CKD stage 3 by the end of the year
+. qui safecount if ckd_progression==1
+ 11. local ckd3_ckd_`x' = round(r(N),5)
+ 12. *Total number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_progression==2
+ 13. local ckd4_ckd_`x' = round(r(N),5)
+ 14. *Total number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_progression==3
+ 15. local dialysis_ckd_`x' = round(r(N),5)
+ 16. *Total number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_progression==4
+ 17. local kt_ckd_`x' = round(r(N),5)
+ 18. *Total number of people in group who die by the end of the year
+. qui safecount if ckd_progression==6
+ 19. local deceased_ckd_`x' = round(r(N),5)
+ 20. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1
+ 21. local cardio_ckd_`x' = round(r(N),5)
+ 22. 
 . **No CKD
-. qui total weight if ckd_group==0
- 38. local baseline_nockd_`x' = r(table)[1,1]
- 39. local baseline_nockd_`x'_ll = r(table)[5,1]
- 40. local baseline_nockd_`x'_ul = r(table)[6,1]
- 41. 
-. qui total weight if ckd_group==0 & ckd_progression==0
- 42. local none_nockd_`x' = r(table)[1,1]
- 43. local none_nockd_`x'_ll = r(table)[5,1]
- 44. local none_nockd_`x'_ul = r(table)[6,1]
- 45. 
-. qui total weight if ckd_group==0 & ckd_progression==1
- 46. local ckd3_nockd_`x' = r(table)[1,1]
- 47. local ckd3_nockd_`x'_ll = r(table)[5,1]
- 48. local ckd3_nockd_`x'_ul = r(table)[6,1]
- 49. 
-. qui total weight if ckd_group==0 & ckd_progression==2
- 50. local ckd4_nockd_`x' = r(table)[1,1]
- 51. local ckd4_nockd_`x'_ll = r(table)[5,1]
- 52. local ckd4_nockd_`x'_ul = r(table)[6,1]
- 53. 
-. qui total weight if ckd_group==0 & ckd_progression==3
- 54. local dialysis_nockd_`x' = r(table)[1,1]
- 55. local dialysis_nockd_`x'_ll = r(table)[5,1]
- 56. local dialysis_nockd_`x'_ul = r(table)[6,1]
- 57. 
-. qui total weight if ckd_group==0 & ckd_progression==4
- 58. local kt_nockd_`x' = r(table)[1,1]
- 59. local kt_nockd_`x'_ll = r(table)[5,1]
- 60. local kt_nockd_`x'_ul = r(table)[6,1]
- 61. 
-. qui total weight if ckd_group==0 & ckd_progression==6
- 62. local deceased_nockd_`x' = r(table)[1,1]
- 63. local deceased_nockd_`x'_ll = r(table)[5,1]
- 64. local deceased_nockd_`x'_ul = r(table)[6,1]
- 65. 
-. qui total weight if cardiovascular==1 & ckd_group==0
- 66. local cardio_nockd_`x' = r(table)[1,1]
- 67. local cardio_nockd_`x'_ll = r(table)[5,1]
- 68. local cardio_nockd_`x'_ul = r(table)[6,1]
- 69. 
-. **eGFR >60 with albuminuria
-. qui total weight if ckd_group==1
- 70. local baseline_ckd2_`x' = r(table)[1,1]
- 71. local baseline_ckd2_`x'_ll = r(table)[5,1]
- 72. local baseline_ckd2_`x'_ul = r(table)[6,1]
- 73. 
-. qui total weight if ckd_group==1 & ckd_progression==0
- 74. local none_ckd2_`x' = r(table)[1,1]
- 75. local none_ckd2_`x'_ll = r(table)[5,1]
- 76. local none_ckd2_`x'_ul = r(table)[6,1]
- 77. 
-. qui total weight if ckd_group==1 & ckd_progression==1
- 78. local ckd3_ckd2_`x' = r(table)[1,1]
- 79. local ckd3_ckd2_`x'_ll = r(table)[5,1]
- 80. local ckd3_ckd2_`x'_ul = r(table)[6,1]
- 81. 
-. qui total weight if ckd_group==1 & ckd_progression==2
- 82. local ckd4_ckd2_`x' = r(table)[1,1]
- 83. local ckd4_ckd2_`x'_ll = r(table)[5,1]
- 84. local ckd4_ckd2_`x'_ul = r(table)[6,1]
- 85. 
-. qui total weight if ckd_group==1 & ckd_progression==3
- 86. local dialysis_ckd2_`x' = r(table)[1,1]
- 87. local dialysis_ckd2_`x'_ll = r(table)[5,1]
- 88. local dialysis_ckd2_`x'_ul = r(table)[6,1]
- 89. 
-. qui total weight if ckd_group==1 & ckd_progression==4
- 90. local kt_ckd2_`x' = r(table)[1,1]
- 91. local kt_ckd2_`x'_ll = r(table)[5,1]
- 92. local kt_ckd2_`x'_ul = r(table)[6,1]
- 93. 
-. qui total weight if ckd_group==1 & ckd_progression==6
- 94. local deceased_ckd2_`x' = r(table)[1,1]
- 95. local deceased_ckd2_`x'_ll = r(table)[5,1]
- 96. local deceased_ckd2_`x'_ul = r(table)[6,1]
- 97. 
-. qui total weight if cardiovascular==1 & ckd_group==1
- 98. local cardio_ckd2_`x' = r(table)[1,1]
- 99. local cardio_ckd2_`x'_ll = r(table)[5,1]
-100. local cardio_ckd2_`x'_ul = r(table)[6,1]
-101. 
+. *Number of people without CKD at the beginning of each year
+. qui safecount if ckd_group==0
+ 23. local baseline_nockd_`x' = round(r(N),5)
+ 24. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==0
+ 25. local none_nockd_`x' = round(r(N),5)
+ 26. *Number of people in group who progress to CKD stage 3 by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==1
+ 27. local ckd3_nockd_`x' = round(r(N),5)
+ 28. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==2
+ 29. local ckd4_nockd_`x' = round(r(N),5)
+ 30. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==3
+ 31. local dialysis_nockd_`x' = round(r(N),5)
+ 32. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==4
+ 33. local kt_nockd_`x' = round(r(N),5)
+ 34. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==6
+ 35. local deceased_nockd_`x' = round(r(N),5)
+ 36. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==0
+ 37. local cardio_nockd_`x' = round(r(N),5)
+ 38. 
 . **CKD stage 3
-. qui total weight if ckd_group==2
-102. local baseline_ckd3_`x' = r(table)[1,1]
-103. local baseline_ckd3_`x'_ll = r(table)[5,1]
-104. local baseline_ckd3_`x'_ul = r(table)[6,1]
-105. 
-. qui total weight if ckd_group==2 & ckd_progression==0
-106. local none_ckd3_`x' = r(table)[1,1]
-107. local none_ckd3_`x'_ll = r(table)[5,1]
-108. local none_ckd3_`x'_ul = r(table)[6,1]
-109. 
-. qui total weight if ckd_group==2 & ckd_progression==2
-110. local ckd4_ckd3_`x' = r(table)[1,1]
-111. local ckd4_ckd3_`x'_ll = r(table)[5,1]
-112. local ckd4_ckd3_`x'_ul = r(table)[6,1]
-113. 
-. qui total weight if ckd_group==2 & ckd_progression==3
-114. local dialysis_ckd3_`x' = r(table)[1,1]
-115. local dialysis_ckd3_`x'_ll = r(table)[5,1]
-116. local dialysis_ckd3_`x'_ul = r(table)[6,1]
-117. 
-. qui total weight if ckd_group==2 & ckd_progression==4
-118. local kt_ckd3_`x' = r(table)[1,1]
-119. local kt_ckd3_`x'_ll = r(table)[5,1]
-120. local kt_ckd3_`x'_ul = r(table)[6,1]
-121. 
-. qui total weight if ckd_group==2 & ckd_progression==6
-122. local deceased_ckd3_`x' = r(table)[1,1]
-123. local deceased_ckd3_`x'_ll = r(table)[5,1]
-124. local deceased_ckd3_`x'_ul = r(table)[6,1]
-125. 
-. qui total weight if cardiovascular==1 & ckd_group==2
-126. local cardio_ckd3_`x' = r(table)[1,1]
-127. local cardio_ckd3_`x'_ll = r(table)[5,1]
-128. local cardio_ckd3_`x'_ul = r(table)[6,1]
-129. 
-. **CKD stage 4/5
-. qui total weight if ckd_group==3
-130. local baseline_ckd4_`x' = r(table)[1,1]
-131. local baseline_ckd4_`x'_ll = r(table)[5,1]
-132. local baseline_ckd4_`x'_ul = r(table)[6,1]
-133. }
+. *Number of people in group (baseline_ckd3_`x') at the beginning of each year
+. qui safecount if ckd_group==2
+ 39. local baseline_ckd3_`x' = round(r(N),5)
+ 40. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==0
+ 41. local none_ckd3_`x' = round(r(N),5)
+ 42. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==2
+ 43. local ckd4_ckd3_`x' = round(r(N),5)
+ 44. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==3
+ 45. local dialysis_ckd3_`x' = round(r(N),5)
+ 46. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==4
+ 47. local kt_ckd3_`x' = round(r(N),5)
+ 48. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==6
+ 49. local deceased_ckd3_`x' = round(r(N),5)
+ 50. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==2
+ 51. local cardio_ckd3_`x' = round(r(N),5)
+ 52. 
+. **CKD stage 4/5 without KRT
+. *Number of people in group (baseline_ckd4_`x') at the beginning of each year
+. qui safecount if ckd_group==3
+ 53. local baseline_ckd4_`x' = round(r(N),5)
+ 54. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==0
+ 55. local none_ckd4_`x' = round(r(N),5)
+ 56. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==3
+ 57. local dialysis_ckd4_`x' = round(r(N),5)
+ 58. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==4
+ 59. local kt_ckd4_`x' = round(r(N),5)
+ 60. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==6
+ 61. local deceased_ckd4_`x' = round(r(N),5)
+ 62. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==3
+ 63. local cardio_ckd4_`x' = round(r(N),5)
+ 64. 
+. **Dialysis
+. *Number of people in group (baseline_dialysis_`x') at the beginning of each year
+. qui safecount if ckd_group==4
+ 65. local baseline_dialysis_`x' = round(r(N),5)
+ 66. *Number of people in group remaining on dialysis by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==0
+ 67. local none_dialysis_`x' = round(r(N),5)
+ 68. *Number of people in group with kidney transplant by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==4
+ 69. local kt_dialysis_`x' = round(r(N),5)
+ 70. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==6
+ 71. local deceased_dialysis_`x' = round(r(N),5)
+ 72. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==4
+ 73. local cardio_dialysis_`x' = round(r(N),5)
+ 74. 
+. **Kidney transplant
+. *Number of people in group (baseline_kt_`x') at the beginning of each year
+. qui safecount if ckd_group==5
+ 75. local baseline_kt_`x' = round(r(N),5)
+ 76. *Number of people in group remaining with kidney transplant by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==0
+ 77. local none_kt_`x' = round(r(N),5)
+ 78. *Number of people in group on dialysis by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==3
+ 79. local dialysis_kt_`x' = round(r(N),5)
+ 80. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==6
+ 81. local deceased_kt_`x' = round(r(N),5)
+ 82. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==5
+ 83. local cardio_kt_`x' = round(r(N),5)
+ 84. }
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -196,12 +163,13 @@
 
     Result                      Number of obs
     -----------------------------------------
-    Not matched                         3,209
+    Not matched                         2,125
         from master                     2,125  (_merge==1)
-        from using                      1,084  (_merge==2)
+        from using                          0  (_merge==2)
 
-    Matched                                 0  (_merge==3)
+    Matched                             1,084  (_merge==3)
     -----------------------------------------
+(1,296 real changes made)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -218,6 +186,7 @@
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
+(1,289 real changes made)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -228,12 +197,13 @@
 
     Result                      Number of obs
     -----------------------------------------
-    Not matched                         3,239
+    Not matched                         2,138
         from master                     2,138  (_merge==1)
-        from using                      1,101  (_merge==2)
+        from using                          0  (_merge==2)
 
-    Matched                                 0  (_merge==3)
+    Matched                             1,101  (_merge==3)
     -----------------------------------------
+(1,316 real changes made)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -244,12 +214,13 @@
 
     Result                      Number of obs
     -----------------------------------------
-    Not matched                         3,163
+    Not matched                         2,086
         from master                     2,086  (_merge==1)
-        from using                      1,077  (_merge==2)
+        from using                          0  (_merge==2)
 
-    Matched                                 0  (_merge==3)
+    Matched                             1,077  (_merge==3)
     -----------------------------------------
+(1,253 real changes made)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -260,12 +231,13 @@
 
     Result                      Number of obs
     -----------------------------------------
-    Not matched                         3,273
+    Not matched                         2,144
         from master                     2,144  (_merge==1)
-        from using                      1,129  (_merge==2)
+        from using                          0  (_merge==2)
 
-    Matched                                 0  (_merge==3)
+    Matched                             1,129  (_merge==3)
     -----------------------------------------
+(1,304 real changes made)
 (label sex already defined)
 (label egfr_end already defined)
 (label ckd_progression already defined)
@@ -276,52 +248,3349 @@
 
     Result                      Number of obs
     -----------------------------------------
-    Not matched                         3,179
+    Not matched                         2,089
         from master                     2,089  (_merge==1)
-        from using                      1,090  (_merge==2)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(1,258 real changes made)
+
+. 
+. **Populate table with redacted counts
+. *Overall
+. file write tablecontent ("All") _tab ("Overall") _tab ("N/A") _tab (`baseline_ckd_2017') _tab (`baseline_ckd_2018') _tab (`baseline_ckd_2019') _tab (`baseline_ckd_2020') _tab (`baseline_ckd_2021') _tab (`baseline_ckd_2022') _n
+
+. file write tablecontent ("All") _tab ("Overall") _tab ("No progression") _tab (`none_ckd_2017') _tab (`none_ckd_2018') _tab (`none_ckd_2019') _tab (`none_ckd_2020') _tab (`none_ckd_2021') _tab (`none_ckd_2022') _n
+
+. file write tablecontent ("All") _tab ("Overall") _tab ("CKD stage 3") _tab (`ckd3_ckd_2017') _tab (`ckd3_ckd_2018') _tab (`ckd3_ckd_2019') _tab (`ckd3_ckd_2020') _tab (`ckd3_ckd_2021') _tab (`ckd3_ckd_2022') _n
+
+. file write tablecontent ("All") _tab ("Overall") _tab ("CKD stage 4/5") _tab (`ckd4_ckd_2017') _tab (`ckd4_ckd_2018') _tab (`ckd4_ckd_2019') _tab (`ckd4_ckd_2020') _tab (`ckd4_ckd_2021') _tab (`ckd4_ckd_2022') _n
+
+. file write tablecontent ("All") _tab ("Overall") _tab ("Dialysis") _tab (`dialysis_ckd_2017') _tab (`dialysis_ckd_2018') _tab (`dialysis_ckd_2019') _tab (`dialysis_ckd_2020') _tab (`dialysis_ckd_2021') _tab (`dialysis_ckd_2022') _n
+
+. file write tablecontent ("All") _tab ("Overall") _tab ("Transplant") _tab (`kt_ckd_2017') _tab (`kt_ckd_2018') _tab (`kt_ckd_2019') _tab (`kt_ckd_2020') _tab (`kt_ckd_2021') _tab (`kt_ckd_2022') _n
+
+. file write tablecontent ("All") _tab ("Overall") _tab ("Deceased") _tab (`deceased_ckd_2017') _tab (`deceased_ckd_2018') _tab (`deceased_ckd_2019') _tab (`deceased_ckd_2020') _tab (`deceased_ckd_2021') _tab (`deceased_ckd_2022') _n
+
+. file write tablecontent ("All") _tab ("Overall") _tab ("Cardiovascular admission") _tab (`cardio_ckd_2017') _tab (`cardio_ckd_2018') _tab (`cardio_ckd_2019') _tab (`cardio_ckd_2020') _tab (`cardio_ckd_2021') _tab (`cardio_ckd_2022') _n
+
+. 
+. *No CKD
+. file write tablecontent ("All") _tab ("No CKD") _tab ("N/A") _tab (`baseline_nockd_2017') _tab (`baseline_nockd_2018') _tab (`baseline_nockd_2019') _tab (`baseline_nockd_2020') _tab (`baseline_nockd_2021') _tab (`baseline_nockd_2022') _n
+
+. file write tablecontent ("All") _tab ("No CKD") _tab ("No progression") _tab (`none_nockd_2017') _tab (`none_nockd_2018') _tab (`none_nockd_2019') _tab (`none_nockd_2020') _tab (`none_nockd_2021') _tab (`none_nockd_2022') _n
+
+. file write tablecontent ("All") _tab ("No CKD") _tab ("CKD stage 3") _tab (`ckd3_nockd_2017') _tab (`ckd3_nockd_2018') _tab (`ckd3_nockd_2019') _tab (`ckd3_nockd_2020') _tab (`ckd3_nockd_2021') _tab (`ckd3_nockd_2022') _n
+
+. file write tablecontent ("All") _tab ("No CKD") _tab ("CKD stage 4/5") _tab (`ckd4_nockd_2017') _tab (`ckd4_nockd_2018') _tab (`ckd4_nockd_2019') _tab (`ckd4_nockd_2020') _tab (`ckd4_nockd_2021') _tab (`ckd4_nockd_2022') _n
+
+. file write tablecontent ("All") _tab ("No CKD") _tab ("Dialysis") _tab (`dialysis_nockd_2017') _tab (`dialysis_nockd_2018') _tab (`dialysis_nockd_2019') _tab (`dialysis_nockd_2020') _tab (`dialysis_nockd_2021') _tab (`dialysis_nockd_2022') _n
+
+. file write tablecontent ("All") _tab ("No CKD") _tab ("Transplant") _tab (`kt_nockd_2017') _tab (`kt_nockd_2018') _tab (`kt_nockd_2019') _tab (`kt_nockd_2020') _tab (`kt_nockd_2021') _tab (`kt_nockd_2022') _n
+
+. file write tablecontent ("All") _tab ("No CKD") _tab ("Deceased") _tab (`deceased_nockd_2017') _tab (`deceased_nockd_2018') _tab (`deceased_nockd_2019') _tab (`deceased_nockd_2020') _tab (`deceased_nockd_2021') _tab (`deceased_nockd_2022') _n
+
+. file write tablecontent ("All") _tab ("No CKD") _tab ("Cardiovascular admission") _tab (`cardio_nockd_2017') _tab (`cardio_nockd_2018') _tab (`cardio_nockd_2019') _tab (`cardio_nockd_2020') _tab (`cardio_nockd_2021') _tab (`cardio_nockd_2022') _n
+
+. 
+. *CKD stage 3
+. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("N/A") _tab (`baseline_ckd3_2017') _tab (`baseline_ckd3_2018') _tab (`baseline_ckd3_2019') _tab (`baseline_ckd3_2020') _tab (`baseline_ckd3_2021') _tab (`baseline_ckd3_2022') _n
+
+. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("No progression") _tab (`none_ckd3_2017') _tab (`none_ckd3_2018') _tab (`none_ckd3_2019') _tab (`none_ckd3_2020') _tab (`none_ckd3_2021') _tab (`none_ckd3_2022') _n
+
+. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("CKD stage 4/5") _tab (`ckd4_ckd3_2017') _tab (`ckd4_ckd3_2018') _tab (`ckd4_ckd3_2019') _tab (`ckd4_ckd3_2020') _tab (`ckd4_ckd3_2021') _tab (`ckd4_ckd3_2022') _n
+
+. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("Dialysis") _tab (`dialysis_ckd3_2017') _tab (`dialysis_ckd3_2018') _tab (`dialysis_ckd3_2019') _tab (`dialysis_ckd3_2020') _tab (`dialysis_ckd3_2021') _tab (`dialysis_ckd3_2022') _n
+
+. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("Transplant") _tab (`kt_ckd3_2017') _tab (`kt_ckd3_2018') _tab (`kt_ckd3_2019') _tab (`kt_ckd3_2020') _tab (`kt_ckd3_2021') _tab (`kt_ckd3_2022') _n
+
+. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("Deceased") _tab (`deceased_ckd3_2017') _tab (`deceased_ckd3_2018') _tab (`deceased_ckd3_2019') _tab (`deceased_ckd3_2020') _tab (`deceased_ckd3_2021') _tab (`deceased_ckd3_2022') _n
+
+. file write tablecontent ("All") _tab ("CKD stage 3") _tab ("Cardiovascular admission") _tab (`cardio_ckd3_2017') _tab (`cardio_ckd3_2018') _tab (`cardio_ckd3_2019') _tab (`cardio_ckd3_2020') _tab (`cardio_ckd3_2021') _tab (`cardio_ckd3_2022') _n
+
+. 
+. *CKD stage 4/5 without KRT
+. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab ("N/A") _tab (`baseline_ckd4_2017') _tab (`baseline_ckd4_2018') _tab (`baseline_ckd4_2019') _tab (`baseline_ckd4_2020') _tab (`baseline_ckd4_2021') _tab (`baseline_ckd4_2022') _n
+
+. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab ("No progression") _tab (`none_ckd4_2017') _tab (`none_ckd4_2018') _tab (`none_ckd4_2019') _tab (`none_ckd4_2020') _tab (`none_ckd4_2021') _tab (`none_ckd4_2022') _n
+
+. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab ("Dialysis") _tab (`dialysis_ckd4_2017') _tab (`dialysis_ckd4_2018') _tab (`dialysis_ckd4_2019') _tab (`dialysis_ckd4_2020') _tab (`dialysis_ckd4_2021') _tab (`dialysis_ckd4_2022') _n
+
+. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab ("Transplant") _tab (`kt_ckd4_2017') _tab (`kt_ckd4_2018') _tab (`kt_ckd4_2019') _tab (`kt_ckd4_2020') _tab (`kt_ckd4_2021') _tab (`kt_ckd4_2022') _n
+
+. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab ("Deceased") _tab (`deceased_ckd4_2017') _tab (`deceased_ckd4_2018') _tab (`deceased_ckd4_2019') _tab (`deceased_ckd4_2020') _tab (`deceased_ckd4_2021') _tab (`deceased_ckd4_2022') _n
+
+. file write tablecontent ("All") _tab ("CKD stage 4/5") _tab ("Cardiovascular admission") _tab (`cardio_ckd4_2017') _tab (`cardio_ckd4_2018') _tab (`cardio_ckd4_2019') _tab (`cardio_ckd4_2020') _tab (`cardio_ckd4_2021') _tab (`cardio_ckd4_2022') _n
+
+. 
+. *Dialysis
+. file write tablecontent ("All") _tab ("Dialysis") _tab ("N/A") _tab (`baseline_dialysis_2017') _tab (`baseline_dialysis_2018') _tab (`baseline_dialysis_2019') _tab (`baseline_dialysis_2020') _tab (`baseline_dialysis_2021') _tab (`baseline_dialysis_20
+> 22') _n
+
+. file write tablecontent ("All") _tab ("Dialysis") _tab ("No progression") _tab (`none_dialysis_2017') _tab (`none_dialysis_2018') _tab (`none_dialysis_2019') _tab (`none_dialysis_2020') _tab (`none_dialysis_2021') _tab (`none_dialysis_2022') _n
+
+. file write tablecontent ("All") _tab ("Dialysis") _tab ("Transplant") _tab (`kt_dialysis_2017') _tab (`kt_dialysis_2018') _tab (`kt_dialysis_2019') _tab (`kt_dialysis_2020') _tab (`kt_dialysis_2021') _tab (`kt_dialysis_2022') _n
+
+. file write tablecontent ("All") _tab ("Dialysis") _tab ("Deceased") _tab (`deceased_dialysis_2017') _tab (`deceased_dialysis_2018') _tab (`deceased_dialysis_2019') _tab (`deceased_dialysis_2020') _tab (`deceased_dialysis_2021') _tab (`deceased_dialys
+> is_2022') _n
+
+. file write tablecontent ("All") _tab ("Dialysis") _tab ("Cardiovascular admission") _tab (`cardio_dialysis_2017') _tab (`cardio_dialysis_2018') _tab (`cardio_dialysis_2019') _tab (`cardio_dialysis_2020') _tab (`cardio_dialysis_2021') _tab (`cardio_di
+> alysis_2022') _n
+
+. 
+. *Kidney Transplant
+. file write tablecontent ("All") _tab ("Transplant") _tab ("N/A") _tab (`baseline_kt_2017') _tab (`baseline_kt_2018') _tab (`baseline_kt_2019') _tab (`baseline_kt_2020') _tab (`baseline_kt_2021') _tab (`baseline_kt_2022') _n
+
+. file write tablecontent ("All") _tab ("Transplant") _tab ("No progression") _tab (`none_kt_2017') _tab (`none_kt_2018') _tab (`none_kt_2019') _tab (`none_kt_2020') _tab (`none_kt_2021') _tab (`none_kt_2022') _n
+
+. file write tablecontent ("All") _tab ("Transplant") _tab ("Dialysis") _tab (`dialysis_kt_2017') _tab (`dialysis_kt_2018') _tab (`dialysis_kt_2019') _tab (`dialysis_kt_2020') _tab (`dialysis_kt_2021') _tab (`dialysis_kt_2022') _n
+
+. file write tablecontent ("All") _tab ("Transplant") _tab ("Deceased") _tab (`deceased_kt_2017') _tab (`deceased_kt_2018') _tab (`deceased_kt_2019') _tab (`deceased_kt_2020') _tab (`deceased_kt_2021') _tab (`deceased_kt_2022') _n
+
+. file write tablecontent ("All") _tab ("Transplant") _tab ("Cardiovascular admission") _tab (`cardio_kt_2017') _tab (`cardio_kt_2018') _tab (`cardio_kt_2019') _tab (`cardio_kt_2020') _tab (`cardio_kt_2021') _tab (`cardio_kt_2022') _n
+
+. 
+. 
+. forvalues i=1/6 {
+  2. foreach x of local year {
+  3. use ./output/`x'_ckd_complete.dta, clear
+  4. drop _merge
+  5. merge 1:1 patient_id using ./output/`x'_nockd_complete
+  6. local label`i': label ethnicity `i'
+  7. drop if ethnicity!=`i'
+  8. replace ckd_group = 0 if ckd_group==1
+  9. 
+. **Disclosure minimisation
+. *safecount provides a count with any counts <=5 returned at "<=5"
+. *round(r(N),5) rounds counts to the nearest 5 with any counts <=5 returned as "."
+. 
+. **Overall
+. qui safecount
+ 10. local baseline_ckd_`x' = round(r(N),5)
+ 11. *Total number of people in group who do not progress by the end of the year
+. qui safecount if ckd_progression==0
+ 12. local none_ckd_`x' = round(r(N),5)
+ 13. *Total number of people in group who progress to CKD stage 3 by the end of the year
+. qui safecount if ckd_progression==1
+ 14. local ckd3_ckd_`x' = round(r(N),5)
+ 15. *Total number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_progression==2
+ 16. local ckd4_ckd_`x' = round(r(N),5)
+ 17. *Total number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_progression==3
+ 18. local dialysis_ckd_`x' = round(r(N),5)
+ 19. *Total number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_progression==4
+ 20. local kt_ckd_`x' = round(r(N),5)
+ 21. *Total number of people in group who die by the end of the year
+. qui safecount if ckd_progression==6
+ 22. local deceased_ckd_`x' = round(r(N),5)
+ 23. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1
+ 24. local cardio_ckd_`x' = round(r(N),5)
+ 25. 
+. **No CKD
+. *Number of people without CKD at the beginning of each year
+. qui safecount if ckd_group==0
+ 26. local baseline_nockd_`x' = round(r(N),5)
+ 27. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==0
+ 28. local none_nockd_`x' = round(r(N),5)
+ 29. *Number of people in group who progress to CKD stage 3 by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==1
+ 30. local ckd3_nockd_`x' = round(r(N),5)
+ 31. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==2
+ 32. local ckd4_nockd_`x' = round(r(N),5)
+ 33. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==3
+ 34. local dialysis_nockd_`x' = round(r(N),5)
+ 35. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==4
+ 36. local kt_nockd_`x' = round(r(N),5)
+ 37. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==6
+ 38. local deceased_nockd_`x' = round(r(N),5)
+ 39. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==0
+ 40. local cardio_nockd_`x' = round(r(N),5)
+ 41. 
+. **CKD stage 3
+. *Number of people in group (baseline_ckd3_`x') at the beginning of each year
+. qui safecount if ckd_group==2
+ 42. local baseline_ckd3_`x' = round(r(N),5)
+ 43. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==0
+ 44. local none_ckd3_`x' = round(r(N),5)
+ 45. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==2
+ 46. local ckd4_ckd3_`x' = round(r(N),5)
+ 47. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==3
+ 48. local dialysis_ckd3_`x' = round(r(N),5)
+ 49. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==4
+ 50. local kt_ckd3_`x' = round(r(N),5)
+ 51. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==6
+ 52. local deceased_ckd3_`x' = round(r(N),5)
+ 53. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==2
+ 54. local cardio_ckd3_`x' = round(r(N),5)
+ 55. 
+. **CKD stage 4/5 without KRT
+. *Number of people in group (baseline_ckd4_`x') at the beginning of each year
+. qui safecount if ckd_group==3
+ 56. local baseline_ckd4_`x' = round(r(N),5)
+ 57. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==0
+ 58. local none_ckd4_`x' = round(r(N),5)
+ 59. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==3
+ 60. local dialysis_ckd4_`x' = round(r(N),5)
+ 61. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==4
+ 62. local kt_ckd4_`x' = round(r(N),5)
+ 63. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==6
+ 64. local deceased_ckd4_`x' = round(r(N),5)
+ 65. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==3
+ 66. local cardio_ckd4_`x' = round(r(N),5)
+ 67. 
+. **Dialysis
+. *Number of people in group (baseline_dialysis_`x') at the beginning of each year
+. qui safecount if ckd_group==4
+ 68. local baseline_dialysis_`x' = round(r(N),5)
+ 69. *Number of people in group remaining on dialysis by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==0
+ 70. local none_dialysis_`x' = round(r(N),5)
+ 71. *Number of people in group with kidney transplant by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==4
+ 72. local kt_dialysis_`x' = round(r(N),5)
+ 73. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==6
+ 74. local deceased_dialysis_`x' = round(r(N),5)
+ 75. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==4
+ 76. local cardio_dialysis_`x' = round(r(N),5)
+ 77. 
+. **Kidney transplant
+. *Number of people in group (baseline_kt_`x') at the beginning of each year
+. qui safecount if ckd_group==5
+ 78. local baseline_kt_`x' = round(r(N),5)
+ 79. *Number of people in group remaining with kidney transplant by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==0
+ 80. local none_kt_`x' = round(r(N),5)
+ 81. *Number of people in group on dialysis by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==3
+ 82. local dialysis_kt_`x' = round(r(N),5)
+ 83. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==6
+ 84. local deceased_kt_`x' = round(r(N),5)
+ 85. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==5
+ 86. local cardio_kt_`x' = round(r(N),5)
+ 87. }
+ 88. 
+. **Populate table with redacted counts
+. *Overall
+. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("N/A") _tab (`baseline_ckd_2017') _tab (`baseline_ckd_2018') _tab (`baseline_ckd_2019') _tab (`baseline_ckd_2020') _tab (`baseline_ckd_2021') _tab (`baseline_ckd_2022') _n
+ 89. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("No progression") _tab (`none_ckd_2017') _tab (`none_ckd_2018') _tab (`none_ckd_2019') _tab (`none_ckd_2020') _tab (`none_ckd_2021') _tab (`none_ckd_2022') _n
+ 90. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("CKD stage 3") _tab (`ckd3_ckd_2017') _tab (`ckd3_ckd_2018') _tab (`ckd3_ckd_2019') _tab (`ckd3_ckd_2020') _tab (`ckd3_ckd_2021') _tab (`ckd3_ckd_2022') _n
+ 91. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("CKD stage 4/5") _tab (`ckd4_ckd_2017') _tab (`ckd4_ckd_2018') _tab (`ckd4_ckd_2019') _tab (`ckd4_ckd_2020') _tab (`ckd4_ckd_2021') _tab (`ckd4_ckd_2022') _n
+ 92. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Dialysis") _tab (`dialysis_ckd_2017') _tab (`dialysis_ckd_2018') _tab (`dialysis_ckd_2019') _tab (`dialysis_ckd_2020') _tab (`dialysis_ckd_2021') _tab (`dialysis_ckd_2022') _n
+ 93. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Transplant") _tab (`kt_ckd_2017') _tab (`kt_ckd_2018') _tab (`kt_ckd_2019') _tab (`kt_ckd_2020') _tab (`kt_ckd_2021') _tab (`kt_ckd_2022') _n
+ 94. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Deceased") _tab (`deceased_ckd_2017') _tab (`deceased_ckd_2018') _tab (`deceased_ckd_2019') _tab (`deceased_ckd_2020') _tab (`deceased_ckd_2021') _tab (`deceased_ckd_2022') _n
+ 95. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Cardiovascular admission") _tab (`cardio_ckd_2017') _tab (`cardio_ckd_2018') _tab (`cardio_ckd_2019') _tab (`cardio_ckd_2020') _tab (`cardio_ckd_2021') _tab (`cardio_ckd_2022') _n
+ 96. 
+. *No CKD
+. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("N/A") _tab (`baseline_nockd_2017') _tab (`baseline_nockd_2018') _tab (`baseline_nockd_2019') _tab (`baseline_nockd_2020') _tab (`baseline_nockd_2021') _tab (`baseline_nockd_2022') _n
+ 97. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("No progression") _tab (`none_nockd_2017') _tab (`none_nockd_2018') _tab (`none_nockd_2019') _tab (`none_nockd_2020') _tab (`none_nockd_2021') _tab (`none_nockd_2022') _n
+ 98. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("CKD stage 3") _tab (`ckd3_nockd_2017') _tab (`ckd3_nockd_2018') _tab (`ckd3_nockd_2019') _tab (`ckd3_nockd_2020') _tab (`ckd3_nockd_2021') _tab (`ckd3_nockd_2022') _n
+ 99. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("CKD stage 4/5") _tab (`ckd4_nockd_2017') _tab (`ckd4_nockd_2018') _tab (`ckd4_nockd_2019') _tab (`ckd4_nockd_2020') _tab (`ckd4_nockd_2021') _tab (`ckd4_nockd_2022') _n
+100. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Dialysis") _tab (`dialysis_nockd_2017') _tab (`dialysis_nockd_2018') _tab (`dialysis_nockd_2019') _tab (`dialysis_nockd_2020') _tab (`dialysis_nockd_2021') _tab (`dialysis_nockd_2022') 
+> _n
+101. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Transplant") _tab (`kt_nockd_2017') _tab (`kt_nockd_2018') _tab (`kt_nockd_2019') _tab (`kt_nockd_2020') _tab (`kt_nockd_2021') _tab (`kt_nockd_2022') _n
+102. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Deceased") _tab (`deceased_nockd_2017') _tab (`deceased_nockd_2018') _tab (`deceased_nockd_2019') _tab (`deceased_nockd_2020') _tab (`deceased_nockd_2021') _tab (`deceased_nockd_2022') 
+> _n
+103. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Cardiovascular admission") _tab (`cardio_nockd_2017') _tab (`cardio_nockd_2018') _tab (`cardio_nockd_2019') _tab (`cardio_nockd_2020') _tab (`cardio_nockd_2021') _tab (`cardio_nockd_202
+> 2') _n
+104. 
+. *CKD stage 3
+. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("N/A") _tab (`baseline_ckd3_2017') _tab (`baseline_ckd3_2018') _tab (`baseline_ckd3_2019') _tab (`baseline_ckd3_2020') _tab (`baseline_ckd3_2021') _tab (`baseline_ckd3_2022') _n
+105. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("No progression") _tab (`none_ckd3_2017') _tab (`none_ckd3_2018') _tab (`none_ckd3_2019') _tab (`none_ckd3_2020') _tab (`none_ckd3_2021') _tab (`none_ckd3_2022') _n
+106. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("CKD stage 4/5") _tab (`ckd4_ckd3_2017') _tab (`ckd4_ckd3_2018') _tab (`ckd4_ckd3_2019') _tab (`ckd4_ckd3_2020') _tab (`ckd4_ckd3_2021') _tab (`ckd4_ckd3_2022') _n
+107. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Dialysis") _tab (`dialysis_ckd3_2017') _tab (`dialysis_ckd3_2018') _tab (`dialysis_ckd3_2019') _tab (`dialysis_ckd3_2020') _tab (`dialysis_ckd3_2021') _tab (`dialysis_ckd3_2022') _
+> n
+108. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Transplant") _tab (`kt_ckd3_2017') _tab (`kt_ckd3_2018') _tab (`kt_ckd3_2019') _tab (`kt_ckd3_2020') _tab (`kt_ckd3_2021') _tab (`kt_ckd3_2022') _n
+109. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Deceased") _tab (`deceased_ckd3_2017') _tab (`deceased_ckd3_2018') _tab (`deceased_ckd3_2019') _tab (`deceased_ckd3_2020') _tab (`deceased_ckd3_2021') _tab (`deceased_ckd3_2022') _
+> n
+110. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Cardiovascular admission") _tab (`cardio_ckd3_2017') _tab (`cardio_ckd3_2018') _tab (`cardio_ckd3_2019') _tab (`cardio_ckd3_2020') _tab (`cardio_ckd3_2021') _tab (`cardio_ckd3_2022
+> ') _n
+111. 
+. *CKD stage 4/5 without KRT
+. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("N/A") _tab (`baseline_ckd4_2017') _tab (`baseline_ckd4_2018') _tab (`baseline_ckd4_2019') _tab (`baseline_ckd4_2020') _tab (`baseline_ckd4_2021') _tab (`baseline_ckd4_2022') _n
+112. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("No progression") _tab (`none_ckd4_2017') _tab (`none_ckd4_2018') _tab (`none_ckd4_2019') _tab (`none_ckd4_2020') _tab (`none_ckd4_2021') _tab (`none_ckd4_2022') _n
+113. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Dialysis") _tab (`dialysis_ckd4_2017') _tab (`dialysis_ckd4_2018') _tab (`dialysis_ckd4_2019') _tab (`dialysis_ckd4_2020') _tab (`dialysis_ckd4_2021') _tab (`dialysis_ckd4_2022')
+>  _n
+114. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Transplant") _tab (`kt_ckd4_2017') _tab (`kt_ckd4_2018') _tab (`kt_ckd4_2019') _tab (`kt_ckd4_2020') _tab (`kt_ckd4_2021') _tab (`kt_ckd4_2022') _n
+115. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Deceased") _tab (`deceased_ckd4_2017') _tab (`deceased_ckd4_2018') _tab (`deceased_ckd4_2019') _tab (`deceased_ckd4_2020') _tab (`deceased_ckd4_2021') _tab (`deceased_ckd4_2022')
+>  _n
+116. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Cardiovascular admission") _tab (`cardio_ckd4_2017') _tab (`cardio_ckd4_2018') _tab (`cardio_ckd4_2019') _tab (`cardio_ckd4_2020') _tab (`cardio_ckd4_2021') _tab (`cardio_ckd4_20
+> 22') _n
+117. 
+. *Dialysis
+. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("N/A") _tab (`baseline_dialysis_2017') _tab (`baseline_dialysis_2018') _tab (`baseline_dialysis_2019') _tab (`baseline_dialysis_2020') _tab (`baseline_dialysis_2021') _tab (`baseline_dial
+> ysis_2022') _n
+118. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("No progression") _tab (`none_dialysis_2017') _tab (`none_dialysis_2018') _tab (`none_dialysis_2019') _tab (`none_dialysis_2020') _tab (`none_dialysis_2021') _tab (`none_dialysis_2022'
+> ) _n
+119. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Transplant") _tab (`kt_dialysis_2017') _tab (`kt_dialysis_2018') _tab (`kt_dialysis_2019') _tab (`kt_dialysis_2020') _tab (`kt_dialysis_2021') _tab (`kt_dialysis_2022') _n
+120. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Deceased") _tab (`deceased_dialysis_2017') _tab (`deceased_dialysis_2018') _tab (`deceased_dialysis_2019') _tab (`deceased_dialysis_2020') _tab (`deceased_dialysis_2021') _tab (`decea
+> sed_dialysis_2022') _n
+121. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Cardiovascular admission") _tab (`cardio_dialysis_2017') _tab (`cardio_dialysis_2018') _tab (`cardio_dialysis_2019') _tab (`cardio_dialysis_2020') _tab (`cardio_dialysis_2021') _tab (
+> `cardio_dialysis_2022') _n
+122. 
+. *Kidney Transplant
+. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("N/A") _tab (`baseline_kt_2017') _tab (`baseline_kt_2018') _tab (`baseline_kt_2019') _tab (`baseline_kt_2020') _tab (`baseline_kt_2021') _tab (`baseline_kt_2022') _n
+123. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("No progression") _tab (`none_kt_2017') _tab (`none_kt_2018') _tab (`none_kt_2019') _tab (`none_kt_2020') _tab (`none_kt_2021') _tab (`none_kt_2022') _n
+124. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Dialysis") _tab (`dialysis_kt_2017') _tab (`dialysis_kt_2018') _tab (`dialysis_kt_2019') _tab (`dialysis_kt_2020') _tab (`dialysis_kt_2021') _tab (`dialysis_kt_2022') _n
+125. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Deceased") _tab (`deceased_kt_2017') _tab (`deceased_kt_2018') _tab (`deceased_kt_2019') _tab (`deceased_kt_2020') _tab (`deceased_kt_2021') _tab (`deceased_kt_2022') _n
+126. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Cardiovascular admission") _tab (`cardio_kt_2017') _tab (`cardio_kt_2018') _tab (`cardio_kt_2019') _tab (`cardio_kt_2020') _tab (`cardio_kt_2021') _tab (`cardio_kt_2022') _n
+127. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(1,310 observations deleted)
+(786 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
 
     Matched                                 0  (_merge==3)
     -----------------------------------------
+(1,237 observations deleted)
+(767 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
 
-. qui total weight if ckd_group==3 & ckd_progression==0
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
 
-. local none_ckd4_`x' = r(table)[1,1]
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(1,332 observations deleted)
+(766 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
 
-. local none_ckd4_`x'_ll = r(table)[5,1]
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
 
-. local none_ckd4_`x'_ul = r(table)[6,1]
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(1,272 observations deleted)
+(765 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(1,301 observations deleted)
+(796 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(1,302 observations deleted)
+(749 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(3,087 observations deleted)
+(45 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,020 observations deleted)
+(51 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(3,102 observations deleted)
+(57 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(3,045 observations deleted)
+(48 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(3,173 observations deleted)
+(37 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(3,068 observations deleted)
+(41 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(3,070 observations deleted)
+(64 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,007 observations deleted)
+(49 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(3,129 observations deleted)
+(42 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(3,045 observations deleted)
+(42 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(3,128 observations deleted)
+(56 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(3,061 observations deleted)
+(46 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(3,118 observations deleted)
+(33 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(3,007 observations deleted)
+(47 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(3,112 observations deleted)
+(45 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(3,041 observations deleted)
+(52 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(3,156 observations deleted)
+(51 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(3,065 observations deleted)
+(47 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(3,100 observations deleted)
+(37 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,997 observations deleted)
+(58 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(3,114 observations deleted)
+(52 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(3,036 observations deleted)
+(50 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(3,162 observations deleted)
+(40 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(3,060 observations deleted)
+(49 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,360 observations deleted)
+(331 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,362 observations deleted)
+(317 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,406 observations deleted)
+(354 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,376 observations deleted)
+(296 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,445 observations deleted)
+(324 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,339 observations deleted)
+(326 real changes made)
 
 . 
-. qui total weight if ckd_group==3 & ckd_progression==3
+. forvalues i=1/5 {
+  2. foreach x of local year {
+  3. use ./output/`x'_ckd_complete.dta, clear
+  4. drop _merge
+  5. merge 1:1 patient_id using ./output/`x'_nockd_complete
+  6. local label`i': label imd `i'
+  7. drop if imd!=`i'
+  8. replace ckd_group = 0 if ckd_group==1
+  9. 
+. **Disclosure minimisation
+. *safecount provides a count with any counts <=5 returned at "<=5"
+. *round(r(N),5) rounds counts to the nearest 5 with any counts <=5 returned as "."
+. 
+. **Overall
+. qui safecount
+ 10. local baseline_ckd_`x' = round(r(N),5)
+ 11. *Total number of people in group who do not progress by the end of the year
+. qui safecount if ckd_progression==0
+ 12. local none_ckd_`x' = round(r(N),5)
+ 13. *Total number of people in group who progress to CKD stage 3 by the end of the year
+. qui safecount if ckd_progression==1
+ 14. local ckd3_ckd_`x' = round(r(N),5)
+ 15. *Total number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_progression==2
+ 16. local ckd4_ckd_`x' = round(r(N),5)
+ 17. *Total number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_progression==3
+ 18. local dialysis_ckd_`x' = round(r(N),5)
+ 19. *Total number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_progression==4
+ 20. local kt_ckd_`x' = round(r(N),5)
+ 21. *Total number of people in group who die by the end of the year
+. qui safecount if ckd_progression==6
+ 22. local deceased_ckd_`x' = round(r(N),5)
+ 23. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1
+ 24. local cardio_ckd_`x' = round(r(N),5)
+ 25. 
+. **No CKD
+. *Number of people without CKD at the beginning of each year
+. qui safecount if ckd_group==0
+ 26. local baseline_nockd_`x' = round(r(N),5)
+ 27. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==0
+ 28. local none_nockd_`x' = round(r(N),5)
+ 29. *Number of people in group who progress to CKD stage 3 by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==1
+ 30. local ckd3_nockd_`x' = round(r(N),5)
+ 31. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==2
+ 32. local ckd4_nockd_`x' = round(r(N),5)
+ 33. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==3
+ 34. local dialysis_nockd_`x' = round(r(N),5)
+ 35. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==4
+ 36. local kt_nockd_`x' = round(r(N),5)
+ 37. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==6
+ 38. local deceased_nockd_`x' = round(r(N),5)
+ 39. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==0
+ 40. local cardio_nockd_`x' = round(r(N),5)
+ 41. 
+. **CKD stage 3
+. *Number of people in group (baseline_ckd3_`x') at the beginning of each year
+. qui safecount if ckd_group==2
+ 42. local baseline_ckd3_`x' = round(r(N),5)
+ 43. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==0
+ 44. local none_ckd3_`x' = round(r(N),5)
+ 45. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==2
+ 46. local ckd4_ckd3_`x' = round(r(N),5)
+ 47. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==3
+ 48. local dialysis_ckd3_`x' = round(r(N),5)
+ 49. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==4
+ 50. local kt_ckd3_`x' = round(r(N),5)
+ 51. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==6
+ 52. local deceased_ckd3_`x' = round(r(N),5)
+ 53. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==2
+ 54. local cardio_ckd3_`x' = round(r(N),5)
+ 55. 
+. **CKD stage 4/5 without KRT
+. *Number of people in group (baseline_ckd4_`x') at the beginning of each year
+. qui safecount if ckd_group==3
+ 56. local baseline_ckd4_`x' = round(r(N),5)
+ 57. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==0
+ 58. local none_ckd4_`x' = round(r(N),5)
+ 59. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==3
+ 60. local dialysis_ckd4_`x' = round(r(N),5)
+ 61. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==4
+ 62. local kt_ckd4_`x' = round(r(N),5)
+ 63. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==6
+ 64. local deceased_ckd4_`x' = round(r(N),5)
+ 65. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==3
+ 66. local cardio_ckd4_`x' = round(r(N),5)
+ 67. 
+. **Dialysis
+. *Number of people in group (baseline_dialysis_`x') at the beginning of each year
+. qui safecount if ckd_group==4
+ 68. local baseline_dialysis_`x' = round(r(N),5)
+ 69. *Number of people in group remaining on dialysis by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==0
+ 70. local none_dialysis_`x' = round(r(N),5)
+ 71. *Number of people in group with kidney transplant by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==4
+ 72. local kt_dialysis_`x' = round(r(N),5)
+ 73. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==6
+ 74. local deceased_dialysis_`x' = round(r(N),5)
+ 75. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==4
+ 76. local cardio_dialysis_`x' = round(r(N),5)
+ 77. 
+. **Kidney transplant
+. *Number of people in group (baseline_kt_`x') at the beginning of each year
+. qui safecount if ckd_group==5
+ 78. local baseline_kt_`x' = round(r(N),5)
+ 79. *Number of people in group remaining with kidney transplant by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==0
+ 80. local none_kt_`x' = round(r(N),5)
+ 81. *Number of people in group on dialysis by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==3
+ 82. local dialysis_kt_`x' = round(r(N),5)
+ 83. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==6
+ 84. local deceased_kt_`x' = round(r(N),5)
+ 85. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==5
+ 86. local cardio_kt_`x' = round(r(N),5)
+ 87. }
+ 88. 
+. **Populate table with redacted counts
+. *Overall
+. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("N/A") _tab (`baseline_ckd_2017') _tab (`baseline_ckd_2018') _tab (`baseline_ckd_2019') _tab (`baseline_ckd_2020') _tab (`baseline_ckd_2021') _tab (`baseline_ckd_2022') _n
+ 89. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("No progression") _tab (`none_ckd_2017') _tab (`none_ckd_2018') _tab (`none_ckd_2019') _tab (`none_ckd_2020') _tab (`none_ckd_2021') _tab (`none_ckd_2022') _n
+ 90. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("CKD stage 3") _tab (`ckd3_ckd_2017') _tab (`ckd3_ckd_2018') _tab (`ckd3_ckd_2019') _tab (`ckd3_ckd_2020') _tab (`ckd3_ckd_2021') _tab (`ckd3_ckd_2022') _n
+ 91. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("CKD stage 4/5") _tab (`ckd4_ckd_2017') _tab (`ckd4_ckd_2018') _tab (`ckd4_ckd_2019') _tab (`ckd4_ckd_2020') _tab (`ckd4_ckd_2021') _tab (`ckd4_ckd_2022') _n
+ 92. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Dialysis") _tab (`dialysis_ckd_2017') _tab (`dialysis_ckd_2018') _tab (`dialysis_ckd_2019') _tab (`dialysis_ckd_2020') _tab (`dialysis_ckd_2021') _tab (`dialysis_ckd_2022') _n
+ 93. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Transplant") _tab (`kt_ckd_2017') _tab (`kt_ckd_2018') _tab (`kt_ckd_2019') _tab (`kt_ckd_2020') _tab (`kt_ckd_2021') _tab (`kt_ckd_2022') _n
+ 94. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Deceased") _tab (`deceased_ckd_2017') _tab (`deceased_ckd_2018') _tab (`deceased_ckd_2019') _tab (`deceased_ckd_2020') _tab (`deceased_ckd_2021') _tab (`deceased_ckd_2022') _n
+ 95. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Cardiovascular admission") _tab (`cardio_ckd_2017') _tab (`cardio_ckd_2018') _tab (`cardio_ckd_2019') _tab (`cardio_ckd_2020') _tab (`cardio_ckd_2021') _tab (`cardio_ckd_2022') _n
+ 96. 
+. *No CKD
+. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("N/A") _tab (`baseline_nockd_2017') _tab (`baseline_nockd_2018') _tab (`baseline_nockd_2019') _tab (`baseline_nockd_2020') _tab (`baseline_nockd_2021') _tab (`baseline_nockd_2022') _n
+ 97. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("No progression") _tab (`none_nockd_2017') _tab (`none_nockd_2018') _tab (`none_nockd_2019') _tab (`none_nockd_2020') _tab (`none_nockd_2021') _tab (`none_nockd_2022') _n
+ 98. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("CKD stage 3") _tab (`ckd3_nockd_2017') _tab (`ckd3_nockd_2018') _tab (`ckd3_nockd_2019') _tab (`ckd3_nockd_2020') _tab (`ckd3_nockd_2021') _tab (`ckd3_nockd_2022') _n
+ 99. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("CKD stage 4/5") _tab (`ckd4_nockd_2017') _tab (`ckd4_nockd_2018') _tab (`ckd4_nockd_2019') _tab (`ckd4_nockd_2020') _tab (`ckd4_nockd_2021') _tab (`ckd4_nockd_2022') _n
+100. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Dialysis") _tab (`dialysis_nockd_2017') _tab (`dialysis_nockd_2018') _tab (`dialysis_nockd_2019') _tab (`dialysis_nockd_2020') _tab (`dialysis_nockd_2021') _tab (`dialysis_nockd_2022') 
+> _n
+101. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Transplant") _tab (`kt_nockd_2017') _tab (`kt_nockd_2018') _tab (`kt_nockd_2019') _tab (`kt_nockd_2020') _tab (`kt_nockd_2021') _tab (`kt_nockd_2022') _n
+102. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Deceased") _tab (`deceased_nockd_2017') _tab (`deceased_nockd_2018') _tab (`deceased_nockd_2019') _tab (`deceased_nockd_2020') _tab (`deceased_nockd_2021') _tab (`deceased_nockd_2022') 
+> _n
+103. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Cardiovascular admission") _tab (`cardio_nockd_2017') _tab (`cardio_nockd_2018') _tab (`cardio_nockd_2019') _tab (`cardio_nockd_2020') _tab (`cardio_nockd_2021') _tab (`cardio_nockd_202
+> 2') _n
+104. 
+. *CKD stage 3
+. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("N/A") _tab (`baseline_ckd3_2017') _tab (`baseline_ckd3_2018') _tab (`baseline_ckd3_2019') _tab (`baseline_ckd3_2020') _tab (`baseline_ckd3_2021') _tab (`baseline_ckd3_2022') _n
+105. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("No progression") _tab (`none_ckd3_2017') _tab (`none_ckd3_2018') _tab (`none_ckd3_2019') _tab (`none_ckd3_2020') _tab (`none_ckd3_2021') _tab (`none_ckd3_2022') _n
+106. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("CKD stage 4/5") _tab (`ckd4_ckd3_2017') _tab (`ckd4_ckd3_2018') _tab (`ckd4_ckd3_2019') _tab (`ckd4_ckd3_2020') _tab (`ckd4_ckd3_2021') _tab (`ckd4_ckd3_2022') _n
+107. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Dialysis") _tab (`dialysis_ckd3_2017') _tab (`dialysis_ckd3_2018') _tab (`dialysis_ckd3_2019') _tab (`dialysis_ckd3_2020') _tab (`dialysis_ckd3_2021') _tab (`dialysis_ckd3_2022') _
+> n
+108. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Transplant") _tab (`kt_ckd3_2017') _tab (`kt_ckd3_2018') _tab (`kt_ckd3_2019') _tab (`kt_ckd3_2020') _tab (`kt_ckd3_2021') _tab (`kt_ckd3_2022') _n
+109. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Deceased") _tab (`deceased_ckd3_2017') _tab (`deceased_ckd3_2018') _tab (`deceased_ckd3_2019') _tab (`deceased_ckd3_2020') _tab (`deceased_ckd3_2021') _tab (`deceased_ckd3_2022') _
+> n
+110. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Cardiovascular admission") _tab (`cardio_ckd3_2017') _tab (`cardio_ckd3_2018') _tab (`cardio_ckd3_2019') _tab (`cardio_ckd3_2020') _tab (`cardio_ckd3_2021') _tab (`cardio_ckd3_2022
+> ') _n
+111. 
+. *CKD stage 4/5 without KRT
+. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("N/A") _tab (`baseline_ckd4_2017') _tab (`baseline_ckd4_2018') _tab (`baseline_ckd4_2019') _tab (`baseline_ckd4_2020') _tab (`baseline_ckd4_2021') _tab (`baseline_ckd4_2022') _n
+112. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("No progression") _tab (`none_ckd4_2017') _tab (`none_ckd4_2018') _tab (`none_ckd4_2019') _tab (`none_ckd4_2020') _tab (`none_ckd4_2021') _tab (`none_ckd4_2022') _n
+113. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Dialysis") _tab (`dialysis_ckd4_2017') _tab (`dialysis_ckd4_2018') _tab (`dialysis_ckd4_2019') _tab (`dialysis_ckd4_2020') _tab (`dialysis_ckd4_2021') _tab (`dialysis_ckd4_2022')
+>  _n
+114. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Transplant") _tab (`kt_ckd4_2017') _tab (`kt_ckd4_2018') _tab (`kt_ckd4_2019') _tab (`kt_ckd4_2020') _tab (`kt_ckd4_2021') _tab (`kt_ckd4_2022') _n
+115. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Deceased") _tab (`deceased_ckd4_2017') _tab (`deceased_ckd4_2018') _tab (`deceased_ckd4_2019') _tab (`deceased_ckd4_2020') _tab (`deceased_ckd4_2021') _tab (`deceased_ckd4_2022')
+>  _n
+116. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Cardiovascular admission") _tab (`cardio_ckd4_2017') _tab (`cardio_ckd4_2018') _tab (`cardio_ckd4_2019') _tab (`cardio_ckd4_2020') _tab (`cardio_ckd4_2021') _tab (`cardio_ckd4_20
+> 22') _n
+117. 
+. *Dialysis
+. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("N/A") _tab (`baseline_dialysis_2017') _tab (`baseline_dialysis_2018') _tab (`baseline_dialysis_2019') _tab (`baseline_dialysis_2020') _tab (`baseline_dialysis_2021') _tab (`baseline_dial
+> ysis_2022') _n
+118. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("No progression") _tab (`none_dialysis_2017') _tab (`none_dialysis_2018') _tab (`none_dialysis_2019') _tab (`none_dialysis_2020') _tab (`none_dialysis_2021') _tab (`none_dialysis_2022'
+> ) _n
+119. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Transplant") _tab (`kt_dialysis_2017') _tab (`kt_dialysis_2018') _tab (`kt_dialysis_2019') _tab (`kt_dialysis_2020') _tab (`kt_dialysis_2021') _tab (`kt_dialysis_2022') _n
+120. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Deceased") _tab (`deceased_dialysis_2017') _tab (`deceased_dialysis_2018') _tab (`deceased_dialysis_2019') _tab (`deceased_dialysis_2020') _tab (`deceased_dialysis_2021') _tab (`decea
+> sed_dialysis_2022') _n
+121. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Cardiovascular admission") _tab (`cardio_dialysis_2017') _tab (`cardio_dialysis_2018') _tab (`cardio_dialysis_2019') _tab (`cardio_dialysis_2020') _tab (`cardio_dialysis_2021') _tab (
+> `cardio_dialysis_2022') _n
+122. 
+. *Kidney Transplant
+. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("N/A") _tab (`baseline_kt_2017') _tab (`baseline_kt_2018') _tab (`baseline_kt_2019') _tab (`baseline_kt_2020') _tab (`baseline_kt_2021') _tab (`baseline_kt_2022') _n
+123. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("No progression") _tab (`none_kt_2017') _tab (`none_kt_2018') _tab (`none_kt_2019') _tab (`none_kt_2020') _tab (`none_kt_2021') _tab (`none_kt_2022') _n
+124. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Dialysis") _tab (`dialysis_kt_2017') _tab (`dialysis_kt_2018') _tab (`dialysis_kt_2019') _tab (`dialysis_kt_2020') _tab (`dialysis_kt_2021') _tab (`dialysis_kt_2022') _n
+125. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Deceased") _tab (`deceased_kt_2017') _tab (`deceased_kt_2018') _tab (`deceased_kt_2019') _tab (`deceased_kt_2020') _tab (`deceased_kt_2021') _tab (`deceased_kt_2022') _n
+126. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Cardiovascular admission") _tab (`cardio_kt_2017') _tab (`cardio_kt_2018') _tab (`cardio_kt_2019') _tab (`cardio_kt_2020') _tab (`cardio_kt_2021') _tab (`cardio_kt_2022') _n
+127. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
 
-. local dialysis_ckd4_`x' = r(table)[1,1]
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
 
-. local dialysis_ckd4_`x'_ll = r(table)[5,1]
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,567 observations deleted)
+(268 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
 
-. local dialysis_ckd4_`x'_ul = r(table)[6,1]
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,491 observations deleted)
+(265 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,567 observations deleted)
+(276 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,552 observations deleted)
+(244 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,643 observations deleted)
+(240 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,538 observations deleted)
+(253 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,561 observations deleted)
+(263 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,484 observations deleted)
+(259 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,577 observations deleted)
+(279 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,543 observations deleted)
+(240 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,576 observations deleted)
+(278 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,531 observations deleted)
+(269 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,595 observations deleted)
+(239 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,501 observations deleted)
+(261 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,599 observations deleted)
+(264 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,491 observations deleted)
+(271 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,607 observations deleted)
+(272 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,538 observations deleted)
+(242 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,520 observations deleted)
+(277 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,528 observations deleted)
+(238 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,608 observations deleted)
+(265 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,537 observations deleted)
+(261 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,625 observations deleted)
+(250 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,550 observations deleted)
+(249 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,593 observations deleted)
+(249 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,500 observations deleted)
+(266 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,605 observations deleted)
+(232 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,529 observations deleted)
+(237 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,641 observations deleted)
+(264 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,559 observations deleted)
+(245 real changes made)
 
 . 
-. qui total weight if ckd_group==3 & ckd_progression==4
-no observations
-r(2000);
+. forvalues i=1/9 {
+  2. foreach x of local year {
+  3. use ./output/`x'_ckd_complete.dta, clear
+  4. drop _merge
+  5. merge 1:1 patient_id using ./output/`x'_nockd_complete
+  6. local label`i': label region `i'
+  7. drop if region!=`i'
+  8. replace ckd_group = 0 if ckd_group==1
+  9. 
+. **Disclosure minimisation
+. *safecount provides a count with any counts <=5 returned at "<=5"
+. *round(r(N),5) rounds counts to the nearest 5 with any counts <=5 returned as "."
+. 
+. **Overall
+. qui safecount
+ 10. local baseline_ckd_`x' = round(r(N),5)
+ 11. *Total number of people in group who do not progress by the end of the year
+. qui safecount if ckd_progression==0
+ 12. local none_ckd_`x' = round(r(N),5)
+ 13. *Total number of people in group who progress to CKD stage 3 by the end of the year
+. qui safecount if ckd_progression==1
+ 14. local ckd3_ckd_`x' = round(r(N),5)
+ 15. *Total number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_progression==2
+ 16. local ckd4_ckd_`x' = round(r(N),5)
+ 17. *Total number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_progression==3
+ 18. local dialysis_ckd_`x' = round(r(N),5)
+ 19. *Total number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_progression==4
+ 20. local kt_ckd_`x' = round(r(N),5)
+ 21. *Total number of people in group who die by the end of the year
+. qui safecount if ckd_progression==6
+ 22. local deceased_ckd_`x' = round(r(N),5)
+ 23. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1
+ 24. local cardio_ckd_`x' = round(r(N),5)
+ 25. 
+. **No CKD
+. *Number of people without CKD at the beginning of each year
+. qui safecount if ckd_group==0
+ 26. local baseline_nockd_`x' = round(r(N),5)
+ 27. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==0
+ 28. local none_nockd_`x' = round(r(N),5)
+ 29. *Number of people in group who progress to CKD stage 3 by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==1
+ 30. local ckd3_nockd_`x' = round(r(N),5)
+ 31. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==2
+ 32. local ckd4_nockd_`x' = round(r(N),5)
+ 33. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==3
+ 34. local dialysis_nockd_`x' = round(r(N),5)
+ 35. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==4
+ 36. local kt_nockd_`x' = round(r(N),5)
+ 37. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==6
+ 38. local deceased_nockd_`x' = round(r(N),5)
+ 39. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==0
+ 40. local cardio_nockd_`x' = round(r(N),5)
+ 41. 
+. **CKD stage 3
+. *Number of people in group (baseline_ckd3_`x') at the beginning of each year
+. qui safecount if ckd_group==2
+ 42. local baseline_ckd3_`x' = round(r(N),5)
+ 43. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==0
+ 44. local none_ckd3_`x' = round(r(N),5)
+ 45. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==2
+ 46. local ckd4_ckd3_`x' = round(r(N),5)
+ 47. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==3
+ 48. local dialysis_ckd3_`x' = round(r(N),5)
+ 49. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==4
+ 50. local kt_ckd3_`x' = round(r(N),5)
+ 51. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==6
+ 52. local deceased_ckd3_`x' = round(r(N),5)
+ 53. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==2
+ 54. local cardio_ckd3_`x' = round(r(N),5)
+ 55. 
+. **CKD stage 4/5 without KRT
+. *Number of people in group (baseline_ckd4_`x') at the beginning of each year
+. qui safecount if ckd_group==3
+ 56. local baseline_ckd4_`x' = round(r(N),5)
+ 57. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==0
+ 58. local none_ckd4_`x' = round(r(N),5)
+ 59. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==3
+ 60. local dialysis_ckd4_`x' = round(r(N),5)
+ 61. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==4
+ 62. local kt_ckd4_`x' = round(r(N),5)
+ 63. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==6
+ 64. local deceased_ckd4_`x' = round(r(N),5)
+ 65. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==3
+ 66. local cardio_ckd4_`x' = round(r(N),5)
+ 67. 
+. **Dialysis
+. *Number of people in group (baseline_dialysis_`x') at the beginning of each year
+. qui safecount if ckd_group==4
+ 68. local baseline_dialysis_`x' = round(r(N),5)
+ 69. *Number of people in group remaining on dialysis by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==0
+ 70. local none_dialysis_`x' = round(r(N),5)
+ 71. *Number of people in group with kidney transplant by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==4
+ 72. local kt_dialysis_`x' = round(r(N),5)
+ 73. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==6
+ 74. local deceased_dialysis_`x' = round(r(N),5)
+ 75. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==4
+ 76. local cardio_dialysis_`x' = round(r(N),5)
+ 77. 
+. **Kidney transplant
+. *Number of people in group (baseline_kt_`x') at the beginning of each year
+. qui safecount if ckd_group==5
+ 78. local baseline_kt_`x' = round(r(N),5)
+ 79. *Number of people in group remaining with kidney transplant by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==0
+ 80. local none_kt_`x' = round(r(N),5)
+ 81. *Number of people in group on dialysis by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==3
+ 82. local dialysis_kt_`x' = round(r(N),5)
+ 83. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==6
+ 84. local deceased_kt_`x' = round(r(N),5)
+ 85. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==5
+ 86. local cardio_kt_`x' = round(r(N),5)
+ 87. }
+ 88. 
+. **Populate table with redacted counts
+. *Overall
+. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("N/A") _tab (`baseline_ckd_2017') _tab (`baseline_ckd_2018') _tab (`baseline_ckd_2019') _tab (`baseline_ckd_2020') _tab (`baseline_ckd_2021') _tab (`baseline_ckd_2022') _n
+ 89. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("No progression") _tab (`none_ckd_2017') _tab (`none_ckd_2018') _tab (`none_ckd_2019') _tab (`none_ckd_2020') _tab (`none_ckd_2021') _tab (`none_ckd_2022') _n
+ 90. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("CKD stage 3") _tab (`ckd3_ckd_2017') _tab (`ckd3_ckd_2018') _tab (`ckd3_ckd_2019') _tab (`ckd3_ckd_2020') _tab (`ckd3_ckd_2021') _tab (`ckd3_ckd_2022') _n
+ 91. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("CKD stage 4/5") _tab (`ckd4_ckd_2017') _tab (`ckd4_ckd_2018') _tab (`ckd4_ckd_2019') _tab (`ckd4_ckd_2020') _tab (`ckd4_ckd_2021') _tab (`ckd4_ckd_2022') _n
+ 92. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Dialysis") _tab (`dialysis_ckd_2017') _tab (`dialysis_ckd_2018') _tab (`dialysis_ckd_2019') _tab (`dialysis_ckd_2020') _tab (`dialysis_ckd_2021') _tab (`dialysis_ckd_2022') _n
+ 93. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Transplant") _tab (`kt_ckd_2017') _tab (`kt_ckd_2018') _tab (`kt_ckd_2019') _tab (`kt_ckd_2020') _tab (`kt_ckd_2021') _tab (`kt_ckd_2022') _n
+ 94. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Deceased") _tab (`deceased_ckd_2017') _tab (`deceased_ckd_2018') _tab (`deceased_ckd_2019') _tab (`deceased_ckd_2020') _tab (`deceased_ckd_2021') _tab (`deceased_ckd_2022') _n
+ 95. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Cardiovascular admission") _tab (`cardio_ckd_2017') _tab (`cardio_ckd_2018') _tab (`cardio_ckd_2019') _tab (`cardio_ckd_2020') _tab (`cardio_ckd_2021') _tab (`cardio_ckd_2022') _n
+ 96. 
+. *No CKD
+. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("N/A") _tab (`baseline_nockd_2017') _tab (`baseline_nockd_2018') _tab (`baseline_nockd_2019') _tab (`baseline_nockd_2020') _tab (`baseline_nockd_2021') _tab (`baseline_nockd_2022') _n
+ 97. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("No progression") _tab (`none_nockd_2017') _tab (`none_nockd_2018') _tab (`none_nockd_2019') _tab (`none_nockd_2020') _tab (`none_nockd_2021') _tab (`none_nockd_2022') _n
+ 98. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("CKD stage 3") _tab (`ckd3_nockd_2017') _tab (`ckd3_nockd_2018') _tab (`ckd3_nockd_2019') _tab (`ckd3_nockd_2020') _tab (`ckd3_nockd_2021') _tab (`ckd3_nockd_2022') _n
+ 99. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("CKD stage 4/5") _tab (`ckd4_nockd_2017') _tab (`ckd4_nockd_2018') _tab (`ckd4_nockd_2019') _tab (`ckd4_nockd_2020') _tab (`ckd4_nockd_2021') _tab (`ckd4_nockd_2022') _n
+100. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Dialysis") _tab (`dialysis_nockd_2017') _tab (`dialysis_nockd_2018') _tab (`dialysis_nockd_2019') _tab (`dialysis_nockd_2020') _tab (`dialysis_nockd_2021') _tab (`dialysis_nockd_2022') 
+> _n
+101. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Transplant") _tab (`kt_nockd_2017') _tab (`kt_nockd_2018') _tab (`kt_nockd_2019') _tab (`kt_nockd_2020') _tab (`kt_nockd_2021') _tab (`kt_nockd_2022') _n
+102. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Deceased") _tab (`deceased_nockd_2017') _tab (`deceased_nockd_2018') _tab (`deceased_nockd_2019') _tab (`deceased_nockd_2020') _tab (`deceased_nockd_2021') _tab (`deceased_nockd_2022') 
+> _n
+103. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Cardiovascular admission") _tab (`cardio_nockd_2017') _tab (`cardio_nockd_2018') _tab (`cardio_nockd_2019') _tab (`cardio_nockd_2020') _tab (`cardio_nockd_2021') _tab (`cardio_nockd_202
+> 2') _n
+104. 
+. *CKD stage 3
+. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("N/A") _tab (`baseline_ckd3_2017') _tab (`baseline_ckd3_2018') _tab (`baseline_ckd3_2019') _tab (`baseline_ckd3_2020') _tab (`baseline_ckd3_2021') _tab (`baseline_ckd3_2022') _n
+105. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("No progression") _tab (`none_ckd3_2017') _tab (`none_ckd3_2018') _tab (`none_ckd3_2019') _tab (`none_ckd3_2020') _tab (`none_ckd3_2021') _tab (`none_ckd3_2022') _n
+106. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("CKD stage 4/5") _tab (`ckd4_ckd3_2017') _tab (`ckd4_ckd3_2018') _tab (`ckd4_ckd3_2019') _tab (`ckd4_ckd3_2020') _tab (`ckd4_ckd3_2021') _tab (`ckd4_ckd3_2022') _n
+107. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Dialysis") _tab (`dialysis_ckd3_2017') _tab (`dialysis_ckd3_2018') _tab (`dialysis_ckd3_2019') _tab (`dialysis_ckd3_2020') _tab (`dialysis_ckd3_2021') _tab (`dialysis_ckd3_2022') _
+> n
+108. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Transplant") _tab (`kt_ckd3_2017') _tab (`kt_ckd3_2018') _tab (`kt_ckd3_2019') _tab (`kt_ckd3_2020') _tab (`kt_ckd3_2021') _tab (`kt_ckd3_2022') _n
+109. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Deceased") _tab (`deceased_ckd3_2017') _tab (`deceased_ckd3_2018') _tab (`deceased_ckd3_2019') _tab (`deceased_ckd3_2020') _tab (`deceased_ckd3_2021') _tab (`deceased_ckd3_2022') _
+> n
+110. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Cardiovascular admission") _tab (`cardio_ckd3_2017') _tab (`cardio_ckd3_2018') _tab (`cardio_ckd3_2019') _tab (`cardio_ckd3_2020') _tab (`cardio_ckd3_2021') _tab (`cardio_ckd3_2022
+> ') _n
+111. 
+. *CKD stage 4/5 without KRT
+. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("N/A") _tab (`baseline_ckd4_2017') _tab (`baseline_ckd4_2018') _tab (`baseline_ckd4_2019') _tab (`baseline_ckd4_2020') _tab (`baseline_ckd4_2021') _tab (`baseline_ckd4_2022') _n
+112. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("No progression") _tab (`none_ckd4_2017') _tab (`none_ckd4_2018') _tab (`none_ckd4_2019') _tab (`none_ckd4_2020') _tab (`none_ckd4_2021') _tab (`none_ckd4_2022') _n
+113. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Dialysis") _tab (`dialysis_ckd4_2017') _tab (`dialysis_ckd4_2018') _tab (`dialysis_ckd4_2019') _tab (`dialysis_ckd4_2020') _tab (`dialysis_ckd4_2021') _tab (`dialysis_ckd4_2022')
+>  _n
+114. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Transplant") _tab (`kt_ckd4_2017') _tab (`kt_ckd4_2018') _tab (`kt_ckd4_2019') _tab (`kt_ckd4_2020') _tab (`kt_ckd4_2021') _tab (`kt_ckd4_2022') _n
+115. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Deceased") _tab (`deceased_ckd4_2017') _tab (`deceased_ckd4_2018') _tab (`deceased_ckd4_2019') _tab (`deceased_ckd4_2020') _tab (`deceased_ckd4_2021') _tab (`deceased_ckd4_2022')
+>  _n
+116. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Cardiovascular admission") _tab (`cardio_ckd4_2017') _tab (`cardio_ckd4_2018') _tab (`cardio_ckd4_2019') _tab (`cardio_ckd4_2020') _tab (`cardio_ckd4_2021') _tab (`cardio_ckd4_20
+> 22') _n
+117. 
+. *Dialysis
+. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("N/A") _tab (`baseline_dialysis_2017') _tab (`baseline_dialysis_2018') _tab (`baseline_dialysis_2019') _tab (`baseline_dialysis_2020') _tab (`baseline_dialysis_2021') _tab (`baseline_dial
+> ysis_2022') _n
+118. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("No progression") _tab (`none_dialysis_2017') _tab (`none_dialysis_2018') _tab (`none_dialysis_2019') _tab (`none_dialysis_2020') _tab (`none_dialysis_2021') _tab (`none_dialysis_2022'
+> ) _n
+119. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Transplant") _tab (`kt_dialysis_2017') _tab (`kt_dialysis_2018') _tab (`kt_dialysis_2019') _tab (`kt_dialysis_2020') _tab (`kt_dialysis_2021') _tab (`kt_dialysis_2022') _n
+120. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Deceased") _tab (`deceased_dialysis_2017') _tab (`deceased_dialysis_2018') _tab (`deceased_dialysis_2019') _tab (`deceased_dialysis_2020') _tab (`deceased_dialysis_2021') _tab (`decea
+> sed_dialysis_2022') _n
+121. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Cardiovascular admission") _tab (`cardio_dialysis_2017') _tab (`cardio_dialysis_2018') _tab (`cardio_dialysis_2019') _tab (`cardio_dialysis_2020') _tab (`cardio_dialysis_2021') _tab (
+> `cardio_dialysis_2022') _n
+122. 
+. *Kidney Transplant
+. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("N/A") _tab (`baseline_kt_2017') _tab (`baseline_kt_2018') _tab (`baseline_kt_2019') _tab (`baseline_kt_2020') _tab (`baseline_kt_2021') _tab (`baseline_kt_2022') _n
+123. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("No progression") _tab (`none_kt_2017') _tab (`none_kt_2018') _tab (`none_kt_2019') _tab (`none_kt_2020') _tab (`none_kt_2021') _tab (`none_kt_2022') _n
+124. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Dialysis") _tab (`dialysis_kt_2017') _tab (`dialysis_kt_2018') _tab (`dialysis_kt_2019') _tab (`dialysis_kt_2020') _tab (`dialysis_kt_2021') _tab (`dialysis_kt_2022') _n
+125. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Deceased") _tab (`deceased_kt_2017') _tab (`deceased_kt_2018') _tab (`deceased_kt_2019') _tab (`deceased_kt_2020') _tab (`deceased_kt_2021') _tab (`deceased_kt_2022') _n
+126. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Cardiovascular admission") _tab (`cardio_kt_2017') _tab (`cardio_kt_2018') _tab (`cardio_kt_2019') _tab (`cardio_kt_2020') _tab (`cardio_kt_2021') _tab (`cardio_kt_2022') _n
+127. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
 
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,932 observations deleted)
+(119 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,839 observations deleted)
+(127 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,899 observations deleted)
+(148 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,839 observations deleted)
+(136 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,936 observations deleted)
+(132 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,865 observations deleted)
+(119 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,854 observations deleted)
+(159 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,784 observations deleted)
+(133 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,908 observations deleted)
+(127 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,868 observations deleted)
+(110 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,932 observations deleted)
+(138 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,824 observations deleted)
+(138 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,536 observations deleted)
+(264 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,490 observations deleted)
+(247 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,615 observations deleted)
+(263 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,554 observations deleted)
+(246 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,652 observations deleted)
+(248 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,551 observations deleted)
+(260 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,889 observations deleted)
+(141 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,789 observations deleted)
+(137 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,913 observations deleted)
+(127 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,842 observations deleted)
+(129 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,943 observations deleted)
+(133 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,872 observations deleted)
+(126 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,912 observations deleted)
+(110 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,826 observations deleted)
+(131 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,902 observations deleted)
+(132 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,838 observations deleted)
+(115 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,930 observations deleted)
+(133 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,862 observations deleted)
+(124 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,870 observations deleted)
+(133 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,835 observations deleted)
+(119 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,913 observations deleted)
+(136 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,860 observations deleted)
+(129 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,944 observations deleted)
+(139 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,888 observations deleted)
+(112 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,903 observations deleted)
+(118 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,815 observations deleted)
+(140 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,930 observations deleted)
+(139 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,838 observations deleted)
+(124 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,952 observations deleted)
+(123 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,856 observations deleted)
+(123 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,897 observations deleted)
+(127 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,802 observations deleted)
+(138 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,889 observations deleted)
+(150 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,812 observations deleted)
+(141 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,974 observations deleted)
+(120 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,861 observations deleted)
+(131 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(2,879 observations deleted)
+(125 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(2,828 observations deleted)
+(117 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(2,943 observations deleted)
+(94 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(2,853 observations deleted)
+(123 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(2,921 observations deleted)
+(138 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(2,853 observations deleted)
+(125 real changes made)
+
+. 
+. forvalues i=0/1 {
+  2. foreach x of local year {
+  3. use ./output/`x'_ckd_complete.dta, clear
+  4. drop _merge
+  5. merge 1:1 patient_id using ./output/`x'_nockd_complete
+  6. local label`i': label urban `i'
+  7. drop if urban!=`i'
+  8. replace ckd_group = 0 if ckd_group==1
+  9. 
+. **Disclosure minimisation
+. *safecount provides a count with any counts <=5 returned at "<=5"
+. *round(r(N),5) rounds counts to the nearest 5 with any counts <=5 returned as "."
+. 
+. **Overall
+. qui safecount
+ 10. local baseline_ckd_`x' = round(r(N),5)
+ 11. *Total number of people in group who do not progress by the end of the year
+. qui safecount if ckd_progression==0
+ 12. local none_ckd_`x' = round(r(N),5)
+ 13. *Total number of people in group who progress to CKD stage 3 by the end of the year
+. qui safecount if ckd_progression==1
+ 14. local ckd3_ckd_`x' = round(r(N),5)
+ 15. *Total number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_progression==2
+ 16. local ckd4_ckd_`x' = round(r(N),5)
+ 17. *Total number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_progression==3
+ 18. local dialysis_ckd_`x' = round(r(N),5)
+ 19. *Total number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_progression==4
+ 20. local kt_ckd_`x' = round(r(N),5)
+ 21. *Total number of people in group who die by the end of the year
+. qui safecount if ckd_progression==6
+ 22. local deceased_ckd_`x' = round(r(N),5)
+ 23. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1
+ 24. local cardio_ckd_`x' = round(r(N),5)
+ 25. 
+. **No CKD
+. *Number of people without CKD at the beginning of each year
+. qui safecount if ckd_group==0
+ 26. local baseline_nockd_`x' = round(r(N),5)
+ 27. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==0
+ 28. local none_nockd_`x' = round(r(N),5)
+ 29. *Number of people in group who progress to CKD stage 3 by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==1
+ 30. local ckd3_nockd_`x' = round(r(N),5)
+ 31. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==2
+ 32. local ckd4_nockd_`x' = round(r(N),5)
+ 33. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==3
+ 34. local dialysis_nockd_`x' = round(r(N),5)
+ 35. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==4
+ 36. local kt_nockd_`x' = round(r(N),5)
+ 37. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==0 & ckd_progression==6
+ 38. local deceased_nockd_`x' = round(r(N),5)
+ 39. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==0
+ 40. local cardio_nockd_`x' = round(r(N),5)
+ 41. 
+. **CKD stage 3
+. *Number of people in group (baseline_ckd3_`x') at the beginning of each year
+. qui safecount if ckd_group==2
+ 42. local baseline_ckd3_`x' = round(r(N),5)
+ 43. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==0
+ 44. local none_ckd3_`x' = round(r(N),5)
+ 45. *Number of people in group who progress to CKD stage 4/5 (without KRT) by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==2
+ 46. local ckd4_ckd3_`x' = round(r(N),5)
+ 47. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==3
+ 48. local dialysis_ckd3_`x' = round(r(N),5)
+ 49. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==4
+ 50. local kt_ckd3_`x' = round(r(N),5)
+ 51. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==2 & ckd_progression==6
+ 52. local deceased_ckd3_`x' = round(r(N),5)
+ 53. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==2
+ 54. local cardio_ckd3_`x' = round(r(N),5)
+ 55. 
+. **CKD stage 4/5 without KRT
+. *Number of people in group (baseline_ckd4_`x') at the beginning of each year
+. qui safecount if ckd_group==3
+ 56. local baseline_ckd4_`x' = round(r(N),5)
+ 57. *Number of people in group who do not progress by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==0
+ 58. local none_ckd4_`x' = round(r(N),5)
+ 59. *Number of people in group who progress to dialysis by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==3
+ 60. local dialysis_ckd4_`x' = round(r(N),5)
+ 61. *Number of people in group who progress to kidney transplant by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==4
+ 62. local kt_ckd4_`x' = round(r(N),5)
+ 63. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==3 & ckd_progression==6
+ 64. local deceased_ckd4_`x' = round(r(N),5)
+ 65. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==3
+ 66. local cardio_ckd4_`x' = round(r(N),5)
+ 67. 
+. **Dialysis
+. *Number of people in group (baseline_dialysis_`x') at the beginning of each year
+. qui safecount if ckd_group==4
+ 68. local baseline_dialysis_`x' = round(r(N),5)
+ 69. *Number of people in group remaining on dialysis by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==0
+ 70. local none_dialysis_`x' = round(r(N),5)
+ 71. *Number of people in group with kidney transplant by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==4
+ 72. local kt_dialysis_`x' = round(r(N),5)
+ 73. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==4 & ckd_progression==6
+ 74. local deceased_dialysis_`x' = round(r(N),5)
+ 75. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==4
+ 76. local cardio_dialysis_`x' = round(r(N),5)
+ 77. 
+. **Kidney transplant
+. *Number of people in group (baseline_kt_`x') at the beginning of each year
+. qui safecount if ckd_group==5
+ 78. local baseline_kt_`x' = round(r(N),5)
+ 79. *Number of people in group remaining with kidney transplant by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==0
+ 80. local none_kt_`x' = round(r(N),5)
+ 81. *Number of people in group on dialysis by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==3
+ 82. local dialysis_kt_`x' = round(r(N),5)
+ 83. *Number of people in group who die by the end of the year
+. qui safecount if ckd_group==5 & ckd_progression==6
+ 84. local deceased_kt_`x' = round(r(N),5)
+ 85. *Total number of people in groupw with cardiovascular admission each year
+. qui safecount if cardiovascular==1 & ckd_group==5
+ 86. local cardio_kt_`x' = round(r(N),5)
+ 87. }
+ 88. 
+. **Populate table with redacted counts
+. *Overall
+. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("N/A") _tab (`baseline_ckd_2017') _tab (`baseline_ckd_2018') _tab (`baseline_ckd_2019') _tab (`baseline_ckd_2020') _tab (`baseline_ckd_2021') _tab (`baseline_ckd_2022') _n
+ 89. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("No progression") _tab (`none_ckd_2017') _tab (`none_ckd_2018') _tab (`none_ckd_2019') _tab (`none_ckd_2020') _tab (`none_ckd_2021') _tab (`none_ckd_2022') _n
+ 90. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("CKD stage 3") _tab (`ckd3_ckd_2017') _tab (`ckd3_ckd_2018') _tab (`ckd3_ckd_2019') _tab (`ckd3_ckd_2020') _tab (`ckd3_ckd_2021') _tab (`ckd3_ckd_2022') _n
+ 91. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("CKD stage 4/5") _tab (`ckd4_ckd_2017') _tab (`ckd4_ckd_2018') _tab (`ckd4_ckd_2019') _tab (`ckd4_ckd_2020') _tab (`ckd4_ckd_2021') _tab (`ckd4_ckd_2022') _n
+ 92. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Dialysis") _tab (`dialysis_ckd_2017') _tab (`dialysis_ckd_2018') _tab (`dialysis_ckd_2019') _tab (`dialysis_ckd_2020') _tab (`dialysis_ckd_2021') _tab (`dialysis_ckd_2022') _n
+ 93. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Transplant") _tab (`kt_ckd_2017') _tab (`kt_ckd_2018') _tab (`kt_ckd_2019') _tab (`kt_ckd_2020') _tab (`kt_ckd_2021') _tab (`kt_ckd_2022') _n
+ 94. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Deceased") _tab (`deceased_ckd_2017') _tab (`deceased_ckd_2018') _tab (`deceased_ckd_2019') _tab (`deceased_ckd_2020') _tab (`deceased_ckd_2021') _tab (`deceased_ckd_2022') _n
+ 95. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Cardiovascular admission") _tab (`cardio_ckd_2017') _tab (`cardio_ckd_2018') _tab (`cardio_ckd_2019') _tab (`cardio_ckd_2020') _tab (`cardio_ckd_2021') _tab (`cardio_ckd_2022') _n
+ 96. 
+. *No CKD
+. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("N/A") _tab (`baseline_nockd_2017') _tab (`baseline_nockd_2018') _tab (`baseline_nockd_2019') _tab (`baseline_nockd_2020') _tab (`baseline_nockd_2021') _tab (`baseline_nockd_2022') _n
+ 97. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("No progression") _tab (`none_nockd_2017') _tab (`none_nockd_2018') _tab (`none_nockd_2019') _tab (`none_nockd_2020') _tab (`none_nockd_2021') _tab (`none_nockd_2022') _n
+ 98. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("CKD stage 3") _tab (`ckd3_nockd_2017') _tab (`ckd3_nockd_2018') _tab (`ckd3_nockd_2019') _tab (`ckd3_nockd_2020') _tab (`ckd3_nockd_2021') _tab (`ckd3_nockd_2022') _n
+ 99. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("CKD stage 4/5") _tab (`ckd4_nockd_2017') _tab (`ckd4_nockd_2018') _tab (`ckd4_nockd_2019') _tab (`ckd4_nockd_2020') _tab (`ckd4_nockd_2021') _tab (`ckd4_nockd_2022') _n
+100. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Dialysis") _tab (`dialysis_nockd_2017') _tab (`dialysis_nockd_2018') _tab (`dialysis_nockd_2019') _tab (`dialysis_nockd_2020') _tab (`dialysis_nockd_2021') _tab (`dialysis_nockd_2022') 
+> _n
+101. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Transplant") _tab (`kt_nockd_2017') _tab (`kt_nockd_2018') _tab (`kt_nockd_2019') _tab (`kt_nockd_2020') _tab (`kt_nockd_2021') _tab (`kt_nockd_2022') _n
+102. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Deceased") _tab (`deceased_nockd_2017') _tab (`deceased_nockd_2018') _tab (`deceased_nockd_2019') _tab (`deceased_nockd_2020') _tab (`deceased_nockd_2021') _tab (`deceased_nockd_2022') 
+> _n
+103. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Cardiovascular admission") _tab (`cardio_nockd_2017') _tab (`cardio_nockd_2018') _tab (`cardio_nockd_2019') _tab (`cardio_nockd_2020') _tab (`cardio_nockd_2021') _tab (`cardio_nockd_202
+> 2') _n
+104. 
+. *CKD stage 3
+. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("N/A") _tab (`baseline_ckd3_2017') _tab (`baseline_ckd3_2018') _tab (`baseline_ckd3_2019') _tab (`baseline_ckd3_2020') _tab (`baseline_ckd3_2021') _tab (`baseline_ckd3_2022') _n
+105. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("No progression") _tab (`none_ckd3_2017') _tab (`none_ckd3_2018') _tab (`none_ckd3_2019') _tab (`none_ckd3_2020') _tab (`none_ckd3_2021') _tab (`none_ckd3_2022') _n
+106. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("CKD stage 4/5") _tab (`ckd4_ckd3_2017') _tab (`ckd4_ckd3_2018') _tab (`ckd4_ckd3_2019') _tab (`ckd4_ckd3_2020') _tab (`ckd4_ckd3_2021') _tab (`ckd4_ckd3_2022') _n
+107. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Dialysis") _tab (`dialysis_ckd3_2017') _tab (`dialysis_ckd3_2018') _tab (`dialysis_ckd3_2019') _tab (`dialysis_ckd3_2020') _tab (`dialysis_ckd3_2021') _tab (`dialysis_ckd3_2022') _
+> n
+108. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Transplant") _tab (`kt_ckd3_2017') _tab (`kt_ckd3_2018') _tab (`kt_ckd3_2019') _tab (`kt_ckd3_2020') _tab (`kt_ckd3_2021') _tab (`kt_ckd3_2022') _n
+109. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Deceased") _tab (`deceased_ckd3_2017') _tab (`deceased_ckd3_2018') _tab (`deceased_ckd3_2019') _tab (`deceased_ckd3_2020') _tab (`deceased_ckd3_2021') _tab (`deceased_ckd3_2022') _
+> n
+110. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Cardiovascular admission") _tab (`cardio_ckd3_2017') _tab (`cardio_ckd3_2018') _tab (`cardio_ckd3_2019') _tab (`cardio_ckd3_2020') _tab (`cardio_ckd3_2021') _tab (`cardio_ckd3_2022
+> ') _n
+111. 
+. *CKD stage 4/5 without KRT
+. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("N/A") _tab (`baseline_ckd4_2017') _tab (`baseline_ckd4_2018') _tab (`baseline_ckd4_2019') _tab (`baseline_ckd4_2020') _tab (`baseline_ckd4_2021') _tab (`baseline_ckd4_2022') _n
+112. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("No progression") _tab (`none_ckd4_2017') _tab (`none_ckd4_2018') _tab (`none_ckd4_2019') _tab (`none_ckd4_2020') _tab (`none_ckd4_2021') _tab (`none_ckd4_2022') _n
+113. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Dialysis") _tab (`dialysis_ckd4_2017') _tab (`dialysis_ckd4_2018') _tab (`dialysis_ckd4_2019') _tab (`dialysis_ckd4_2020') _tab (`dialysis_ckd4_2021') _tab (`dialysis_ckd4_2022')
+>  _n
+114. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Transplant") _tab (`kt_ckd4_2017') _tab (`kt_ckd4_2018') _tab (`kt_ckd4_2019') _tab (`kt_ckd4_2020') _tab (`kt_ckd4_2021') _tab (`kt_ckd4_2022') _n
+115. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Deceased") _tab (`deceased_ckd4_2017') _tab (`deceased_ckd4_2018') _tab (`deceased_ckd4_2019') _tab (`deceased_ckd4_2020') _tab (`deceased_ckd4_2021') _tab (`deceased_ckd4_2022')
+>  _n
+116. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Cardiovascular admission") _tab (`cardio_ckd4_2017') _tab (`cardio_ckd4_2018') _tab (`cardio_ckd4_2019') _tab (`cardio_ckd4_2020') _tab (`cardio_ckd4_2021') _tab (`cardio_ckd4_20
+> 22') _n
+117. 
+. *Dialysis
+. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("N/A") _tab (`baseline_dialysis_2017') _tab (`baseline_dialysis_2018') _tab (`baseline_dialysis_2019') _tab (`baseline_dialysis_2020') _tab (`baseline_dialysis_2021') _tab (`baseline_dial
+> ysis_2022') _n
+118. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("No progression") _tab (`none_dialysis_2017') _tab (`none_dialysis_2018') _tab (`none_dialysis_2019') _tab (`none_dialysis_2020') _tab (`none_dialysis_2021') _tab (`none_dialysis_2022'
+> ) _n
+119. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Transplant") _tab (`kt_dialysis_2017') _tab (`kt_dialysis_2018') _tab (`kt_dialysis_2019') _tab (`kt_dialysis_2020') _tab (`kt_dialysis_2021') _tab (`kt_dialysis_2022') _n
+120. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Deceased") _tab (`deceased_dialysis_2017') _tab (`deceased_dialysis_2018') _tab (`deceased_dialysis_2019') _tab (`deceased_dialysis_2020') _tab (`deceased_dialysis_2021') _tab (`decea
+> sed_dialysis_2022') _n
+121. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Cardiovascular admission") _tab (`cardio_dialysis_2017') _tab (`cardio_dialysis_2018') _tab (`cardio_dialysis_2019') _tab (`cardio_dialysis_2020') _tab (`cardio_dialysis_2021') _tab (
+> `cardio_dialysis_2022') _n
+122. 
+. *Kidney Transplant
+. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("N/A") _tab (`baseline_kt_2017') _tab (`baseline_kt_2018') _tab (`baseline_kt_2019') _tab (`baseline_kt_2020') _tab (`baseline_kt_2021') _tab (`baseline_kt_2022') _n
+123. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("No progression") _tab (`none_kt_2017') _tab (`none_kt_2018') _tab (`none_kt_2019') _tab (`none_kt_2020') _tab (`none_kt_2021') _tab (`none_kt_2022') _n
+124. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Dialysis") _tab (`dialysis_kt_2017') _tab (`dialysis_kt_2018') _tab (`dialysis_kt_2019') _tab (`dialysis_kt_2020') _tab (`dialysis_kt_2021') _tab (`dialysis_kt_2022') _n
+125. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Deceased") _tab (`deceased_kt_2017') _tab (`deceased_kt_2018') _tab (`deceased_kt_2019') _tab (`deceased_kt_2020') _tab (`deceased_kt_2021') _tab (`deceased_kt_2022') _n
+126. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Cardiovascular admission") _tab (`cardio_kt_2017') _tab (`cardio_kt_2018') _tab (`cardio_kt_2019') _tab (`cardio_kt_2020') _tab (`cardio_kt_2021') _tab (`cardio_kt_2022') _n
+127. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(1,283 observations deleted)
+(792 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,269 observations deleted)
+(765 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(1,346 observations deleted)
+(745 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(1,229 observations deleted)
+(779 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(1,284 observations deleted)
+(787 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(1,316 observations deleted)
+(758 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(1,926 observations deleted)
+(504 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,857 observations deleted)
+(524 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(1,893 observations deleted)
+(571 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(1,934 observations deleted)
+(474 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(1,989 observations deleted)
+(517 real changes made)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(1,863 observations deleted)
+(500 real changes made)
+
+. 
+. 
+. file close tablecontent
+
+. 
+. **Redact counts of 0 from each column in table (adapted from code by Emily Herrett)
+. clear
+
+. import delimited ./output/ckd_progression.csv
+(encoding automatically selected: ISO-8859-1)
+(9 vars, 897 obs)
+
+. local columns " "count_2017" "count_2018" "count_2019" "count_2020" "count_2021" "count_2022" "
+
+. foreach col in `columns' {
+  2. replace `col'=. if `col'<=5
+  3. }
+(185 real changes made, 185 to missing)
+(178 real changes made, 178 to missing)
+(205 real changes made, 205 to missing)
+(188 real changes made, 188 to missing)
+(190 real changes made, 190 to missing)
+(205 real changes made, 205 to missing)
+
+.         
+. export delimited "./output/ckd_progression.csv", replace
+file ./output/ckd_progression.csv saved
+
+. 
 end of do-file
 
-r(2000);
-
-. cou if ckd_group==3 & ckd_progression==4
-  0
-
-. cou if ckd_group==4 & ckd_progression==4
-  6
-
-. do "C:\Users\LSH170~1\AppData\Local\Temp\STD3fa8_000000.tmp"
-
-. sysdir set PLUS ./analysis/adofiles
-
-. sysdir set PERSONAL ./analysis/adofiles
-
-. pwd
-C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use
-
-. cap log close
