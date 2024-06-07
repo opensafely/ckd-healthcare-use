@@ -29,10 +29,12 @@ local label`i': label ethnicity `i'
 foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop if ckd_group!=2
+foreach binary of varlist admitted_patients critical_care_patients emergency_patients op_patients neph_patients tx_patients gp_patients icd1 icd2 icd3 icd4 icd5 icd6 icd7 icd8 icd9 icd10 icd11 icd12 icd13 icd14 icd15 icd16 icd17 icd18 icd19 icd20 icd21 icd22 {
 qui safecount if `binary'==1 & ethnicity==`i'
 local `x'_`binary' = round(r(N),5)
 }
 file write tablecontent ("01/04/`x'") _tab ("label`i'") _tab (``x'_admitted_patients') _tab (``x'_critical_care_patients') _tab (``x'_emergency_patients') _tab (``x'_op_patients') _tab (``x'_neph_patients') _tab (``x'_tx_patients') _tab (``x'_gp_patients') _tab (``x'_icd1') _tab (``x'_icd2') _tab (``x'_icd3') _tab (``x'_icd4') _tab (``x'_icd5') _tab (``x'_icd6') _tab (``x'_icd7') _tab (``x'_icd8') _tab (``x'_icd9') _tab (``x'_icd10') _tab (``x'_icd11') _tab (``x'_icd12') _tab (``x'_icd13') _tab (``x'_icd14') _tab (``x'_icd15') _tab (``x'_icd16') _tab (``x'_icd17') _tab (``x'_icd18') _tab (``x'_icd19') _tab (``x'_icd20') _tab (``x'_icd21') _tab (``x'_icd22') _n
+}
 }
 
 forvalues i=1/5 {
@@ -40,10 +42,12 @@ local label`i': label imd `i'
 foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop if ckd_group!=2
+foreach binary of varlist admitted_patients critical_care_patients emergency_patients op_patients neph_patients tx_patients gp_patients icd1 icd2 icd3 icd4 icd5 icd6 icd7 icd8 icd9 icd10 icd11 icd12 icd13 icd14 icd15 icd16 icd17 icd18 icd19 icd20 icd21 icd22 {
 qui safecount if `binary'==1 & imd==`i'
 local `x'_`binary' = round(r(N),5)
 }
 file write tablecontent ("01/04/`x'") _tab ("label`i'") _tab (``x'_admitted_patients') _tab (``x'_critical_care_patients') _tab (``x'_emergency_patients') _tab (``x'_op_patients') _tab (``x'_neph_patients') _tab (``x'_tx_patients') _tab (``x'_gp_patients') _tab (``x'_icd1') _tab (``x'_icd2') _tab (``x'_icd3') _tab (``x'_icd4') _tab (``x'_icd5') _tab (``x'_icd6') _tab (``x'_icd7') _tab (``x'_icd8') _tab (``x'_icd9') _tab (``x'_icd10') _tab (``x'_icd11') _tab (``x'_icd12') _tab (``x'_icd13') _tab (``x'_icd14') _tab (``x'_icd15') _tab (``x'_icd16') _tab (``x'_icd17') _tab (``x'_icd18') _tab (``x'_icd19') _tab (``x'_icd20') _tab (``x'_icd21') _tab (``x'_icd22') _n
+}
 }
 
 forvalues i=1/9 {
@@ -51,10 +55,12 @@ local label`i': label region `i'
 foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop if ckd_group!=2
+foreach binary of varlist admitted_patients critical_care_patients emergency_patients op_patients neph_patients tx_patients gp_patients icd1 icd2 icd3 icd4 icd5 icd6 icd7 icd8 icd9 icd10 icd11 icd12 icd13 icd14 icd15 icd16 icd17 icd18 icd19 icd20 icd21 icd22 {
 qui safecount if `binary'==1 & region==`i'
 local `x'_`binary' = round(r(N),5)
 }
 file write tablecontent ("01/04/`x'") _tab ("label`i'") _tab (``x'_admitted_patients') _tab (``x'_critical_care_patients') _tab (``x'_emergency_patients') _tab (``x'_op_patients') _tab (``x'_neph_patients') _tab (``x'_tx_patients') _tab (``x'_gp_patients') _tab (``x'_icd1') _tab (``x'_icd2') _tab (``x'_icd3') _tab (``x'_icd4') _tab (``x'_icd5') _tab (``x'_icd6') _tab (``x'_icd7') _tab (``x'_icd8') _tab (``x'_icd9') _tab (``x'_icd10') _tab (``x'_icd11') _tab (``x'_icd12') _tab (``x'_icd13') _tab (``x'_icd14') _tab (``x'_icd15') _tab (``x'_icd16') _tab (``x'_icd17') _tab (``x'_icd18') _tab (``x'_icd19') _tab (``x'_icd20') _tab (``x'_icd21') _tab (``x'_icd22') _n
+}
 }
 
 forvalues i=0/1 {
@@ -62,10 +68,12 @@ local label`i': label urban `i'
 foreach x of local year {
 use ./output/`x'_ckd_complete.dta, clear
 drop if ckd_group!=2
+foreach binary of varlist admitted_patients critical_care_patients emergency_patients op_patients neph_patients tx_patients gp_patients icd1 icd2 icd3 icd4 icd5 icd6 icd7 icd8 icd9 icd10 icd11 icd12 icd13 icd14 icd15 icd16 icd17 icd18 icd19 icd20 icd21 icd22 {
 qui safecount if `binary'==1 & urban==`i'
 local `x'_`binary' = round(r(N),5)
 }
 file write tablecontent ("01/04/`x'") _tab ("label`i'") _tab (``x'_admitted_patients') _tab (``x'_critical_care_patients') _tab (``x'_emergency_patients') _tab (``x'_op_patients') _tab (``x'_neph_patients') _tab (``x'_tx_patients') _tab (``x'_gp_patients') _tab (``x'_icd1') _tab (``x'_icd2') _tab (``x'_icd3') _tab (``x'_icd4') _tab (``x'_icd5') _tab (``x'_icd6') _tab (``x'_icd7') _tab (``x'_icd8') _tab (``x'_icd9') _tab (``x'_icd10') _tab (``x'_icd11') _tab (``x'_icd12') _tab (``x'_icd13') _tab (``x'_icd14') _tab (``x'_icd15') _tab (``x'_icd16') _tab (``x'_icd17') _tab (``x'_icd18') _tab (``x'_icd19') _tab (``x'_icd20') _tab (``x'_icd21') _tab (``x'_icd22') _n
+}
 }
 
 file close tablecontent
