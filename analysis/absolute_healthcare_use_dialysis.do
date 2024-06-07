@@ -19,6 +19,7 @@ file write tablecontent ("01/04/`x'") _tab
 use ./output/`x'_ckd_complete.dta, clear
 drop if ckd_group!=4
 foreach aggregate of varlist hospital_days critical_care_days emergency_days op_appts neph_appts tx_appts gp_interactions icd1_days icd2_days icd3_days icd4_days icd5_days icd6_days icd7_days icd8_days icd9_days icd10_days icd11_days icd12_days icd13_days icd14_days icd15_days icd16_days icd17_days icd18_days icd19_days icd20_days icd21_days icd22_days {
+qui su total_`aggregate'
 local `x'_`aggregate' = r(mean)
 }
 foreach binary of varlist fistula_formation pd_insertion {
