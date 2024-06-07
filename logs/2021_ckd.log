@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/logs/2021_ckd.log
   log type:  text
- opened on:  21 Nov 2023, 19:44:57
+ opened on:   7 Jun 2024, 10:21:34
 
 . clear
 
@@ -15,19 +15,19 @@
 . **Exclusions
 . * Age <18 at index date
 . drop if age <18
-(10,745 observations deleted)
+(10,632 observations deleted)
 
 . 
 . * Anyone not registered at one practice for 3 months before index date
 . drop if has_follow_up==0
-(1,941 observations deleted)
+(1,973 observations deleted)
 
 . drop has_follow_up
 
 . 
 . * Deceased before index date
 . drop if deceased==1
-(3,743 observations deleted)
+(3,726 observations deleted)
 
 . drop deceased
 
@@ -37,17 +37,17 @@
 
                   region |      Freq.     Percent        Cum.
 -------------------------+-----------------------------------
-                    East |      3,264        9.72        9.72
-           East Midlands |      3,474       10.35       20.07
-                  London |      6,748       20.10       40.17
-              North East |      3,365       10.02       50.20
-              North West |      3,355        9.99       60.19
-              South East |      3,280        9.77       69.96
-              South West |      3,315        9.87       79.83
-           West Midlands |      3,298        9.82       89.66
-Yorkshire and The Humber |      3,472       10.34      100.00
+                    East |      3,372       10.02       10.02
+           East Midlands |      3,369       10.01       20.02
+                  London |      6,632       19.70       39.72
+              North East |      3,419       10.15       49.87
+              North West |      3,424       10.17       60.04
+              South East |      3,287        9.76       69.81
+              South West |      3,444       10.23       80.04
+           West Midlands |      3,367       10.00       90.04
+Yorkshire and The Humber |      3,355        9.96      100.00
 -------------------------+-----------------------------------
-                   Total |     33,571      100.00
+                   Total |     33,669      100.00
 
 . drop if region==""
 (0 observations deleted)
@@ -58,17 +58,17 @@ Yorkshire and The Humber |      3,472       10.34      100.00
 
         imd |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      1,690        5.03        5.03
-          1 |      6,283       18.72       23.75
-          2 |      6,479       19.30       43.05
-          3 |      6,280       18.71       61.76
-          4 |      6,419       19.12       80.88
-          5 |      6,420       19.12      100.00
+          0 |      1,681        4.99        4.99
+          1 |      6,452       19.16       24.16
+          2 |      6,400       19.01       43.16
+          3 |      6,390       18.98       62.14
+          4 |      6,371       18.92       81.07
+          5 |      6,375       18.93      100.00
 ------------+-----------------------------------
-      Total |     33,571      100.00
+      Total |     33,669      100.00
 
 . drop if imd==0
-(1,690 observations deleted)
+(1,681 observations deleted)
 
 . drop if imd==.
 (0 observations deleted)
@@ -97,65 +97,65 @@ file ./output/input_2021.dta saved
 . gen albuminuria = 0
 
 . replace albuminuria = 1 if acr >=3
-(16,033 real changes made)
+(16,038 real changes made)
 
 . replace albuminuria = 0 if acr_operator =="<"
-(823 real changes made)
+(795 real changes made)
 
 . replace albuminuria = 0 if acr_operator =="<="
-(782 real changes made)
+(764 real changes made)
 
 . label define albuminuria 0 "No albuminuria" 1 "Albuminuria"
 
 . label values albuminuria albuminuria
 
 . replace baseline_creatinine = . if !inrange(baseline_creatinine, 20, 3000)
-(13,948 real changes made, 13,948 to missing)
+(14,251 real changes made, 14,251 to missing)
 
 . gen mgdl_baseline_creatinine = baseline_creatinine/88.4
-(13,948 missing values generated)
+(14,251 missing values generated)
 
 . gen min_baseline_creatinine=.
-(31,881 missing values generated)
+(31,988 missing values generated)
 
 . replace min_baseline_creatinine = mgdl_baseline_creatinine/0.7 if male==0
-(9,243 real changes made)
+(8,975 real changes made)
 
 . replace min_baseline_creatinine = mgdl_baseline_creatinine/0.9 if male==1
-(8,690 real changes made)
+(8,762 real changes made)
 
 . replace min_baseline_creatinine = min_baseline_creatinine^-0.329  if male==0
-(9,243 real changes made)
+(8,975 real changes made)
 
 . replace min_baseline_creatinine = min_baseline_creatinine^-0.411  if male==1
-(8,690 real changes made)
+(8,762 real changes made)
 
 . replace min_baseline_creatinine = 1 if min_baseline_creatinine<1
-(11,334 real changes made)
+(11,183 real changes made)
 
 . gen max_baseline_creatinine=.
-(31,881 missing values generated)
+(31,988 missing values generated)
 
 . replace max_baseline_creatinine = mgdl_baseline_creatinine/0.7 if male==0
-(9,243 real changes made)
+(8,975 real changes made)
 
 . replace max_baseline_creatinine = mgdl_baseline_creatinine/0.9 if male==1
-(8,690 real changes made)
+(8,762 real changes made)
 
 . replace max_baseline_creatinine = max_baseline_creatinine^-1.209
-(17,933 real changes made)
+(17,737 real changes made)
 
 . replace max_baseline_creatinine = 1 if max_baseline_creatinine>1
-(20,547 real changes made)
+(20,805 real changes made)
 
 . gen baseline_egfr = min_baseline_creatinine*max_baseline_creatinine*141
-(13,948 missing values generated)
+(14,251 missing values generated)
 
 . replace baseline_egfr = baseline_egfr*(0.993^age)
-(17,933 real changes made)
+(17,737 real changes made)
 
 . replace baseline_egfr = baseline_egfr*1.018 if male==0
-(9,243 real changes made)
+(8,975 real changes made)
 
 . drop baseline_creatinine
 
@@ -168,7 +168,7 @@ file ./output/input_2021.dta saved
 . gen ckd = albuminuria
 
 . replace ckd = 1 if baseline_egfr <60
-(2,759 real changes made)
+(2,667 real changes made)
 
 . sum acr, de
 
@@ -177,56 +177,56 @@ file ./output/input_2021.dta saved
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs              31,881
-25%            0              0       Sum of Wgt.      31,881
+10%            0              0       Obs              31,988
+25%            0              0       Sum of Wgt.      31,988
 
-50%      12.3205                      Mean           12.59415
-                        Largest       Std. Dev.      13.00785
-75%     25.07215       41.87356
-90%     29.21082        42.0927       Variance       169.2043
-95%     31.40328       43.12477       Skewness       .1999477
-99%     35.22972       45.36719       Kurtosis       1.293368
+50%      10.8602                      Mean           12.52196
+                        Largest       Std. Dev.      12.98277
+75%     24.97887       42.23284
+90%     29.20246       42.51671       Variance       168.5522
+95%     31.42224       44.49918       Skewness       .2109373
+99%      35.4276       45.32337       Kurtosis        1.30493
 
 . tab acr_operator
 
 acr_operato |
           r |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          < |      1,606        5.59        5.59
-         <= |      1,563        5.44       11.03
-          = |     20,693       72.03       83.06
-          > |      1,658        5.77       88.83
-         >= |      1,618        5.63       94.46
-          ~ |      1,592        5.54      100.00
+          < |      1,567        5.45        5.45
+         <= |      1,596        5.55       10.99
+          = |     20,779       72.21       83.20
+          > |      1,679        5.83       89.04
+         >= |      1,557        5.41       94.45
+          ~ |      1,598        5.55      100.00
 ------------+-----------------------------------
-      Total |     28,730      100.00
+      Total |     28,776      100.00
 
 . tab albuminuria
 
    albuminuria |      Freq.     Percent        Cum.
 ---------------+-----------------------------------
-No albuminuria |     17,453       54.74       54.74
-   Albuminuria |     14,428       45.26      100.00
+No albuminuria |     17,509       54.74       54.74
+   Albuminuria |     14,479       45.26      100.00
 ---------------+-----------------------------------
-         Total |     31,881      100.00
+         Total |     31,988      100.00
 
 . tab ckd
 
         ckd |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |     14,694       46.09       46.09
-          1 |     17,187       53.91      100.00
+          0 |     14,842       46.40       46.40
+          1 |     17,146       53.60      100.00
 ------------+-----------------------------------
-      Total |     31,881      100.00
+      Total |     31,988      100.00
 
 . egen egfr_status = cut(baseline_egfr), at(0, 60, 5000)
-(13948 missing values generated)
+(14251 missing values generated)
 
 . recode egfr_status 0=2 60=1
-(egfr_status: 17933 changes made)
+(egfr_status: 17737 changes made)
 
 . replace egfr_status = 0 if baseline_egfr==.
-(13,948 real changes made)
+(14,251 real changes made)
 
 . foreach krt of varlist  dialysis_primary_care                   ///
 >                                                 dialysis_icd_10              
@@ -248,65 +248,65 @@ No albuminuria |     17,453       54.74       54.74
 dialysis_pr |
  imary_care |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |     30,258       94.91       94.91
-          1 |      1,623        5.09      100.00
+          0 |     30,401       95.04       95.04
+          1 |      1,587        4.96      100.00
 ------------+-----------------------------------
-      Total |     31,881      100.00
-(1,623 real changes made)
-(776 real changes made)
+      Total |     31,988      100.00
+(1,587 real changes made)
+(750 real changes made)
 
 dialysis_ic |
        d_10 |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |     30,316       95.09       95.09
-          1 |      1,565        4.91      100.00
+          0 |     30,366       94.93       94.93
+          1 |      1,622        5.07      100.00
 ------------+-----------------------------------
-      Total |     31,881      100.00
-(1,492 real changes made)
-(714 real changes made)
+      Total |     31,988      100.00
+(1,539 real changes made)
+(739 real changes made)
 
 dialysis_op |
        cs_4 |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |     30,266       94.93       94.93
-          1 |      1,615        5.07      100.00
+          0 |     30,413       95.08       95.08
+          1 |      1,575        4.92      100.00
 ------------+-----------------------------------
-      Total |     31,881      100.00
-(1,428 real changes made)
-(662 real changes made)
+      Total |     31,988      100.00
+(1,412 real changes made)
+(670 real changes made)
 
 kidney_tran |
 splant_prim |
    ary_care |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |     30,307       95.06       95.06
-          1 |      1,574        4.94      100.00
+          0 |     30,372       94.95       94.95
+          1 |      1,616        5.05      100.00
 ------------+-----------------------------------
-      Total |     31,881      100.00
-(1,322 real changes made)
-(633 real changes made)
+      Total |     31,988      100.00
+(1,406 real changes made)
+(686 real changes made)
 
 kidney_tran |
 splant_icd_ |
          10 |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |     30,277       94.97       94.97
-          1 |      1,604        5.03      100.00
+          0 |     30,365       94.93       94.93
+          1 |      1,623        5.07      100.00
 ------------+-----------------------------------
-      Total |     31,881      100.00
-(1,302 real changes made)
-(590 real changes made)
+      Total |     31,988      100.00
+(1,328 real changes made)
+(599 real changes made)
 
 kidney_tran |
 splant_opcs |
          _4 |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |     30,308       95.07       95.07
-          1 |      1,573        4.93      100.00
+          0 |     30,399       95.03       95.03
+          1 |      1,589        4.97      100.00
 ------------+-----------------------------------
-      Total |     31,881      100.00
-(1,233 real changes made)
-(540 real changes made)
+      Total |     31,988      100.00
+(1,252 real changes made)
+(615 real changes made)
 
 . label define egfr_status 0 "No eGFR" 1 "eGFR >=60" 2 "eGFR <60" 3 "KRT"
 
@@ -317,24 +317,24 @@ splant_opcs |
 egfr_statu |      albuminuria
          s | No albumi  Albuminur |     Total
 -----------+----------------------+----------
-   No eGFR |     5,700      4,607 |    10,307 
- eGFR >=60 |     5,079      4,358 |     9,437 
-  eGFR <60 |     2,090      1,647 |     3,737 
-       KRT |     4,584      3,816 |     8,400 
+   No eGFR |     5,651      4,800 |    10,451 
+ eGFR >=60 |     5,132      4,282 |     9,414 
+  eGFR <60 |     2,005      1,594 |     3,599 
+       KRT |     4,721      3,803 |     8,524 
 -----------+----------------------+----------
-     Total |    17,453     14,428 |    31,881 
+     Total |    17,509     14,479 |    31,988 
 
 . tab ckd, m
 
         ckd |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |     10,779       33.81       33.81
-          1 |     21,102       66.19      100.00
+          0 |     10,783       33.71       33.71
+          1 |     21,205       66.29      100.00
 ------------+-----------------------------------
-      Total |     31,881      100.00
+      Total |     31,988      100.00
 
 . drop if ckd==0
-(10,779 observations deleted)
+(10,783 observations deleted)
 
 . drop ckd
 
@@ -347,12 +347,12 @@ egfr_statu |      albuminuria
 egfr_statu |      albuminuria
          s | No albumi  Albuminur |     Total
 -----------+----------------------+----------
-   No eGFR |         0      4,607 |     4,607 
- eGFR >=60 |         0      4,358 |     4,358 
-  eGFR <60 |     2,090      1,647 |     3,737 
-       KRT |     4,584      3,816 |     8,400 
+   No eGFR |         0      4,800 |     4,800 
+ eGFR >=60 |         0      4,282 |     4,282 
+  eGFR <60 |     2,005      1,594 |     3,599 
+       KRT |     4,721      3,803 |     8,524 
 -----------+----------------------+----------
-     Total |     6,674     14,428 |    21,102 
+     Total |     6,726     14,479 |    21,205 
 
 . drop albuminuria
 
@@ -370,15 +370,15 @@ file ./output/2021_ckd.csv saved
 
     Result                           # of obs.
     -----------------------------------------
-    not matched                        10,779
+    not matched                        10,783
         from master                         0  (_merge==1)
-        from using                     10,779  (_merge==2)
+        from using                     10,783  (_merge==2)
 
-    matched                            21,102  (_merge==3)
+    matched                            21,205  (_merge==3)
     -----------------------------------------
 
 . keep if _merge==2
-(21,102 observations deleted)
+(21,205 observations deleted)
 
 . drop _merge
 
@@ -392,5 +392,5 @@ file ./output/2021_nockd.csv saved
       name:  <unnamed>
        log:  /workspace/logs/2021_ckd.log
   log type:  text
- closed on:  21 Nov 2023, 19:44:58
+ closed on:   7 Jun 2024, 10:21:37
 -------------------------------------------------------------------------------
