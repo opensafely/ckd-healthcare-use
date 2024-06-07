@@ -90,7 +90,7 @@ gen kidney_transplant_outcome = 0
 replace kidney_transplant_outcome = 1 if modality_outcome=="Kidney transplant"
 replace kidney_transplant_outcome = 1 if modality_outcome=="Modality unclear" & esrd_egfr_end==0
 *NB - might need to change "" to . with dummy data
-replace ckd_progression = 5 if modality_outcome=="Modality unclear" & modality_outcome_date!=""
+replace ckd_progression = 5 if modality_outcome=="Modality unclear" & modality_outcome_date!=.
 replace ckd_progression = 3 if dialysis_outcome==1
 replace ckd_progression = 4 if kidney_transplant_outcome==1
 replace ckd_progression = 6 if modality_outcome=="Deceased"
