@@ -273,5 +273,3 @@ file write tablecontent ("All") _tab ("Transplant") _tab ("Deceased") _tab %10.2
 file write tablecontent ("All") _tab ("Transplant") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_kt_2017') _tab %10.2f (`cardio_kt_2017_ll') _tab %10.2f (`cardio_kt_2017_ul') _tab %10.2f (`cardio_kt_2018') _tab %10.2f (`cardio_kt_2018_ll') _tab %10.2f (`cardio_kt_2018_ul') _tab %10.2f (`cardio_kt_2019') _tab %10.2f (`cardio_kt_2019_ll') _tab %10.2f (`cardio_kt_2019_ul') _tab %10.2f (`cardio_kt_2020') _tab %10.2f (`cardio_kt_2020_ll') _tab %10.2f (`cardio_kt_2020_ul') _tab %10.2f (`cardio_kt_2021') _tab %10.2f (`cardio_kt_2021_ll') _tab %10.2f (`cardio_kt_2021_ul') _tab %10.2f (`cardio_kt_2022') _tab %10.2f (`cardio_kt_2022_ll') _tab %10.2f (`cardio_kt_2022_ul') _n
 
 file close tablecontent
-
-export delimited "./output/standardised_ckd_progression_overall.csv", replace
