@@ -1049,7 +1049,7 @@ gen region2=region
 drop if region==3|region==4|region==6|region==8
 replace region2 = 3 if region==5
 replace region2 = 4 if region==7
-replace region3 = 5 if region==9
+replace region2 = 5 if region==9
 label define region2 	1 "East Midlands" 					///
 						2 "East"   							///
 						3 "North West" 						///
