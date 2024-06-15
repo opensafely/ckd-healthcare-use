@@ -773,6 +773,14 @@ actions:
         log: logs/standardised_ckd_progression.log
         output: output/standardised_ckd_progression.csv
 
+  weighted_ckd_progression:
+    run: stata-mp:latest analysis/weighted_ckd_progression.do
+    needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_clean_nockd_complete, 2018_clean_nockd_complete, 2019_clean_nockd_complete, 2020_clean_nockd_complete, 2021_clean_nockd_complete, 2022_clean_nockd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/weighted_ckd_progression.log
+        output: output/weighted_ckd_progression.csv
+
   standardised_ckd_progression_overall:
     run: stata-mp:latest analysis/standardised_ckd_progression_overall.do
     needs: [2017_clean_ckd_complete, 2018_clean_ckd_complete, 2019_clean_ckd_complete, 2020_clean_ckd_complete, 2021_clean_ckd_complete, 2022_clean_ckd_complete, 2017_clean_nockd_complete, 2018_clean_nockd_complete, 2019_clean_nockd_complete, 2020_clean_nockd_complete, 2021_clean_nockd_complete, 2022_clean_nockd_complete]

@@ -1,13 +1,14 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/standardised_ckd_progression.log
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/weighted_ckd_progression.log
   log type:  text
- opened on:  15 Jun 2024, 15:49:06
+ opened on:  15 Jun 2024, 16:32:51
 
 . 
 . cap file close tablecontent
 
-. file open tablecontent using ./output/standardised_ckd_progression.csv, write text replace
+. file open tablecontent using ./output/weighted_ckd_progression.csv, write text replace
+(file ./output/weighted_ckd_progression.csv not found)
 
 . 
 . file write tablecontent ("stratum") _tab ("start_status") _tab ("end_status") _tab ("2017") _tab ("2017_ll") _tab ("2017_ul") _tab ("2018") _tab ("2018_ll") _tab ("2018_ul")  _tab ("2019") _tab ("2019_ll") _
@@ -2713,15 +2714,623 @@ Total estimation                            Number of obs = 11
 > 2f (`cardio_kt_2022_ll') _tab %10.2f (`cardio_kt_2022_ul') _n
 
 . 
+. forvalues i=1/2 {
+  2. local label`i': label ethnicity `i'
+  3. foreach x of local year {
+  4. use ./output/`x'_ckd_complete.dta, clear
+  5. drop _merge
+  6. merge 1:1 patient_id using ./output/`x'_nockd_complete
+  7. drop if ethnicity!=`i'
+  8. 
+. replace ckd_group = 0 if ckd_group==1
+  9. 
+. **Overall
+. total weight
+ 10. local baseline_ckd_`x' = r(table)[1,1]
+ 11. local multiplier = 100000/`baseline_ckd_`x''
+ 12. total weight
+ 13. local baseline_ckd_`x' = r(table)[1,1] * `multiplier'
+ 14. local baseline_ckd_`x'_ll = r(table)[5,1] * `multiplier'
+ 15. local baseline_ckd_`x'_ul = r(table)[6,1] * `multiplier'
+ 16. 
+. total weight if ckd_progression==0
+ 17. local none_ckd_`x' = r(table)[1,1] * `multiplier'
+ 18. local none_ckd_`x'_ll = r(table)[5,1] * `multiplier'
+ 19. local none_ckd_`x'_ul = r(table)[6,1] * `multiplier'
+ 20. 
+. total weight if ckd_progression==1
+ 21. local ckd3_ckd_`x' = r(table)[1,1] * `multiplier'
+ 22. local ckd3_ckd_`x'_ll = r(table)[5,1] * `multiplier'
+ 23. local ckd3_ckd_`x'_ul = r(table)[6,1] * `multiplier'
+ 24. 
+. total weight if ckd_progression==2
+ 25. local ckd4_ckd_`x' = r(table)[1,1] * `multiplier'
+ 26. local ckd4_ckd_`x'_ll = r(table)[5,1] * `multiplier'
+ 27. local ckd4_ckd_`x'_ul = r(table)[6,1] * `multiplier'
+ 28. 
+. total weight if ckd_progression==3
+ 29. local dialysis_ckd_`x' = r(table)[1,1] * `multiplier'
+ 30. local dialysis_ckd_`x'_ll = r(table)[5,1] * `multiplier'
+ 31. local dialysis_ckd_`x'_ul = r(table)[6,1] * `multiplier'
+ 32. 
+. total weight if ckd_progression==4
+ 33. local kt_ckd_`x' = r(table)[1,1] * `multiplier'
+ 34. local kt_ckd_`x'_ll = r(table)[5,1] * `multiplier'
+ 35. local kt_ckd_`x'_ul = r(table)[6,1] * `multiplier'
+ 36. 
+. total weight if ckd_progression==6
+ 37. local deceased_ckd_`x' = r(table)[1,1] * `multiplier'
+ 38. local deceased_ckd_`x'_ll = r(table)[5,1] * `multiplier'
+ 39. local deceased_ckd_`x'_ul = r(table)[6,1] * `multiplier'
+ 40. 
+. total weight if cardiovascular==1
+ 41. local cardio_ckd_`x' = r(table)[1,1] * `multiplier'
+ 42. local cardio_ckd_`x'_ll = r(table)[5,1] * `multiplier'
+ 43. local cardio_ckd_`x'_ul = r(table)[6,1] * `multiplier'
+ 44. 
+. **No CKD
+. total weight if ckd_group==0
+ 45. local baseline_nockd_`x' = r(table)[1,1]
+ 46. local multiplier = 100000/`baseline_nockd_`x''
+ 47. total weight if ckd_group==0
+ 48. local baseline_nockd_`x' = r(table)[1,1] * `multiplier'
+ 49. local baseline_nockd_`x'_ll = r(table)[5,1] * `multiplier'
+ 50. local baseline_nockd_`x'_ul = r(table)[6,1] * `multiplier'
+ 51. 
+. total weight if ckd_group==0 & ckd_progression==0
+ 52. local none_nockd_`x' = r(table)[1,1] * `multiplier'
+ 53. local none_nockd_`x'_ll = r(table)[5,1] * `multiplier'
+ 54. local none_nockd_`x'_ul = r(table)[6,1] * `multiplier'
+ 55. 
+. total weight if ckd_group==0 & ckd_progression==1
+ 56. local ckd3_nockd_`x' = r(table)[1,1] * `multiplier'
+ 57. local ckd3_nockd_`x'_ll = r(table)[5,1] * `multiplier'
+ 58. local ckd3_nockd_`x'_ul = r(table)[6,1] * `multiplier'
+ 59. 
+. total weight if ckd_group==0 & ckd_progression==2
+ 60. local ckd4_nockd_`x' = r(table)[1,1] * `multiplier'
+ 61. local ckd4_nockd_`x'_ll = r(table)[5,1] * `multiplier'
+ 62. local ckd4_nockd_`x'_ul = r(table)[6,1] * `multiplier'
+ 63. 
+. total weight if ckd_group==0 & ckd_progression==3
+ 64. local dialysis_nockd_`x' = r(table)[1,1] * `multiplier'
+ 65. local dialysis_nockd_`x'_ll = r(table)[5,1] * `multiplier'
+ 66. local dialysis_nockd_`x'_ul = r(table)[6,1] * `multiplier'
+ 67. 
+. total weight if ckd_group==0 & ckd_progression==6
+ 68. local deceased_nockd_`x' = r(table)[1,1] * `multiplier'
+ 69. local deceased_nockd_`x'_ll = r(table)[5,1] * `multiplier'
+ 70. local deceased_nockd_`x'_ul = r(table)[6,1] * `multiplier'
+ 71. 
+. total weight if cardiovascular==1 & ckd_group==0
+ 72. local cardio_nockd_`x' = r(table)[1,1] * `multiplier'
+ 73. local cardio_nockd_`x'_ll = r(table)[5,1] * `multiplier'
+ 74. local cardio_nockd_`x'_ul = r(table)[6,1] * `multiplier'
+ 75. 
+. **CKD stage 3
+. total weight if ckd_group==2
+ 76. local baseline_ckd3_`x' = r(table)[1,1]
+ 77. local multiplier = 100000/`baseline_ckd3_`x''
+ 78. total weight if ckd_group==2
+ 79. local baseline_ckd3_`x' = r(table)[1,1] * `multiplier'
+ 80. local baseline_ckd3_`x'_ll = r(table)[5,1] * `multiplier'
+ 81. local baseline_ckd3_`x'_ul = r(table)[6,1] * `multiplier'
+ 82. 
+. total weight if ckd_group==2 & ckd_progression==0
+ 83. local none_ckd3_`x' = r(table)[1,1] * `multiplier'
+ 84. local none_ckd3_`x'_ll = r(table)[5,1] * `multiplier'
+ 85. local none_ckd3_`x'_ul = r(table)[6,1] * `multiplier'
+ 86. 
+. total weight if ckd_group==2 & ckd_progression==2
+ 87. local ckd4_ckd3_`x' = r(table)[1,1] * `multiplier'
+ 88. local ckd4_ckd3_`x'_ll = r(table)[5,1] * `multiplier'
+ 89. local ckd4_ckd3_`x'_ul = r(table)[6,1] * `multiplier'
+ 90. 
+. total weight if ckd_group==2 & ckd_progression==3
+ 91. local dialysis_ckd3_`x' = r(table)[1,1] * `multiplier'
+ 92. local dialysis_ckd3_`x'_ll = r(table)[5,1] * `multiplier'
+ 93. local dialysis_ckd3_`x'_ul = r(table)[6,1] * `multiplier'
+ 94. 
+. total weight if ckd_group==2 & ckd_progression==6
+ 95. local deceased_ckd3_`x' = r(table)[1,1] * `multiplier'
+ 96. local deceased_ckd3_`x'_ll = r(table)[5,1] * `multiplier'
+ 97. local deceased_ckd3_`x'_ul = r(table)[6,1] * `multiplier'
+ 98. 
+. total weight if cardiovascular==1 & ckd_group==2
+ 99. local cardio_ckd3_`x' = r(table)[1,1] * `multiplier'
+100. local cardio_ckd3_`x'_ll = r(table)[5,1] * `multiplier'
+101. local cardio_ckd3_`x'_ul = r(table)[6,1] * `multiplier'
+102. 
+. **CKD stage 4/5
+. total weight if ckd_group==3
+103. local baseline_ckd4_`x' = r(table)[1,1]
+104. local multiplier = 100000/`baseline_ckd4_`x''
+105. total weight if ckd_group==3
+106. local baseline_ckd4_`x' = r(table)[1,1] * `multiplier'
+107. local baseline_ckd4_`x'_ll = r(table)[5,1] * `multiplier'
+108. local baseline_ckd4_`x'_ul = r(table)[6,1] * `multiplier'
+109. 
+. total weight if ckd_group==3 & ckd_progression==0
+110. local none_ckd4_`x' = r(table)[1,1] * `multiplier'
+111. local none_ckd4_`x'_ll = r(table)[5,1] * `multiplier'
+112. local none_ckd4_`x'_ul = r(table)[6,1] * `multiplier'
+113. 
+. total weight if ckd_group==3 & ckd_progression==3
+114. local dialysis_ckd4_`x' = r(table)[1,1] * `multiplier'
+115. local dialysis_ckd4_`x'_ll = r(table)[5,1] * `multiplier'
+116. local dialysis_ckd4_`x'_ul = r(table)[6,1] * `multiplier'
+117. 
+. total weight if ckd_group==3 & ckd_progression==4
+118. local kt_ckd4_`x' = r(table)[1,1] * `multiplier'
+119. local kt_ckd4_`x'_ll = r(table)[5,1] * `multiplier'
+120. local kt_ckd4_`x'_ul = r(table)[6,1] * `multiplier'
+121. 
+. total weight if ckd_group==3 & ckd_progression==6
+122. local deceased_ckd4_`x' = r(table)[1,1] * `multiplier'
+123. local deceased_ckd4_`x'_ll = r(table)[5,1] * `multiplier'
+124. local deceased_ckd4_`x'_ul = r(table)[6,1] * `multiplier'
+125. 
+. total weight if cardiovascular==1 & ckd_group==3
+126. local cardio_ckd4_`x' = r(table)[1,1] * `multiplier'
+127. local cardio_ckd4_`x'_ll = r(table)[5,1] * `multiplier'
+128. local cardio_ckd4_`x'_ul = r(table)[6,1] * `multiplier'
+129. 
+. **Dialysis
+. total weight if ckd_group==4
+130. local baseline_dialysis_`x' = r(table)[1,1]
+131. local multiplier = 100000/`baseline_dialysis_`x''
+132. total weight if ckd_group==4
+133. local baseline_dialysis_`x' = r(table)[1,1] * `multiplier'
+134. local baseline_dialysis_`x'_ll = r(table)[5,1] * `multiplier'
+135. local baseline_dialysis_`x'_ul = r(table)[6,1] * `multiplier'
+136. 
+. total weight if ckd_group==4 & ckd_progression==0
+137. local none_dialysis_`x' = r(table)[1,1] * `multiplier'
+138. local none_dialysis_`x'_ll = r(table)[5,1] * `multiplier'
+139. local none_dialysis_`x'_ul = r(table)[6,1] * `multiplier'
+140. 
+. total weight if ckd_group==4 & ckd_progression==4
+141. local kt_dialysis_`x' = r(table)[1,1] * `multiplier'
+142. local kt_dialysis_`x'_ll = r(table)[5,1] * `multiplier'
+143. local kt_dialysis_`x'_ul = r(table)[6,1] * `multiplier'
+144. 
+. total weight if ckd_group==4 & ckd_progression==6
+145. local deceased_dialysis_`x' = r(table)[1,1] * `multiplier'
+146. local deceased_dialysis_`x'_ll = r(table)[5,1] * `multiplier'
+147. local deceased_dialysis_`x'_ul = r(table)[6,1] * `multiplier'
+148. 
+. total weight if cardiovascular==1 & ckd_group==4
+149. local cardio_dialysis_`x' = r(table)[1,1] * `multiplier'
+150. local cardio_dialysis_`x'_ll = r(table)[5,1] * `multiplier'
+151. local cardio_dialysis_`x'_ul = r(table)[6,1] * `multiplier'
+152. 
+. **Kidney transplant
+. total weight if ckd_group==5
+153. local baseline_kt_`x' = r(table)[1,1]
+154. local multiplier = 100000/`baseline_kt_`x''
+155. total weight if ckd_group==5
+156. local baseline_kt_`x' = r(table)[1,1] * `multiplier'
+157. local baseline_kt_`x'_ll = r(table)[5,1] * `multiplier'
+158. local baseline_kt_`x'_ul = r(table)[6,1] * `multiplier'
+159. 
+. total weight if ckd_group==5 & ckd_progression==0
+160. local none_kt_`x' = r(table)[1,1] * `multiplier'
+161. local none_kt_`x'_ll = r(table)[5,1] * `multiplier'
+162. local none_kt_`x'_ul = r(table)[6,1] * `multiplier'
+163. 
+. total weight if ckd_group==5 & ckd_progression==3
+164. local dialysis_kt_`x' = r(table)[1,1] * `multiplier'
+165. local dialysis_kt_`x'_ll = r(table)[5,1] * `multiplier'
+166. local dialysis_kt_`x'_ul = r(table)[6,1] * `multiplier'
+167. 
+. total weight if ckd_group==5 & ckd_progression==6
+168. local deceased_kt_`x' = r(table)[1,1] * `multiplier'
+169. local deceased_kt_`x'_ll = r(table)[5,1] * `multiplier'
+170. local deceased_kt_`x'_ul = r(table)[6,1] * `multiplier'
+171. 
+. total weight if cardiovascular==1 & ckd_group==5
+172. local cardio_kt_`x' = r(table)[1,1] * `multiplier'
+173. local cardio_kt_`x'_ll = r(table)[5,1] * `multiplier'
+174. local cardio_kt_`x'_ul = r(table)[6,1] * `multiplier'
+175. }
+176. 
+. *Overall
+. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("N/A") _tab %10.2f (`baseline_ckd_2017') _tab %10.2f (`baseline_ckd_2017_ll') _tab %10.2f (`baseline_ckd_2017_ul') _tab %10.2f (`baseline_ckd_201
+> 8') _tab %10.2f (`baseline_ckd_2018_ll') _tab %10.2f (`baseline_ckd_2018_ul') _tab %10.2f (`baseline_ckd_2019') _tab %10.2f (`baseline_ckd_2019_ll') _tab %10.2f (`baseline_ckd_2019_ul') _tab %10.2f (`baselin
+> e_ckd_2020') _tab %10.2f (`baseline_ckd_2020_ll') _tab %10.2f (`baseline_ckd_2020_ul') _tab %10.2f (`baseline_ckd_2021') _tab %10.2f (`baseline_ckd_2021_ll') _tab %10.2f (`baseline_ckd_2021_ul') _tab %10.2f 
+> (`baseline_ckd_2022') _tab %10.2f (`baseline_ckd_2022_ll') _tab %10.2f (`baseline_ckd_2022_ul') _n
+177. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("No progression") _tab %10.2f (`none_ckd_2017') _tab %10.2f (`none_ckd_2017_ll') _tab %10.2f (`none_ckd_2017_ul') _tab %10.2f (`none_ckd_2018'
+> ) _tab %10.2f (`none_ckd_2018_ll') _tab %10.2f (`none_ckd_2018_ul') _tab %10.2f (`none_ckd_2019') _tab %10.2f (`none_ckd_2019_ll') _tab %10.2f (`none_ckd_2019_ul') _tab %10.2f (`none_ckd_2020') _tab %10.2f (
+> `none_ckd_2020_ll') _tab %10.2f (`none_ckd_2020_ul') _tab %10.2f (`none_ckd_2021') _tab %10.2f (`none_ckd_2021_ll') _tab %10.2f (`none_ckd_2021_ul') _tab %10.2f (`none_ckd_2022') _tab %10.2f (`none_ckd_2022_
+> ll') _tab %10.2f (`none_ckd_2022_ul') _n
+178. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("CKD stage 3") _tab %10.2f (`ckd3_ckd_2017') _tab %10.2f (`ckd3_ckd_2017_ll') _tab %10.2f (`ckd3_ckd_2017_ul') _tab %10.2f (`ckd3_ckd_2018') _
+> tab %10.2f (`ckd3_ckd_2018_ll') _tab %10.2f (`ckd3_ckd_2018_ul') _tab %10.2f (`ckd3_ckd_2019') _tab %10.2f (`ckd3_ckd_2019_ll') _tab %10.2f (`ckd3_ckd_2019_ul') _tab %10.2f (`ckd3_ckd_2020') _tab %10.2f (`ck
+> d3_ckd_2020_ll') _tab %10.2f (`ckd3_ckd_2020_ul') _tab %10.2f (`ckd3_ckd_2021') _tab %10.2f (`ckd3_ckd_2021_ll') _tab %10.2f (`ckd3_ckd_2021_ul') _tab %10.2f (`ckd3_ckd_2022') _tab %10.2f (`ckd3_ckd_2022_ll'
+> ) _tab %10.2f (`ckd3_ckd_2022_ul') _n
+179. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("CKD stage 4/5") _tab %10.2f (`ckd4_ckd_2017') _tab %10.2f (`ckd4_ckd_2017_ll') _tab %10.2f (`ckd4_ckd_2017_ul') _tab %10.2f (`ckd4_ckd_2018')
+>  _tab %10.2f (`ckd4_ckd_2018_ll') _tab %10.2f (`ckd4_ckd_2018_ul') _tab %10.2f (`ckd4_ckd_2019') _tab %10.2f (`ckd4_ckd_2019_ll') _tab %10.2f (`ckd4_ckd_2019_ul') _tab %10.2f (`ckd4_ckd_2020') _tab %10.2f (`
+> ckd4_ckd_2020_ll') _tab %10.2f (`ckd4_ckd_2020_ul') _tab %10.2f (`ckd4_ckd_2021') _tab %10.2f (`ckd4_ckd_2021_ll') _tab %10.2f (`ckd4_ckd_2021_ul') _tab %10.2f (`ckd4_ckd_2022') _tab %10.2f (`ckd4_ckd_2022_l
+> l') _tab %10.2f (`ckd4_ckd_2022_ul') _n
+180. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Dialysis") _tab %10.2f (`dialysis_ckd_2017') _tab %10.2f (`dialysis_ckd_2017_ll') _tab %10.2f (`dialysis_ckd_2017_ul') _tab %10.2f (`dialysis
+> _ckd_2018') _tab %10.2f (`dialysis_ckd_2018_ll') _tab %10.2f (`dialysis_ckd_2018_ul') _tab %10.2f (`dialysis_ckd_2019') _tab %10.2f (`dialysis_ckd_2019_ll') _tab %10.2f (`dialysis_ckd_2019_ul') _tab %10.2f (
+> `dialysis_ckd_2020') _tab %10.2f (`dialysis_ckd_2020_ll') _tab %10.2f (`dialysis_ckd_2020_ul') _tab %10.2f (`dialysis_ckd_2021') _tab %10.2f (`dialysis_ckd_2021_ll') _tab %10.2f (`dialysis_ckd_2021_ul') _tab
+>  %10.2f (`dialysis_ckd_2022') _tab %10.2f (`dialysis_ckd_2022_ll') _tab %10.2f (`dialysis_ckd_2022_ul') _n
+181. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Transplant") _tab %10.2f (`kt_ckd_2017') _tab %10.2f (`kt_ckd_2017_ll') _tab %10.2f (`kt_ckd_2017_ul') _tab %10.2f (`kt_ckd_2018') _tab %10.2
+> f (`kt_ckd_2018_ll') _tab %10.2f (`kt_ckd_2018_ul') _tab %10.2f (`kt_ckd_2019') _tab %10.2f (`kt_ckd_2019_ll') _tab %10.2f (`kt_ckd_2019_ul') _tab %10.2f (`kt_ckd_2020') _tab %10.2f (`kt_ckd_2020_ll') _tab %
+> 10.2f (`kt_ckd_2020_ul') _tab %10.2f (`kt_ckd_2021') _tab %10.2f (`kt_ckd_2021_ll') _tab %10.2f (`kt_ckd_2021_ul') _tab %10.2f (`kt_ckd_2022') _tab %10.2f (`kt_ckd_2022_ll') _tab %10.2f (`kt_ckd_2022_ul') _n
+182. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Deceased") _tab %10.2f (`deceased_ckd_2017') _tab %10.2f (`deceased_ckd_2017_ll') _tab %10.2f (`deceased_ckd_2017_ul') _tab %10.2f (`deceased
+> _ckd_2018') _tab %10.2f (`deceased_ckd_2018_ll') _tab %10.2f (`deceased_ckd_2018_ul') _tab %10.2f (`deceased_ckd_2019') _tab %10.2f (`deceased_ckd_2019_ll') _tab %10.2f (`deceased_ckd_2019_ul') _tab %10.2f (
+> `deceased_ckd_2020') _tab %10.2f (`deceased_ckd_2020_ll') _tab %10.2f (`deceased_ckd_2020_ul') _tab %10.2f (`deceased_ckd_2021') _tab %10.2f (`deceased_ckd_2021_ll') _tab %10.2f (`deceased_ckd_2021_ul') _tab
+>  %10.2f (`deceased_ckd_2022') _tab %10.2f (`deceased_ckd_2022_ll') _tab %10.2f (`deceased_ckd_2022_ul') _n
+183. file write tablecontent ("`label`i''") _tab ("Overall") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_ckd_2017') _tab %10.2f (`cardio_ckd_2017_ll') _tab %10.2f (`cardio_ckd_2017_ul') _tab %10.2f 
+> (`cardio_ckd_2018') _tab %10.2f (`cardio_ckd_2018_ll') _tab %10.2f (`cardio_ckd_2018_ul') _tab %10.2f (`cardio_ckd_2019') _tab %10.2f (`cardio_ckd_2019_ll') _tab %10.2f (`cardio_ckd_2019_ul') _tab %10.2f (`c
+> ardio_ckd_2020') _tab %10.2f (`cardio_ckd_2020_ll') _tab %10.2f (`cardio_ckd_2020_ul') _tab %10.2f (`cardio_ckd_2021') _tab %10.2f (`cardio_ckd_2021_ll') _tab %10.2f (`cardio_ckd_2021_ul') _tab %10.2f (`card
+> io_ckd_2022') _tab %10.2f (`cardio_ckd_2022_ll') _tab %10.2f (`cardio_ckd_2022_ul') _n
+184. 
+. *No CKD
+. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("N/A") _tab %10.2f (`baseline_nockd_2017') _tab %10.2f (`baseline_nockd_2017_ll') _tab %10.2f (`baseline_nockd_2017_ul') _tab %10.2f (`baseline_no
+> ckd_2018') _tab %10.2f (`baseline_nockd_2018_ll') _tab %10.2f (`baseline_nockd_2018_ul') _tab %10.2f (`baseline_nockd_2019') _tab %10.2f (`baseline_nockd_2019_ll') _tab %10.2f (`baseline_nockd_2019_ul') _tab
+>  %10.2f (`baseline_nockd_2020') _tab %10.2f (`baseline_nockd_2020_ll') _tab %10.2f (`baseline_nockd_2020_ul') _tab %10.2f (`baseline_nockd_2021') _tab %10.2f (`baseline_nockd_2021_ll') _tab %10.2f (`baseline
+> _nockd_2021_ul') _tab %10.2f (`baseline_nockd_2022') _tab %10.2f (`baseline_nockd_2022_ll') _tab %10.2f (`baseline_nockd_2022_ul') _n
+185. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("No progression") _tab %10.2f (`none_nockd_2017') _tab %10.2f (`none_nockd_2017_ll') _tab %10.2f (`none_nockd_2017_ul') _tab %10.2f (`none_nock
+> d_2018') _tab %10.2f (`none_nockd_2018_ll') _tab %10.2f (`none_nockd_2018_ul') _tab %10.2f (`none_nockd_2019') _tab %10.2f (`none_nockd_2019_ll') _tab %10.2f (`none_nockd_2019_ul') _tab %10.2f (`none_nockd_2
+> 020') _tab %10.2f (`none_nockd_2020_ll') _tab %10.2f (`none_nockd_2020_ul') _tab %10.2f (`none_nockd_2021') _tab %10.2f (`none_nockd_2021_ll') _tab %10.2f (`none_nockd_2021_ul') _tab %10.2f (`none_nockd_2022
+> ') _tab %10.2f (`none_nockd_2022_ll') _tab %10.2f (`none_nockd_2022_ul') _n
+186. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("CKD stage 3") _tab %10.2f (`ckd3_nockd_2017') _tab %10.2f (`ckd3_nockd_2017_ll') _tab %10.2f (`ckd3_nockd_2017_ul') _tab %10.2f (`ckd3_nockd_2
+> 018') _tab %10.2f (`ckd3_nockd_2018_ll') _tab %10.2f (`ckd3_nockd_2018_ul') _tab %10.2f (`ckd3_nockd_2019') _tab %10.2f (`ckd3_nockd_2019_ll') _tab %10.2f (`ckd3_nockd_2019_ul') _tab %10.2f (`ckd3_nockd_2020
+> ') _tab %10.2f (`ckd3_nockd_2020_ll') _tab %10.2f (`ckd3_nockd_2020_ul') _tab %10.2f (`ckd3_nockd_2021') _tab %10.2f (`ckd3_nockd_2021_ll') _tab %10.2f (`ckd3_nockd_2021_ul') _tab %10.2f (`ckd3_nockd_2022') 
+> _tab %10.2f (`ckd3_nockd_2022_ll') _tab %10.2f (`ckd3_nockd_2022_ul') _n
+187. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("CKD stage 4/5") _tab %10.2f (`ckd4_nockd_2017') _tab %10.2f (`ckd4_nockd_2017_ll') _tab %10.2f (`ckd4_nockd_2017_ul') _tab %10.2f (`ckd4_nockd
+> _2018') _tab %10.2f (`ckd4_nockd_2018_ll') _tab %10.2f (`ckd4_nockd_2018_ul') _tab %10.2f (`ckd4_nockd_2019') _tab %10.2f (`ckd4_nockd_2019_ll') _tab %10.2f (`ckd4_nockd_2019_ul') _tab %10.2f (`ckd4_nockd_20
+> 20') _tab %10.2f (`ckd4_nockd_2020_ll') _tab %10.2f (`ckd4_nockd_2020_ul') _tab %10.2f (`ckd4_nockd_2021') _tab %10.2f (`ckd4_nockd_2021_ll') _tab %10.2f (`ckd4_nockd_2021_ul') _tab %10.2f (`ckd4_nockd_2022'
+> ) _tab %10.2f (`ckd4_nockd_2022_ll') _tab %10.2f (`ckd4_nockd_2022_ul') _n
+188. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Dialysis") _tab %10.2f (`dialysis_nockd_2017') _tab %10.2f (`dialysis_nockd_2017_ll') _tab %10.2f (`dialysis_nockd_2017_ul') _tab %10.2f (`dia
+> lysis_nockd_2018') _tab %10.2f (`dialysis_nockd_2018_ll') _tab %10.2f (`dialysis_nockd_2018_ul') _tab %10.2f (`dialysis_nockd_2019') _tab %10.2f (`dialysis_nockd_2019_ll') _tab %10.2f (`dialysis_nockd_2019_u
+> l') _tab %10.2f (`dialysis_nockd_2020') _tab %10.2f (`dialysis_nockd_2020_ll') _tab %10.2f (`dialysis_nockd_2020_ul') _tab %10.2f (`dialysis_nockd_2021') _tab %10.2f (`dialysis_nockd_2021_ll') _tab %10.2f (`
+> dialysis_nockd_2021_ul') _tab %10.2f (`dialysis_nockd_2022') _tab %10.2f (`dialysis_nockd_2022_ll') _tab %10.2f (`dialysis_nockd_2022_ul') _n
+189. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Deceased") _tab %10.2f (`deceased_nockd_2017') _tab %10.2f (`deceased_nockd_2017_ll') _tab %10.2f (`deceased_nockd_2017_ul') _tab %10.2f (`dec
+> eased_nockd_2018') _tab %10.2f (`deceased_nockd_2018_ll') _tab %10.2f (`deceased_nockd_2018_ul') _tab %10.2f (`deceased_nockd_2019') _tab %10.2f (`deceased_nockd_2019_ll') _tab %10.2f (`deceased_nockd_2019_u
+> l') _tab %10.2f (`deceased_nockd_2020') _tab %10.2f (`deceased_nockd_2020_ll') _tab %10.2f (`deceased_nockd_2020_ul') _tab %10.2f (`deceased_nockd_2021') _tab %10.2f (`deceased_nockd_2021_ll') _tab %10.2f (`
+> deceased_nockd_2021_ul') _tab %10.2f (`deceased_nockd_2022') _tab %10.2f (`deceased_nockd_2022_ll') _tab %10.2f (`deceased_nockd_2022_ul') _n
+190. file write tablecontent ("`label`i''") _tab ("No CKD") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_nockd_2017') _tab %10.2f (`cardio_nockd_2017_ll') _tab %10.2f (`cardio_nockd_2017_ul') _tab %1
+> 0.2f (`cardio_nockd_2018') _tab %10.2f (`cardio_nockd_2018_ll') _tab %10.2f (`cardio_nockd_2018_ul') _tab %10.2f (`cardio_nockd_2019') _tab %10.2f (`cardio_nockd_2019_ll') _tab %10.2f (`cardio_nockd_2019_ul'
+> ) _tab %10.2f (`cardio_nockd_2020') _tab %10.2f (`cardio_nockd_2020_ll') _tab %10.2f (`cardio_nockd_2020_ul') _tab %10.2f (`cardio_nockd_2021') _tab %10.2f (`cardio_nockd_2021_ll') _tab %10.2f (`cardio_nockd
+> _2021_ul') _tab %10.2f (`cardio_nockd_2022') _tab %10.2f (`cardio_nockd_2022_ll') _tab %10.2f (`cardio_nockd_2022_ul') _n
+191. 
+. *CKD stage 3
+. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("N/A") _tab %10.2f (`baseline_ckd3_2017') _tab %10.2f (`baseline_ckd3_2017_ll') _tab %10.2f (`baseline_ckd3_2017_ul') _tab %10.2f (`baseline_
+> ckd3_2018') _tab %10.2f (`baseline_ckd3_2018_ll') _tab %10.2f (`baseline_ckd3_2018_ul') _tab %10.2f (`baseline_ckd3_2019') _tab %10.2f (`baseline_ckd3_2019_ll') _tab %10.2f (`baseline_ckd3_2019_ul') _tab %10
+> .2f (`baseline_ckd3_2020') _tab %10.2f (`baseline_ckd3_2020_ll') _tab %10.2f (`baseline_ckd3_2020_ul') _tab %10.2f (`baseline_ckd3_2021') _tab %10.2f (`baseline_ckd3_2021_ll') _tab %10.2f (`baseline_ckd3_202
+> 1_ul') _tab %10.2f (`baseline_ckd3_2022') _tab %10.2f (`baseline_ckd3_2022_ll') _tab %10.2f (`baseline_ckd3_2022_ul') _n
+192. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("No progression") _tab %10.2f (`none_ckd3_2017') _tab %10.2f (`none_ckd3_2017_ll') _tab %10.2f (`none_ckd3_2017_ul') _tab %10.2f (`none_ck
+> d3_2018') _tab %10.2f (`none_ckd3_2018_ll') _tab %10.2f (`none_ckd3_2018_ul') _tab %10.2f (`none_ckd3_2019') _tab %10.2f (`none_ckd3_2019_ll') _tab %10.2f (`none_ckd3_2019_ul') _tab %10.2f (`none_ckd3_2020')
+>  _tab %10.2f (`none_ckd3_2020_ll') _tab %10.2f (`none_ckd3_2020_ul') _tab %10.2f (`none_ckd3_2021') _tab %10.2f (`none_ckd3_2021_ll') _tab %10.2f (`none_ckd3_2021_ul') _tab %10.2f (`none_ckd3_2022') _tab %10
+> .2f (`none_ckd3_2022_ll') _tab %10.2f (`none_ckd3_2022_ul') _n
+193. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("CKD stage 4/5") _tab %10.2f (`ckd4_ckd3_2017') _tab %10.2f (`ckd4_ckd3_2017_ll') _tab %10.2f (`ckd4_ckd3_2017_ul') _tab %10.2f (`ckd4_ckd
+> 3_2018') _tab %10.2f (`ckd4_ckd3_2018_ll') _tab %10.2f (`ckd4_ckd3_2018_ul') _tab %10.2f (`ckd4_ckd3_2019') _tab %10.2f (`ckd4_ckd3_2019_ll') _tab %10.2f (`ckd4_ckd3_2019_ul') _tab %10.2f (`ckd4_ckd3_2020') 
+> _tab %10.2f (`ckd4_ckd3_2020_ll') _tab %10.2f (`ckd4_ckd3_2020_ul') _tab %10.2f (`ckd4_ckd3_2021') _tab %10.2f (`ckd4_ckd3_2021_ll') _tab %10.2f (`ckd4_ckd3_2021_ul') _tab %10.2f (`ckd4_ckd3_2022') _tab %10.
+> 2f (`ckd4_ckd3_2022_ll') _tab %10.2f (`ckd4_ckd3_2022_ul') _n
+194. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Dialysis") _tab %10.2f (`dialysis_ckd3_2017') _tab %10.2f (`dialysis_ckd3_2017_ll') _tab %10.2f (`dialysis_ckd3_2017_ul') _tab %10.2f (`d
+> ialysis_ckd3_2018') _tab %10.2f (`dialysis_ckd3_2018_ll') _tab %10.2f (`dialysis_ckd3_2018_ul') _tab %10.2f (`dialysis_ckd3_2019') _tab %10.2f (`dialysis_ckd3_2019_ll') _tab %10.2f (`dialysis_ckd3_2019_ul') 
+> _tab %10.2f (`dialysis_ckd3_2020') _tab %10.2f (`dialysis_ckd3_2020_ll') _tab %10.2f (`dialysis_ckd3_2020_ul') _tab %10.2f (`dialysis_ckd3_2021') _tab %10.2f (`dialysis_ckd3_2021_ll') _tab %10.2f (`dialysis_
+> ckd3_2021_ul') _tab %10.2f (`dialysis_ckd3_2022') _tab %10.2f (`dialysis_ckd3_2022_ll') _tab %10.2f (`dialysis_ckd3_2022_ul') _n
+195. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Deceased") _tab %10.2f (`deceased_ckd3_2017') _tab %10.2f (`deceased_ckd3_2017_ll') _tab %10.2f (`deceased_ckd3_2017_ul') _tab %10.2f (`d
+> eceased_ckd3_2018') _tab %10.2f (`deceased_ckd3_2018_ll') _tab %10.2f (`deceased_ckd3_2018_ul') _tab %10.2f (`deceased_ckd3_2019') _tab %10.2f (`deceased_ckd3_2019_ll') _tab %10.2f (`deceased_ckd3_2019_ul') 
+> _tab %10.2f (`deceased_ckd3_2020') _tab %10.2f (`deceased_ckd3_2020_ll') _tab %10.2f (`deceased_ckd3_2020_ul') _tab %10.2f (`deceased_ckd3_2021') _tab %10.2f (`deceased_ckd3_2021_ll') _tab %10.2f (`deceased_
+> ckd3_2021_ul') _tab %10.2f (`deceased_ckd3_2022') _tab %10.2f (`deceased_ckd3_2022_ll') _tab %10.2f (`deceased_ckd3_2022_ul') _n
+196. file write tablecontent ("`label`i''") _tab ("CKD stage 3") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_ckd3_2017') _tab %10.2f (`cardio_ckd3_2017_ll') _tab %10.2f (`cardio_ckd3_2017_ul') _tab 
+> %10.2f (`cardio_ckd3_2018') _tab %10.2f (`cardio_ckd3_2018_ll') _tab %10.2f (`cardio_ckd3_2018_ul') _tab %10.2f (`cardio_ckd3_2019') _tab %10.2f (`cardio_ckd3_2019_ll') _tab %10.2f (`cardio_ckd3_2019_ul') _t
+> ab %10.2f (`cardio_ckd3_2020') _tab %10.2f (`cardio_ckd3_2020_ll') _tab %10.2f (`cardio_ckd3_2020_ul') _tab %10.2f (`cardio_ckd3_2021') _tab %10.2f (`cardio_ckd3_2021_ll') _tab %10.2f (`cardio_ckd3_2021_ul')
+>  _tab %10.2f (`cardio_ckd3_2022') _tab %10.2f (`cardio_ckd3_2022_ll') _tab %10.2f (`cardio_ckd3_2022_ul') _n
+197. 
+. *CKD stage 4/5 without RRT
+. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("N/A") _tab %10.2f (`baseline_ckd4_2017') _tab %10.2f (`baseline_ckd4_2017_ll') _tab %10.2f (`baseline_ckd4_2017_ul') _tab %10.2f (`baselin
+> e_ckd4_2018') _tab %10.2f (`baseline_ckd4_2018_ll') _tab %10.2f (`baseline_ckd4_2018_ul') _tab %10.2f (`baseline_ckd4_2019') _tab %10.2f (`baseline_ckd4_2019_ll') _tab %10.2f (`baseline_ckd4_2019_ul') _tab %
+> 10.2f (`baseline_ckd4_2020') _tab %10.2f (`baseline_ckd4_2020_ll') _tab %10.2f (`baseline_ckd4_2020_ul') _tab %10.2f (`baseline_ckd4_2021') _tab %10.2f (`baseline_ckd4_2021_ll') _tab %10.2f (`baseline_ckd4_2
+> 021_ul') _tab %10.2f (`baseline_ckd4_2022') _tab %10.2f (`baseline_ckd4_2022_ll') _tab %10.2f (`baseline_ckd4_2022_ul') _n
+198. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("No progression") _tab %10.2f (`none_ckd4_2017') _tab %10.2f (`none_ckd4_2017_ll') _tab %10.2f (`none_ckd4_2017_ul') _tab %10.2f (`none_
+> ckd4_2018') _tab %10.2f (`none_ckd4_2018_ll') _tab %10.2f (`none_ckd4_2018_ul') _tab %10.2f (`none_ckd4_2019') _tab %10.2f (`none_ckd4_2019_ll') _tab %10.2f (`none_ckd4_2019_ul') _tab %10.2f (`none_ckd4_2020
+> ') _tab %10.2f (`none_ckd4_2020_ll') _tab %10.2f (`none_ckd4_2020_ul') _tab %10.2f (`none_ckd4_2021') _tab %10.2f (`none_ckd4_2021_ll') _tab %10.2f (`none_ckd4_2021_ul') _tab %10.2f (`none_ckd4_2022') _tab %
+> 10.2f (`none_ckd4_2022_ll') _tab %10.2f (`none_ckd4_2022_ul') _n
+199. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Dialysis") _tab %10.2f (`dialysis_ckd4_2017') _tab %10.2f (`dialysis_ckd4_2017_ll') _tab %10.2f (`dialysis_ckd4_2017_ul') _tab %10.2f (
+> `dialysis_ckd4_2018') _tab %10.2f (`dialysis_ckd4_2018_ll') _tab %10.2f (`dialysis_ckd4_2018_ul') _tab %10.2f (`dialysis_ckd4_2019') _tab %10.2f (`dialysis_ckd4_2019_ll') _tab %10.2f (`dialysis_ckd4_2019_ul'
+> ) _tab %10.2f (`dialysis_ckd4_2020') _tab %10.2f (`dialysis_ckd4_2020_ll') _tab %10.2f (`dialysis_ckd4_2020_ul') _tab %10.2f (`dialysis_ckd4_2021') _tab %10.2f (`dialysis_ckd4_2021_ll') _tab %10.2f (`dialysi
+> s_ckd4_2021_ul') _tab %10.2f (`dialysis_ckd4_2022') _tab %10.2f (`dialysis_ckd4_2022_ll') _tab %10.2f (`dialysis_ckd4_2022_ul') _n
+200. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Transplant") _tab %10.2f (`kt_ckd4_2017') _tab %10.2f (`kt_ckd4_2017_ll') _tab %10.2f (`kt_ckd4_2017_ul') _tab %10.2f (`kt_ckd4_2018') 
+> _tab %10.2f (`kt_ckd4_2018_ll') _tab %10.2f (`kt_ckd4_2018_ul') _tab %10.2f (`kt_ckd4_2019') _tab %10.2f (`kt_ckd4_2019_ll') _tab %10.2f (`kt_ckd4_2019_ul') _tab %10.2f (`kt_ckd4_2020') _tab %10.2f (`kt_ckd4
+> _2020_ll') _tab %10.2f (`kt_ckd4_2020_ul') _tab %10.2f (`kt_ckd4_2021') _tab %10.2f (`kt_ckd4_2021_ll') _tab %10.2f (`kt_ckd4_2021_ul') _tab %10.2f (`kt_ckd4_2022') _tab %10.2f (`kt_ckd4_2022_ll') _tab %10.2
+> f (`kt_ckd4_2022_ul') _n
+201. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Deceased") _tab %10.2f (`deceased_ckd4_2017') _tab %10.2f (`deceased_ckd4_2017_ll') _tab %10.2f (`deceased_ckd4_2017_ul') _tab %10.2f (
+> `deceased_ckd4_2018') _tab %10.2f (`deceased_ckd4_2018_ll') _tab %10.2f (`deceased_ckd4_2018_ul') _tab %10.2f (`deceased_ckd4_2019') _tab %10.2f (`deceased_ckd4_2019_ll') _tab %10.2f (`deceased_ckd4_2019_ul'
+> ) _tab %10.2f (`deceased_ckd4_2020') _tab %10.2f (`deceased_ckd4_2020_ll') _tab %10.2f (`deceased_ckd4_2020_ul') _tab %10.2f (`deceased_ckd4_2021') _tab %10.2f (`deceased_ckd4_2021_ll') _tab %10.2f (`decease
+> d_ckd4_2021_ul') _tab %10.2f (`deceased_ckd4_2022') _tab %10.2f (`deceased_ckd4_2022_ll') _tab %10.2f (`deceased_ckd4_2022_ul') _n
+202. file write tablecontent ("`label`i''") _tab ("CKD stage 4/5") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_ckd4_2017') _tab %10.2f (`cardio_ckd4_2017_ll') _tab %10.2f (`cardio_ckd4_2017_ul') _ta
+> b %10.2f (`cardio_ckd4_2018') _tab %10.2f (`cardio_ckd4_2018_ll') _tab %10.2f (`cardio_ckd4_2018_ul') _tab %10.2f (`cardio_ckd4_2019') _tab %10.2f (`cardio_ckd4_2019_ll') _tab %10.2f (`cardio_ckd4_2019_ul') 
+> _tab %10.2f (`cardio_ckd4_2020') _tab %10.2f (`cardio_ckd4_2020_ll') _tab %10.2f (`cardio_ckd4_2020_ul') _tab %10.2f (`cardio_ckd4_2021') _tab %10.2f (`cardio_ckd4_2021_ll') _tab %10.2f (`cardio_ckd4_2021_ul
+> ') _tab %10.2f (`cardio_ckd4_2022') _tab %10.2f (`cardio_ckd4_2022_ll') _tab %10.2f (`cardio_ckd4_2022_ul') _n
+203. 
+. *Dialysis
+. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("N/A") _tab %10.2f (`baseline_dialysis_2017') _tab %10.2f (`baseline_dialysis_2017_ll') _tab %10.2f (`baseline_dialysis_2017_ul') _tab %10.2f (`
+> baseline_dialysis_2018') _tab %10.2f (`baseline_dialysis_2018_ll') _tab %10.2f (`baseline_dialysis_2018_ul') _tab %10.2f (`baseline_dialysis_2019') _tab %10.2f (`baseline_dialysis_2019_ll') _tab %10.2f (`bas
+> eline_dialysis_2019_ul') _tab %10.2f (`baseline_dialysis_2020') _tab %10.2f (`baseline_dialysis_2020_ll') _tab %10.2f (`baseline_dialysis_2020_ul') _tab %10.2f (`baseline_dialysis_2021') _tab %10.2f (`baseli
+> ne_dialysis_2021_ll') _tab %10.2f (`baseline_dialysis_2021_ul') _tab %10.2f (`baseline_dialysis_2022') _tab %10.2f (`baseline_dialysis_2022_ll') _tab %10.2f (`baseline_dialysis_2022_ul') _n
+204. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("No progression") _tab %10.2f (`none_dialysis_2017') _tab %10.2f (`none_dialysis_2017_ll') _tab %10.2f (`none_dialysis_2017_ul') _tab %10.2f 
+> (`none_dialysis_2018') _tab %10.2f (`none_dialysis_2018_ll') _tab %10.2f (`none_dialysis_2018_ul') _tab %10.2f (`none_dialysis_2019') _tab %10.2f (`none_dialysis_2019_ll') _tab %10.2f (`none_dialysis_2019_ul
+> ') _tab %10.2f (`none_dialysis_2020') _tab %10.2f (`none_dialysis_2020_ll') _tab %10.2f (`none_dialysis_2020_ul') _tab %10.2f (`none_dialysis_2021') _tab %10.2f (`none_dialysis_2021_ll') _tab %10.2f (`none_d
+> ialysis_2021_ul') _tab %10.2f (`none_dialysis_2022') _tab %10.2f (`none_dialysis_2022_ll') _tab %10.2f (`none_dialysis_2022_ul') _n
+205. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Transplant") _tab %10.2f (`kt_dialysis_2017') _tab %10.2f (`kt_dialysis_2017_ll') _tab %10.2f (`kt_dialysis_2017_ul') _tab %10.2f (`kt_dialy
+> sis_2018') _tab %10.2f (`kt_dialysis_2018_ll') _tab %10.2f (`kt_dialysis_2018_ul') _tab %10.2f (`kt_dialysis_2019') _tab %10.2f (`kt_dialysis_2019_ll') _tab %10.2f (`kt_dialysis_2019_ul') _tab %10.2f (`kt_di
+> alysis_2020') _tab %10.2f (`kt_dialysis_2020_ll') _tab %10.2f (`kt_dialysis_2020_ul') _tab %10.2f (`kt_dialysis_2021') _tab %10.2f (`kt_dialysis_2021_ll') _tab %10.2f (`kt_dialysis_2021_ul') _tab %10.2f (`kt
+> _dialysis_2022') _tab %10.2f (`kt_dialysis_2022_ll') _tab %10.2f (`kt_dialysis_2022_ul') _n
+206. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Deceased") _tab %10.2f (`deceased_dialysis_2017') _tab %10.2f (`deceased_dialysis_2017_ll') _tab %10.2f (`deceased_dialysis_2017_ul') _tab %
+> 10.2f (`deceased_dialysis_2018') _tab %10.2f (`deceased_dialysis_2018_ll') _tab %10.2f (`deceased_dialysis_2018_ul') _tab %10.2f (`deceased_dialysis_2019') _tab %10.2f (`deceased_dialysis_2019_ll') _tab %10.
+> 2f (`deceased_dialysis_2019_ul') _tab %10.2f (`deceased_dialysis_2020') _tab %10.2f (`deceased_dialysis_2020_ll') _tab %10.2f (`deceased_dialysis_2020_ul') _tab %10.2f (`deceased_dialysis_2021') _tab %10.2f 
+> (`deceased_dialysis_2021_ll') _tab %10.2f (`deceased_dialysis_2021_ul') _tab %10.2f (`deceased_dialysis_2022') _tab %10.2f (`deceased_dialysis_2022_ll') _tab %10.2f (`deceased_dialysis_2022_ul') _n
+207. file write tablecontent ("`label`i''") _tab ("Dialysis") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_dialysis_2017') _tab %10.2f (`cardio_dialysis_2017_ll') _tab %10.2f (`cardio_dialysis_2017_u
+> l') _tab %10.2f (`cardio_dialysis_2018') _tab %10.2f (`cardio_dialysis_2018_ll') _tab %10.2f (`cardio_dialysis_2018_ul') _tab %10.2f (`cardio_dialysis_2019') _tab %10.2f (`cardio_dialysis_2019_ll') _tab %10.
+> 2f (`cardio_dialysis_2019_ul') _tab %10.2f (`cardio_dialysis_2020') _tab %10.2f (`cardio_dialysis_2020_ll') _tab %10.2f (`cardio_dialysis_2020_ul') _tab %10.2f (`cardio_dialysis_2021') _tab %10.2f (`cardio_d
+> ialysis_2021_ll') _tab %10.2f (`cardio_dialysis_2021_ul') _tab %10.2f (`cardio_dialysis_2022') _tab %10.2f (`cardio_dialysis_2022_ll') _tab %10.2f (`cardio_dialysis_2022_ul') _n
+208. 
+. *Kidney transplant
+. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("N/A") _tab %10.2f (`baseline_kt_2017') _tab %10.2f (`baseline_kt_2017_ll') _tab %10.2f (`baseline_kt_2017_ul') _tab %10.2f (`baseline_kt_2018
+> ') _tab %10.2f (`baseline_kt_2018_ll') _tab %10.2f (`baseline_kt_2018_ul') _tab %10.2f (`baseline_kt_2019') _tab %10.2f (`baseline_kt_2019_ll') _tab %10.2f (`baseline_kt_2019_ul') _tab %10.2f (`baseline_kt_2
+> 020') _tab %10.2f (`baseline_kt_2020_ll') _tab %10.2f (`baseline_kt_2020_ul') _tab %10.2f (`baseline_kt_2021') _tab %10.2f (`baseline_kt_2021_ll') _tab %10.2f (`baseline_kt_2021_ul') _tab %10.2f (`baseline_k
+> t_2022') _tab %10.2f (`baseline_kt_2022_ll') _tab %10.2f (`baseline_kt_2022_ul') _n
+209. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("No progression") _tab %10.2f (`none_kt_2017') _tab %10.2f (`none_kt_2017_ll') _tab %10.2f (`none_kt_2017_ul') _tab %10.2f (`none_kt_2018')
+>  _tab %10.2f (`none_kt_2018_ll') _tab %10.2f (`none_kt_2018_ul') _tab %10.2f (`none_kt_2019') _tab %10.2f (`none_kt_2019_ll') _tab %10.2f (`none_kt_2019_ul') _tab %10.2f (`none_kt_2020') _tab %10.2f (`none_k
+> t_2020_ll') _tab %10.2f (`none_kt_2020_ul') _tab %10.2f (`none_kt_2021') _tab %10.2f (`none_kt_2021_ll') _tab %10.2f (`none_kt_2021_ul') _tab %10.2f (`none_kt_2022') _tab %10.2f (`none_kt_2022_ll') _tab %10.
+> 2f (`none_kt_2022_ul') _n
+210. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Dialysis") _tab %10.2f (`dialysis_kt_2017') _tab %10.2f (`dialysis_kt_2017_ll') _tab %10.2f (`dialysis_kt_2017_ul') _tab %10.2f (`dialysis
+> _kt_2018') _tab %10.2f (`dialysis_kt_2018_ll') _tab %10.2f (`dialysis_kt_2018_ul') _tab %10.2f (`dialysis_kt_2019') _tab %10.2f (`dialysis_kt_2019_ll') _tab %10.2f (`dialysis_kt_2019_ul') _tab %10.2f (`dialy
+> sis_kt_2020') _tab %10.2f (`dialysis_kt_2020_ll') _tab %10.2f (`dialysis_kt_2020_ul') _tab %10.2f (`dialysis_kt_2021') _tab %10.2f (`dialysis_kt_2021_ll') _tab %10.2f (`dialysis_kt_2021_ul') _tab %10.2f (`di
+> alysis_kt_2022') _tab %10.2f (`dialysis_kt_2022_ll') _tab %10.2f (`dialysis_kt_2022_ul') _n
+211. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Deceased") _tab %10.2f (`deceased_kt_2017') _tab %10.2f (`deceased_kt_2017_ll') _tab %10.2f (`deceased_kt_2017_ul') _tab %10.2f (`deceased
+> _kt_2018') _tab %10.2f (`deceased_kt_2018_ll') _tab %10.2f (`deceased_kt_2018_ul') _tab %10.2f (`deceased_kt_2019') _tab %10.2f (`deceased_kt_2019_ll') _tab %10.2f (`deceased_kt_2019_ul') _tab %10.2f (`decea
+> sed_kt_2020') _tab %10.2f (`deceased_kt_2020_ll') _tab %10.2f (`deceased_kt_2020_ul') _tab %10.2f (`deceased_kt_2021') _tab %10.2f (`deceased_kt_2021_ll') _tab %10.2f (`deceased_kt_2021_ul') _tab %10.2f (`de
+> ceased_kt_2022') _tab %10.2f (`deceased_kt_2022_ll') _tab %10.2f (`deceased_kt_2022_ul') _n
+212. file write tablecontent ("`label`i''") _tab ("Transplant") _tab ("Cardiovascular admission") _tab %10.2f (`cardio_kt_2017') _tab %10.2f (`cardio_kt_2017_ll') _tab %10.2f (`cardio_kt_2017_ul') _tab %10.2f 
+> (`cardio_kt_2018') _tab %10.2f (`cardio_kt_2018_ll') _tab %10.2f (`cardio_kt_2018_ul') _tab %10.2f (`cardio_kt_2019') _tab %10.2f (`cardio_kt_2019_ll') _tab %10.2f (`cardio_kt_2019_ul') _tab %10.2f (`cardio_
+> kt_2020') _tab %10.2f (`cardio_kt_2020_ll') _tab %10.2f (`cardio_kt_2020_ul') _tab %10.2f (`cardio_kt_2021') _tab %10.2f (`cardio_kt_2021_ll') _tab %10.2f (`cardio_kt_2021_ul') _tab %10.2f (`cardio_kt_2022')
+>  _tab %10.2f (`cardio_kt_2022_ll') _tab %10.2f (`cardio_kt_2022_ul') _n
+213. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(1,310 observations deleted)
+(786 real changes made)
+
+Total estimation                         Number of obs = 1,899
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   139.0121   .7612549      137.5191    140.5051
+--------------------------------------------------------------
+
+Total estimation                         Number of obs = 1,899
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   139.0121   .7612549      137.5191    140.5051
+--------------------------------------------------------------
+
+Total estimation                         Number of obs = 1,454
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   106.7916    .648832      105.5189    108.0643
+--------------------------------------------------------------
+
+Total estimation                           Number of obs = 158
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   11.33208   .2445925      10.84896    11.81519
+--------------------------------------------------------------
+
+Total estimation                             Number of obs = 7
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |    .501858    .044247      .3935894    .6101266
+--------------------------------------------------------------
+
+Total estimation                            Number of obs = 67
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |    5.08797   .1360342      4.816369    5.359571
+--------------------------------------------------------------
+
+Total estimation                            Number of obs = 72
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   5.030972   .1774016      4.677243    5.384701
+--------------------------------------------------------------
+
+Total estimation                           Number of obs = 134
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   9.819061   .2028882      9.417756    10.22037
+--------------------------------------------------------------
+
+Total estimation                            Number of obs = 92
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |     6.5068   .1998205      6.109881    6.903719
+--------------------------------------------------------------
+
+Total estimation                         Number of obs = 1,436
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   106.6045   .6265126      105.3755    107.8335
+--------------------------------------------------------------
+
+Total estimation                         Number of obs = 1,436
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   106.6045   .6265126      105.3755    107.8335
+--------------------------------------------------------------
+
+Total estimation                         Number of obs = 1,082
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   80.90688    .518152      79.89019    81.92358
+--------------------------------------------------------------
+
+Total estimation                           Number of obs = 158
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   11.33208   .2445925      10.84896    11.81519
+--------------------------------------------------------------
+
+Total estimation                             Number of obs = 6
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |    .452292   .0364449      .3586075    .5459765
+--------------------------------------------------------------
+
+Total estimation                            Number of obs = 47
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   3.582396   .1106215      3.359726    3.805066
+--------------------------------------------------------------
+
+Total estimation                            Number of obs = 92
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   6.716218   .1717934      6.374972    7.057464
+--------------------------------------------------------------
+
+Total estimation                            Number of obs = 67
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   4.887225   .1409868      4.605736    5.168714
+--------------------------------------------------------------
+
+Total estimation                           Number of obs = 219
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   15.30233   .2930054      14.72485    15.87982
+--------------------------------------------------------------
+
+Total estimation                           Number of obs = 219
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   15.30233   .2930054      14.72485    15.87982
+--------------------------------------------------------------
+
+Total estimation                           Number of obs = 174
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   12.16479   .2618256      11.64801    12.68157
+--------------------------------------------------------------
+
+Total estimation                             Number of obs = 1
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |    .049566          .             .           .
+--------------------------------------------------------------
+
+Total estimation                             Number of obs = 8
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |    .526642   .0731219      .3537361    .6995479
+--------------------------------------------------------------
+
+Total estimation                            Number of obs = 21
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   1.539029   .0675315      1.398161    1.679897
+--------------------------------------------------------------
+
+Total estimation                            Number of obs = 14
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |   1.016107   .0929213      .8153627    1.216851
+--------------------------------------------------------------
+
+Total estimation                             Number of obs = 9
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |    .427508   .0810208      .2406738    .6143422
+--------------------------------------------------------------
+
+Total estimation                             Number of obs = 9
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |    .427508   .0810208      .2406738    .6143422
+--------------------------------------------------------------
+
+Total estimation                             Number of obs = 8
+
+--------------------------------------------------------------
+             |      Total   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+      weight |    .340767   .0684751      .1788492    .5026848
+--------------------------------------------------------------
+no observations
+r(2000);
+
 end of do-file
 
-. do "C:\Users\lsh1703468\Documents\Repo\ckd-healthcare-use\analysis\weighted_ckd_progression.do"
+r(2000);
 
-. sysdir set PLUS ./analysis/adofiles
-
-. sysdir set PERSONAL ./analysis/adofiles
-
-. pwd
-C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use
-
-. cap log close
