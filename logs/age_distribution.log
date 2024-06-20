@@ -1,0 +1,437 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/age_distribution.log
+  log type:  text
+ opened on:  20 Jun 2024, 12:49:14
+
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./output/age_distribution.csv, write text replace
+
+. 
+. file write tablecontent ("group") _tab ("stratum") _tab ("agecat") _tab ("count_2017") _tab ("count_2018") _tab ("count_2019") _tab ("count_2020") _tab ("count_2021") _tab ("count_2022") _n
+
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. 
+. local ckd0 "No CKD"
+
+. local ckd1 "Albuminuria"
+
+. local ckd2 "CKD stage 3"
+
+. local ckd3 "CKD stage 4/5"
+
+. local ckd4 "Dialysis"
+
+. local ckd5 "Transplant"
+
+. 
+. *Overall
+. foreach x of local year {
+  2. use ./output/`x'_ckd_complete.dta, clear
+  3. drop _merge
+  4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
+  5. forvalues i=0/5 {
+  6. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  7. qui safecount if agecat==`y' & ckd_group==`i'
+  8. local age_`y'_`x'_`i' = round(r(N),5)
+  9. }
+ 10. }
+ 11. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+
+. forvalues i=0/5 {
+  2. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  3. file write tablecontent ("`ckd`i''") _tab ("Overall") _tab ("`y'")
+  4. foreach x of local year {
+  5. file write tablecontent _tab (`age_`y'_`x'_`i'')
+  6. }
+  7. file write tablecontent _n
+  8. }
+  9. }
+
+. 
+. local lab1 "White"
+
+. local lab2 "South Asian"
+
+. local lab3 "Black"
+
+. local lab4 "Mixed"
+
+. local lab5 "Other"
+
+. local lab6 "Unknown"
+
+. 
+. *Ethnicity
+. foreach x of local year {
+  2. use ./output/`x'_ckd_complete.dta, clear
+  3. drop _merge
+  4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
+  5. forvalues i=0/5 {
+  6. forvalues j=1/6 {
+  7. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  8. qui safecount if agecat==`y' & ckd_group==`i' & ethnicity==`j'
+  9. local age_`y'_`x'_`i'_`j' = round(r(N),5)
+ 10. }
+ 11. }
+ 12. }
+ 13. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+
+. 
+. forvalues i=0/5 {
+  2. forvalues j=1/6 {
+  3. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  4. file write tablecontent ("`ckd`i''") _tab ("`lab`j''") _tab ("`y'")
+  5. foreach x of local year {
+  6. file write tablecontent _tab (`age_`y'_`x'_`i'_`j'')
+  7. }
+  8. file write tablecontent _n
+  9. }
+ 10. }
+ 11. }
+
+. 
+. local lab1 "IMD1 (Most deprived)"
+
+. local lab2 "IMD2"
+
+. local lab3 "IMD3"
+
+. local lab4 "IMD4"
+
+. local lab5 "IMD5 (Least deprived)"
+
+. 
+. *IMD
+. foreach x of local year {
+  2. use ./output/`x'_ckd_complete.dta, clear
+  3. drop _merge
+  4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
+  5. forvalues i=0/5 {
+  6. forvalues j=1/5 {
+  7. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  8. qui safecount if agecat==`y' & ckd_group==`i' & imd==`j'
+  9. local age_`y'_`x'_`i'_`j' = round(r(N),5)
+ 10. }
+ 11. }
+ 12. }
+ 13. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+
+. 
+. forvalues i=0/5 {
+  2. forvalues j=1/6 {
+  3. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  4. file write tablecontent ("`ckd`i''") _tab ("`lab`j''") _tab ("`y'")
+  5. foreach x of local year {
+  6. file write tablecontent _tab (`age_`y'_`x'_`i'_`j'')
+  7. }
+  8. file write tablecontent _n
+  9. }
+ 10. }
+ 11. }
+
+. 
+end of do-file
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD2120_000000.tmp"
+
+. sysdir set PLUS ./analysis/adofiles
+
+. sysdir set PERSONAL ./analysis/adofiles
+
+. pwd
+C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use
+
+. cap log close

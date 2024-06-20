@@ -1,0 +1,766 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\lsh1703468\Documents\repo\ckd-healthcare-use\logs/age_distribution_male.log
+  log type:  text
+ opened on:  20 Jun 2024, 14:53:51
+
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./output/age_distribution_male.csv, write text replace
+
+. 
+. file write tablecontent ("group") _tab ("stratum") _tab ("agecat") _tab ("count_2017") _tab ("count_2018") _tab ("count_2019") _tab ("count_2020") _tab ("count_2021") _tab ("count_2022") _n
+
+. 
+. local year "2017 2018 2019 2020 2021 2022"
+
+. 
+. local ckd0 "No CKD"
+
+. local ckd1 "Albuminuria"
+
+. local ckd2 "CKD stage 3"
+
+. local ckd3 "CKD stage 4/5"
+
+. local ckd4 "Dialysis"
+
+. local ckd5 "Transplant"
+
+. 
+. *Overall
+. foreach x of local year {
+  2. use ./output/`x'_ckd_complete.dta, clear
+  3. drop _merge
+  4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
+  5. drop if sex==1
+  6. forvalues i=0/5 {
+  7. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  8. qui safecount if agecat==`y' & ckd_group==`i'
+  9. local age_`y'_`x'_`i' = round(r(N),5)
+ 10. }
+ 11. }
+ 12. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(1,593 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,524 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(1,608 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(1,521 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(1,572 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(1,513 observations deleted)
+
+. forvalues i=0/5 {
+  2. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  3. file write tablecontent ("`ckd`i''") _tab ("Overall") _tab ("`y'")
+  4. foreach x of local year {
+  5. if `age_`y'_`x'_`i''>5 & `age_`y'_`x'_`i''!=. {
+  6. file write tablecontent _tab (`age_`y'_`x'_`i'')
+  7. }
+  8. else {
+  9. file write tablecontent _tab ("REDACTED")
+ 10. }
+ 11. }
+ 12. file write tablecontent _n
+ 13. }
+ 14. }
+
+. 
+. 
+. *Ethnicity
+. local lab1 "White"
+
+. local lab2 "South Asian"
+
+. local lab3 "Black"
+
+. local lab4 "Mixed"
+
+. local lab5 "Other"
+
+. local lab6 "Unknown"
+
+. 
+. *Ethnicity
+. foreach x of local year {
+  2. use ./output/`x'_ckd_complete.dta, clear
+  3. drop _merge
+  4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
+  5. drop if sex==1
+  6. forvalues i=0/5 {
+  7. forvalues j=1/6 {
+  8. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  9. qui safecount if agecat==`y' & ckd_group==`i' & ethnicity==`j'
+ 10. local age_`y'_`x'_`i'_`j' = round(r(N),5)
+ 11. }
+ 12. }
+ 13. }
+ 14. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(1,593 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,524 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(1,608 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(1,521 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(1,572 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(1,513 observations deleted)
+
+. 
+. forvalues i=0/5 {
+  2. forvalues j=1/6 {
+  3. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  4. file write tablecontent ("`ckd`i''") _tab ("`lab`j''") _tab ("`y'")
+  5. foreach x of local year {
+  6. if `age_`y'_`x'_`i'_`j''>5 & `age_`y'_`x'_`i'_`j''!=. {
+  7. file write tablecontent _tab (`age_`y'_`x'_`i'_`j'')
+  8. }
+  9. else {
+ 10. file write tablecontent _tab ("REDACTED")
+ 11. }
+ 12. }
+ 13. file write tablecontent _n
+ 14. }
+ 15. }
+ 16. }
+
+. 
+. *IMD
+. local lab1 "IMD1 (Most deprived)"
+
+. local lab2 "IMD2"
+
+. local lab3 "IMD3"
+
+. local lab4 "IMD4"
+
+. local lab5 "IMD5 (Least deprived)"
+
+. 
+. foreach x of local year {
+  2. use ./output/`x'_ckd_complete.dta, clear
+  3. drop _merge
+  4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
+  5. drop if sex==1
+  6. forvalues i=0/5 {
+  7. forvalues j=1/5 {
+  8. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  9. qui safecount if agecat==`y' & ckd_group==`i' & imd==`j'
+ 10. local age_`y'_`x'_`i'_`j' = round(r(N),5)
+ 11. }
+ 12. }
+ 13. }
+ 14. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(1,593 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,524 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(1,608 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(1,521 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(1,572 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(1,513 observations deleted)
+
+. 
+. forvalues i=0/5 {
+  2. forvalues j=1/5 {
+  3. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  4. file write tablecontent ("`ckd`i''") _tab ("`lab`j''") _tab ("`y'")
+  5. foreach x of local year {
+  6. if `age_`y'_`x'_`i'_`j''>5 & `age_`y'_`x'_`i'_`j''!=. {
+  7. file write tablecontent _tab (`age_`y'_`x'_`i'_`j'')
+  8. }
+  9. else {
+ 10. file write tablecontent _tab ("REDACTED")
+ 11. }
+ 12. }
+ 13. file write tablecontent _n
+ 14. }
+ 15. }
+ 16. }
+
+. 
+. *Region
+. local lab1 "East Midlands"
+
+. local lab2 "East"                                               
+
+. local lab3 "London"                                                     
+
+. local lab4 "North East"                                                 
+
+. local lab5 "North West"                                                 
+
+. local lab6 "South East"                                                 
+
+. local lab7 "South West"                                         
+
+. local lab8 "West Midlands"                                      
+
+. local lab9 "Yorkshire and The Humber"           
+
+. 
+. foreach x of local year {
+  2. use ./output/`x'_ckd_complete.dta, clear
+  3. drop _merge
+  4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
+  5. drop if sex==1
+  6. forvalues i=0/5 {
+  7. forvalues j=1/9 {
+  8. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  9. qui safecount if agecat==`y' & ckd_group==`i' & region==`j'
+ 10. local age_`y'_`x'_`i'_`j' = round(r(N),5)
+ 11. }
+ 12. }
+ 13. }
+ 14. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(1,593 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,524 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(1,608 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(1,521 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(1,572 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(1,513 observations deleted)
+
+. 
+. forvalues i=0/5 {
+  2. forvalues j=1/9 {
+  3. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  4. file write tablecontent ("`ckd`i''") _tab ("`lab`j''") _tab ("`y'")
+  5. foreach x of local year {
+  6. if `age_`y'_`x'_`i'_`j''>5 & `age_`y'_`x'_`i'_`j''!=. {
+  7. file write tablecontent _tab (`age_`y'_`x'_`i'_`j'')
+  8. }
+  9. else {
+ 10. file write tablecontent _tab ("REDACTED")
+ 11. }
+ 12. }
+ 13. file write tablecontent _n
+ 14. }
+ 15. }
+ 16. }
+
+. 
+. *Urban/rural
+. local lab0 "Rural"
+
+. local lab1 "Urban"                                              
+
+. 
+. foreach x of local year {
+  2. use ./output/`x'_ckd_complete.dta, clear
+  3. drop _merge
+  4. merge 1:1 patient_id using ./output/`x'_nockd_complete, force
+  5. drop if sex==1
+  6. forvalues i=0/5 {
+  7. forvalues j=0/1 {
+  8. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  9. qui safecount if agecat==`y' & ckd_group==`i' & urban==`j'
+ 10. local age_`y'_`x'_`i'_`j' = round(r(N),5)
+ 11. }
+ 12. }
+ 13. }
+ 14. }
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,125
+        from master                     2,125  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,084  (_merge==3)
+    -----------------------------------------
+(1,593 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         3,126
+        from master                     2,077  (_merge==1)
+        from using                      1,049  (_merge==2)
+
+    Matched                                 0  (_merge==3)
+    -----------------------------------------
+(1,524 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,138
+        from master                     2,138  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,101  (_merge==3)
+    -----------------------------------------
+(1,608 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,086
+        from master                     2,086  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,077  (_merge==3)
+    -----------------------------------------
+(1,521 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,144
+        from master                     2,144  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,129  (_merge==3)
+    -----------------------------------------
+(1,572 observations deleted)
+(label sex already defined)
+(label egfr_end already defined)
+(label ckd_progression already defined)
+(label ethnicity already defined)
+(label imd already defined)
+(label region already defined)
+(label urban already defined)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,089
+        from master                     2,089  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,090  (_merge==3)
+    -----------------------------------------
+(1,513 observations deleted)
+
+. 
+. forvalues i=0/5 {
+  2. forvalues j=0/1 {
+  3. foreach y in 18 25 30 35 40 45 50 55 60 65 70 75 80 85 90 {
+  4. file write tablecontent ("`ckd`i''") _tab ("`lab`j''") _tab ("`y'")
+  5. foreach x of local year {
+  6. if `age_`y'_`x'_`i'_`j''>5 & `age_`y'_`x'_`i'_`j''!=. {
+  7. file write tablecontent _tab (`age_`y'_`x'_`i'_`j'')
+  8. }
+  9. else {
+ 10. file write tablecontent _tab ("REDACTED")
+ 11. }
+ 12. }
+ 13. file write tablecontent _n
+ 14. }
+ 15. }
+ 16. }
+
+. 
+. file close tablecontent
+
+. 
+end of do-file
+

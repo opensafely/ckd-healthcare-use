@@ -1461,3 +1461,133 @@ Total estimation                           Number of obs = 500
 . 
 end of do-file
 
+. cd ..
+C:\Users\lsh1703468\Documents\repo
+
+. cd ..
+C:\Users\lsh1703468\Documents
+
+. cd repos
+C:\Users\lsh1703468\Documents\repos
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD2120_000000.tmp"
+
+. use ./output/analysis_complete_2020.dta, clear
+
+. 
+end of do-file
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD2120_000000.tmp"
+
+. gen follow_up_esrd = follow_up_time_esrd
+
+. recode follow_up_esrd   min/29=1        ///
+>                                                 30/89=2         ///
+>                                                 90/179=3                        ///
+>                                                 180/max=4 
+(460 changes made to follow_up_esrd)
+
+. 
+end of do-file
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD2120_000000.tmp"
+
+. stset exit_date_esrd, fail(esrd_date) origin(index_date_esrd) id(unique) scale(365.25)
+
+Survival-time data settings
+
+           ID variable: unique
+         Failure event: esrd_date!=0 & esrd_date<.
+Observed time interval: (exit_date_esrd[_n-1], exit_date_esrd]
+     Exit on or before: failure
+     Time for analysis: (time-origin)/365.25
+                Origin: time index_date_esrd
+
+--------------------------------------------------------------------------
+        461  total observations
+          0  exclusions
+--------------------------------------------------------------------------
+        461  observations remaining, representing
+        461  subjects
+         45  failures in single-failure-per-subject data
+    746.533  total analysis time at risk and under observation
+                                                At risk from t =         0
+                                     Earliest observed entry t =         0
+                                          Last observed exit t =  2.907598
+
+. 
+end of do-file
+
+. bysort follow_up_esrd tab ethnicity _d
+: required
+r(100);
+
+. bysort follow_up_esrd: tab ethnicity _d
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-> follow_up_esrd = 1
+
+            |  1 if failure; 0 if
+            |       censored
+  ethnicity |         0          1 |     Total
+------------+----------------------+----------
+      White |         9          2 |        11 
+      Black |         1          0 |         1 
+      Mixed |         1          0 |         1 
+      Other |         2          0 |         2 
+------------+----------------------+----------
+      Total |        13          2 |        15 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-> follow_up_esrd = 2
+
+            |  1 if failure; 0 if
+            |       censored
+  ethnicity |         0          1 |     Total
+------------+----------------------+----------
+      White |         8          6 |        14 
+      Black |         3          0 |         3 
+      Other |         1          0 |         1 
+------------+----------------------+----------
+      Total |        12          6 |        18 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-> follow_up_esrd = 3
+
+            |  1 if failure; 0 if
+            |       censored
+  ethnicity |         0          1 |     Total
+------------+----------------------+----------
+      White |        21          5 |        26 
+South Asian |         1          1 |         2 
+      Black |         1          1 |         2 
+      Mixed |         2          0 |         2 
+------------+----------------------+----------
+      Total |        25          7 |        32 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-> follow_up_esrd = 4
+
+            |  1 if failure; 0 if
+            |       censored
+  ethnicity |         0          1 |     Total
+------------+----------------------+----------
+      White |       301         27 |       328 
+South Asian |        18          1 |        19 
+      Black |        10          0 |        10 
+      Mixed |        20          0 |        20 
+      Other |        17          2 |        19 
+------------+----------------------+----------
+      Total |       366         30 |       396 
+
+
+. do "C:\Users\LSH170~1\AppData\Local\Temp\STD2120_000000.tmp"
+
+. sysdir set PLUS ./analysis/adofiles
+
+. sysdir set PERSONAL ./analysis/adofiles
+
+. pwd
+C:\Users\lsh1703468\Documents\repos
+
+. cap log close
