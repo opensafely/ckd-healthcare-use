@@ -1,1 +1,0 @@
-title = "Aggregating event series"
