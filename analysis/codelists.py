@@ -4592,6 +4592,36 @@ hrg_VC03 = codelist_from_csv(
     column="code",
 )
 
+hrg_VC04 = codelist_from_csv(
+    "local_codelists/hrg_VC04.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC06 = codelist_from_csv(
+    "local_codelists/hrg_VC06.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC08 = codelist_from_csv(
+    "local_codelists/hrg_VC08.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC10 = codelist_from_csv(
+    "local_codelists/hrg_VC10.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC12 = codelist_from_csv(
+    "local_codelists/hrg_VC12.csv",
+    system="opcs4",
+    column="code",
+)
+
 hrg_VC14 = codelist_from_csv(
     "local_codelists/hrg_VC14.csv",
     system="opcs4",
