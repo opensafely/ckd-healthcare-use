@@ -241,7 +241,7 @@ foreach var of varlist ethnicity imd region urban {
 bysort `var': egen `var'_`cost' = total(`cost')
 bysort `var' ckd_group: egen `var'_`cost'_ckd = total(`cost')
 }
-}/*
+}*/
 
 save "./output/`dataset'_nockd_complete.dta", replace
 
