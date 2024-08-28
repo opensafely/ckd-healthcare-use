@@ -3754,13 +3754,13 @@ hrg_LB78 = codelist_from_csv(
 
 hrg_LE01 = codelist_from_csv(
     "local_codelists/hrg_LE01.csv",
-    system="opcs",
+    system="opcs4",
     column="code",
 )
 
 hrg_LE02 = codelist_from_csv(
     "local_codelists/hrg_LE02.csv",
-    system="opcs",
+    system="opcs4",
     column="code",
 )
 
