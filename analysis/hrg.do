@@ -11,7 +11,6 @@ log using ./logs/hrg_`dataset'.log, replace t
 use ./output/`dataset'_ckd_complete.dta, clear
 drop _merge
 merge 1:1 patient_id using ./output/`dataset'_nockd_complete
-replace ckd_group = 0 if ckd_group==1
 replace ckd_group = 1 if ckd_group==0
 
 cap file close tablecontent
@@ -28,12 +27,12 @@ qui safecount if ckd_group==`i' & `hrg'_count==1
 local `hrg'_count_`i' = round(r(N),5)
 qui su total_`hrg'_days if ckd_group==`i'
 local `hrg'_days_`i' = r(mean)
-}
 if ``hrg'_count_`i'' >5 & ``hrg'_count_`i''!=. {
 file write tablecontent _tab (``hrg'_count_`i'') _tab (``hrg'_days_`i'')
 }
 else {
 file write tablecontent _tab ("REDACTED") _tab ("REDACTED")
+}
 }
 file write tablecontent _n
 }
