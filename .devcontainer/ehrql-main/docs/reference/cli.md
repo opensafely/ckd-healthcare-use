@@ -1,1 +1,0 @@
----8<-- 'includes/generated_docs/cli.md'
