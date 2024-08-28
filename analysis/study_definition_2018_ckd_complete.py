@@ -15,6 +15,9 @@ CKD = "output/2018_ckd.csv"
 from variables_additional import generate_variables_additional
 variables_additional= generate_variables_additional(index_date_variable="index_date")
 
+from variables_hrg import generate_variables_hrg
+variables_hrg= generate_variables_hrg(index_date_variable="index_date")
+
 study = StudyDefinition(
     default_expectations={
         "date": {"earliest": "2018-04-01", "latest": "2019-03-31"},
@@ -25,4 +28,5 @@ study = StudyDefinition(
     index_date="2018-04-01",
 
     **variables_additional,
+    **variables_hrg,
 ) 
