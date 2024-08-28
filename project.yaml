@@ -37,6 +37,13 @@ actions:
       moderately_sensitive:
         log: logs/2017_ckd_complete.log
 
+  2017_ckd_complete_ds:
+    run: stata-mp:latest analysis/2017_ckd_complete_ds.do
+    needs: [2017, 2017_ckd, 2017_ckd_complete]
+    outputs:
+      moderately_sensitive:
+        log: logs/2017_ckd_complete_ds.log
+
   2018:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_2018
     outputs:
