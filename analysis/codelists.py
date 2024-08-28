@@ -242,8 +242,6 @@ icd22_codes = codelist_from_csv(
     column="code",
 )
 
-
-
 hrg_AA22 = codelist_from_csv(
     "local_codelists/hrg_AA22.csv",
     system="icd10",
