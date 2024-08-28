@@ -243,6 +243,7 @@ icd22_codes = codelist_from_csv(
 )
 
 
+
 hrg_AA22 = codelist_from_csv(
     "local_codelists/hrg_AA22.csv",
     system="icd10",
@@ -4589,6 +4590,96 @@ hrg_VC02 = codelist_from_csv(
 
 hrg_VC03 = codelist_from_csv(
     "local_codelists/hrg_VC03.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC14 = codelist_from_csv(
+    "local_codelists/hrg_VC14.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC16 = codelist_from_csv(
+    "local_codelists/hrg_VC16.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC18 = codelist_from_csv(
+    "local_codelists/hrg_VC18.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC20 = codelist_from_csv(
+    "local_codelists/hrg_VC20.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC22 = codelist_from_csv(
+    "local_codelists/hrg_VC22.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC24 = codelist_from_csv(
+    "local_codelists/hrg_VC24.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC26 = codelist_from_csv(
+    "local_codelists/hrg_VC26.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC28 = codelist_from_csv(
+    "local_codelists/hrg_VC28.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC30 = codelist_from_csv(
+    "local_codelists/hrg_VC30.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC32 = codelist_from_csv(
+    "local_codelists/hrg_VC32.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC34 = codelist_from_csv(
+    "local_codelists/hrg_VC34.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC36 = codelist_from_csv(
+    "local_codelists/hrg_VC36.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC38 = codelist_from_csv(
+    "local_codelists/hrg_VC38.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC40 = codelist_from_csv(
+    "local_codelists/hrg_VC40.csv",
+    system="opcs4",
+    column="code",
+)
+
+hrg_VC42 = codelist_from_csv(
+    "local_codelists/hrg_VC42.csv",
     system="opcs4",
     column="code",
 )
