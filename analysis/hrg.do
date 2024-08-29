@@ -35,13 +35,14 @@ global hrg "aa22 aa23 aa24 aa25 aa26 aa28 aa29 aa30 aa31 aa32 aa33 aa35 aa43 aa5
 
 foreach hrg of global hrg {
 file write tablecontent ("`hrg'")
+foreach var of varlist `hrg'_admissions `hrg'_days {
+egen total_`var' = total(`var')
 forvalues i=1/5 {
 qui safecount if ckd_group==`i' & `hrg'_count==1
 local `hrg'_count_`i' = round(r(N),5)
-foreach var of varlist `hrg'_admissions `hrg'_days {
-egen total_`var' = total(`var')
 qui su total_`var' if ckd_group==`i'
 local `var'_`i' = r(mean)
+}
 }
 if ``hrg'_count_`i'' >5 & ``hrg'_count_`i''!=. {
 file write tablecontent _tab (``hrg'_count_`i'') _tab (``hrg'_admissions_`i'') _tab (``hrg'_days_`i'')
