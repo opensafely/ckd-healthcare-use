@@ -107,6 +107,14 @@ merge 1:1 patient_id using ./output/input_`dataset'
 keep if _merge==2
 drop _merge
 
+***Random sample of 25% of non-CKD population for tariff distribution analysis - should not be run for main analyses
+gen random_order = runiform()              
+sort random_order                          
+safecount                                   
+local total_obs = r(N)                     
+local drop_count = ceil(0.75 * `total_obs') 
+drop in 1/`drop_count'  
+
 export delimited using "./output/`dataset'_nockd.csv", replace
 
 log close
