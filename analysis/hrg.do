@@ -42,13 +42,12 @@ qui safecount if ckd_group==`i' & `hrg'_count==1
 local `hrg'_count_`i' = round(r(N),5)
 qui su total_`var' if ckd_group==`i'
 local `var'_`i' = r(mean)
-}
-}
 if ``hrg'_count_`i'' >5 & ``hrg'_count_`i''!=. {
 file write tablecontent _tab (``hrg'_count_`i'') _tab (``hrg'_admissions_`i'') _tab (``hrg'_days_`i'')
 }
 else {
 file write tablecontent _tab ("REDACTED") _tab ("REDACTED") _tab ("REDACTED")
+}
 }
 }
 file write tablecontent _n
