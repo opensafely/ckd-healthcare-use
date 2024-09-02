@@ -88,7 +88,7 @@ keep if _merge==3
 drop _merge
 gen ckd_group = 1
 
-merge 1:1 patient_id using `dataset'_ckd_hrg1
+merge 1:1 patient_id using ``dataset'_ckd_hrg1'
 
 
 cap file close tablecontent
