@@ -1,4 +1,3 @@
-
 from cohortextractor import (
     StudyDefinition,
     Measure,
@@ -28,6 +27,6 @@ study = StudyDefinition(
     population=patients.which_exist_in_file(NOCKD), 
     index_date="2017-04-01",
 
-    **variables_additional,
+    **variables_nockd,
     **variables_hrg4,
-) 
+)

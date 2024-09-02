@@ -18,7 +18,6 @@ variables_additional= generate_variables_additional(index_date_variable="index_d
 from variables_hrg3 import generate_variables_hrg3
 variables_hrg3= generate_variables_hrg3(index_date_variable="index_date")
 
-
 study = StudyDefinition(
     default_expectations={
         "date": {"earliest": "2020-04-01", "latest": "2021-03-31"},
