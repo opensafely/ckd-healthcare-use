@@ -2,9 +2,13 @@ from cohortextractor import filter_codes_by_category, patients, combine_codelist
 from codelists import *
 from datetime import datetime, timedelta
 
+#hrg1 = aa22 to ey17
+#hrg2 = ey22 to lb72
+#hrg3 = lb74 to wj10
+#hrg4 = wj11 to yr67
+
 def generate_variables_hrg(index_date_variable):
     variables_hrg = dict(    
-
 
     AA22_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_AA22,
