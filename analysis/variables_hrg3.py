@@ -22,7 +22,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     MB08_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_MB08,
@@ -39,7 +38,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     MB09_count=patients.admitted_to_hospital(
@@ -58,7 +56,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     NZ16_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_NZ16,
@@ -75,7 +72,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     NZ17_count=patients.admitted_to_hospital(
@@ -94,7 +90,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     NZ18_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_NZ18,
@@ -111,7 +106,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     NZ19_count=patients.admitted_to_hospital(
@@ -130,7 +124,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     NZ20_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_NZ20,
@@ -147,7 +140,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     NZ25_count=patients.admitted_to_hospital(
@@ -166,7 +158,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     NZ26_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_NZ26,
@@ -183,7 +174,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     SA01_count=patients.admitted_to_hospital(
@@ -202,7 +192,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     SA02_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_SA02,
@@ -219,7 +208,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     SA03_count=patients.admitted_to_hospital(
@@ -238,7 +226,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     SA04_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_SA04,
@@ -255,7 +242,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     SA05_count=patients.admitted_to_hospital(
@@ -274,7 +260,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     SA06_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_SA06,
@@ -291,7 +276,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     SA07_count=patients.admitted_to_hospital(
@@ -310,7 +294,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     SA08_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_SA08,
@@ -327,7 +310,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     SA09_count=patients.admitted_to_hospital(
@@ -346,7 +328,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     SA11_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_SA11,
@@ -363,7 +344,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     SA12_count=patients.admitted_to_hospital(
@@ -382,7 +362,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     SA17_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_SA17,
@@ -399,7 +378,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     SA24_count=patients.admitted_to_hospital(
@@ -418,7 +396,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     SA25_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_SA25,
@@ -435,7 +412,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     SA30_count=patients.admitted_to_hospital(
@@ -454,7 +430,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     SA31_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_SA31,
@@ -471,7 +446,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     SA32_count=patients.admitted_to_hospital(
@@ -490,7 +464,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     SA35_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_SA35,
@@ -507,7 +480,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     SA36_count=patients.admitted_to_hospital(
@@ -526,7 +498,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     SA37_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_SA37,
@@ -543,7 +514,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     UZ01_count=patients.admitted_to_hospital(
@@ -562,7 +532,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     UZ02_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_UZ02,
@@ -579,7 +548,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     UZ03_count=patients.admitted_to_hospital(
@@ -598,7 +566,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     UZ04_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_UZ04,
@@ -615,7 +582,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     UZ15_count=patients.admitted_to_hospital(
@@ -634,7 +600,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     VA10_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_VA10,
@@ -651,7 +616,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WD01_count=patients.admitted_to_hospital(
@@ -670,7 +634,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WD02_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WD02,
@@ -687,7 +650,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WD03_count=patients.admitted_to_hospital(
@@ -706,7 +668,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WD04_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WD04,
@@ -723,7 +684,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WD05_count=patients.admitted_to_hospital(
@@ -742,7 +702,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WD06_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WD06,
@@ -759,7 +718,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WD07_count=patients.admitted_to_hospital(
@@ -778,7 +736,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WD08_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WD08,
@@ -795,7 +752,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WD09_count=patients.admitted_to_hospital(
@@ -814,7 +770,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH01_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH01,
@@ -831,7 +786,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH02_count=patients.admitted_to_hospital(
@@ -850,7 +804,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH03_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH03,
@@ -867,7 +820,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH04_count=patients.admitted_to_hospital(
@@ -886,7 +838,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH05_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH05,
@@ -903,7 +854,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH06_count=patients.admitted_to_hospital(
@@ -922,7 +872,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH07_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH07,
@@ -939,7 +888,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH08_count=patients.admitted_to_hospital(
@@ -958,7 +906,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH09_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH09,
@@ -975,7 +922,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH10_count=patients.admitted_to_hospital(
@@ -994,7 +940,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH11_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH11,
@@ -1011,7 +956,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH12_count=patients.admitted_to_hospital(
@@ -1030,7 +974,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH13_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH13,
@@ -1047,7 +990,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH14_count=patients.admitted_to_hospital(
@@ -1066,7 +1008,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH15_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH15,
@@ -1083,7 +1024,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH16_count=patients.admitted_to_hospital(
@@ -1102,7 +1042,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH17_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH17,
@@ -1119,7 +1058,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH18_count=patients.admitted_to_hospital(
@@ -1138,7 +1076,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH19_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH19,
@@ -1155,7 +1092,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH20_count=patients.admitted_to_hospital(
@@ -1174,7 +1110,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH21_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH21,
@@ -1191,7 +1126,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH22_count=patients.admitted_to_hospital(
@@ -1210,7 +1144,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH23_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH23,
@@ -1227,7 +1160,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH50_count=patients.admitted_to_hospital(
@@ -1246,7 +1178,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH51_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH51,
@@ -1263,7 +1194,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH52_count=patients.admitted_to_hospital(
@@ -1282,7 +1212,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WH53_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WH53,
@@ -1299,7 +1228,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WH99_count=patients.admitted_to_hospital(
@@ -1318,7 +1246,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WJ01_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WJ01,
@@ -1335,7 +1262,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WJ02_count=patients.admitted_to_hospital(
@@ -1354,7 +1280,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WJ03_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WJ03,
@@ -1371,7 +1296,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WJ04_count=patients.admitted_to_hospital(
@@ -1390,7 +1314,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WJ06_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WJ06,
@@ -1407,7 +1330,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     WJ07_count=patients.admitted_to_hospital(
@@ -1426,7 +1348,6 @@ def generate_variables_hrg3(index_date_variable):
             "incidence": 0.10,
         }
     ),
-    ),
     
     WJ10_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_WJ10,
@@ -1443,7 +1364,6 @@ def generate_variables_hrg3(index_date_variable):
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
             "incidence": 0.10,
         }
-    ),
     ),
     
     LB74_count=patients.admitted_to_hospital(
