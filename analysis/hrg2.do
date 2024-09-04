@@ -121,15 +121,16 @@ local `hrg'_count_`i' = round(r(N),5)
 qui su total_`hrg'_admissions if ckd_group==`i'
 local `hrg'_admissions_`i' = r(mean)
 if ``hrg'_count_`i'' >5 & ``hrg'_count_`i''!=. {
-file write tablecontent _tab (``hrg'_count_`i'') _tab (``hrg'_admissions_`i'') _tab (``hrg'_days_`i'')
+file write tablecontent _tab (``hrg'_count_`i'') _tab (``hrg'_admissions_`i'') 
 }
 else {
-file write tablecontent _tab ("REDACTED") _tab ("REDACTED") _tab ("REDACTED")
+file write tablecontent _tab ("REDACTED") _tab ("REDACTED")
 }
 }
-file write tablecontent _n
 drop total_`hrg'_admissions
 drop `hrg'_count
+file write tablecontent _n
 }
+
 
 file close tablecontent
