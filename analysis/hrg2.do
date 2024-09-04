@@ -114,7 +114,7 @@ global hrg "ey22 ey23 ey30 ey31 ey32 ey40 ey41 ey42 ey43 ey50 ey51 fd01 fd02 fd0
 foreach hrg of global hrg {
 file write tablecontent ("`hrg'")
 bysort ckd_group: egen total_`hrg'_admissions = total(`hrg'_admissions)
-`hrg'_admissions
+drop `hrg'_admissions
 forvalues i=1/5 {
 qui safecount if ckd_group==`i' & `hrg'_count==1
 local `hrg'_count_`i' = round(r(N),5)
