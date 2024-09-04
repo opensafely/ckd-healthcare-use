@@ -1,3 +1,4 @@
+
 from cohortextractor import filter_codes_by_category, patients, combine_codelists
 from codelists import *
 from datetime import datetime, timedelta
@@ -21,16 +22,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    WJ11_days=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_WJ11,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YQ50_count=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_YQ50,
@@ -42,16 +33,6 @@ def generate_variables_hrg4(index_date_variable):
     YQ50_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_YQ50,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YQ50_days=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_YQ50,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -75,16 +56,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YQ51_days=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_YQ51,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD01_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD01,
@@ -96,16 +67,6 @@ def generate_variables_hrg4(index_date_variable):
     XD01_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD01,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD01_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD01,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -129,16 +90,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD02_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD02,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD03_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD03,
@@ -150,16 +101,6 @@ def generate_variables_hrg4(index_date_variable):
     XD03_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD03,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD03_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD03,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -183,16 +124,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD04_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD04,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD05_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD05,
@@ -204,16 +135,6 @@ def generate_variables_hrg4(index_date_variable):
     XD05_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD05,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD05_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD05,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -237,16 +158,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD06_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD06,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD07_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD07,
@@ -258,16 +169,6 @@ def generate_variables_hrg4(index_date_variable):
     XD07_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD07,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD07_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD07,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -291,16 +192,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD08_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD08,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD09_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD09,
@@ -312,16 +203,6 @@ def generate_variables_hrg4(index_date_variable):
     XD09_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD09,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD09_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD09,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -345,16 +226,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD10_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD10,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD11_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD11,
@@ -366,16 +237,6 @@ def generate_variables_hrg4(index_date_variable):
     XD11_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD11,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD11_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD11,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -399,16 +260,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD12_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD12,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD13_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD13,
@@ -420,16 +271,6 @@ def generate_variables_hrg4(index_date_variable):
     XD13_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD13,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD13_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD13,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -453,16 +294,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD14_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD14,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD15_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD15,
@@ -474,16 +305,6 @@ def generate_variables_hrg4(index_date_variable):
     XD15_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD15,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD15_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD15,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -507,16 +328,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD16_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD16,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD17_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD17,
@@ -528,16 +339,6 @@ def generate_variables_hrg4(index_date_variable):
     XD17_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD17,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD17_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD17,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -561,16 +362,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD18_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD18,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD19_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD19,
@@ -582,16 +373,6 @@ def generate_variables_hrg4(index_date_variable):
     XD19_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD19,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD19_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD19,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -615,16 +396,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD20_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD20,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD21_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD21,
@@ -636,16 +407,6 @@ def generate_variables_hrg4(index_date_variable):
     XD21_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD21,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD21_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD21,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -669,16 +430,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD22_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD22,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD23_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD23,
@@ -690,16 +441,6 @@ def generate_variables_hrg4(index_date_variable):
     XD23_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD23,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD23_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD23,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -723,16 +464,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD24_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD24,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD25_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD25,
@@ -744,16 +475,6 @@ def generate_variables_hrg4(index_date_variable):
     XD25_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD25,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD25_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD25,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -777,16 +498,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD26_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD26,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD27_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD27,
@@ -798,16 +509,6 @@ def generate_variables_hrg4(index_date_variable):
     XD27_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD27,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD27_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD27,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -831,16 +532,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD28_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD28,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD29_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD29,
@@ -852,16 +543,6 @@ def generate_variables_hrg4(index_date_variable):
     XD29_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD29,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD29_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD29,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -885,16 +566,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD30_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD30,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD31_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD31,
@@ -906,16 +577,6 @@ def generate_variables_hrg4(index_date_variable):
     XD31_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD31,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD31_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD31,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -939,16 +600,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD32_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD32,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD33_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD33,
@@ -960,16 +611,6 @@ def generate_variables_hrg4(index_date_variable):
     XD33_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD33,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD33_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD33,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -993,16 +634,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD34_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD34,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD37_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD37,
@@ -1014,16 +645,6 @@ def generate_variables_hrg4(index_date_variable):
     XD37_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD37,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD37_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD37,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1047,16 +668,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD38_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD38,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD39_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD39,
@@ -1068,16 +679,6 @@ def generate_variables_hrg4(index_date_variable):
     XD39_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD39,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD39_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD39,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1101,16 +702,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD40_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD40,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD41_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD41,
@@ -1122,16 +713,6 @@ def generate_variables_hrg4(index_date_variable):
     XD41_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD41,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD41_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD41,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1155,16 +736,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD42_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD42,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD43_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD43,
@@ -1176,16 +747,6 @@ def generate_variables_hrg4(index_date_variable):
     XD43_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD43,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD43_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD43,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1209,16 +770,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD44_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD44,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD45_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD45,
@@ -1230,16 +781,6 @@ def generate_variables_hrg4(index_date_variable):
     XD45_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD45,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD45_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD45,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1263,16 +804,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD46_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD46,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD47_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD47,
@@ -1284,16 +815,6 @@ def generate_variables_hrg4(index_date_variable):
     XD47_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD47,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD47_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD47,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1317,16 +838,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD48_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD48,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD49_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD49,
@@ -1338,16 +849,6 @@ def generate_variables_hrg4(index_date_variable):
     XD49_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD49,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD49_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD49,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1371,16 +872,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD50_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD50,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD51_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD51,
@@ -1392,16 +883,6 @@ def generate_variables_hrg4(index_date_variable):
     XD51_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD51,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD51_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD51,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1425,16 +906,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD52_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD52,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD53_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD53,
@@ -1446,16 +917,6 @@ def generate_variables_hrg4(index_date_variable):
     XD53_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD53,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD53_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD53,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1479,16 +940,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD54_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD54,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD55_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD55,
@@ -1500,16 +951,6 @@ def generate_variables_hrg4(index_date_variable):
     XD55_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD55,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD55_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD55,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1533,16 +974,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD56_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD56,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD57_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD57,
@@ -1554,16 +985,6 @@ def generate_variables_hrg4(index_date_variable):
     XD57_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD57,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD57_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD57,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1587,16 +1008,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD58_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD58,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     XD90_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD90,
@@ -1608,16 +1019,6 @@ def generate_variables_hrg4(index_date_variable):
     XD90_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_XD90,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    XD90_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD90,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1641,16 +1042,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    XD91_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_XD91,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YA03_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YA03,
@@ -1662,16 +1053,6 @@ def generate_variables_hrg4(index_date_variable):
     YA03_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YA03,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YA03_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YA03,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1695,16 +1076,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YA04_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YA04,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YA10_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YA10,
@@ -1716,16 +1087,6 @@ def generate_variables_hrg4(index_date_variable):
     YA10_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YA10,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YA10_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YA10,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1749,16 +1110,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YA11_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YA11,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YA12_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YA12,
@@ -1770,16 +1121,6 @@ def generate_variables_hrg4(index_date_variable):
     YA12_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YA12,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YA12_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YA12,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1803,16 +1144,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YA13_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YA13,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YC01_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YC01,
@@ -1824,16 +1155,6 @@ def generate_variables_hrg4(index_date_variable):
     YC01_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YC01,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YC01_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YC01,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1857,16 +1178,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YC10_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YC10,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YD01_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YD01,
@@ -1878,16 +1189,6 @@ def generate_variables_hrg4(index_date_variable):
     YD01_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YD01,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YD01_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YD01,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1911,16 +1212,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YD02_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YD02,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YD03_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YD03,
@@ -1932,16 +1223,6 @@ def generate_variables_hrg4(index_date_variable):
     YD03_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YD03,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YD03_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YD03,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -1965,16 +1246,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YD04_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YD04,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YD05_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YD05,
@@ -1986,16 +1257,6 @@ def generate_variables_hrg4(index_date_variable):
     YD05_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YD05,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YD05_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YD05,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2019,16 +1280,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YF01_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YF01,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YF04_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YF04,
@@ -2040,16 +1291,6 @@ def generate_variables_hrg4(index_date_variable):
     YF04_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YF04,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YF04_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YF04,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2073,16 +1314,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YG01_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YG01,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YG02_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YG02,
@@ -2094,16 +1325,6 @@ def generate_variables_hrg4(index_date_variable):
     YG02_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YG02,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YG02_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YG02,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2127,16 +1348,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YG05_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YG05,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YG06_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YG06,
@@ -2148,16 +1359,6 @@ def generate_variables_hrg4(index_date_variable):
     YG06_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YG06,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YG06_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YG06,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2181,16 +1382,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YG07_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YG07,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YG10_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YG10,
@@ -2202,16 +1393,6 @@ def generate_variables_hrg4(index_date_variable):
     YG10_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YG10,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YG10_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YG10,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2235,16 +1416,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YG11_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YG11,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YG12_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YG12,
@@ -2256,16 +1427,6 @@ def generate_variables_hrg4(index_date_variable):
     YG12_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YG12,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YG12_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YG12,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2289,16 +1450,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YH02_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YH02,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YH03_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YH03,
@@ -2310,16 +1461,6 @@ def generate_variables_hrg4(index_date_variable):
     YH03_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YH03,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YH03_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YH03,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2343,16 +1484,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YH10_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YH10,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YH20_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YH20,
@@ -2364,16 +1495,6 @@ def generate_variables_hrg4(index_date_variable):
     YH20_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YH20,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YH20_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YH20,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2397,16 +1518,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YH30_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YH30,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YH31_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YH31,
@@ -2418,16 +1529,6 @@ def generate_variables_hrg4(index_date_variable):
     YH31_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YH31,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YH31_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YH31,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2451,16 +1552,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YH32_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YH32,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YJ09_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YJ09,
@@ -2472,16 +1563,6 @@ def generate_variables_hrg4(index_date_variable):
     YJ09_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YJ09,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YJ09_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YJ09,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2505,16 +1586,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YJ11_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YJ11,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YJ13_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YJ13,
@@ -2526,16 +1597,6 @@ def generate_variables_hrg4(index_date_variable):
     YJ13_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YJ13,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YJ13_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YJ13,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2559,16 +1620,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YJ15_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YJ15,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YL02_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YL02,
@@ -2580,16 +1631,6 @@ def generate_variables_hrg4(index_date_variable):
     YL02_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YL02,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YL02_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YL02,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2613,16 +1654,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YL11_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YL11,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YL12_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YL12,
@@ -2634,16 +1665,6 @@ def generate_variables_hrg4(index_date_variable):
     YL12_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YL12,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YL12_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YL12,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2667,16 +1688,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YL20_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YL20,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YL21_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YL21,
@@ -2688,16 +1699,6 @@ def generate_variables_hrg4(index_date_variable):
     YL21_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YL21,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YL21_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YL21,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2721,16 +1722,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YL30_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YL30,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YQ05_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ05,
@@ -2742,16 +1733,6 @@ def generate_variables_hrg4(index_date_variable):
     YQ05_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ05,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YQ05_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ05,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2775,16 +1756,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YQ07_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ07,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YQ08_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ08,
@@ -2796,16 +1767,6 @@ def generate_variables_hrg4(index_date_variable):
     YQ08_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ08,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YQ08_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ08,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2829,16 +1790,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YQ09_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ09,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YQ12_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ12,
@@ -2850,16 +1801,6 @@ def generate_variables_hrg4(index_date_variable):
     YQ12_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ12,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YQ12_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ12,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2883,16 +1824,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YQ13_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ13,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YQ15_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ15,
@@ -2904,16 +1835,6 @@ def generate_variables_hrg4(index_date_variable):
     YQ15_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ15,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YQ15_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ15,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2937,16 +1858,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YQ16_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ16,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YQ22_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ22,
@@ -2958,16 +1869,6 @@ def generate_variables_hrg4(index_date_variable):
     YQ22_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ22,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YQ22_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ22,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -2991,16 +1892,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YQ26_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ26,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YQ31_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ31,
@@ -3012,16 +1903,6 @@ def generate_variables_hrg4(index_date_variable):
     YQ31_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ31,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YQ31_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ31,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3045,16 +1926,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YQ32_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ32,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YQ40_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ40,
@@ -3066,16 +1937,6 @@ def generate_variables_hrg4(index_date_variable):
     YQ40_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ40,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YQ40_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ40,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3099,16 +1960,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YQ41_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ41,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YQ42_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ42,
@@ -3120,16 +1971,6 @@ def generate_variables_hrg4(index_date_variable):
     YQ42_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YQ42,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YQ42_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YQ42,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3153,16 +1994,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR11_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR11,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR12_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR12,
@@ -3174,16 +2005,6 @@ def generate_variables_hrg4(index_date_variable):
     YR12_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR12,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR12_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR12,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3207,16 +2028,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR15_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR15,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR16_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR16,
@@ -3228,16 +2039,6 @@ def generate_variables_hrg4(index_date_variable):
     YR16_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR16,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR16_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR16,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3261,16 +2062,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR22_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR22,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR23_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR23,
@@ -3282,16 +2073,6 @@ def generate_variables_hrg4(index_date_variable):
     YR23_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR23,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR23_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR23,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3315,16 +2096,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR24_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR24,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR25_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR25,
@@ -3336,16 +2107,6 @@ def generate_variables_hrg4(index_date_variable):
     YR25_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR25,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR25_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR25,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3369,16 +2130,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR26_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR26,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR31_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR31,
@@ -3390,16 +2141,6 @@ def generate_variables_hrg4(index_date_variable):
     YR31_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR31,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR31_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR31,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3423,16 +2164,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR33_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR33,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR40_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR40,
@@ -3444,16 +2175,6 @@ def generate_variables_hrg4(index_date_variable):
     YR40_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR40,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR40_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR40,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3477,16 +2198,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR41_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR41,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR42_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR42,
@@ -3498,16 +2209,6 @@ def generate_variables_hrg4(index_date_variable):
     YR42_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR42,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR42_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR42,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3531,16 +2232,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR43_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR43,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR44_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR44,
@@ -3552,16 +2243,6 @@ def generate_variables_hrg4(index_date_variable):
     YR44_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR44,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR44_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR44,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3585,16 +2266,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR45_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR45,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR48_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR48,
@@ -3606,16 +2277,6 @@ def generate_variables_hrg4(index_date_variable):
     YR48_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR48,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR48_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR48,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3639,16 +2300,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR50_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR50,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR51_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR51,
@@ -3660,16 +2311,6 @@ def generate_variables_hrg4(index_date_variable):
     YR51_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR51,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR51_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR51,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3693,16 +2334,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR52_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR52,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR53_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR53,
@@ -3714,16 +2345,6 @@ def generate_variables_hrg4(index_date_variable):
     YR53_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR53,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR53_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR53,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3747,16 +2368,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR54_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR54,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR56_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR56,
@@ -3768,16 +2379,6 @@ def generate_variables_hrg4(index_date_variable):
     YR56_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR56,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR56_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR56,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3801,16 +2402,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR57_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR57,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR63_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR63,
@@ -3822,16 +2413,6 @@ def generate_variables_hrg4(index_date_variable):
     YR63_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR63,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR63_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR63,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3855,16 +2436,6 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR65_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR65,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
     
     YR66_count=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR66,
@@ -3876,16 +2447,6 @@ def generate_variables_hrg4(index_date_variable):
     YR66_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_YR66,
         returning="number_of_matches_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
-
-    YR66_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR66,
-        returning="total_bed_days_in_period",
         between = ["index_date", "index_date + 364 days"],
         return_expectations={
             "int": {"distribution": "normal", "mean": 3, "stddev": 2},
@@ -3909,16 +2470,7 @@ def generate_variables_hrg4(index_date_variable):
             "incidence": 0.10,
         }
     ),
-
-    YR67_days=patients.admitted_to_hospital(
-        with_these_procedures=hrg_YR67,
-        returning="total_bed_days_in_period",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 3, "stddev": 2},
-            "incidence": 0.10,
-        }
-    ),
+    
     )
     return variables_hrg4
     

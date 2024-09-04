@@ -94,17 +94,17 @@ merge 1:1 patient_id using ``dataset'_ckd_hrg4'
 cap file close tablecontent
 file open tablecontent using ./output/hrg4_`dataset'.csv, write text replace
 
-file write tablecontent ("hrg") _tab ("nockd_count") _tab ("nockd_admissions") _tab ("nockd_days") _tab ("ckd3_count") _tab ("ckd3_admissions") _tab ("ckd3_days") _tab ("ckd4_count") _tab ("ckd4_admissions") _tab ("ckd4_days") _tab ("dialysis_count") _tab ("dialysis_admissions") _tab ("dialysis_days") _tab ("kt_count") _tab ("kt_admissions") _tab ("kt_days") _n
+file write tablecontent ("hrg") _tab ("nockd_count") _tab ("nockd_admissions") _tab ("ckd3_count") _tab ("ckd3_admissions") _tab ("ckd4_count") _tab ("ckd4_admissions") _tab ("dialysis_count") _tab ("dialysis_admissions") _tab ("kt_count") _tab ("kt_admissions") _n
 
 file write tablecontent ("n")
 forvalues i=1/5 {
 qui safecount if ckd_group==`i'
 local group_`i' = round(r(N),5)
 if `group_`i'' > 5 & `group_`i''!=. {
-file write tablecontent _tab (`group_`i'') _tab ("N/A") _tab ("N/A")
+file write tablecontent _tab (`group_`i'') _tab ("N/A")
 }
 else {
-file write tablecontent _tab ("REDACTED") _tab ("N/A") _tab ("N/A")
+file write tablecontent _tab ("REDACTED") _tab ("N/A")
 }
 }
 file write tablecontent _n
@@ -113,27 +113,26 @@ global hrg "wj11 xd01 xd02 xd03 xd04 xd05 xd06 xd07 xd08 xd09 xd10 xd11 xd12 xd1
 
 foreach hrg of global hrg {
 file write tablecontent ("`hrg'")
-foreach var of varlist `hrg'_admissions `hrg'_days {
-bysort ckd_group: egen total_`var' = total(`var')
-drop `var'
+bysort ckd_group: egen total_`hrg'_admissions = total(`hrg'_admissions)
+drop `hrg'_admissions
 forvalues i=1/5 {
 qui safecount if ckd_group==`i' & `hrg'_count==1
 local `hrg'_count_`i' = round(r(N),5)
-qui su total_`var' if ckd_group==`i'
-local `var'_`i' = r(mean)
+qui su total_`hrg'_admissions if ckd_group==`i'
+local total_`hrg'_admissions_`i' = r(mean)
 }
-drop total_`var'
-}
+drop total_`hrg'_admissions
 drop `hrg'_count
 forvalues i=1/5 {
 if ``hrg'_count_`i'' >5 & ``hrg'_count_`i''!=. {
-file write tablecontent _tab (``hrg'_count_`i'') _tab (``hrg'_admissions_`i'') _tab (``hrg'_days_`i'')
+file write tablecontent _tab (``hrg'_count_`i'') _tab (``hrg'_admissions_`i'') 
 }
 else {
-file write tablecontent _tab ("REDACTED") _tab ("REDACTED") _tab ("REDACTED")
+file write tablecontent _tab ("REDACTED") _tab ("REDACTED")
 }
 }
 file write tablecontent _n
 }
+
 
 file close tablecontent
