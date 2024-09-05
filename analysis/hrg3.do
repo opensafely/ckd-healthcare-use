@@ -114,9 +114,8 @@ global hrg "lb74 lb75 lb76 lb77 lb78 le01 le02 ma01 ma02 ma03 ma04 ma07 ma09 ma1
 foreach hrg of global hrg {
 file write tablecontent ("`hrg'")
 bysort ckd_group: egen total_`hrg'_admissions = total(`hrg'_admissions)
-drop `hrg'_admissions
 forvalues i=1/5 {
-qui safecount if ckd_group==`i' & `hrg'_count==1
+qui safecount if ckd_group==`i' & `hrg'_admissions!=0
 local `hrg'_count_`i' = round(r(N),5)
 qui su total_`hrg'_admissions if ckd_group==`i'
 local `hrg'_admissions_`i' = r(mean)
@@ -127,9 +126,10 @@ else {
 file write tablecontent _tab ("REDACTED") _tab ("REDACTED")
 }
 }
+drop `hrg'_admissions
 drop total_`hrg'_admissions
-drop `hrg'_count
 file write tablecontent _n
 }
+
 
 file close tablecontent
