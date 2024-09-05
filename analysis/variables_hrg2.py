@@ -6,13 +6,6 @@ from datetime import datetime, timedelta
 def generate_variables_hrg2(index_date_variable):
     variables_hrg2 = dict(    
     
-    FD01_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_FD01,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FD01_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_FD01,
         returning="number_of_matches_in_period",
@@ -23,13 +16,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FD02_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_FD02,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FD02_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_FD02,
         returning="number_of_matches_in_period",
@@ -40,13 +26,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FD03_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_FD03,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FD03_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_FD03,
         returning="number_of_matches_in_period",
@@ -57,13 +36,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FD04_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_FD04,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FD04_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_FD04,
         returning="number_of_matches_in_period",
@@ -74,13 +46,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FD05_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_FD05,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FD05_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_FD05,
         returning="number_of_matches_in_period",
@@ -91,13 +56,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FD10_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_FD10,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FD10_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_FD10,
         returning="number_of_matches_in_period",
@@ -108,13 +66,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FD11_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_FD11,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FD11_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_FD11,
         returning="number_of_matches_in_period",
@@ -125,13 +76,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GC01_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_GC01,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GC01_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_GC01,
         returning="number_of_matches_in_period",
@@ -142,13 +86,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GC12_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_GC12,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GC12_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_GC12,
         returning="number_of_matches_in_period",
@@ -159,13 +96,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GC17_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_GC17,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GC17_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_GC17,
         returning="number_of_matches_in_period",
@@ -176,13 +106,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GC18_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_GC18,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GC18_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_GC18,
         returning="number_of_matches_in_period",
@@ -193,13 +116,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC20_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HC20,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC20_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HC20,
         returning="number_of_matches_in_period",
@@ -210,13 +126,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC21_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HC21,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC21_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HC21,
         returning="number_of_matches_in_period",
@@ -227,13 +136,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC26_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HC26,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC26_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HC26,
         returning="number_of_matches_in_period",
@@ -244,13 +146,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC27_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HC27,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC27_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HC27,
         returning="number_of_matches_in_period",
@@ -261,13 +156,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC28_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HC28,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC28_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HC28,
         returning="number_of_matches_in_period",
@@ -278,13 +166,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC29_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HC29,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC29_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HC29,
         returning="number_of_matches_in_period",
@@ -295,13 +176,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC30_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HC30,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC30_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HC30,
         returning="number_of_matches_in_period",
@@ -312,13 +186,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC31_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HC31,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC31_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HC31,
         returning="number_of_matches_in_period",
@@ -329,13 +196,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC32_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HC32,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC32_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HC32,
         returning="number_of_matches_in_period",
@@ -346,13 +206,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HD21_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HD21,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HD21_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HD21,
         returning="number_of_matches_in_period",
@@ -363,13 +216,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HD23_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HD23,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HD23_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HD23,
         returning="number_of_matches_in_period",
@@ -380,13 +226,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HD24_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HD24,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HD24_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HD24,
         returning="number_of_matches_in_period",
@@ -397,13 +236,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HD25_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HD25,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HD25_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HD25,
         returning="number_of_matches_in_period",
@@ -414,13 +246,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HD26_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HD26,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HD26_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HD26,
         returning="number_of_matches_in_period",
@@ -431,13 +256,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HD39_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HD39,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HD39_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HD39,
         returning="number_of_matches_in_period",
@@ -448,13 +266,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HD40_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HD40,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HD40_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HD40,
         returning="number_of_matches_in_period",
@@ -465,13 +276,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE11_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE11,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE11_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE11,
         returning="number_of_matches_in_period",
@@ -482,13 +286,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE12_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE12,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE12_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE12,
         returning="number_of_matches_in_period",
@@ -499,13 +296,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE21_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE21,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE21_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE21,
         returning="number_of_matches_in_period",
@@ -516,13 +306,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE22_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE22,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE22_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE22,
         returning="number_of_matches_in_period",
@@ -533,13 +316,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE31_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE31,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE31_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE31,
         returning="number_of_matches_in_period",
@@ -550,13 +326,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE32_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE32,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE32_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE32,
         returning="number_of_matches_in_period",
@@ -567,13 +336,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE41_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE41,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE41_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE41,
         returning="number_of_matches_in_period",
@@ -584,13 +346,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE42_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE42,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE42_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE42,
         returning="number_of_matches_in_period",
@@ -601,13 +356,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE51_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE51,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE51_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE51,
         returning="number_of_matches_in_period",
@@ -618,13 +366,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE52_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE52,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE52_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE52,
         returning="number_of_matches_in_period",
@@ -635,13 +376,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE71_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE71,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE71_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE71,
         returning="number_of_matches_in_period",
@@ -652,13 +386,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE72_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE72,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE72_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE72,
         returning="number_of_matches_in_period",
@@ -669,13 +396,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE81_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE81,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE81_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE81,
         returning="number_of_matches_in_period",
@@ -686,13 +406,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE82_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE82,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE82_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE82,
         returning="number_of_matches_in_period",
@@ -703,13 +416,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HE83_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_HE83,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HE83_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_HE83,
         returning="number_of_matches_in_period",
@@ -720,13 +426,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JA12_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_JA12,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JA12_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_JA12,
         returning="number_of_matches_in_period",
@@ -737,13 +436,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JA13_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_JA13,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JA13_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_JA13,
         returning="number_of_matches_in_period",
@@ -754,13 +446,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JB91_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_JB91,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JB91_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_JB91,
         returning="number_of_matches_in_period",
@@ -771,13 +456,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JD07_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_JD07,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JD07_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_JD07,
         returning="number_of_matches_in_period",
@@ -788,13 +466,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    KA05_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_KA05,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     KA05_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_KA05,
         returning="number_of_matches_in_period",
@@ -805,13 +476,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    KA06_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_KA06,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     KA06_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_KA06,
         returning="number_of_matches_in_period",
@@ -822,13 +486,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    KA07_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_KA07,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     KA07_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_KA07,
         returning="number_of_matches_in_period",
@@ -839,13 +496,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    KA08_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_KA08,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     KA08_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_KA08,
         returning="number_of_matches_in_period",
@@ -856,13 +506,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    KB02_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_KB02,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     KB02_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_KB02,
         returning="number_of_matches_in_period",
@@ -873,13 +516,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    KB03_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_KB03,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     KB03_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_KB03,
         returning="number_of_matches_in_period",
@@ -890,13 +526,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    KC04_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_KC04,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     KC04_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_KC04,
         returning="number_of_matches_in_period",
@@ -907,13 +536,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    KC05_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_KC05,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     KC05_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_KC05,
         returning="number_of_matches_in_period",
@@ -924,13 +546,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LA04_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LA04,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LA04_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LA04,
         returning="number_of_matches_in_period",
@@ -941,13 +556,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LA07_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LA07,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LA07_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LA07,
         returning="number_of_matches_in_period",
@@ -958,13 +566,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LA08_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LA08,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LA08_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LA08,
         returning="number_of_matches_in_period",
@@ -975,13 +576,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LA09_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LA09,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LA09_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LA09,
         returning="number_of_matches_in_period",
@@ -992,13 +586,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB06_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LB06,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB06_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LB06,
         returning="number_of_matches_in_period",
@@ -1009,13 +596,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB16_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LB16,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB16_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LB16,
         returning="number_of_matches_in_period",
@@ -1026,13 +606,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB19_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LB19,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB19_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LB19,
         returning="number_of_matches_in_period",
@@ -1043,13 +616,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB20_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LB20,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB20_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LB20,
         returning="number_of_matches_in_period",
@@ -1060,13 +626,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB28_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LB28,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB28_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LB28,
         returning="number_of_matches_in_period",
@@ -1077,13 +636,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB35_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LB35,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB35_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LB35,
         returning="number_of_matches_in_period",
@@ -1094,13 +646,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB37_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LB37,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB37_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LB37,
         returning="number_of_matches_in_period",
@@ -1111,13 +656,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB38_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LB38,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB38_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LB38,
         returning="number_of_matches_in_period",
@@ -1128,13 +666,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB40_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LB40,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB40_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LB40,
         returning="number_of_matches_in_period",
@@ -1145,13 +676,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB57_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LB57,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB57_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LB57,
         returning="number_of_matches_in_period",
@@ -1162,13 +686,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB58_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=hrg_LB58,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB58_admissions=patients.admitted_to_hospital(
         with_these_primary_diagnoses=hrg_LB58,
         returning="number_of_matches_in_period",
@@ -1179,13 +696,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    EY22_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_EY22,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     EY22_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_EY22,
         returning="number_of_matches_in_period",
@@ -1196,13 +706,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    EY23_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_EY23,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     EY23_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_EY23,
         returning="number_of_matches_in_period",
@@ -1213,13 +716,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    EY30_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_EY30,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     EY30_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_EY30,
         returning="number_of_matches_in_period",
@@ -1230,13 +726,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    EY31_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_EY31,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     EY31_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_EY31,
         returning="number_of_matches_in_period",
@@ -1247,13 +736,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    EY32_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_EY32,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     EY32_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_EY32,
         returning="number_of_matches_in_period",
@@ -1264,13 +746,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    EY40_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_EY40,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     EY40_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_EY40,
         returning="number_of_matches_in_period",
@@ -1281,13 +756,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    EY41_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_EY41,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     EY41_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_EY41,
         returning="number_of_matches_in_period",
@@ -1298,13 +766,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    EY42_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_EY42,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     EY42_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_EY42,
         returning="number_of_matches_in_period",
@@ -1315,13 +776,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    EY43_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_EY43,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     EY43_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_EY43,
         returning="number_of_matches_in_period",
@@ -1332,13 +786,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    EY50_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_EY50,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     EY50_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_EY50,
         returning="number_of_matches_in_period",
@@ -1349,13 +796,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    EY51_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_EY51,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     EY51_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_EY51,
         returning="number_of_matches_in_period",
@@ -1366,13 +806,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE01_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE01,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE01_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE01,
         returning="number_of_matches_in_period",
@@ -1383,13 +816,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE02_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE02,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE02_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE02,
         returning="number_of_matches_in_period",
@@ -1400,13 +826,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE03_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE03,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE03_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE03,
         returning="number_of_matches_in_period",
@@ -1417,13 +836,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE10_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE10,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE10_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE10,
         returning="number_of_matches_in_period",
@@ -1434,13 +846,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE11_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE11,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE11_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE11,
         returning="number_of_matches_in_period",
@@ -1451,13 +856,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE12_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE12,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE12_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE12,
         returning="number_of_matches_in_period",
@@ -1468,13 +866,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE13_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE13,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE13_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE13,
         returning="number_of_matches_in_period",
@@ -1485,13 +876,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE20_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE20,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE20_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE20,
         returning="number_of_matches_in_period",
@@ -1502,13 +886,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE21_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE21,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE21_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE21,
         returning="number_of_matches_in_period",
@@ -1519,13 +896,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE22_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE22,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE22_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE22,
         returning="number_of_matches_in_period",
@@ -1536,13 +906,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE30_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE30,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE30_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE30,
         returning="number_of_matches_in_period",
@@ -1553,13 +916,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE31_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE31,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE31_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE31,
         returning="number_of_matches_in_period",
@@ -1570,13 +926,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE32_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE32,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE32_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE32,
         returning="number_of_matches_in_period",
@@ -1587,13 +936,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE33_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE33,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE33_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE33,
         returning="number_of_matches_in_period",
@@ -1604,13 +946,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE34_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE34,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE34_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE34,
         returning="number_of_matches_in_period",
@@ -1621,13 +956,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE35_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE35,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE35_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE35,
         returning="number_of_matches_in_period",
@@ -1638,13 +966,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE36_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE36,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE36_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE36,
         returning="number_of_matches_in_period",
@@ -1655,13 +976,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FE50_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FE50,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FE50_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FE50,
         returning="number_of_matches_in_period",
@@ -1672,13 +986,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF01_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF01,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF01_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF01,
         returning="number_of_matches_in_period",
@@ -1689,13 +996,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF02_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF02,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF02_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF02,
         returning="number_of_matches_in_period",
@@ -1706,13 +1006,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF04_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF04,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF04_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF04,
         returning="number_of_matches_in_period",
@@ -1723,13 +1016,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF05_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF05,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF05_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF05,
         returning="number_of_matches_in_period",
@@ -1740,13 +1026,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF12_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF12,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF12_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF12,
         returning="number_of_matches_in_period",
@@ -1757,13 +1036,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF13_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF13,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF13_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF13,
         returning="number_of_matches_in_period",
@@ -1774,13 +1046,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF14_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF14,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF14_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF14,
         returning="number_of_matches_in_period",
@@ -1791,13 +1056,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF20_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF20,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF20_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF20,
         returning="number_of_matches_in_period",
@@ -1808,13 +1066,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF21_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF21,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF21_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF21,
         returning="number_of_matches_in_period",
@@ -1825,13 +1076,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF22_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF22,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF22_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF22,
         returning="number_of_matches_in_period",
@@ -1842,13 +1086,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF30_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF30,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF30_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF30,
         returning="number_of_matches_in_period",
@@ -1859,13 +1096,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF31_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF31,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF31_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF31,
         returning="number_of_matches_in_period",
@@ -1876,13 +1106,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF32_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF32,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF32_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF32,
         returning="number_of_matches_in_period",
@@ -1893,13 +1116,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF33_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF33,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF33_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF33,
         returning="number_of_matches_in_period",
@@ -1910,13 +1126,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF34_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF34,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF34_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF34,
         returning="number_of_matches_in_period",
@@ -1927,13 +1136,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF36_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF36,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF36_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF36,
         returning="number_of_matches_in_period",
@@ -1944,13 +1146,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF37_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF37,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF37_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF37,
         returning="number_of_matches_in_period",
@@ -1961,13 +1156,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF40_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF40,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF40_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF40,
         returning="number_of_matches_in_period",
@@ -1978,13 +1166,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF41_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF41,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF41_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF41,
         returning="number_of_matches_in_period",
@@ -1995,13 +1176,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF42_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF42,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF42_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF42,
         returning="number_of_matches_in_period",
@@ -2012,13 +1186,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF43_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF43,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF43_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF43,
         returning="number_of_matches_in_period",
@@ -2029,13 +1196,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF50_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF50,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF50_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF50,
         returning="number_of_matches_in_period",
@@ -2046,13 +1206,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF51_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF51,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF51_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF51,
         returning="number_of_matches_in_period",
@@ -2063,13 +1216,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF52_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF52,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF52_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF52,
         returning="number_of_matches_in_period",
@@ -2080,13 +1226,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF53_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF53,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF53_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF53,
         returning="number_of_matches_in_period",
@@ -2097,13 +1236,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF60_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF60,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF60_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF60,
         returning="number_of_matches_in_period",
@@ -2114,13 +1246,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF61_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF61,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF61_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF61,
         returning="number_of_matches_in_period",
@@ -2131,13 +1256,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF62_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF62,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF62_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF62,
         returning="number_of_matches_in_period",
@@ -2148,13 +1266,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    FF63_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_FF63,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     FF63_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_FF63,
         returning="number_of_matches_in_period",
@@ -2165,13 +1276,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GA03_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GA03,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GA03_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GA03,
         returning="number_of_matches_in_period",
@@ -2182,13 +1286,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GA04_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GA04,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GA04_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GA04,
         returning="number_of_matches_in_period",
@@ -2199,13 +1296,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GA05_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GA05,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GA05_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GA05,
         returning="number_of_matches_in_period",
@@ -2216,13 +1306,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GA06_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GA06,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GA06_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GA06,
         returning="number_of_matches_in_period",
@@ -2233,13 +1316,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GA07_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GA07,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GA07_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GA07,
         returning="number_of_matches_in_period",
@@ -2250,13 +1326,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GA10_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GA10,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GA10_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GA10,
         returning="number_of_matches_in_period",
@@ -2267,13 +1336,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GA11_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GA11,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GA11_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GA11,
         returning="number_of_matches_in_period",
@@ -2284,13 +1346,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GA13_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GA13,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GA13_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GA13,
         returning="number_of_matches_in_period",
@@ -2301,13 +1356,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GA15_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GA15,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GA15_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GA15,
         returning="number_of_matches_in_period",
@@ -2318,13 +1366,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GA16_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GA16,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GA16_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GA16,
         returning="number_of_matches_in_period",
@@ -2335,13 +1376,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GB05_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GB05,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GB05_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GB05,
         returning="number_of_matches_in_period",
@@ -2352,13 +1386,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GB06_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GB06,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GB06_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GB06,
         returning="number_of_matches_in_period",
@@ -2369,13 +1396,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GB09_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GB09,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GB09_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GB09,
         returning="number_of_matches_in_period",
@@ -2386,13 +1406,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GB10_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GB10,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GB10_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GB10,
         returning="number_of_matches_in_period",
@@ -2403,13 +1416,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GB11_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GB11,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GB11_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GB11,
         returning="number_of_matches_in_period",
@@ -2420,13 +1426,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GB12_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GB12,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GB12_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GB12,
         returning="number_of_matches_in_period",
@@ -2437,13 +1436,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    GB13_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_GB13,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     GB13_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_GB13,
         returning="number_of_matches_in_period",
@@ -2454,13 +1446,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC50_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HC50,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC50_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HC50,
         returning="number_of_matches_in_period",
@@ -2471,13 +1456,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC53_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HC53,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC53_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HC53,
         returning="number_of_matches_in_period",
@@ -2488,13 +1466,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC54_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HC54,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC54_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HC54,
         returning="number_of_matches_in_period",
@@ -2505,13 +1476,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC60_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HC60,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC60_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HC60,
         returning="number_of_matches_in_period",
@@ -2522,13 +1486,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC61_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HC61,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC61_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HC61,
         returning="number_of_matches_in_period",
@@ -2539,13 +1496,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC62_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HC62,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC62_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HC62,
         returning="number_of_matches_in_period",
@@ -2556,13 +1506,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC63_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HC63,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC63_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HC63,
         returning="number_of_matches_in_period",
@@ -2573,13 +1516,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC64_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HC64,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC64_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HC64,
         returning="number_of_matches_in_period",
@@ -2590,13 +1526,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC65_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HC65,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC65_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HC65,
         returning="number_of_matches_in_period",
@@ -2607,13 +1536,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC70_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HC70,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC70_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HC70,
         returning="number_of_matches_in_period",
@@ -2624,13 +1546,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC71_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HC71,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC71_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HC71,
         returning="number_of_matches_in_period",
@@ -2641,13 +1556,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HC72_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HC72,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HC72_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HC72,
         returning="number_of_matches_in_period",
@@ -2658,13 +1566,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN12_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN12,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN12_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN12,
         returning="number_of_matches_in_period",
@@ -2675,13 +1576,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN13_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN13,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN13_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN13,
         returning="number_of_matches_in_period",
@@ -2692,13 +1586,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN14_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN14,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN14_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN14,
         returning="number_of_matches_in_period",
@@ -2709,13 +1596,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN15_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN15,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN15_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN15,
         returning="number_of_matches_in_period",
@@ -2726,13 +1606,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN22_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN22,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN22_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN22,
         returning="number_of_matches_in_period",
@@ -2743,13 +1616,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN23_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN23,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN23_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN23,
         returning="number_of_matches_in_period",
@@ -2760,13 +1626,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN24_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN24,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN24_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN24,
         returning="number_of_matches_in_period",
@@ -2777,13 +1636,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN25_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN25,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN25_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN25,
         returning="number_of_matches_in_period",
@@ -2794,13 +1646,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN32_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN32,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN32_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN32,
         returning="number_of_matches_in_period",
@@ -2811,13 +1656,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN33_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN33,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN33_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN33,
         returning="number_of_matches_in_period",
@@ -2828,13 +1666,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN34_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN34,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN34_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN34,
         returning="number_of_matches_in_period",
@@ -2845,13 +1676,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN35_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN35,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN35_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN35,
         returning="number_of_matches_in_period",
@@ -2862,13 +1686,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN42_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN42,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN42_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN42,
         returning="number_of_matches_in_period",
@@ -2879,13 +1696,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN43_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN43,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN43_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN43,
         returning="number_of_matches_in_period",
@@ -2896,13 +1706,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN44_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN44,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN44_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN44,
         returning="number_of_matches_in_period",
@@ -2913,13 +1716,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN45_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN45,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN45_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN45,
         returning="number_of_matches_in_period",
@@ -2930,13 +1726,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN46_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN46,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN46_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN46,
         returning="number_of_matches_in_period",
@@ -2947,13 +1736,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN52_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN52,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN52_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN52,
         returning="number_of_matches_in_period",
@@ -2964,13 +1746,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN53_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN53,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN53_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN53,
         returning="number_of_matches_in_period",
@@ -2981,13 +1756,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN54_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN54,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN54_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN54,
         returning="number_of_matches_in_period",
@@ -2998,13 +1766,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN55_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN55,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN55_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN55,
         returning="number_of_matches_in_period",
@@ -3015,13 +1776,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN62_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN62,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN62_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN62,
         returning="number_of_matches_in_period",
@@ -3032,13 +1786,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN63_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN63,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN63_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN63,
         returning="number_of_matches_in_period",
@@ -3049,13 +1796,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN64_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN64,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN64_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN64,
         returning="number_of_matches_in_period",
@@ -3066,13 +1806,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN65_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN65,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN65_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN65,
         returning="number_of_matches_in_period",
@@ -3083,13 +1816,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN81_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN81,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN81_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN81,
         returning="number_of_matches_in_period",
@@ -3100,13 +1826,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN86_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN86,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN86_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN86,
         returning="number_of_matches_in_period",
@@ -3117,13 +1836,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    HN93_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_HN93,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     HN93_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_HN93,
         returning="number_of_matches_in_period",
@@ -3134,13 +1846,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JA20_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JA20,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JA20_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JA20,
         returning="number_of_matches_in_period",
@@ -3151,13 +1856,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JA30_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JA30,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JA30_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JA30,
         returning="number_of_matches_in_period",
@@ -3168,13 +1866,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JA34_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JA34,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JA34_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JA34,
         returning="number_of_matches_in_period",
@@ -3185,13 +1876,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JA38_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JA38,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JA38_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JA38,
         returning="number_of_matches_in_period",
@@ -3202,13 +1886,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JA43_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JA43,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JA43_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JA43,
         returning="number_of_matches_in_period",
@@ -3219,13 +1896,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JA45_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JA45,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JA45_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JA45,
         returning="number_of_matches_in_period",
@@ -3236,13 +1906,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JB70_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JB70,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JB70_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JB70,
         returning="number_of_matches_in_period",
@@ -3253,13 +1916,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JB71_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JB71,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JB71_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JB71,
         returning="number_of_matches_in_period",
@@ -3270,13 +1926,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JC40_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JC40,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JC40_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JC40,
         returning="number_of_matches_in_period",
@@ -3287,13 +1936,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JC41_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JC41,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JC41_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JC41,
         returning="number_of_matches_in_period",
@@ -3304,13 +1946,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JC42_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JC42,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JC42_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JC42,
         returning="number_of_matches_in_period",
@@ -3321,13 +1956,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JC43_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JC43,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JC43_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JC43,
         returning="number_of_matches_in_period",
@@ -3338,13 +1966,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JC44_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JC44,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JC44_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JC44,
         returning="number_of_matches_in_period",
@@ -3355,13 +1976,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JC45_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JC45,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JC45_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JC45,
         returning="number_of_matches_in_period",
@@ -3372,13 +1986,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JC46_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JC46,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JC46_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JC46,
         returning="number_of_matches_in_period",
@@ -3389,13 +1996,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    JC47_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_JC47,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     JC47_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_JC47,
         returning="number_of_matches_in_period",
@@ -3406,13 +2006,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    KA03_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_KA03,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     KA03_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_KA03,
         returning="number_of_matches_in_period",
@@ -3423,13 +2016,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    KA04_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_KA04,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     KA04_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_KA04,
         returning="number_of_matches_in_period",
@@ -3440,13 +2026,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    KA09_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_KA09,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     KA09_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_KA09,
         returning="number_of_matches_in_period",
@@ -3457,13 +2036,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    KB04_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_KB04,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     KB04_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_KB04,
         returning="number_of_matches_in_period",
@@ -3474,13 +2046,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LA01_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LA01,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LA01_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LA01,
         returning="number_of_matches_in_period",
@@ -3491,13 +2056,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LA02_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LA02,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LA02_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LA02,
         returning="number_of_matches_in_period",
@@ -3508,13 +2066,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LA03_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LA03,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LA03_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LA03,
         returning="number_of_matches_in_period",
@@ -3525,13 +2076,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LA05_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LA05,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LA05_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LA05,
         returning="number_of_matches_in_period",
@@ -3542,13 +2086,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LA10_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LA10,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LA10_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LA10,
         returning="number_of_matches_in_period",
@@ -3559,13 +2096,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LA11_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LA11,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LA11_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LA11,
         returning="number_of_matches_in_period",
@@ -3576,13 +2106,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LA12_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LA12,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LA12_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LA12,
         returning="number_of_matches_in_period",
@@ -3593,13 +2116,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LA13_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LA13,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LA13_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LA13,
         returning="number_of_matches_in_period",
@@ -3610,13 +2126,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LA14_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LA14,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LA14_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LA14,
         returning="number_of_matches_in_period",
@@ -3627,13 +2136,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB09_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB09,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB09_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB09,
         returning="number_of_matches_in_period",
@@ -3644,13 +2146,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB10_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB10,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB10_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB10,
         returning="number_of_matches_in_period",
@@ -3661,13 +2156,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB12_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB12,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB12_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB12,
         returning="number_of_matches_in_period",
@@ -3678,13 +2166,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB13_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB13,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB13_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB13,
         returning="number_of_matches_in_period",
@@ -3695,13 +2176,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB14_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB14,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB14_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB14,
         returning="number_of_matches_in_period",
@@ -3712,13 +2186,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB15_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB15,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB15_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB15,
         returning="number_of_matches_in_period",
@@ -3729,13 +2196,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB17_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB17,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB17_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB17,
         returning="number_of_matches_in_period",
@@ -3746,13 +2206,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB18_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB18,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB18_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB18,
         returning="number_of_matches_in_period",
@@ -3763,13 +2216,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB21_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB21,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB21_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB21,
         returning="number_of_matches_in_period",
@@ -3780,13 +2226,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB25_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB25,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB25_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB25,
         returning="number_of_matches_in_period",
@@ -3797,13 +2236,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB26_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB26,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB26_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB26,
         returning="number_of_matches_in_period",
@@ -3814,13 +2246,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB29_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB29,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB29_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB29,
         returning="number_of_matches_in_period",
@@ -3831,13 +2256,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB33_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB33,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB33_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB33,
         returning="number_of_matches_in_period",
@@ -3848,13 +2266,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB36_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB36,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB36_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB36,
         returning="number_of_matches_in_period",
@@ -3865,13 +2276,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB39_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB39,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB39_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB39,
         returning="number_of_matches_in_period",
@@ -3882,13 +2286,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB42_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB42,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB42_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB42,
         returning="number_of_matches_in_period",
@@ -3899,13 +2296,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB43_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB43,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB43_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB43,
         returning="number_of_matches_in_period",
@@ -3916,13 +2306,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB46_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB46,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB46_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB46,
         returning="number_of_matches_in_period",
@@ -3933,13 +2316,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB47_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB47,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB47_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB47,
         returning="number_of_matches_in_period",
@@ -3950,13 +2326,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB48_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB48,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB48_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB48,
         returning="number_of_matches_in_period",
@@ -3967,13 +2336,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB50_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB50,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB50_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB50,
         returning="number_of_matches_in_period",
@@ -3984,13 +2346,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB51_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB51,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB51_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB51,
         returning="number_of_matches_in_period",
@@ -4001,13 +2356,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB52_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB52,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB52_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB52,
         returning="number_of_matches_in_period",
@@ -4018,13 +2366,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB53_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB53,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB53_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB53,
         returning="number_of_matches_in_period",
@@ -4035,13 +2376,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB54_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB54,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB54_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB54,
         returning="number_of_matches_in_period",
@@ -4052,13 +2386,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB55_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB55,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB55_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB55,
         returning="number_of_matches_in_period",
@@ -4069,13 +2396,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB56_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB56,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB56_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB56,
         returning="number_of_matches_in_period",
@@ -4086,13 +2406,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB59_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB59,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB59_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB59,
         returning="number_of_matches_in_period",
@@ -4103,13 +2416,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB60_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB60,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB60_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB60,
         returning="number_of_matches_in_period",
@@ -4120,13 +2426,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB61_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB61,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB61_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB61,
         returning="number_of_matches_in_period",
@@ -4137,13 +2436,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB64_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB64,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB64_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB64,
         returning="number_of_matches_in_period",
@@ -4154,13 +2446,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB65_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB65,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB65_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB65,
         returning="number_of_matches_in_period",
@@ -4171,13 +2456,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB67_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB67,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB67_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB67,
         returning="number_of_matches_in_period",
@@ -4188,13 +2466,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB68_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB68,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB68_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB68,
         returning="number_of_matches_in_period",
@@ -4205,13 +2476,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB70_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB70,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB70_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB70,
         returning="number_of_matches_in_period",
@@ -4222,13 +2486,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB71_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB71,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB71_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB71,
         returning="number_of_matches_in_period",
@@ -4239,13 +2496,6 @@ def generate_variables_hrg2(index_date_variable):
         }
     ),
     
-    LB72_count=patients.admitted_to_hospital(
-        with_these_procedures=hrg_LB72,
-        returning="binary_flag",
-        between = ["index_date", "index_date + 364 days"],
-        return_expectations={"incidence": 0.05},
-    ),
-
     LB72_admissions=patients.admitted_to_hospital(
         with_these_procedures=hrg_LB72,
         returning="number_of_matches_in_period",
