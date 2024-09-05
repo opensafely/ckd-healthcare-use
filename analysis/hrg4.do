@@ -115,7 +115,7 @@ foreach hrg of global hrg {
 file write tablecontent ("`hrg'")
 bysort ckd_group: egen total_`hrg'_admissions = total(`hrg'_admissions)
 forvalues i=1/5 {
-qui safecount if ckd_group==`i' & `hrg'_admissions!=0
+qui safecount if ckd_group==`i' & `hrg'_admissions>0
 local `hrg'_count_`i' = round(r(N),5)
 qui su total_`hrg'_admissions if ckd_group==`i'
 local `hrg'_admissions_`i' = r(mean)
